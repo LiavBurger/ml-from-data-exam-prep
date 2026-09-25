@@ -104,16 +104,23 @@
 
   // ── topic ────────────────────────────────────────────────────────────────
   function renderTopic(t) {
-    const moves = (t.moves || []).map((mv, i) => `
+    const moves = (t.moves || []).map((mv, i) => {
+      const exam = mv.cue || mv.first || mv.recipe || mv.table || mv.trap;
+      return `
       <details class="move" ${i === 0 ? "open" : ""}>
         <summary>${mv.title}</summary>
+        ${mv.idea ? `<h4>In plain words</h4><div class="idea">${mv.idea}</div>` : ""}
+        ${mv.notation ? `<h4>Symbols</h4><div class="tw"><table class="notation"><tbody>${mv.notation.map(([a, b]) => `<tr><td>${a}</td><td>${b}</td></tr>`).join("")}</tbody></table></div>` : ""}
+        ${mv.example ? `<h4>Worked example</h4><div class="example">${mv.example}</div>` : ""}
+        ${exam && mv.idea ? `<h4>On the exam</h4>` : ""}
         ${mv.cue ? `<p><span class="tag cue">You'll see</span> ${mv.cue}</p>` : ""}
         ${mv.first ? `<p><span class="tag first">First line</span> ${mv.first}</p>` : ""}
         ${mv.recipe ? `<div class="recipe">${mv.recipe}</div>` : ""}
         ${mv.table ? `<div class="tw"><table><thead><tr>${mv.table.head.map(h => `<th>${h}</th>`).join("")}</tr></thead>
           <tbody>${mv.table.rows.map(r => `<tr>${r.map(c => `<td>${c}</td>`).join("")}</tr>`).join("")}</tbody></table></div>` : ""}
         ${mv.trap ? `<p class="trap"><span class="tag trapt">Trap</span> ${mv.trap}</p>` : ""}
-      </details>`).join("");
+      </details>`;
+    }).join("");
     const notesNote = t.notesReady ? "" :
       `<p class="banner">${moves ? "More notes for this topic come next." : "Notes for this topic come next."} The questions below are complete and ready to practise.</p>`;
     const qs = t.questions.map((q, i) => {

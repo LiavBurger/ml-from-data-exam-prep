@@ -85,6 +85,15 @@ details[open] > summary::before { transform: rotate(90deg); }
 .tag.trapt { background: var(--trap); color: var(--panel); }
 .trap { background: var(--fail-bg); padding: 10px 12px; border-radius: 8px; }
 .tw { overflow-x: auto; margin-top: 10px; }
+.move h4 { margin: 20px 0 6px; font-size: 13px; text-transform: uppercase; letter-spacing: .06em; color: var(--accent); }
+.move h4:first-of-type { margin-top: 14px; }
+.idea p, .example p { margin: 8px 0; }
+.idea ul, .idea ol, .example ul, .example ol { padding-left: 22px; margin: 6px 0; }
+.idea li, .example li { margin: 5px 0; }
+.example { background: var(--code-bg); border-radius: 8px; padding: 6px 14px; overflow-x: auto; }
+.example pre { background: var(--panel); }
+table.notation td:first-child { white-space: nowrap; width: 1%; padding-right: 18px; }
+.katex-display { overflow-x: auto; overflow-y: hidden; padding: 2px 0; }
 table { border-collapse: collapse; width: 100%; font-size: 14.5px; }
 th, td { border-bottom: 1px solid var(--line); padding: 8px 10px; text-align: left; vertical-align: top; }
 th { color: var(--muted); font-weight: 600; font-size: 13px; }
