@@ -53,14 +53,15 @@
         </a>`;
       }).join("")}</nav>
       <div class="side-foot">
-        <button id="theme">Toggle dark mode</button>
+        <button id="theme">${document.documentElement.dataset.theme === "light" ? "🌙 Dark mode" : "☀️ Light mode"}</button>
         <button id="export">Download progress backup</button>
         <label class="imp">Restore backup<input type="file" id="import" accept="application/json"></label>
       </div>`;
     $("#theme").onclick = () => {
-      const cur = document.documentElement.dataset.theme || (matchMedia("(prefers-color-scheme: dark)").matches ? "dark" : "light");
+      const cur = document.documentElement.dataset.theme || "dark";
       document.documentElement.dataset.theme = cur === "dark" ? "light" : "dark";
       try { localStorage.setItem(KEY + "_theme", document.documentElement.dataset.theme); } catch (e) {}
+      $("#theme").textContent = document.documentElement.dataset.theme === "light" ? "🌙 Dark mode" : "☀️ Light mode";
     };
     $("#export").onclick = () => {
       const a = document.createElement("a");
