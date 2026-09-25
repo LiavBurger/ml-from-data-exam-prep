@@ -4,7 +4,7 @@ Open `index.html` in a browser (works offline, no server). Progress is saved in 
 
 **Rule: real course material only.** Every practice item is a real exam item (cut from the official solution PDFs), a homework question, or your own Moed B answer. Nothing is invented. "First moves" are short notes distilled from the official solutions.
 
-Topics follow the order in `../MISSION.md`. Pilot: topics 0 (Moed B free points) and 1 (gradient template + GD code); the rest are listed as *next*.
+Organised by exam question family: every one of the 25 real questions appears once, whole, in one topic (Moed B question last, as the checkpoint). Notes are written for Regression; other topics have their questions ready and notes coming next.
 
 ## Rebuilding the images
 ```

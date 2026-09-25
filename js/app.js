@@ -1,7 +1,8 @@
-/* ML Exam C study site — rendering, routing and saved progress (localStorage). */
+/* ML Exam C study site — rendering, routing and saved progress (localStorage).
+   Structure: topic → whole exam questions → parts (each part marked Got it / Shaky / Failed). */
 (function () {
   "use strict";
-  const M = window.MANIFEST, TOPICS = window.TOPICS, CODE = window.CODE;
+  const M = window.MANIFEST, TOPICS = window.TOPICS, CODE = window.CODE, MOEDB = window.MOEDB || {};
   const KEY = "ml_examc_v1";
   const MARKS = { got: "Got it", shaky: "Shaky", fail: "Failed" };
 
@@ -16,36 +17,39 @@
   // ── helpers ──────────────────────────────────────────────────────────────
   const $ = (sel, el) => (el || document).querySelector(sel);
   const esc = s => String(s).replace(/[&<>"]/g, c => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;" }[c]));
-  function examLabel(id) {                      // "2026B-q1.2" -> "2026-B · Q1.2"
-    const m = /^(\d{4})([ABC])-q(\d+)(?:\.(\d+))?$/.exec(id);
-    return m ? `${m[1]}-${m[2]} · Q${m[3]}${m[4] ? "." + m[4] : ""}` : id;
+  function examOf(qid) { const m = /^(\d{4})([ABC])-q(\d+)$/.exec(qid); return { year: m[1], moed: m[2], q: +m[3] }; }
+  const qLabel = qid => { const e = examOf(qid); return `${e.year}-${e.moed} · Question ${e.q}`; };
+  const pLabel = pid => { const [qid, p] = pid.split("."); const e = examOf(qid); return `${e.year}-${e.moed} · Q${e.q}.${p}`; };
+  function partsOf(qid) {
+    return Object.keys(M).filter(k => k.startsWith(qid + ".")).map(k => +k.slice(qid.length + 1)).sort((a, b) => a - b);
   }
-  const stemId = id => id.replace(/\.\d+$/, "");
+  const qPoints = qid => partsOf(qid).reduce((s, p) => s + (M[`${qid}.${p}`].bonus ? 0 : M[`${qid}.${p}`].pts), 0);
+  function qProgress(qid) {
+    const ps = partsOf(qid);
+    return { done: ps.filter(p => state.marks[`${qid}.${p}`]).length, total: ps.length };
+  }
+  function topicProgress(t) {
+    const done = t.questions.filter(q => { const p = qProgress(q.id); return p.done === p.total; }).length;
+    return { done, total: t.questions.length };
+  }
+  const findQ = qid => { for (const t of TOPICS) for (const q of t.questions) if (q.id === qid) return { t, q }; return null; };
   function math(el) {
     if (window.renderMathInElement) renderMathInElement(el, {
       delimiters: [{ left: "\\[", right: "\\]", display: true }, { left: "\\(", right: "\\)", display: false }],
       throwOnError: false,
     });
   }
-  function topicItems(t) { return (t.items || []).map(it => it.id); }
-  function progress(t) {
-    const ids = [...new Set(topicItems(t))];
-    const got = ids.filter(id => (state.marks[id] || {}).m === "got").length;
-    return { got, total: ids.length };
-  }
-  function itemTopic(id) { return TOPICS.find(t => topicItems(t).includes(id)); }
+  const img = (src, alt) => src ? `<img src="${src}" alt="${esc(alt)}" loading="lazy">` : "";
 
   // ── sidebar ──────────────────────────────────────────────────────────────
-  function renderSide(activeId) {
-    const side = $("#side");
-    side.innerHTML = `
+  function renderSide(activeTopic) {
+    $("#side").innerHTML = `
       <a class="brand" href="#/">ML from Data<span>Exam C prep</span></a>
       <nav>${TOPICS.map(t => {
-        const p = progress(t);
-        const pct = p.total ? Math.round(100 * p.got / p.total) : 0;
-        return `<a class="nav-t ${t.id === activeId ? "on" : ""} ${t.ready ? "" : "later"}" href="#/t/${t.id}">
+        const p = topicProgress(t), pct = p.total ? Math.round(100 * p.done / p.total) : 0;
+        return `<a class="nav-t ${t.id === activeTopic ? "on" : ""}" href="#/t/${t.id}">
           <span class="num">${t.num}</span><span class="nt">${esc(t.title)}</span>
-          ${t.ready ? `<span class="bar"><i style="width:${pct}%"></i></span><span class="cnt">${p.got}/${p.total}</span>` : `<span class="soon">next</span>`}
+          ${t.noQuestions ? "" : `<span class="bar"><i style="width:${pct}%"></i></span><span class="cnt" title="questions finished">${p.done}/${p.total}</span>`}
         </a>`;
       }).join("")}</nav>
       <div class="side-foot">
@@ -53,7 +57,6 @@
         <button id="export">Download progress backup</button>
         <label class="imp">Restore backup<input type="file" id="import" accept="application/json"></label>
       </div>`;
-    math(side);
     $("#theme").onclick = () => {
       const cur = document.documentElement.dataset.theme || (matchMedia("(prefers-color-scheme: dark)").matches ? "dark" : "light");
       document.documentElement.dataset.theme = cur === "dark" ? "light" : "dark";
@@ -72,108 +75,103 @@
 
   // ── home ─────────────────────────────────────────────────────────────────
   function renderHome() {
-    const retest = Object.entries(state.marks).filter(([, v]) => v.m !== "got")
-      .sort((a, b) => b[1].t - a[1].t);
+    const retest = Object.entries(state.marks).filter(([, v]) => v.m !== "got").sort((a, b) => b[1].t - a[1].t);
+    const total = TOPICS.reduce((s, t) => s + t.questions.length, 0);
     $("#main").innerHTML = `
       <header class="page-h"><h1>Pass Exam C</h1>
-        <p class="lede">Answer 4 of 5 questions, 25 points each; 60 passes. In Moed B you weren't short on time — you got stuck. This site trains the <b>first move</b> for every kind of item, using only real course material.</p></header>
+        <p class="lede">Answer 4 of 5 questions, 25 points each; 60 passes. In Moed B you weren't short on time — you got stuck. This site has all ${total} real questions from the 5 past exams, each one whole, grouped by the kind of question it is.</p></header>
 
       <section class="card how"><h2>Each study session</h2>
         <ol>
-          <li><b>Retest first</b> (≈10 min): redo the items below that you marked Failed or Shaky.</li>
-          <li><b>Next topic in order</b>: read its <i>first moves</i>, then solve each item <b>on paper, from memory, with only the formula sheet</b>.</li>
-          <li>Only then open the official solution, and mark yourself honestly.</li>
+          <li><b>Retest first</b> (≈10 min): redo the parts below that you marked Failed or Shaky.</li>
+          <li><b>Next question in the topic you're on.</b> New topic? Read its notes first.</li>
+          <li>Work the question from part 1 to the end <b>on paper, with only the formula sheet</b>. Open the official solution only after writing something, then mark yourself honestly.</li>
         </ol></section>
 
       <section class="card"><h2>Retest first</h2>
-        ${retest.length ? `<ul class="retest">${retest.map(([id, v]) => {
-          const t = itemTopic(id);
-          return `<li><span class="pill ${v.m}">${MARKS[v.m]}</span> <a href="#/t/${t ? t.id : ""}/${id}">${esc(itemLabel(id))}</a>${t ? ` <span class="muted">— ${esc(t.title)}</span>` : ""}</li>`;
-        }).join("")}</ul>` : `<p class="muted">Nothing yet — items you mark Failed or Shaky show up here.</p>`}</section>
+        ${retest.length ? `<ul class="retest">${retest.map(([pid, v]) => {
+          const qid = pid.split(".")[0], f = findQ(qid);
+          return `<li><span class="pill ${v.m}">${MARKS[v.m]}</span> <a href="#/q/${qid}/${pid.split(".")[1]}">${esc(pLabel(pid))}</a>${f ? ` <span class="muted">— ${esc(f.t.title)}</span>` : ""}</li>`;
+        }).join("")}</ul>` : `<p class="muted">Nothing yet — parts you mark Failed or Shaky show up here.</p>`}</section>
 
       <section class="card stuck"><h2>When you're stuck</h2>
         <ol>${window.STUCK_PROTOCOL.map(s => `<li>${s}</li>`).join("")}</ol></section>
 
-      <section class="card"><h2>Topic order</h2>
-        <ol class="order" start="0">${TOPICS.map(t => `<li><a href="#/t/${t.id}">${esc(t.title)}</a> <span class="muted">— ${t.blurb}</span>${t.ready ? "" : ` <span class="soon">next</span>`}</li>`).join("")}</ol></section>`;
+      <section class="card"><h2>Topics, in order</h2>
+        <ol class="order">${TOPICS.map(t => `<li><a href="#/t/${t.id}">${esc(t.title)}</a> <span class="muted">— ${t.blurb}${t.questions.length ? ` (${t.questions.length} questions)` : ""}</span></li>`).join("")}</ol></section>`;
     math($("#main"));
   }
 
-  function itemLabel(id) {
-    for (const t of TOPICS) for (const it of t.items || []) if (it.id === id && it.hw) return it.title.replace(/\\\(|\\\)/g, "");
-    return examLabel(id);
-  }
-
   // ── topic ────────────────────────────────────────────────────────────────
-  function renderTopic(t, focus) {
-    if (!t.ready) {
-      $("#main").innerHTML = `<header class="page-h"><div class="kicker">Topic ${t.num}</div><h1>${esc(t.title)}</h1>
-        <p class="lede">${t.blurb}</p></header>
-        <section class="card"><p>This topic isn't built yet — it comes after the pilot is reviewed.</p>
-        <p class="muted">Sources: ${esc(t.sources)}</p></section>`;
-      return;
-    }
+  function renderTopic(t) {
     const moves = (t.moves || []).map((mv, i) => `
       <details class="move" ${i === 0 ? "open" : ""}>
         <summary>${mv.title}</summary>
         ${mv.cue ? `<p><span class="tag cue">You'll see</span> ${mv.cue}</p>` : ""}
         ${mv.first ? `<p><span class="tag first">First line</span> ${mv.first}</p>` : ""}
+        ${mv.recipe ? `<div class="recipe">${mv.recipe}</div>` : ""}
         ${mv.table ? `<div class="tw"><table><thead><tr>${mv.table.head.map(h => `<th>${h}</th>`).join("")}</tr></thead>
           <tbody>${mv.table.rows.map(r => `<tr>${r.map(c => `<td>${c}</td>`).join("")}</tr>`).join("")}</tbody></table></div>` : ""}
-        ${mv.recipe ? `<div class="recipe">${mv.recipe}</div>` : ""}
         ${mv.trap ? `<p class="trap"><span class="tag trapt">Trap</span> ${mv.trap}</p>` : ""}
       </details>`).join("");
-
-    let prevStem = null;
-    const items = t.items.map(it => { const html = itemCard(it, prevStem); prevStem = it.hw ? null : stemId(it.id); return html; }).join("");
-    const pts = t.items.reduce((s, it) => s + (it.hw ? 0 : (M[it.id] || {}).pts || 0), 0);
-
+    const notesNote = t.notesReady ? "" :
+      `<p class="banner">${moves ? "More notes for this topic come next." : "Notes for this topic come next."} The questions below are complete and ready to practise.</p>`;
+    const qs = t.questions.map((q, i) => {
+      const p = qProgress(q.id), mb = MOEDB[q.id];
+      return `<a class="qcard ${p.done === p.total ? "done" : ""}" href="#/q/${q.id}">
+        <div class="qn">${i + 1}</div>
+        <div class="qb"><div class="qt">${qLabel(q.id)} ${mb !== undefined ? `<span class="mb">Moed B · you scored ${mb}/25</span>` : ""}</div>
+          <div class="qs">${esc(q.summary)}</div>
+          <div class="qm muted">${partsOf(q.id).length} parts · ${qPoints(q.id)} pts${p.done ? ` · ${p.done}/${p.total} parts checked` : ""}</div></div>
+      </a>`;
+    }).join("");
     $("#main").innerHTML = `
       <header class="page-h"><div class="kicker">Topic ${t.num}</div><h1>${esc(t.title)}</h1>${t.intro}</header>
-      ${moves ? `<section><h2 class="sec">First moves</h2>${moves}</section>` : ""}
-      <section><h2 class="sec">Practice <span class="muted">— ${t.items.length} items${pts ? ` · ${pts} exam points` : ""}</span></h2>${items}</section>`;
+      ${moves || notesNote ? `<section><h2 class="sec">Notes</h2>${notesNote}${moves}</section>` : ""}
+      ${t.questions.length ? `<section><h2 class="sec">Questions <span class="muted">— do them in this order, each one start to finish</span></h2>${qs}</section>` : ""}`;
     math($("#main"));
-    wire(t);
-    if (focus) { const el = document.getElementById("i-" + focus); if (el) el.scrollIntoView({ block: "start" }); }
   }
 
-  function img(src, alt) { return src ? `<img src="${src}" alt="${esc(alt)}" loading="lazy">` : ""; }
+  // ── question ─────────────────────────────────────────────────────────────
+  function renderQuestion(qid, focusPart) {
+    const f = findQ(qid); if (!f) { renderHome(); return; }
+    const { t, q } = f, stem = M[qid] || {}, idx = t.questions.indexOf(q);
+    const prev = t.questions[idx - 1], next = t.questions[idx + 1], mb = MOEDB[qid];
+    const parts = partsOf(qid).map(p => partCard(qid, p, (q.parts || {})[p] || {})).join("");
+    $("#main").innerHTML = `
+      <header class="page-h"><div class="kicker"><a href="#/t/${t.id}">Topic ${t.num} · ${esc(t.title)}</a> · question ${idx + 1} of ${t.questions.length}</div>
+        <h1>${qLabel(qid)}</h1>
+        <p class="lede">${esc(q.summary)}</p>
+        <p class="muted">${partsOf(qid).length} parts · ${qPoints(qid)} points${mb !== undefined ? ` · <b class="mbt">Moed B: you scored ${mb}/25</b>` : ""}</p></header>
+      <section class="card setup"><div class="img">${img(stem.stem, "question setup")}</div></section>
+      ${parts}
+      <nav class="qnav">
+        ${prev ? `<a href="#/q/${prev.id}">← ${qLabel(prev.id)}</a>` : `<span></span>`}
+        <a href="#/t/${t.id}">All ${esc(t.title)} questions</a>
+        ${next ? `<a href="#/q/${next.id}">${qLabel(next.id)} →</a>` : `<span></span>`}
+      </nav>`;
+    math($("#main"));
+    wire();
+    if (focusPart) { const el = document.getElementById(`p-${qid}.${focusPart}`); if (el) el.scrollIntoView({ block: "start" }); }
+  }
 
-  function itemCard(it, prevStem) {
-    const mark = (state.marks[it.id] || {}).m;
-    let head, body;
-    if (it.hw) {
-      head = `<span class="src hw">Homework</span> ${it.title}`;
-      body = `<div class="prompt">${it.prompt}</div>`;
-    } else {
-      const m = M[it.id] || {}, s = M[stemId(it.id)] || {};
-      const same = prevStem === stemId(it.id);
-      const ctx = (it.context || []).map(c => img((M[c] || {}).q, examLabel(c))).join("");
-      head = `<span class="src">${examLabel(it.id)}</span> ${m.pts ? `<span class="pts">${m.pts} pts${m.bonus ? " bonus" : ""}</span>` : ""}`;
-      body = `
-        <details class="setup" ${same && !it.context ? "" : "open"}><summary>${same ? "Question setup (same as above)" : "Question setup"} <span class="muted">— ${esc((s.title || "").replace(/\s+/g, " "))}</span></summary>
-          <div class="img">${img(s.stem, "setup")}${ctx}</div></details>
-        <div class="img q">${img(m.q, "question")}</div>`;
-    }
-    const code = it.code ? codeTrainer(it.code) : "";
-    const mine = it.mine ? `
-      <details class="mine"><summary>What you wrote in Moed B <span class="score">${it.mine.score}</span></summary>
-        ${it.mine.img ? `<div class="img scan">${img(it.mine.img, "your Moed B answer")}</div>` : ""}
-        <p>${it.mine.what}</p></details>` : "";
-    const sol = it.hw
-      ? `<div class="solution">${it.solution}<p class="muted">${esc(it.source)}</p></div>`
-      : `<div class="img">${img((M[it.id] || {}).sol, "official solution")}</div>`;
+  function partCard(qid, p, extra) {
+    const pid = `${qid}.${p}`, m = M[pid] || {}, mark = (state.marks[pid] || {}).m;
+    const mine = extra.mine ? `
+      <details class="mine"><summary>What you wrote in Moed B <span class="score">${extra.mine.score}</span></summary>
+        ${extra.mine.img ? `<div class="img scan">${img(extra.mine.img, "your Moed B answer")}</div>` : ""}
+        <p>${extra.mine.what}</p></details>` : "";
     return `
-      <article class="item ${mark || ""}" id="i-${it.id}">
-        <div class="item-h"><div>${head}</div>${mark ? `<span class="pill ${mark}">${MARKS[mark]}</span>` : ""}</div>
-        ${body}
-        ${code}
+      <article class="item ${mark || ""}" id="p-${pid}">
+        <div class="item-h"><div><span class="src">Part ${p}</span> <span class="pts">${m.pts} pts${m.bonus ? " bonus" : ""}</span></div>${mark ? `<span class="pill ${mark}">${MARKS[mark]}</span>` : ""}</div>
+        <div class="img q">${img(m.q, "part " + p)}</div>
+        ${extra.code ? codeTrainer(extra.code) : ""}
         <div class="reveals">
-          ${it.move ? `<details class="fm"><summary>Stuck? Show the first move</summary><p>${it.move}</p></details>` : ""}
+          ${extra.move ? `<details class="fm"><summary>Stuck? Show the first move</summary><p>${extra.move}</p></details>` : ""}
           ${mine}
-          <details class="sol"><summary>Official solution</summary>${sol}</details>
+          <details class="sol"><summary>Official solution</summary><div class="img">${img(m.sol, "official solution")}</div></details>
         </div>
-        <div class="marks" data-id="${it.id}">
+        <div class="marks" data-id="${pid}">
           <span class="muted">After checking:</span>
           ${Object.entries(MARKS).map(([k, v]) => `<button class="mk ${k} ${mark === k ? "on" : ""}" data-m="${k}">${v}</button>`).join("")}
         </div>
@@ -182,9 +180,9 @@
 
   // ── code trainer ─────────────────────────────────────────────────────────
   const norm = s => s.replace(/\s+/g, "").replace(/;$/, "").replace(/:$/, "").replace(/^if/, "").replace(/'/g, '"');
-  function stripLhs(s, label) {                  // allow "grad = X.T @ z" when the label already says "grad ="
+  function stripLhs(s, label) {                  // accept "grad = X.T @ z" when the label already says "grad ="
     const lhs = /^\(\d\)\s+([\w.]+)\s*=$/.exec(label);
-    return lhs ? s.replace(new RegExp("^" + lhs[1].replace(/\./g, "\\.") + "="), "") : s;
+    return lhs ? s.replace(new RegExp("^" + lhs[1].replace(/\./g, "\\.") + "_?="), "") : s;
   }
   function codeTrainer(key) {
     const c = CODE[key], saved = state.code[key] || {};
@@ -200,8 +198,7 @@
     </div>`;
   }
   function checkCode(box) {
-    const c = CODE[box.dataset.key];
-    const answers = {};
+    const c = CODE[box.dataset.key], answers = {};
     box.querySelectorAll(".blank").forEach(row => {
       const i = +row.dataset.i, b = c.blanks[i], v = $("input", row).value.trim(), res = $(".res", row);
       answers[i] = v;
@@ -213,18 +210,18 @@
     state.code[box.dataset.key] = answers; save();
   }
 
-  function wire(t) {
+  function wire() {
     $("#main").querySelectorAll(".marks").forEach(el => el.addEventListener("click", e => {
       const b = e.target.closest("button.mk"); if (!b) return;
       const id = el.dataset.id, m = b.dataset.m;
       if ((state.marks[id] || {}).m === m) delete state.marks[id]; else state.marks[id] = { m, t: Date.now() };
       save();
-      const card = document.getElementById("i-" + id);
-      card.className = "item " + ((state.marks[id] || {}).m || "");
-      el.querySelectorAll("button.mk").forEach(x => x.classList.toggle("on", (state.marks[id] || {}).m === x.dataset.m));
+      const card = document.getElementById("p-" + id), cur = (state.marks[id] || {}).m;
+      card.className = "item " + (cur || "");
+      el.querySelectorAll("button.mk").forEach(x => x.classList.toggle("on", cur === x.dataset.m));
       const pill = $(".item-h .pill", card); if (pill) pill.remove();
-      if (state.marks[id]) $(".item-h", card).insertAdjacentHTML("beforeend", `<span class="pill ${m}">${MARKS[m]}</span>`);
-      renderSide(t.id);
+      if (cur) $(".item-h", card).insertAdjacentHTML("beforeend", `<span class="pill ${cur}">${MARKS[cur]}</span>`);
+      renderSide(findQ(id.split(".")[0]).t.id);
     }));
     $("#main").querySelectorAll(".code").forEach(box => {
       $(".check", box).onclick = () => checkCode(box);
@@ -235,9 +232,11 @@
   // ── routing ──────────────────────────────────────────────────────────────
   function route() {
     const parts = location.hash.replace(/^#\/?/, "").split("/");
-    const t = parts[0] === "t" ? TOPICS.find(x => x.id === parts[1]) : null;
-    renderSide(t ? t.id : null);
-    if (t) renderTopic(t, parts[2]); else renderHome();
+    if (parts[0] === "t" && TOPICS.find(x => x.id === parts[1])) {
+      renderSide(parts[1]); renderTopic(TOPICS.find(x => x.id === parts[1]));
+    } else if (parts[0] === "q" && findQ(parts[1])) {
+      renderSide(findQ(parts[1]).t.id); renderQuestion(parts[1], parts[2]);
+    } else { renderSide(null); renderHome(); }
     if (!parts[2]) window.scrollTo(0, 0);
   }
   try { const th = localStorage.getItem(KEY + "_theme"); if (th) document.documentElement.dataset.theme = th; } catch (e) {}
