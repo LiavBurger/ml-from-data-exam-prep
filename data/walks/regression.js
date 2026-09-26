@@ -64,15 +64,21 @@ np.sign(theta)   # array([ 1, -1,  1])</code></pre>
     },
 
     "2025C-q1.3": {
-      start: R`\[\text{errors} = X\theta - y = \square \qquad \nabla J = \square \qquad \theta_{\text{new}} = \theta - 0.1\cdot\nabla J = \square\]`,
+      start: R`<p><b>The formula (from part 2), with the numbers plugged in:</b></p>\[\nabla J = 2X^\top(X\theta - y) + \lambda\,\mathrm{sign}(\theta) = \;\square\]<p><b>The step:</b></p>\[\theta_{\text{new}} = \theta - 0.1\cdot\nabla J = \;\square\]`,
       moves: [
-        { line: R`Errors = predictions − labels = \((6, 5, 8, 4) - (6, 4, 5, 1) = (0, 1, 3, 3)\)`,
-          why: R`<p>Each prediction is a row of \(X\) times \(\theta = (1, -2, 3)\). Row 1: \(1\cdot 1 + (-1)(-2) + 1\cdot 3 = 1 + 2 + 3 = 6\). Same for the other rows: 5, 8, 4.</p>` },
-        { line: R`\(2X^\top\cdot\)errors: each column of \(X\) · errors → \((7, 1, 12)\), times 2 → \((14, 2, 24)\)`,
-          why: R`<p>Column 0 \((1,1,1,1)\cdot(0,1,3,3) = 7\). Column 1 \((-1,-2,1,0)\cdot(0,1,3,3) = -2 + 3 = 1\). Column 2 \((1,0,3,1)\cdot(0,1,3,3) = 9 + 3 = 12\).</p>` },
-        { line: R`Add \(\lambda\,\mathrm{sign}(\theta) = (1, -1, 1)\): \(\;\nabla J = (15, 1, 25)\)`,
-          extra: [{ label: "the official solution says (15, 0, 25) — it's a slip", html: R`<p>\(2 + (-1) = 1\), not 0. So the middle entry is 1, and later \(-2 - 0.1 = -2.1\). (Its first line also says "λ = 2" but it uses 1.)</p>` }] },
-        { line: R`Step: \(\theta - 0.1\cdot(15, 1, 25) = (1 - 1.5,\ -2 - 0.1,\ 3 - 2.5) = (-0.5,\ -2.1,\ 0.5)\). Done.` },
+        { line: R`<b>The formula</b> — part 2's answer, and the step rule: <div class="formula">\[\nabla J = \underbrace{\color{#e8912d}2X^\top(X\theta - y)}_{\textstyle\color{#e8912d}\text{this part: moves 2–3}} + \underbrace{\color{#4c8dff}\lambda\,\mathrm{sign}(\theta)}_{\textstyle\color{#4c8dff}\text{this part: move 4}}\]</div><div class="formula">\[\theta_{\text{new}} = \theta - 0.1\cdot\nabla J\]</div>We know \(\theta = (1, -2, 3)\), \(\lambda = 1\), and the step size 0.1 (the question's \(\eta\)).`,
+          why: R`<p>"One iteration of gradient descent" = compute the gradient at the current \(\theta\), then take one small step against it. The gradient points uphill, so we subtract it to go downhill.</p>` },
+        { line: R`<b>Errors \(X\theta - y\)</b> — each row of \(X\) · \(\theta\) gives a prediction, then subtract the label: <div class="formula">\[X\theta - y = (6, 5, 8, 4) - (6, 4, 5, 1) = (0, 1, 3, 3)\]</div>`,
+          why: R`<p>Each prediction is one row of \(X\) (from part 1) times \(\theta = (1, -2, 3)\):</p>
+\[\begin{aligned}\text{row 1: } & 1\cdot 1 + (-1)\cdot(-2) + 1\cdot 3 = 1 + 2 + 3 = 6\\ \text{row 2: } & 1\cdot 1 + (-2)\cdot(-2) + 0\cdot 3 = 1 + 4 + 0 = 5\\ \text{row 3: } & 1\cdot 1 + 1\cdot(-2) + 3\cdot 3 = 1 - 2 + 9 = 8\\ \text{row 4: } & 1\cdot 1 + 0\cdot(-2) + 1\cdot 3 = 1 + 0 + 3 = 4\end{aligned}\]
+<p>numpy: <code>X @ theta - y</code>.</p>` },
+        { line: R`<b>The orange part \(2X^\top(X\theta - y)\)</b> — each column of \(X\) · the errors, then ×2: <div class="formula">\[2X^\top(X\theta - y) = 2\cdot(7, 1, 12) = (14, 2, 24)\]</div>`,
+          why: R`<p>\(X^\top\) times a list = each <b>column</b> of \(X\), dotted with that list (part 2, step 4). The errors are \((0, 1, 3, 3)\):</p>
+\[\begin{aligned}\text{column 0: } & (1, 1, 1, 1)\cdot(0, 1, 3, 3) = 0 + 1 + 3 + 3 = 7\\ \text{column 1: } & (-1, -2, 1, 0)\cdot(0, 1, 3, 3) = 0 - 2 + 3 + 0 = 1\\ \text{column 2: } & (1, 0, 3, 1)\cdot(0, 1, 3, 3) = 0 + 0 + 9 + 3 = 12\end{aligned}\]
+<p>numpy: <code>2 * X.T @ (X @ theta - y)</code>.</p>` },
+        { line: R`<b>The blue part \(\lambda\,\mathrm{sign}(\theta)\)</b> — the sign of each knob, times \(\lambda = 1\): <div class="formula">\[1\cdot(\mathrm{sign}(1), \mathrm{sign}(-2), \mathrm{sign}(3)) = (1, -1, 1)\]</div>` },
+        { line: R`<b>Put it together</b> — add the two parts, then take the step: <div class="formula">\[\nabla J = (14, 2, 24) + (1, -1, 1) = (15, 1, 25)\]</div><div class="formula">\[\begin{aligned}\theta_{\text{new}} &= (1, -2, 3) - 0.1\cdot(15, 1, 25)\\ &= (1 - 1.5,\ -2 - 0.1,\ 3 - 2.5) = (-0.5,\ -2.1,\ 0.5)\end{aligned}\]</div>Done.`,
+          extra: [{ label: "the official solution says (15, 0, 25) — it's a slip", html: R`<p>\(2 + (-1) = 1\), not 0. So the middle gradient entry is 1, and the new middle knob is \(-2 - 0.1 = -2.1\) (the official solution prints \(-2\)). Its first line also says "\(\lambda = 2\)", but it then uses 1.</p>` }] },
       ],
       compare: R`Same steps as the official solution, except its slip: the correct gradient is (15, 1, 25) and the new θ is (−0.5, −2.1, 0.5).`,
     },
