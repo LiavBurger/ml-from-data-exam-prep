@@ -32,7 +32,10 @@ the points at the cost of formality … The 10 steps are mostly mathematical jar
   1. **The function** — copied from the question, labelled "The function"; the why? writes it out with the real data.
   2. **Rewrite** — only if a real manipulation is needed (splitting, simplifying) — never just to introduce a new name.
   3. **Derivative** — "dJ/dθⱼ = …" using the chain rule on the rewritten pieces.
-  4. **Write it short** — the compact/official form = the answer.
+  4. **Never "write it short" in one jump.** Going from the per-knob formula to matrix form gets its own labelled steps:
+     **All knobs as a list** (the gradient = step 2 for each θ, one row per knob) → **Spot the pattern** (each sum =
+     a column of X · the list of brackets = Xᵀ(Xθ−y), with a real-number table) → **Put it together** (the answer).
+     Learner: "'write it short — that's the answer' … feels like magic and I don't know how to do it".
   The `start` shows "The function: … = □" and "Its derivative: … = □".
 - **Computation parts get the same structure** (learner: part 3 "feels like magic … I need a clear structure like I had
   from 1 to 2"): 1. write the rule/formula first; 2. plug the numbers into the pieces (e.g. each sample's bracket);

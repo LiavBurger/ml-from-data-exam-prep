@@ -16,7 +16,7 @@
     },
 
     "2025C-q1.2": {
-      start: R`<p><b>The function:</b></p>\[J(\theta) = \;\square\]<p><b>Its derivative by one knob \(\theta_j\):</b></p>\[\frac{dJ}{d\theta_j} = \;\square\]`,
+      start: R`<p><b>The function:</b></p>\[J(\theta) = \;\square\]<p><b>Its derivative by one knob \(\theta_j\):</b></p>\[\frac{dJ}{d\theta_j} = \;\square\]<p><b>The gradient (all knobs as a list):</b></p>\[\nabla J(\theta) = \;\square\]`,
       moves: [
         { line: R`<b>The function</b> — copy it from the question (it's our \(f\)): <div class="formula">\[\begin{aligned}J(\theta) = \;&\sum_{i}\big(\theta_0 + \theta_1 x^{(i)}_1 + \theta_2 x^{(i)}_2 - y^{(i)}\big)^2\\ &+ \lambda\big(|\theta_0| + |\theta_1| + |\theta_2|\big)\end{aligned}\]</div>`,
           why: R`<p>The \(\sum_i\) only means: one squared bracket <b>per sample</b>, all added up. With 2025-C's 4 samples it literally is:</p>
@@ -33,31 +33,39 @@
 <tr><td>3</td><td>1 − 2 + 9 − 5 = 3</td><td>1</td><td>6</td></tr><tr><td>4</td><td>1 + 0 + 3 − 1 = 3</td><td>0</td><td>0</td></tr>
 <tr><td colspan="3"><b>add</b></td><td><b>2</b></td></tr></tbody></table></div>
 <p>Plus the penalty \(\lambda\,\mathrm{sign}(\theta_1) = 1\cdot(-1) = -1\): \(\;2 - 1 = 1\). That's the middle entry of part 3's gradient \((15, 1, 25)\).</p>` }] },
-        { line: R`<b>Write it short</b> — that's the answer: <div class="formula">\[\nabla J(\theta) = 2X^\top(X\theta - y) + \lambda\,\mathrm{sign}(\theta)\]</div>`,
-          why: R`<p>Same thing as move 2, for all knobs at once:</p>
-<ul><li>\(X\theta - y\) = the list of all the brackets (each sample's prediction − label).</li>
-<li>"each bracket × that sample's \(x_j\), added" = (column \(j\) of \(X\)) · (the brackets). \(X^\top\) does that for every column at once.</li>
-<li>\(\mathrm{sign}(\theta)\) = the list of the signs of all knobs.</li></ul>
-<p>The official solution also writes move 2 with \(\theta^\top x^{(i)}\) — that's just short for the prediction \(\theta_0 + \theta_1 x^{(i)}_1 + \theta_2 x^{(i)}_2\).</p>` },
+        { line: R`<b>All knobs as a list</b> — the gradient is step 2 written for \(\theta_0\), \(\theta_1\), \(\theta_2\) (for \(\theta_0\) the "number in front" is 1): <div class="formula">\[\nabla J = \begin{bmatrix} \sum_i 2\cdot(\text{bracket}_i)\cdot 1 \;+\; \lambda\,\mathrm{sign}(\theta_0)\\[4pt] \sum_i 2\cdot(\text{bracket}_i)\cdot x^{(i)}_1 \;+\; \lambda\,\mathrm{sign}(\theta_1)\\[4pt] \sum_i 2\cdot(\text{bracket}_i)\cdot x^{(i)}_2 \;+\; \lambda\,\mathrm{sign}(\theta_2)\end{bmatrix}\]</div>`,
+          why: R`<p>"The gradient" is nothing new: it's the derivative by each knob, stacked into a list — one row per knob. "bracket\(_i\)" is sample \(i\)'s bracket from step 2, copied (prediction − label).</p>` },
+        { line: R`<b>Spot the pattern</b> — each sum is (a column of \(X\)) · (the list of brackets), and the list of brackets is \(X\theta - y\). So the three sums together are \(X^\top(X\theta - y)\).`,
+          why: R`<p><b>One sum, written out</b> (the \(\theta_1\) row, 4 samples): \(\;\text{bracket}_1\cdot x^{(1)}_1 + \text{bracket}_2\cdot x^{(2)}_1 + \text{bracket}_3\cdot x^{(3)}_1 + \text{bracket}_4\cdot x^{(4)}_1\)</p>
+<p>That's a <b>dot product</b>: (the \(x_1\) column of \(X\)) · (the list of brackets).</p>
+<p><b>The list of brackets</b> = each sample's prediction − label = \(X\theta - y\) (from part 1: \(X\theta\) = all predictions).</p>
+<p><b>\(X^\top\) times a list</b> = "each column of \(X\), dotted with that list", one result per column. That's exactly our three sums. So the sums are \(X^\top(X\theta - y)\).</p>`,
+          extra: [{ label: "see it with the real numbers (θ = (1, −2, 3))", html: R`<p>List of brackets: \(X\theta - y = (0, 1, 3, 3)\). Each column of \(X\) dotted with it:</p>
+<div class="tw"><table><thead><tr><th>row of \(\nabla J\)</th><th>column of \(X\)</th><th>· (0, 1, 3, 3)</th></tr></thead><tbody>
+<tr><td>\(\theta_0\)</td><td>(1, 1, 1, 1)</td><td>0 + 1 + 3 + 3 = 7</td></tr>
+<tr><td>\(\theta_1\)</td><td>(−1, −2, 1, 0)</td><td>0 − 2 + 3 + 0 = 1</td></tr>
+<tr><td>\(\theta_2\)</td><td>(1, 0, 3, 1)</td><td>0 + 0 + 9 + 3 = 12</td></tr></tbody></table></div>
+<p>So \(X^\top(X\theta - y) = (7, 1, 12)\): the three sums, done in one go.</p>` }] },
+        { line: R`<b>Put it together</b> — that's the answer: <div class="formula">\[\nabla J(\theta) = 2X^\top(X\theta - y) + \lambda\,\mathrm{sign}(\theta)\]</div>`,
+          why: R`<ul><li>The 2 from every term comes out in front: \(2X^\top(X\theta - y)\).</li>
+<li>The three signs form one list: \(\lambda\,(\mathrm{sign}(\theta_0), \mathrm{sign}(\theta_1), \mathrm{sign}(\theta_2)) = \lambda\,\mathrm{sign}(\theta)\).</li></ul>
+<p>The official solution also writes step 2 with \(\theta^\top x^{(i)}\) — that's just short for the prediction \(\theta_0 + \theta_1 x^{(i)}_1 + \theta_2 x^{(i)}_2\).</p>` },
       ],
-      compare: R`The official solution's first line is move 2 (written with \(\theta^\top x^{(i)}\) for the prediction), and its last line is move 3.`,
+      compare: R`The official solution's first line is move 2 (written with \(\theta^\top x^{(i)}\) for the prediction), and its last line is move 5.`,
     },
 
     "2025C-q1.3": {
-      start: R`<p><b>The rule:</b></p>\[\theta_{\text{new}} = \theta - \eta\cdot(\text{the derivative})\]<p><b>The derivative, one knob at a time (from part 2):</b></p>\[\frac{dJ}{d\theta_j} = \sum_i 2\cdot(\text{bracket})\cdot x^{(i)}_j + \lambda\,\mathrm{sign}(\theta_j)\]<p><b>Then plug in:</b> brackets \(= \square\), \(\;\frac{dJ}{d\theta_0} = \square\), \(\;\frac{dJ}{d\theta_1} = \square\), \(\;\frac{dJ}{d\theta_2} = \square\), \(\;\theta_{\text{new}} = \square\)</p>`,
+      start: R`\[\text{errors} = X\theta - y = \square \qquad \nabla J = \square \qquad \theta_{\text{new}} = \theta - 0.1\cdot\nabla J = \square\]`,
       moves: [
-        { line: R`<b>The rule</b> — write it first: <div class="formula">\[\theta_{\text{new}} = \theta - \eta\cdot(\text{the derivative})\]</div> Given: \(\theta = (1, -2, 3)\), \(\eta = 0.1\), \(\lambda = 1\).`,
-          why: R`<p>The derivative points uphill (where the loss grows). We want the loss to shrink, so we step the other way: <b>minus</b> a small piece (\(\eta = 0.1\)) of the derivative. One step = do this once.</p>` },
-        { line: R`<b>Plug \(\theta\) into each sample's bracket</b> (prediction − label), from part 2: <div class="formula">\[\begin{aligned}\text{sample 1:}\;\; &1 - 1\cdot(-2) + 1\cdot 3 - 6 = 1 + 2 + 3 - 6 = 0\\ \text{sample 2:}\;\; &1 - 2\cdot(-2) + 0\cdot 3 - 4 = 1 + 4 + 0 - 4 = 1\\ \text{sample 3:}\;\; &1 + 1\cdot(-2) + 3\cdot 3 - 5 = 1 - 2 + 9 - 5 = 3\\ \text{sample 4:}\;\; &1 + 0\cdot(-2) + 1\cdot 3 - 1 = 1 + 0 + 3 - 1 = 3\end{aligned}\]</div>`,
-          why: R`<p>These are part 2's brackets, \(\theta_0 + \theta_1 x_1 + \theta_2 x_2 - y\), with \(\theta_0 = 1,\ \theta_1 = -2,\ \theta_2 = 3\) put in. Each sample uses its own \(x_1, x_2, y\) from the table.</p>` },
-        { line: R`<b>Knob \(\theta_0\)</b> — part 2's derivative, each bracket × that sample's \(x_0\) (always 1): <div class="formula">\[\begin{aligned}\frac{dJ}{d\theta_0} &= 2\cdot(0\cdot 1 + 1\cdot 1 + 3\cdot 1 + 3\cdot 1)\\ &\quad + 1\cdot\mathrm{sign}(1)\\ &= 2\cdot 7 + 1 = 15\end{aligned}\]</div>`,
-          why: R`<p>The number in front of \(\theta_0\) in every bracket is 1 (it's the bias), so each bracket is multiplied by 1. \(\mathrm{sign}(\theta_0) = \mathrm{sign}(1) = +1\).</p>` },
-        { line: R`<b>Knob \(\theta_1\)</b> — each bracket × that sample's \(x_1\) = \((-1, -2, 1, 0)\): <div class="formula">\[\begin{aligned}\frac{dJ}{d\theta_1} &= 2\cdot\big(0\cdot(-1) + 1\cdot(-2) + 3\cdot 1 + 3\cdot 0\big)\\ &\quad + 1\cdot\mathrm{sign}(-2)\\ &= 2\cdot 1 - 1 = 1\end{aligned}\]</div>`,
-          extra: [{ label: "the official solution says 0 here — it's a slip", html: R`<p>\(2\cdot 1 + (-1) = 1\), not 0. (Its first line also says "λ = 2" but it uses 1.)</p>` }] },
-        { line: R`<b>Knob \(\theta_2\)</b> — each bracket × that sample's \(x_2\) = \((1, 0, 3, 1)\): <div class="formula">\[\begin{aligned}\frac{dJ}{d\theta_2} &= 2\cdot(0\cdot 1 + 1\cdot 0 + 3\cdot 3 + 3\cdot 1)\\ &\quad + 1\cdot\mathrm{sign}(3)\\ &= 2\cdot 12 + 1 = 25\end{aligned}\]</div> So the derivative is \((15, 1, 25)\).` },
-        { line: R`<b>The step</b> — the rule from move 1, knob by knob: <div class="formula">\[\begin{aligned}\theta_{\text{new}} &= (1, -2, 3) - 0.1\cdot(15, 1, 25)\\ &= (1 - 1.5,\; -2 - 0.1,\; 3 - 2.5)\\ &= (-0.5,\; -2.1,\; 0.5)\end{aligned}\]</div> Done.` },
+        { line: R`Errors = predictions − labels = \((6, 5, 8, 4) - (6, 4, 5, 1) = (0, 1, 3, 3)\)`,
+          why: R`<p>Each prediction is a row of \(X\) times \(\theta = (1, -2, 3)\). Row 1: \(1\cdot 1 + (-1)(-2) + 1\cdot 3 = 1 + 2 + 3 = 6\). Same for the other rows: 5, 8, 4.</p>` },
+        { line: R`\(2X^\top\cdot\)errors: each column of \(X\) · errors → \((7, 1, 12)\), times 2 → \((14, 2, 24)\)`,
+          why: R`<p>Column 0 \((1,1,1,1)\cdot(0,1,3,3) = 7\). Column 1 \((-1,-2,1,0)\cdot(0,1,3,3) = -2 + 3 = 1\). Column 2 \((1,0,3,1)\cdot(0,1,3,3) = 9 + 3 = 12\).</p>` },
+        { line: R`Add \(\lambda\,\mathrm{sign}(\theta) = (1, -1, 1)\): \(\;\nabla J = (15, 1, 25)\)`,
+          extra: [{ label: "the official solution says (15, 0, 25) — it's a slip", html: R`<p>\(2 + (-1) = 1\), not 0. So the middle entry is 1, and later \(-2 - 0.1 = -2.1\). (Its first line also says "λ = 2" but it uses 1.)</p>` }] },
+        { line: R`Step: \(\theta - 0.1\cdot(15, 1, 25) = (1 - 1.5,\ -2 - 0.1,\ 3 - 2.5) = (-0.5,\ -2.1,\ 0.5)\). Done.` },
       ],
-      compare: R`Same steps as the official solution (it writes moves 3–5 as the matrix \(2X^\top(X\theta - y)\)). Its slip: the correct derivative is (15, 1, 25) and the new θ is (−0.5, −2.1, 0.5).`,
+      compare: R`Same steps as the official solution, except its slip: the correct gradient is (15, 1, 25) and the new θ is (−0.5, −2.1, 0.5).`,
     },
 
     "2025C-q1.4": {
