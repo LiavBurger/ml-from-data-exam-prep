@@ -17,6 +17,11 @@ the points at the cost of formality … The 10 steps are mostly mathematical jar
   no Σ with limits, no (i) superscripts unless the exam answer needs them.
 - **why? = 1–3 casual sentences** (an analogy is welcome). Numbers in a why? are the short chain, not every product.
 - **start** stays: the answer's shape on paper with □ blanks.
+- **Sums:** whenever an official answer has a Σ, show what is inside it — put big brackets around the whole summand and
+  write it out term by term for the real number of samples. Learner misread 2Σᵢ xⱼ⁽ⁱ⁾(θᵀx⁽ⁱ⁾ − y⁽ⁱ⁾) as
+  "(Σ xⱼ) × (error)". Rule to state: *everything with an i in it is inside the sum.* Prefer a per-sample table with real numbers.
+- **Chain rule on a squared norm:** ‖v‖² is a sum of per-sample squares; apply "2 · stuff · (derivative of stuff)"
+  per sample, never to ‖v‖ as a whole (learner wrote 2·‖Xθ−y‖·xⱼ).
 - Reference model: `data/walks/regression.js` (2025-C Q1, casual rewrite).
 
 ---
