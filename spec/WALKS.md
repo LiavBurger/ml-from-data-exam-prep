@@ -1,5 +1,28 @@
 # Walkthroughs ("Show next move") — writing standard
 
+## CASUAL MODE (current — overrides the older rules below where they conflict)
+
+Learner, after trying the 10-move formal version of 2025-C Q1.2: "The extremely high level math notation is killing
+me. This is too formal, too strict. I need it more 'casual', in a way that's much shorter and I can earn 80 or 90% of
+the points at the cost of formality … The 10 steps are mostly mathematical jargon which is simply not the requirement
+… I need to find the method that works for me to study from and be in control rather than die in the details."
+
+- **Aim for 80–90% of the points, not full rigor.** Keep only what a grader gives points for: the key formula, the
+  right numbers, a one-phrase reason. Drop formal set-up lines ("translate the question", "name the bracket",
+  "differentiate one residual", index bookkeeping).
+- **2–4 moves per part** (at most ~5 for long code/bug parts). Each move = one plain-language instruction + the short
+  line to write, e.g. "Penalty part → λ·sign(θ)". The last move ends with "Done." / "That's the answer".
+- **Casual notation:** words where possible ("errors", "predictions − labels", "each column · errors", "sum over
+  samples"), and only the standard short symbols the exam itself uses (X, y, θ, Xᵀ, λ, sign). No ∂-fraction chains,
+  no Σ with limits, no (i) superscripts unless the exam answer needs them.
+- **why? = 1–3 casual sentences** (an analogy is welcome). Numbers in a why? are the short chain, not every product.
+- **start** stays: the answer's shape on paper with □ blanks.
+- Reference model: `data/walks/regression.js` (2025-C Q1, casual rewrite).
+
+---
+
+## Older rules (still apply unless the casual mode says otherwise)
+
 The learner has **severe ADHD**. Long notes failed ("too much on the screen", "can't hold earlier parts"); compressed
 notes failed ("jumpy"). They tried three prototypes and chose **B — question first, teach just in time**:
 the real exam part is on screen, and its solution is built in small **moves** revealed one at a time
