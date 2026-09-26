@@ -43,6 +43,9 @@ the points at the cost of formality … The 10 steps are mostly mathematical jar
   4. the final step. Always show the link to the part it builds on ("part 2's derivative").
 - **No new names or variables** (e.g. eᵢ, rᵢ, u) unless the official answer itself uses them. Keep brackets verbatim,
   exactly as the question writes them. Learner: "why e_i now.. do we really need more variables and notations".
+- **Refer back to an expression with (…)**, e.g. "2 · (…) · x" = "the same bracket as before, copied as-is" — never with
+  a label like bracketᵢ. Say "sample 1's (…)" in words when samples must be told apart. Learner: "rather use (...)
+  instead of 'bracket i' … make it clear we're not introducing new ideas and notations when not required."
 - **No sideways scrolling.** Break every long formula over lines with `\begin{aligned}` (≤ ~50 characters of math per line); put two formulas under each other, never side by side with ⟹.
 - Reference model: `data/walks/regression.js` (2025-C Q1, casual rewrite).
 
