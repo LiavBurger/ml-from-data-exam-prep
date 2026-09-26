@@ -36,7 +36,9 @@ OVERRIDES = {
     ("2025B", 4, 1): {"q": [(12, 171, 225), (12, 287, 317), (12, 379, 409)]},
     # the solution is printed right after the question; the code it refers to is on the next page
     ("2025B", 4, 3): {"q": [(13, 415, 495), (14, 145, 540, 440, 8)], "sol": [(13, 500, 650)]},
-    ("2026A", 3, 3): {"sol_extra": [(11, 78, 510)]},       # the solution's figure of the four mappings
+    ("2026A", 3, 3): {"sol_extra": [(11, 78, 510)]},
+    # the code's line numbers sit in the left margin, outside the normal column
+    ("2025C", 1, 5): {"q_left": 22},       # the solution's figure of the four mappings
 }   # 2025B has grader comment balloons in the right margin
 
 SOURCES = {
@@ -170,7 +172,8 @@ def spans(lines, idxs):
         elif nxt is not None and nxt["page"] == ln["page"]:
             bottom = min(nxt["y0"] - 2, ln["y1"] + 200)
         else:
-            bottom = max(PAGE_FOOT.get(ln["page"], FOOTER_Y) - 2, ln["y1"] + 3)
+            foot = PAGE_FOOT.get(ln["page"], FOOTER_Y)
+            bottom = min(max(foot - 2, ln["y1"] + 2), foot + 1.5)   # keep the last line whole, never reach into the footer text
         b = bands.setdefault(ln["page"], [ln["y0"] - 4, bottom])
         b[0] = min(b[0], ln["y0"] - 4); b[1] = max(b[1], bottom)
     return [(p, y0, y1) for p, (y0, y1) in sorted(bands.items())]
@@ -236,7 +239,8 @@ def main(tags):
                 rec["items"].append({
                     "item": it["item"], "pts": it["pts"], "bonus": it["bonus"],
                     "first": lines[[i for i in it["q"] if lines[i]["kind"] == "anchor"][0]]["text"][:140],
-                    "q": cut(pdf, tag, (ov.get("q") or spans(lines, it["q"])) + ov.get("q_extra", []), ib + "-q.png"),
+                    "q": cut(pdf, tag, [(b[0], b[1], b[2], RIGHT_EDGE.get(tag, X1), ov["q_left"]) if "q_left" in ov and len(b) == 3 else b
+                                        for b in (ov.get("q") or spans(lines, it["q"]))] + ov.get("q_extra", []), ib + "-q.png"),
                     "sol": cut(pdf, tag, (ov.get("sol") or spans(lines, it["sol"])) + ov.get("sol_extra", []), ib + "-sol.png"),
                 })
             entry.append(rec)
