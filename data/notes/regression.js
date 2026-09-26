@@ -91,6 +91,7 @@
         [R`\(y\)`, R`the label vector: the \(n\) true labels, in the same order as the rows of \(X\)`],
         [R`\(X\theta\)`, R`the vector of all \(n\) predictions (entry \(i\) = row \(i\) of \(X\) dotted with \(\theta\))`],
         [R`\(r = X\theta - y\)`, R`the vector of all residuals \((r_1, \dots, r_n)\)`],
+        [R`\(J(w; D, \gamma)\)`, R`"the loss \(J\) as a function of the weights \(w\)". What comes after the semicolon — the data \(D\), the sample weights \(\gamma\) — is fixed input, not something we choose. Some exams write just \(J(\theta)\) or \(J_\lambda(\theta)\); same meaning.`],
       ],
       example: R`<p><b>The table.</b> 2025-C Q1 gives four samples:</p>
 <div class="tw"><table><thead><tr><th>sample</th><th>\(x_1\)</th><th>\(x_2\)</th><th>\(y\)</th></tr></thead><tbody>
@@ -129,7 +130,21 @@
 <li>Step C: \(r^\top(\Gamma r) = (-1)(-2) + (-2)(-2) + (-4)(-4) + (-5)(-10) = 2 + 4 + 16 + 50 = 72\).</li>
 <li>Check against the definition: \(\sum_i \gamma_i r_i^2 = 2\cdot(-1)^2 + 1\cdot(-2)^2 + 1\cdot(-4)^2 + 2\cdot(-5)^2 = 2\cdot 1 + 1\cdot 4 + 1\cdot 16 + 2\cdot 25 = 2 + 4 + 16 + 50 = 72\) ✓</li>
 </ul>
-<p>For comparison, the unweighted loss is \(r^\top r = 1 + 4 + 16 + 25 = 46\); the weights add one extra copy of samples 1 and 4's squared errors: \(46 + 1 + 25 = 72\).</p>`,
+<p>For comparison, the unweighted loss is \(r^\top r = 1 + 4 + 16 + 25 = 46\); the weights add one extra copy of samples 1 and 4's squared errors: \(46 + 1 + 25 = 72\).</p>
+<h5>Reading part 1: the same \(J\), written twice</h5>
+<p>Every regression question <b>defines</b> the loss in its stem as a <b>sum over the samples</b>. Then part 1 writes the <b>same</b> \(J\) again as a short <b>matrix</b> formula and asks you for the matrices that make the two equal. It is not a second, different loss — part 1 is asking you to <b>translate the sum into matrix language</b>. That is exactly what this note built.</p>
+<div class="tw"><table><thead><tr><th>exam</th><th>stem: sum form</th><th>part 1: matrix form</th></tr></thead><tbody>
+<tr><td>2025-C</td><td>\(\sum_i \big(\theta_0 + \sum_j \theta_j x^{(i)}_j - y^{(i)}\big)^2 + \lambda(|\theta_0| + \dots + |\theta_p|)\)</td><td>\(\|X\theta - y\|^2 + \lambda\|\theta\|_1\)</td></tr>
+<tr><td>2026-A</td><td>\(\sum_i \gamma_i \big(w_0 + \sum_j w_j x^{(i)}_j - y_i\big)^2\)</td><td>\((Xw - y)^\top\,\Gamma\,(Xw - y)\)</td></tr>
+</tbody></table></div>
+<p><b>Matching the pieces</b> (2026-A):</p>
+<ul>
+<li>The bracket \(\big(w_0 + \sum_j w_j x^{(i)}_j - y_i\big)\) is sample \(i\)'s prediction minus its label — the residual \(r_i\), which is <b>entry \(i\) of \(Xw - y\)</b> (step 3 above).</li>
+<li>The square, bracket × bracket, is \(r_i\cdot r_i\) — the <b>two copies</b> of \((Xw - y)\), one on each side (step C above).</li>
+<li>The \(\gamma_i\) in front is <b>entry \(i\) on the diagonal of \(\Gamma\)</b>, sitting between the two copies (step B above).</li>
+<li>The \(\sum_i\) over the samples is done by the <b>dot product</b>, which adds up over all entries automatically.</li>
+</ul>
+<p>For 2025-C: the bracket is entry \(i\) of \(X\theta - y\); "square every entry and add them up" is what \(\|X\theta - y\|^2\) means (note 2); and \(|\theta_0| + \dots + |\theta_p|\) is what \(\|\theta\|_1\) means (note 3).</p>`,
       cue: R`Part 1 of almost every Q1: "Write down the data matrix \(X\) such that \(X\theta\) produces the vector of predictions" (2025-A, 2025-B, 2025-C); the weighted version adds \(\Gamma\) (2026-A).`,
       first: R`Draw the table: a column of 1s, then the feature columns in their order, one row per sample. Then write \(y\) in the same row order.`,
       recipe: R`Weighted: \(X\) and \(y\) as usual, plus \(\Gamma = \mathrm{diag}(\gamma_1, \dots, \gamma_n)\) — weights on the diagonal, zeros elsewhere.`,
