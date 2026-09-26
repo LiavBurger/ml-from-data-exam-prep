@@ -50,7 +50,11 @@
 <p>So \(X^\top(X\theta - y) = (7, 1, 12)\): the three sums, done in one go.</p>` }] },
         { line: R`<b>Put it together</b> — select the two pieces of the step 3 list, and that's the answer: <div class="formula">\[\nabla J(\theta) = \underbrace{2X^\top(X\theta - y)}_{\textstyle\text{= step 4's sums}} + \underbrace{\lambda\,\mathrm{sign}(\theta)}_{\textstyle\text{= the signs}}\]</div>`,
           why: R`<ul><li>The 2 from every term comes out in front: \(2X^\top(X\theta - y)\).</li>
-<li>The three signs form one list: \(\lambda\,(\mathrm{sign}(\theta_0), \mathrm{sign}(\theta_1), \mathrm{sign}(\theta_2)) = \lambda\,\mathrm{sign}(\theta)\).</li></ul>
+</ul>
+<p><b>Where \(\lambda\,\mathrm{sign}(\theta)\) comes from — nothing is calculated, it's a shorthand.</b> Select the signs column of step 3:</p>
+\[\underbrace{\begin{bmatrix}\lambda\,\mathrm{sign}(\theta_0)\\ \lambda\,\mathrm{sign}(\theta_1)\\ \lambda\,\mathrm{sign}(\theta_2)\end{bmatrix}}_{\textstyle\text{this part}} = \lambda\cdot\underbrace{\begin{bmatrix}\mathrm{sign}(\theta_0)\\ \mathrm{sign}(\theta_1)\\ \mathrm{sign}(\theta_2)\end{bmatrix}}_{\textstyle\text{this part = sign}(\theta)}\]
+<ul><li>\(\lambda\) is in every row, so it comes out in front — like \((2a, 2b, 2c) = 2\cdot(a, b, c)\).</li>
+<li>"\(\mathrm{sign}(\theta)\)" of a whole list simply <b>means</b> "the sign of each entry". It's a definition, not a step: the official solution writes "we define \(\mathrm{sign}(\theta)\) as the vector whose entries are \(\mathrm{sign}(\theta_j)\)".</li></ul>
 <p>The official solution also writes step 2 with \(\theta^\top x^{(i)}\) — that's just short for the prediction \(\theta_0 + \theta_1 x^{(i)}_1 + \theta_2 x^{(i)}_2\).</p>` },
       ],
       compare: R`The official solution's first line is move 2 (written with \(\theta^\top x^{(i)}\) for the prediction), and its last line is move 5.`,
