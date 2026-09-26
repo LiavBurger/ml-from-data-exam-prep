@@ -11,6 +11,11 @@ moves only when stuck. So move 1 must already be useful on its own (the first mo
 sense with only the earlier moves visible above it.
 
 ## Rules
+0. **`start` — "Begin your answer like this".** Revealed *before* move 1. The learner said: "I'm having problems
+   writing down on the paper as I don't even know how to actually write the notations." So `start` shows how the
+   written answer **looks on paper**: its opening line(s) in exam notation, with `\square` blanks for what they must
+   fill in (e.g. `\[\frac{\partial J_\lambda}{\partial\theta_j} = \;\square\]`), and — if useful — the shape of the
+   final line. It must not give away the content of the answer, only its form.
 1. **One move = one action, one line.** ≤ ~25 words plus at most one formula or one calculation line.
    Start with a verb: "Write…", "Name…", "Compute…", "Differentiate…", "Compare…". No paragraphs in the line.
 2. **Moves build the exam answer.** The final move(s) are what the learner writes on the exam paper.
@@ -35,6 +40,7 @@ sense with only the earlier moves visible above it.
   window.WALKS = window.WALKS || {};
   Object.assign(window.WALKS, {
     "2025C-q1.2": {
+      start: R`\[\frac{\partial J_\lambda}{\partial \theta_j} = \;\square\]`,   // "Begin your answer like this"
       moves: [
         { line: R`Translate the question: …`, why: R`<p><b>The picture.</b> …</p>`,
           extra: [{ label: "see it with 2025-C's numbers", html: R`…` }] },   // extra is optional

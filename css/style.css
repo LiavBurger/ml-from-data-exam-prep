@@ -206,3 +206,8 @@ a.noteref { text-decoration: underline dotted; }
 .dlg-h { position: sticky; top: 0; z-index: 1; background: var(--bg); display: flex; justify-content: space-between; align-items: center; padding: 14px 0 8px; }
 .dlg-x { font: inherit; font-weight: 600; font-size: 14px; background: var(--panel2); color: var(--ink); border: 1px solid var(--line); border-radius: 16px; padding: 4px 12px; cursor: pointer; }
 @media (max-width: 520px) { .mv { grid-template-columns: 1fr; gap: 4px; padding: 10px 12px; } }
+
+/* "Begin your answer like this": how the answer looks on paper, with blanks to fill */
+.mv.start .n { background: var(--got-bg); color: var(--got-fg); }
+.paper { margin-top: 6px; background: var(--img-bg); color: #1c2230; border-radius: 8px; padding: 6px 14px; overflow-x: auto; overflow-y: hidden; }
+.paper p { margin: 6px 0; }

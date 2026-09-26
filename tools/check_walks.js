@@ -33,6 +33,8 @@ for (const [pid, wk] of Object.entries(window.WALKS)) {
     const words = String(mv.line).replace(/\\\[[\s\S]*?\\\]|\\\([\s\S]*?\\\)/g, " F ").replace(/<[^>]+>/g, " ").split(/\s+/).filter(Boolean).length;
     if (words > 40) err(`${pid} move ${i + 1}`, `line has ${words} words (keep it to one short line)`);
   });
+  if (!wk.start) err(pid, "no start (\"Begin your answer like this\")");
+  check(`${pid}.start`, wk.start);
   check(`${pid}.compare`, wk.compare);
 }
 const parts = Object.keys(window.WALKS).length;

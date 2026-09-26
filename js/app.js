@@ -235,11 +235,15 @@
 
   // ── walkthrough: the solution in small moves, revealed one at a time ─────
   function walkHtml(pid) {
-    const w = WALKS[pid], shown = Math.min((state.walk || {})[pid] || 0, w.moves.length);
+    const w = WALKS[pid], shown = Math.min((state.walk || {})[pid] || 0, w.moves.length + (w.start ? 1 : 0));
     return `<div class="walk" data-pid="${pid}">
       <div class="walk-h">Solve it step by step <span class="muted">— try it on paper first; reveal a move only when you need it (key <kbd>N</kbd>)</span></div>
-      <ol class="mvs">${w.moves.map((mv, i) => `
-        <li class="mv" ${i < shown ? "" : "hidden"}>
+      <ol class="mvs">${w.start ? `
+        <li class="mv start" ${shown > 0 ? "" : "hidden"}>
+          <div class="n">✍</div>
+          <div class="body"><div class="line">Begin your answer like this:</div><div class="paper">${linkNotes(w.start)}</div></div>
+        </li>` : ""}${w.moves.map((mv, i) => `
+        <li class="mv" ${i + (w.start ? 1 : 0) < shown ? "" : "hidden"}>
           <div class="n">${i + 1}</div>
           <div class="body">
             <div class="line">${linkNotes(mv.line)}</div>
@@ -260,9 +264,11 @@
     const pid = box.dataset.pid, mvs = [...box.querySelectorAll(".mv")];
     const shown = Math.min((state.walk || {})[pid] || 0, mvs.length), end = shown >= mvs.length;
     mvs.forEach((m, k) => { m.hidden = k >= shown; m.classList.toggle("latest", k === shown - 1); });
-    const next = $(".next", box);
-    next.hidden = end; next.textContent = shown ? "Show next move" : "Show first move";
-    $(".cnt", box).textContent = shown ? `move ${shown} of ${mvs.length}` : `${mvs.length} moves`;
+    const next = $(".next", box), hasStart = !!box.querySelector(".mv.start"), nMoves = mvs.length - (hasStart ? 1 : 0);
+    const movesShown = Math.max(0, shown - (hasStart ? 1 : 0));
+    next.hidden = end;
+    next.textContent = shown === 0 && hasStart ? "Show how to start" : movesShown === 0 ? "Show first move" : "Show next move";
+    $(".cnt", box).textContent = movesShown ? `move ${movesShown} of ${nMoves}` : `${nMoves} moves`;
     $(".all", box).hidden = end; $(".reset", box).hidden = !shown;
     $(".walk-done", box).hidden = !end;
     if (end) { const sol = $(".sol", box.closest(".item")); if (sol) sol.open = true; }

@@ -7,6 +7,8 @@
 
     // ───────────────────────────────────────── 2025-C Q1.1: X and y
     "2025C-q1.1": {
+      start: R`\[X = \begin{bmatrix}1 & \square & \square\\ 1 & \square & \square\\ 1 & \square & \square\\ 1 & \square & \square\end{bmatrix},\qquad y = \begin{bmatrix}\square\\ \square\\ \square\\ \square\end{bmatrix}\]
+<p>One row per sample: a 1 first, then \(x_1\), then \(x_2\). \(y\) holds the labels in the same order.</p>`,
       moves: [
         { line: R`Read the target: \(\|X\theta - y\|^2 + \lambda\|\theta\|_1\) must equal the stem's sum, so entry \(i\) of \(X\theta - y\) must be the stem's bracket for sample \(i\).`,
           why: R`<p><b>One loss, written twice.</b> The stem writes \(J_\lambda\) as a <b>sum over the samples</b>. Part 1 writes the <b>same</b> \(J_\lambda\) with matrices and asks you for the matrices that make the two equal. It is a translation job, not a new loss (Regression note 1, "Reading part 1").</p>
@@ -39,6 +41,9 @@
 
     // ───────────────────────────────────────── 2025-C Q1.2: the gradient
     "2025C-q1.2": {
+      start: R`\[\frac{\partial J_\lambda}{\partial \theta_j} = \;\square\]
+<p>Fill in one knob \(j\) first. The last line of your answer will have the form</p>
+\[\nabla J_\lambda(\theta) = \;\square\]`,
       moves: [
         { line: R`Translate the question: the gradient is the vector of partial derivatives, one per knob. So find \(\dfrac{\partial J_\lambda}{\partial\theta_j}\) for one general knob \(j\).`,
           why: R`<p><b>The picture.</b> Imagine \(J\) as a landscape. Your position is the knob setting \(\theta\); the height at that position is the loss \(J(\theta)\). Training = finding the lowest point. You can't see the whole landscape, but where you stand you can feel which way the ground slopes. The gradient is that slope (Regression note 5).</p>
@@ -93,6 +98,10 @@
 
     // ───────────────────────────────────────── 2025-C Q1.3: one gradient-descent step
     "2025C-q1.3": {
+      start: R`<p>Three lines, in this order:</p>
+\[X\theta - y = \begin{bmatrix}\square\\ \square\\ \square\\ \square\end{bmatrix}\]
+\[\nabla J_\lambda(\theta) = 2X^\top(X\theta - y) + \lambda\,\mathrm{sign}(\theta) = \;\square\]
+\[\theta_{\text{new}} = \theta - \eta\,\nabla J_\lambda(\theta) = \;\square\]`,
       moves: [
         { line: R`Write the update rule you'll fill in: \(\theta_{\text{new}} = \theta - \eta\,\nabla J_\lambda(\theta)\), with \(\theta = (1, -2, 3)\), \(\lambda = 1\), \(\eta = 0.1\).`,
           why: R`<p><b>One iteration = one step downhill.</b> The gradient points uphill (part 2, move 1), so we step the <b>opposite</b> way: subtract it. \(\eta\) ("eta", the learning rate) makes the step small (Regression note 8).</p>
@@ -150,6 +159,8 @@
 
     // ───────────────────────────────────────── 2025-C Q1.4: compare θ* with θ̃
     "2025C-q1.4": {
+      start: R`<p>\(\theta^*\) minimizes \(J_\lambda\), so \(J_\lambda(\theta^*) \le J_\lambda(\theta)\) for every \(\theta\). In particular, for \(\theta = \tilde\theta\): \(\;\square\)</p>
+<p>Answer: \(\;J_\lambda(\theta^*)\ \square\ J_\lambda(\tilde\theta)\;\) because \(\;\square\)</p>`,
       moves: [
         { line: R`Notice both vectors are scored on the <b>same</b> loss, the LASSO loss \(J_\lambda\) (the official solution takes \(\lambda = 1\) from part 3).`,
           why: R`<p><b>What the question hands you.</b> Two knob settings, made in two different ways: \(\theta^*\) (gradient descent run to the end) and \(\tilde\theta\) (a formula). It asks which one gives the lower value of \(J_\lambda\).</p>
@@ -183,6 +194,9 @@
 
     // ───────────────────────────────────────── 2025-C Q1.5: find the bugs in the CV code
     "2025C-q1.5": {
+      start: R`<p>One line per bug:</p>
+<p><b>Line \(\square\):</b> <code>(the wrong statement)</code> &nbsp;→&nbsp; should be <code>(the fixed statement)</code>, because \(\square\)</p>
+<p>Write at least three of these.</p>`,
       moves: [
         { line: R`Read the task and docstring: goal = the \(\lambda\) with the smallest error on unseen data; \(X\) has the ones column; lines 8&ndash;13 are correct.`,
           why: R`<p><b>What the code should do</b> (\(k\)-fold cross-validation, Regression note 13):</p>
