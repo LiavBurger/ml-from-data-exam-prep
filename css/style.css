@@ -85,6 +85,9 @@ details[open] > summary::before { transform: rotate(90deg); }
 .move h4 { margin: 20px 0 6px; font-size: 13px; text-transform: uppercase; letter-spacing: .06em; color: var(--accent); }
 .move h4:first-of-type { margin-top: 14px; }
 .idea p, .example p { margin: 8px 0; }
+.idea h5, .example h5 { margin: 18px 0 4px; font-size: 15px; color: var(--ink); }
+.example h5 { border-top: 1px solid var(--line); padding-top: 14px; }
+.example table { margin: 6px 0; width: auto; }
 .idea ul, .idea ol, .example ul, .example ol { padding-left: 22px; margin: 6px 0; }
 .idea li, .example li { margin: 5px 0; }
 .example { background: var(--code-bg); border-radius: 8px; padding: 6px 14px; overflow-x: auto; }

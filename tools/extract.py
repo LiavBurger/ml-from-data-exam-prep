@@ -30,6 +30,9 @@ RIGHT_EDGE = {"2025B": 412}
 OVERRIDES = {
     # the official solution is printed ABOVE the code listing it answers
     ("2025A", 4, 5): {"q": [(16, 64, 148), (16, 246, 590)], "sol": [(16, 160, 240)]},
+    # figures with no text layer on a page of their own, so no line anchors them; optional 4th/5th value = right/left edge (pt)
+    ("2025B", 4, 2): {"q_extra": [(13, 145, 262, 445, 12)]},   # the hinge-loss plots A/B/C
+    ("2026A", 3, 3): {"sol_extra": [(11, 78, 510)]},       # the solution's figure of the four mappings
 }   # 2025B has grader comment balloons in the right margin
 
 SOURCES = {
@@ -188,9 +191,12 @@ def vtrim(img, pad=8):
 
 def cut(pdf, tag, bands, out):
     parts = []
-    for p, y0, y1 in bands:
+    for band in bands:
+        p, y0, y1 = band[:3]
+        right = band[3] if len(band) > 3 else RIGHT_EDGE.get(tag, X1)
+        left = band[4] if len(band) > 4 else X0
         img = render(pdf, tag, p)
-        c = vtrim(img.crop((int(X0 * S), int(max(TOP_Y - 6, y0) * S), int(RIGHT_EDGE.get(tag, X1) * S), int(y1 * S))))
+        c = vtrim(img.crop((int(left * S), int(max(TOP_Y - 6, y0) * S), int(right * S), int(y1 * S))))
         if c is not None:
             parts.append(c)
     if not parts:
@@ -222,11 +228,12 @@ def main(tags):
                    "stem": cut(pdf, tag, spans(lines, q["stem"]), base + "-stem.png"), "items": []}
             for it in q["items"]:
                 ib = f"{base}.{it['item']}"
+                ov = OVERRIDES.get((tag, q["q"], it["item"]), {})
                 rec["items"].append({
                     "item": it["item"], "pts": it["pts"], "bonus": it["bonus"],
                     "first": lines[[i for i in it["q"] if lines[i]["kind"] == "anchor"][0]]["text"][:140],
-                    "q": cut(pdf, tag, OVERRIDES.get((tag, q["q"], it["item"]), {}).get("q") or spans(lines, it["q"]), ib + "-q.png"),
-                    "sol": cut(pdf, tag, OVERRIDES.get((tag, q["q"], it["item"]), {}).get("sol") or spans(lines, it["sol"]), ib + "-sol.png"),
+                    "q": cut(pdf, tag, (ov.get("q") or spans(lines, it["q"])) + ov.get("q_extra", []), ib + "-q.png"),
+                    "sol": cut(pdf, tag, (ov.get("sol") or spans(lines, it["sol"])) + ov.get("sol_extra", []), ib + "-sol.png"),
                 })
             entry.append(rec)
         manifest[tag] = entry

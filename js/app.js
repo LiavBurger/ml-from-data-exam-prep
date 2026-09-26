@@ -3,6 +3,8 @@
 (function () {
   "use strict";
   const M = window.MANIFEST, TOPICS = window.TOPICS, CODE = window.CODE, MOEDB = window.MOEDB || {};
+  const NOTES = window.NOTES || {};
+  const notesOf = t => NOTES[t.id] || { intro: t.intro || "", moves: [], hints: {} };
   const KEY = "ml_examc_v1";
   const MARKS = { got: "Got it", shaky: "Shaky", fail: "Failed" };
 
@@ -105,7 +107,8 @@
 
   // ── topic ────────────────────────────────────────────────────────────────
   function renderTopic(t) {
-    const moves = (t.moves || []).map((mv, i) => {
+    const N = notesOf(t);
+    const moves = (N.moves || []).map((mv, i) => {
       const exam = mv.cue || mv.first || mv.recipe || mv.table || mv.trap;
       return `
       <details class="move" ${i === 0 ? "open" : ""}>
@@ -122,7 +125,7 @@
         ${mv.trap ? `<p class="trap"><span class="tag trapt">Trap</span> ${mv.trap}</p>` : ""}
       </details>`;
     }).join("");
-    const notesNote = t.notesReady ? "" :
+    const notesNote = (N.moves || []).length >= 3 ? "" :
       `<p class="banner">${moves ? "More notes for this topic come next." : "Notes for this topic come next."} The questions below are complete and ready to practise.</p>`;
     const qs = t.questions.map((q, i) => {
       const p = qProgress(q.id), mb = MOEDB[q.id];
@@ -134,7 +137,7 @@
       </a>`;
     }).join("");
     $("#main").innerHTML = `
-      <header class="page-h"><div class="kicker">Topic ${t.num}</div><h1>${esc(t.title)}</h1>${t.intro}</header>
+      <header class="page-h"><div class="kicker">Topic ${t.num}</div><h1>${esc(t.title)}</h1>${N.intro || t.intro || ""}</header>
       ${moves || notesNote ? `<section><h2 class="sec">Notes</h2>${notesNote}${moves}</section>` : ""}
       ${t.questions.length ? `<section><h2 class="sec">Questions <span class="muted">— do them in this order, each one start to finish</span></h2>${qs}</section>` : ""}`;
     math($("#main"));
@@ -145,7 +148,8 @@
     const f = findQ(qid); if (!f) { renderHome(); return; }
     const { t, q } = f, stem = M[qid] || {}, idx = t.questions.indexOf(q);
     const prev = t.questions[idx - 1], next = t.questions[idx + 1], mb = MOEDB[qid];
-    const parts = partsOf(qid).map(p => partCard(qid, p, (q.parts || {})[p] || {})).join("");
+    const hints = notesOf(t).hints || {};
+    const parts = partsOf(qid).map(p => partCard(qid, p, Object.assign({}, (q.parts || {})[p] || {}, (hints[qid] || {})[p] ? { move: hints[qid][p] } : {}))).join("");
     $("#main").innerHTML = `
       <header class="page-h"><div class="kicker"><a href="#/t/${t.id}">Topic ${t.num} · ${esc(t.title)}</a> · question ${idx + 1} of ${t.questions.length}</div>
         <h1>${qLabel(qid)}</h1>
