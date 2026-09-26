@@ -19,9 +19,13 @@
       start: R`<p>errors: \(\;r = X\theta - y\)</p>\[\nabla J = \;\square\; + \;\square\]<p>(one piece from the squared errors, one from the penalty)</p>`,
       moves: [
         { line: R`Squared-errors part → \(\;2X^\top(X\theta - y)\)`,
-          why: R`<p><b>\(\|X\theta - y\|^2\) is a sum of squares</b>, one per sample: \(e_1^2 + e_2^2 + e_3^2 + e_4^2\), where \(e_i\) = sample \(i\)'s error (prediction − label).</p>
-<p><b>Use 2 · stuff · (derivative of stuff) on each error separately.</b> \(e_1 = \theta_0 + \theta_1 x_1 + \theta_2 x_2 - y_1\) with sample 1's \(x\)'s, so the derivative of \(e_1^2\) with respect to \(\theta_j\) is \(2\cdot e_1\cdot\)(sample 1's \(x_j\)). Same for every sample.</p>
-<p><b>Add them up:</b> \(2\cdot\)(each error × that sample's \(x_j\), summed) = \(2\cdot\)(column \(j\) of \(X\)) · (errors). All \(j\) at once: \(2X^\top(X\theta - y)\).</p>
+          why: R`<p><b>Same structure as \((x^2+3)^2 \to 2\cdot(x^2+3)\cdot 2x\)</b> — just four brackets, one per sample, and the variable is \(\theta_1\) instead of \(x\). With 2025-C's table:</p>
+\[\begin{aligned}J = \;&(\theta_0 - 1\theta_1 + 1\theta_2 - 6)^2 &&\leftarrow \text{sample 1}\\ +\;&(\theta_0 - 2\theta_1 + 0\theta_2 - 4)^2 &&\leftarrow \text{sample 2}\\ +\;&(\theta_0 + 1\theta_1 + 3\theta_2 - 5)^2 &&\leftarrow \text{sample 3}\\ +\;&(\theta_0 + 0\theta_1 + 1\theta_2 - 1)^2 &&\leftarrow \text{sample 4}\end{aligned}\]
+<p>Derivative by \(\theta_1\): <b>2 · (bracket) · (derivative of the bracket)</b>, once per bracket, then add:</p>
+\[\begin{aligned}\frac{dJ}{d\theta_1} = \;&2\cdot(\theta_0 - 1\theta_1 + 1\theta_2 - 6)\cdot(-1)\\ +\;&2\cdot(\theta_0 - 2\theta_1 + 0\theta_2 - 4)\cdot(-2)\\ +\;&2\cdot(\theta_0 + 1\theta_1 + 3\theta_2 - 5)\cdot(1)\\ +\;&2\cdot(\theta_0 + 0\theta_1 + 1\theta_2 - 1)\cdot(0)\end{aligned}\]
+<p>The "\(2x\)" part is the number in front of \(\theta_1\) in that bracket — that sample's \(x_1\).</p>
+<p><b>The official formula is just this, written short:</b> 2 × sum over samples of [ (that sample's bracket) × (that sample's \(x_j\)) ]. Stacked for every knob at once, that's \(2X^\top(X\theta - y)\).</p>
+<p>Check with \(\theta = (1, -2, 3)\): the brackets are 0, 1, 3, 3, so \(2\cdot 0\cdot(-1) + 2\cdot 1\cdot(-2) + 2\cdot 3\cdot 1 + 2\cdot 3\cdot 0 = 0 - 4 + 6 + 0 = 2\) — the middle entry of \((14, 2, 24)\).</p>
 <p class="trapline"><b>Not</b> \(2\cdot\|X\theta - y\|\cdot x_j\): the length \(\|X\theta - y\|\) is one number, but every sample has its own \(x_j\) — the rule has to be applied per sample.</p>`,
           extra: [{ label: "see it as a table (real numbers, θ = (1, −2, 3))", html: R`<p>Take knob \(\theta_1\) (so \(x_j\) = the \(x_1\) column). Each row = one sample. Apply "2 · error · x" per row, then add the column:</p>
 <div class="tw"><table><thead><tr><th>sample</th><th>its error</th><th>its \(x_1\)</th><th>2 · error · \(x_1\)</th></tr></thead><tbody>
