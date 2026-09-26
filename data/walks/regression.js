@@ -16,37 +16,29 @@
     },
 
     "2025C-q1.2": {
-      start: R`<p>errors: \(\;r = X\theta - y\)</p>\[\nabla J = \;\square\; + \;\square\]<p>(one piece from the squared errors, one from the penalty)</p>`,
+      start: R`<p><b>The function:</b></p>\[J(\theta) = \;\square\]<p><b>Its derivative by one knob \(\theta_j\):</b></p>\[\frac{dJ}{d\theta_j} = \;\square\]`,
       moves: [
-        { line: R`Squared-errors part → \(\;2X^\top(X\theta - y)\)`,
-          why: R`<p><b>Same structure as \((x^2+3)^2 \to 2\cdot(x^2+3)\cdot 2x\)</b> — just four brackets, one per sample, and the variable is \(\theta_1\) instead of \(x\). With 2025-C's table:</p>
-\[\begin{aligned}J = \;&(\theta_0 - 1\theta_1 + 1\theta_2 - 6)^2 &&\leftarrow \text{sample 1}\\ +\;&(\theta_0 - 2\theta_1 + 0\theta_2 - 4)^2 &&\leftarrow \text{sample 2}\\ +\;&(\theta_0 + 1\theta_1 + 3\theta_2 - 5)^2 &&\leftarrow \text{sample 3}\\ +\;&(\theta_0 + 0\theta_1 + 1\theta_2 - 1)^2 &&\leftarrow \text{sample 4}\end{aligned}\]
-<p>Derivative by \(\theta_1\): <b>2 · (bracket) · (derivative of the bracket)</b>, once per bracket, then add:</p>
-\[\begin{aligned}\frac{dJ}{d\theta_1} = \;&2\cdot(\theta_0 - 1\theta_1 + 1\theta_2 - 6)\cdot(-1)\\ +\;&2\cdot(\theta_0 - 2\theta_1 + 0\theta_2 - 4)\cdot(-2)\\ +\;&2\cdot(\theta_0 + 1\theta_1 + 3\theta_2 - 5)\cdot(1)\\ +\;&2\cdot(\theta_0 + 0\theta_1 + 1\theta_2 - 1)\cdot(0)\end{aligned}\]
-<p>The "\(2x\)" part is the number in front of \(\theta_1\) in that bracket — that sample's \(x_1\).</p>
-<p><b>The official formula is just this, written short:</b> 2 × sum over samples of [ (that sample's bracket) × (that sample's \(x_j\)) ]. Stacked for every knob at once, that's \(2X^\top(X\theta - y)\).</p>
-<p>Check with \(\theta = (1, -2, 3)\): the brackets are 0, 1, 3, 3, so \(2\cdot 0\cdot(-1) + 2\cdot 1\cdot(-2) + 2\cdot 3\cdot 1 + 2\cdot 3\cdot 0 = 0 - 4 + 6 + 0 = 2\) — the middle entry of \((14, 2, 24)\).</p>
-<p class="trapline"><b>Not</b> \(2\cdot\|X\theta - y\|\cdot x_j\): the length \(\|X\theta - y\|\) is one number, but every sample has its own \(x_j\) — the rule has to be applied per sample.</p>`,
-          extra: [{ label: "see it as a table (real numbers, θ = (1, −2, 3))", html: R`<p>Take knob \(\theta_1\) (so \(x_j\) = the \(x_1\) column). Each row = one sample. Apply "2 · error · x" per row, then add the column:</p>
-<div class="tw"><table><thead><tr><th>sample</th><th>its error</th><th>its \(x_1\)</th><th>2 · error · \(x_1\)</th></tr></thead><tbody>
-<tr><td>1</td><td>0</td><td>−1</td><td>2 · 0 · (−1) = 0</td></tr>
-<tr><td>2</td><td>1</td><td>−2</td><td>2 · 1 · (−2) = −4</td></tr>
-<tr><td>3</td><td>3</td><td>1</td><td>2 · 3 · 1 = 6</td></tr>
-<tr><td>4</td><td>3</td><td>0</td><td>2 · 3 · 0 = 0</td></tr>
-<tr><td colspan="3"><b>add the last column</b></td><td><b>0 − 4 + 6 + 0 = 2</b></td></tr></tbody></table></div>
-<p>2 is exactly the \(\theta_1\) entry of \(2X^\top(X\theta - y) = (14, 2, 24)\). The formula \(2X^\top(X\theta - y)\) is just this table, done for every knob at once.</p>` }] },
-        { line: R`Penalty part \(\lambda(|\theta_0| + \dots + |\theta_p|)\) → \(\;\lambda\,\mathrm{sign}(\theta)\)`,
-          why: R`<p>The derivative of \(|a|\) is just its sign: +1 if \(a\) is positive, −1 if negative. That's why the question says "assume no \(\theta\) is 0" — at 0 there's no derivative.</p>` },
-        { line: R`Add them. That's the answer: <div class="formula">\[\nabla J(\theta) = 2X^\top(X\theta - y) + \lambda\,\mathrm{sign}(\theta)\]</div>`,
-          why: R`<p>The official solution also writes one entry at a time first: \(2\sum_i x^{(i)}_j(\theta^\top x^{(i)} - y^{(i)}) + \lambda\,\mathrm{sign}(\theta_j)\). Same thing, just not stacked — the matrix form above is enough.</p>`,
-          extra: [{ label: "how to read the official sum (what is inside Σ?)", html: R`<p><b>Everything that has an \(i\) in it is inside the sum.</b> Both \(x^{(i)}_j\) and \((\theta^\top x^{(i)} - y^{(i)})\) contain \(i\), so the sum covers their <b>product</b>:</p>
-\[2\sum_{i=1}^{n}\Big[\;x^{(i)}_j \cdot \big(\theta^\top x^{(i)} - y^{(i)}\big)\;\Big]\]
-<p>For each sample: (its \(x_j\)) × (its error). Then add the samples. Written out for 2025-C's 4 samples:</p>
-\[\begin{aligned}2\,\Big[\;&x^{(1)}_j\cdot(\text{error of sample 1})\\ +\;&x^{(2)}_j\cdot(\text{error of sample 2})\\ +\;&x^{(3)}_j\cdot(\text{error of sample 3})\\ +\;&x^{(4)}_j\cdot(\text{error of sample 4})\;\Big]\end{aligned}\]
-<p>It is <b>not</b> "(sum of the \(x_j\)'s) × (an error)": outside the sum there is no \(i\), so "the error of sample \(i\)" would have no meaning there.</p>
-<p>That's exactly the table under move 1: one row per sample, multiply inside the row, add the last column.</p>` }] },
+        { line: R`<b>The function</b> — copy it from the question (it's our \(f\)): <div class="formula">\[J(\theta) = \sum_{i}\big(\theta_0 + \theta_1 x^{(i)}_1 + \theta_2 x^{(i)}_2 - y^{(i)}\big)^2 + \lambda\big(|\theta_0| + |\theta_1| + |\theta_2|\big)\]</div>`,
+          why: R`<p>The \(\sum_i\) only means: one squared bracket <b>per sample</b>, all added up. With 2025-C's 4 samples it literally is:</p>
+\[\begin{aligned}J(\theta) = \;&(\theta_0 - 1\theta_1 + 1\theta_2 - 6)^2 &&\leftarrow \text{sample 1}\\ +\;&(\theta_0 - 2\theta_1 + 0\theta_2 - 4)^2 &&\leftarrow \text{sample 2}\\ +\;&(\theta_0 + 1\theta_1 + 3\theta_2 - 5)^2 &&\leftarrow \text{sample 3}\\ +\;&(\theta_0 + 0\theta_1 + 1\theta_2 - 1)^2 &&\leftarrow \text{sample 4}\\ +\;&\lambda\big(|\theta_0| + |\theta_1| + |\theta_2|\big)\end{aligned}\]
+<p>Each bracket is "prediction − label" for one sample: that sample's <b>error</b>.</p>` },
+        { line: R`<b>Rewrite</b> — give each bracket a short name, \(e_i\) = sample \(i\)'s error: <div class="formula">\[J(\theta) = e_1^2 + e_2^2 + e_3^2 + e_4^2 + \lambda\big(|\theta_0| + |\theta_1| + |\theta_2|\big)\]</div>`,
+          why: R`<p>Nothing changes — it's only a name, so the derivative stays short. Exactly like writing \(f(x) = u^2\) with \(u = x^2 + 3\).</p>
+<p>\(e_1 = \theta_0 - 1\theta_1 + 1\theta_2 - 6\), \(e_2 = \theta_0 - 2\theta_1 + 0\theta_2 - 4\), and so on.</p>` },
+        { line: R`<b>Derivative by \(\theta_j\)</b> — your chain rule on each \(e_i^2\), and \(|\theta_j| \to \mathrm{sign}(\theta_j)\): <div class="formula">\[\frac{dJ}{d\theta_j} = 2e_1\,x^{(1)}_j + 2e_2\,x^{(2)}_j + 2e_3\,x^{(3)}_j + 2e_4\,x^{(4)}_j + \lambda\,\mathrm{sign}(\theta_j)\]</div>`,
+          why: R`<p><b>Each \(e_i^2\):</b> like \((x^2+3)^2 \to 2\cdot(x^2+3)\cdot 2x\), it becomes \(2\cdot e_i\cdot\)(derivative of \(e_i\)).</p>
+<p><b>Derivative of \(e_i\) by \(\theta_j\):</b> \(e_i\) is a plain sum like \(\theta_0 - 2\theta_1 + 0\theta_2 - 4\). Its derivative by \(\theta_1\) is just the number in front of \(\theta_1\): here \(-2\), which is sample \(i\)'s \(x_1\). In general: sample \(i\)'s \(x_j\), written \(x^{(i)}_j\) (for \(\theta_0\) it's 1).</p>
+<p><b>Penalty:</b> only \(|\theta_j|\) contains \(\theta_j\). The derivative of \(|a|\) is its sign: +1 if positive, −1 if negative.</p>`,
+          extra: [{ label: "check it with numbers (θ = (1, −2, 3), knob θ₁)", html: R`<div class="tw"><table><thead><tr><th>sample</th><th>\(e_i\)</th><th>its \(x_1\)</th><th>\(2\cdot e_i\cdot x_1\)</th></tr></thead><tbody>
+<tr><td>1</td><td>0</td><td>−1</td><td>0</td></tr><tr><td>2</td><td>1</td><td>−2</td><td>−4</td></tr>
+<tr><td>3</td><td>3</td><td>1</td><td>6</td></tr><tr><td>4</td><td>3</td><td>0</td><td>0</td></tr>
+<tr><td colspan="3"><b>add</b></td><td><b>2</b></td></tr></tbody></table></div>
+<p>Plus the penalty \(\lambda\,\mathrm{sign}(\theta_1) = 1\cdot(-1) = -1\): \(\;2 - 1 = 1\). That's the middle entry of part 3's gradient \((15, 1, 25)\).</p>` }] },
+        { line: R`<b>Write it short</b> — that's the answer: <div class="formula">\[\frac{dJ}{d\theta_j} = 2\sum_i x^{(i)}_j\,e_i + \lambda\,\mathrm{sign}(\theta_j) \qquad\Longrightarrow\qquad \nabla J(\theta) = 2X^\top(X\theta - y) + \lambda\,\mathrm{sign}(\theta)\]</div>`,
+          why: R`<p><b>Left:</b> move 3 with \(\sum_i\) instead of writing 4 terms. Everything with an \(i\) sits <b>inside</b> the sum: each sample's \(x_j\) times its own error.</p>
+<p><b>Right:</b> the same for all knobs at once. "Each sample's \(x_j\) times its error, added" = (column \(j\) of \(X\)) · (errors), and \(X^\top(\text{errors})\) does that for every column. The errors are \(X\theta - y\).</p>` },
       ],
-      compare: R`The official solution's last line is exactly move 3.`,
+      compare: R`The official solution's first line is the left formula of move 4, and its last line is the right one.`,
     },
 
     "2025C-q1.3": {

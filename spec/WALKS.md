@@ -26,6 +26,14 @@ the points at the cost of formality … The 10 steps are mostly mathematical jar
   (x²+3)² I'd write 2·(x²+3)·2x — I don't see that structure here." What worked: write the loss out with the REAL
   table (one bracket per sample, real numbers), apply their single-variable pattern to each bracket, add up, check
   with real θ — and only then say "the official formula is just this, written short". Never lead with Σ/index notation.
+- **Every derivation part has the learner's structure** (they asked for it: "show the function that I want to do the
+  derivative beforehand, and any manipulations we do to it before starting the derivation — like f(x) = (x²+3)², then
+  f'(x) = {solve here}"):
+  1. **The function** — copied from the question, labelled "The function"; the why? writes it out with the real data.
+  2. **Rewrite** — any manipulation (naming a bracket, splitting a sum, simplifying) as its own move, before deriving.
+  3. **Derivative** — "dJ/dθⱼ = …" using the chain rule on the rewritten pieces.
+  4. **Write it short** — the compact/official form = the answer.
+  The `start` shows "The function: … = □" and "Its derivative: … = □".
 - Reference model: `data/walks/regression.js` (2025-C Q1, casual rewrite).
 
 ---
