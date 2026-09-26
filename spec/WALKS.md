@@ -30,10 +30,12 @@ the points at the cost of formality … The 10 steps are mostly mathematical jar
   derivative beforehand, and any manipulations we do to it before starting the derivation — like f(x) = (x²+3)², then
   f'(x) = {solve here}"):
   1. **The function** — copied from the question, labelled "The function"; the why? writes it out with the real data.
-  2. **Rewrite** — any manipulation (naming a bracket, splitting a sum, simplifying) as its own move, before deriving.
+  2. **Rewrite** — only if a real manipulation is needed (splitting, simplifying) — never just to introduce a new name.
   3. **Derivative** — "dJ/dθⱼ = …" using the chain rule on the rewritten pieces.
   4. **Write it short** — the compact/official form = the answer.
   The `start` shows "The function: … = □" and "Its derivative: … = □".
+- **No new names or variables** (e.g. eᵢ, rᵢ, u) unless the official answer itself uses them. Keep brackets verbatim,
+  exactly as the question writes them. Learner: "why e_i now.. do we really need more variables and notations".
 - **No sideways scrolling.** Break every long formula over lines with `\begin{aligned}` (≤ ~50 characters of math per line); put two formulas under each other, never side by side with ⟹.
 - Reference model: `data/walks/regression.js` (2025-C Q1, casual rewrite).
 

@@ -21,24 +21,26 @@
         { line: R`<b>The function</b> — copy it from the question (it's our \(f\)): <div class="formula">\[\begin{aligned}J(\theta) = \;&\sum_{i}\big(\theta_0 + \theta_1 x^{(i)}_1 + \theta_2 x^{(i)}_2 - y^{(i)}\big)^2\\ &+ \lambda\big(|\theta_0| + |\theta_1| + |\theta_2|\big)\end{aligned}\]</div>`,
           why: R`<p>The \(\sum_i\) only means: one squared bracket <b>per sample</b>, all added up. With 2025-C's 4 samples it literally is:</p>
 \[\begin{aligned}J(\theta) = \;&(\theta_0 - 1\theta_1 + 1\theta_2 - 6)^2 &&\leftarrow \text{sample 1}\\ +\;&(\theta_0 - 2\theta_1 + 0\theta_2 - 4)^2 &&\leftarrow \text{sample 2}\\ +\;&(\theta_0 + 1\theta_1 + 3\theta_2 - 5)^2 &&\leftarrow \text{sample 3}\\ +\;&(\theta_0 + 0\theta_1 + 1\theta_2 - 1)^2 &&\leftarrow \text{sample 4}\\ +\;&\lambda\big(|\theta_0| + |\theta_1| + |\theta_2|\big)\end{aligned}\]
-<p>Each bracket is "prediction − label" for one sample: that sample's <b>error</b>.</p>` },
-        { line: R`<b>Rewrite</b> — give each bracket a short name, \(e_i\) = sample \(i\)'s error: <div class="formula">\[J(\theta) = e_1^2 + e_2^2 + e_3^2 + e_4^2 + \lambda\big(|\theta_0| + |\theta_1| + |\theta_2|\big)\]</div>`,
-          why: R`<p>Nothing changes — it's only a name, so the derivative stays short. Exactly like writing \(f(x) = u^2\) with \(u = x^2 + 3\).</p>
-<p>\(e_1 = \theta_0 - 1\theta_1 + 1\theta_2 - 6\), \(e_2 = \theta_0 - 2\theta_1 + 0\theta_2 - 4\), and so on.</p>` },
-        { line: R`<b>Derivative by \(\theta_j\)</b> — your chain rule on each \(e_i^2\), and \(|\theta_j| \to \mathrm{sign}(\theta_j)\): <div class="formula">\[\begin{aligned}\frac{dJ}{d\theta_j} = \;&2e_1\,x^{(1)}_j + 2e_2\,x^{(2)}_j\\ &+ 2e_3\,x^{(3)}_j + 2e_4\,x^{(4)}_j\\ &+ \lambda\,\mathrm{sign}(\theta_j)\end{aligned}\]</div>`,
-          why: R`<p><b>Each \(e_i^2\):</b> like \((x^2+3)^2 \to 2\cdot(x^2+3)\cdot 2x\), it becomes \(2\cdot e_i\cdot\)(derivative of \(e_i\)).</p>
-<p><b>Derivative of \(e_i\) by \(\theta_j\):</b> \(e_i\) is a plain sum like \(\theta_0 - 2\theta_1 + 0\theta_2 - 4\). Its derivative by \(\theta_1\) is just the number in front of \(\theta_1\): here \(-2\), which is sample \(i\)'s \(x_1\). In general: sample \(i\)'s \(x_j\), written \(x^{(i)}_j\) (for \(\theta_0\) it's 1).</p>
-<p><b>Penalty:</b> only \(|\theta_j|\) contains \(\theta_j\). The derivative of \(|a|\) is its sign: +1 if positive, −1 if negative.</p>`,
-          extra: [{ label: "check it with numbers (θ = (1, −2, 3), knob θ₁)", html: R`<div class="tw"><table><thead><tr><th>sample</th><th>\(e_i\)</th><th>its \(x_1\)</th><th>\(2\cdot e_i\cdot x_1\)</th></tr></thead><tbody>
-<tr><td>1</td><td>0</td><td>−1</td><td>0</td></tr><tr><td>2</td><td>1</td><td>−2</td><td>−4</td></tr>
-<tr><td>3</td><td>3</td><td>1</td><td>6</td></tr><tr><td>4</td><td>3</td><td>0</td><td>0</td></tr>
+<p>Each bracket is "prediction − label" for one sample.</p>` },
+        { line: R`<b>Derivative by \(\theta_j\)</b> — like \(2\cdot(x^2+3)\cdot 2x\): 2 · (the bracket, copied) · (the number in front of \(\theta_j\)), and \(|\theta_j| \to \mathrm{sign}(\theta_j)\): <div class="formula">\[\begin{aligned}\frac{dJ}{d\theta_j} = \;&\sum_{i} 2\cdot\big(\theta_0 + \theta_1 x^{(i)}_1 + \theta_2 x^{(i)}_2 - y^{(i)}\big)\cdot x^{(i)}_j\\ &+ \lambda\,\mathrm{sign}(\theta_j)\end{aligned}\]</div>`,
+          why: R`<p><b>Each squared bracket:</b> \((\text{bracket})^2 \to 2\cdot(\text{bracket})\cdot(\text{derivative of the bracket})\) — the same move as \((x^2+3)^2 \to 2\cdot(x^2+3)\cdot 2x\).</p>
+<p><b>Derivative of the bracket by \(\theta_j\):</b> the bracket is a plain sum like \(\theta_0 - 2\theta_1 + 0\theta_2 - 4\). Its derivative by \(\theta_1\) is just the number in front of \(\theta_1\): here \(-2\) — that sample's \(x_1\). In general it's that sample's \(x_j\), written \(x^{(i)}_j\) (for \(\theta_0\) it's 1).</p>
+<p><b>Penalty:</b> only \(|\theta_j|\) contains \(\theta_j\). The derivative of \(|a|\) is its sign: +1 if positive, −1 if negative.</p>
+<p>Written out for knob \(\theta_1\) with the 4 real brackets:</p>
+\[\begin{aligned}\frac{dJ}{d\theta_1} = \;&2\cdot(\theta_0 - 1\theta_1 + 1\theta_2 - 6)\cdot(-1)\\ +\;&2\cdot(\theta_0 - 2\theta_1 + 0\theta_2 - 4)\cdot(-2)\\ +\;&2\cdot(\theta_0 + 1\theta_1 + 3\theta_2 - 5)\cdot(1)\\ +\;&2\cdot(\theta_0 + 0\theta_1 + 1\theta_2 - 1)\cdot(0)\\ +\;&\lambda\,\mathrm{sign}(\theta_1)\end{aligned}\]`,
+          extra: [{ label: "check it with numbers (θ = (1, −2, 3), knob θ₁)", html: R`<div class="tw"><table><thead><tr><th>sample</th><th>bracket value</th><th>its \(x_1\)</th><th>2 · bracket · \(x_1\)</th></tr></thead><tbody>
+<tr><td>1</td><td>1 + 2 + 3 − 6 = 0</td><td>−1</td><td>0</td></tr><tr><td>2</td><td>1 + 4 + 0 − 4 = 1</td><td>−2</td><td>−4</td></tr>
+<tr><td>3</td><td>1 − 2 + 9 − 5 = 3</td><td>1</td><td>6</td></tr><tr><td>4</td><td>1 + 0 + 3 − 1 = 3</td><td>0</td><td>0</td></tr>
 <tr><td colspan="3"><b>add</b></td><td><b>2</b></td></tr></tbody></table></div>
 <p>Plus the penalty \(\lambda\,\mathrm{sign}(\theta_1) = 1\cdot(-1) = -1\): \(\;2 - 1 = 1\). That's the middle entry of part 3's gradient \((15, 1, 25)\).</p>` }] },
-        { line: R`<b>Write it short</b> — that's the answer: <div class="formula">\[\frac{dJ}{d\theta_j} = 2\sum_i x^{(i)}_j\,e_i + \lambda\,\mathrm{sign}(\theta_j)\]</div>all knobs at once: <div class="formula">\[\nabla J(\theta) = 2X^\top(X\theta - y) + \lambda\,\mathrm{sign}(\theta)\]</div>`,
-          why: R`<p><b>Left:</b> move 3 with \(\sum_i\) instead of writing 4 terms. Everything with an \(i\) sits <b>inside</b> the sum: each sample's \(x_j\) times its own error.</p>
-<p><b>Right:</b> the same for all knobs at once. "Each sample's \(x_j\) times its error, added" = (column \(j\) of \(X\)) · (errors), and \(X^\top(\text{errors})\) does that for every column. The errors are \(X\theta - y\).</p>` },
+        { line: R`<b>Write it short</b> — that's the answer: <div class="formula">\[\nabla J(\theta) = 2X^\top(X\theta - y) + \lambda\,\mathrm{sign}(\theta)\]</div>`,
+          why: R`<p>Same thing as move 2, for all knobs at once:</p>
+<ul><li>\(X\theta - y\) = the list of all the brackets (each sample's prediction − label).</li>
+<li>"each bracket × that sample's \(x_j\), added" = (column \(j\) of \(X\)) · (the brackets). \(X^\top\) does that for every column at once.</li>
+<li>\(\mathrm{sign}(\theta)\) = the list of the signs of all knobs.</li></ul>
+<p>The official solution also writes move 2 with \(\theta^\top x^{(i)}\) — that's just short for the prediction \(\theta_0 + \theta_1 x^{(i)}_1 + \theta_2 x^{(i)}_2\).</p>` },
       ],
-      compare: R`The official solution's first line is the left formula of move 4, and its last line is the right one.`,
+      compare: R`The official solution's first line is move 2 (written with \(\theta^\top x^{(i)}\) for the prediction), and its last line is move 3.`,
     },
 
     "2025C-q1.3": {
