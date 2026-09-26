@@ -8,13 +8,14 @@
     "2025C-q1.1": {
       start: R`\[X = \begin{bmatrix}1 & \square & \square\\ 1 & \square & \square\\ 1 & \square & \square\\ 1 & \square & \square\end{bmatrix} \qquad y = \begin{bmatrix}\square\\ \square\\ \square\\ \square\end{bmatrix}\]`,
       moves: [
-        { line: R`One row per sample: a 1, then \(x_1\), then \(x_2\). <div class="formula">\[X = \begin{bmatrix}1&-1&1\\1&-2&0\\1&1&3\\1&0&1\end{bmatrix}\]</div>`,
-          why: R`<p>The 1 is for \(\theta_0\) (the bias). Row × \(\theta\) then gives that sample's prediction: \(\theta_0\cdot 1 + \theta_1 x_1 + \theta_2 x_2\).</p>` },
-        { line: R`\(y\) = the labels, same order: \(\;y = (6, 4, 5, 1)\). Done.` },
+        { line: R`<b>X</b> — one row per sample: a 1, then \(x_1\), then \(x_2\): <div class="formula">\[X = \begin{bmatrix}1&-1&1\\1&-2&0\\1&1&3\\1&0&1\end{bmatrix}\]</div>`,
+          why: R`<p>Why the 1: a row of \(X\) times \(\theta\) must give that sample's prediction. Sample 1:</p>
+\[\begin{aligned}&(1, -1, 1)\cdot(\theta_0, \theta_1, \theta_2)\\ &= \underbrace{\color{#e8912d}\theta_0\cdot 1}_{\textstyle\color{#e8912d}\text{the 1 is for }\theta_0} + \theta_1\cdot(-1) + \theta_2\cdot 1\end{aligned}\]
+<p>That's exactly the question's bracket \(\theta_0 + \theta_1 x_1 + \theta_2 x_2\) for sample 1. Without the 1, \(\theta_0\) would have nothing to multiply.</p>` },
+        { line: R`<b>y</b> — the labels, same order: \(\;y = (6, 4, 5, 1)\). Done.` },
       ],
       compare: R`Same \(X\) and \(y\) as the official answer.`,
     },
-
     "2025C-q1.2": {
       start: R`<p><b>The function:</b></p>\[J(\theta) = \;\square\]<p><b>Its derivative by one knob \(\theta_j\):</b></p>\[\frac{dJ}{d\theta_j} = \;\square\]<p><b>The gradient (all knobs as a list):</b></p>\[\nabla J(\theta) = \;\square\]`,
       moves: [
@@ -70,11 +71,18 @@ np.sign(theta)   # array([ 1, -1,  1])</code></pre>
           why: R`<p>"One iteration of gradient descent" = compute the gradient at the current \(\theta\), then take one small step against it. The gradient points uphill, so we subtract it to go downhill.</p>` },
         { line: R`<b>Errors \(X\theta - y\)</b> — each row of \(X\) · \(\theta\) gives a prediction, then subtract the label: <div class="formula">\[X\theta - y = (6, 5, 8, 4) - (6, 4, 5, 1) = (0, 1, 3, 3)\]</div>`,
           why: R`<p>Each prediction is one row of \(X\) (from part 1) times \(\theta = (1, -2, 3)\):</p>
-\[\begin{aligned}\text{row 1: } & 1\cdot 1 + (-1)\cdot(-2) + 1\cdot 3 = 1 + 2 + 3 = 6\\ \text{row 2: } & 1\cdot 1 + (-2)\cdot(-2) + 0\cdot 3 = 1 + 4 + 0 = 5\\ \text{row 3: } & 1\cdot 1 + 1\cdot(-2) + 3\cdot 3 = 1 - 2 + 9 = 8\\ \text{row 4: } & 1\cdot 1 + 0\cdot(-2) + 1\cdot 3 = 1 + 0 + 3 = 4\end{aligned}\]
+<div class="tw"><table><thead><tr><th>row of \(X\)</th><th>· \(\theta = (1, -2, 3)\)</th><th>prediction</th></tr></thead><tbody>
+<tr><td>(1, −1, 1)</td><td>1·1 + (−1)·(−2) + 1·3 = 1 + 2 + 3</td><td>6</td></tr>
+<tr><td>(1, −2, 0)</td><td>1·1 + (−2)·(−2) + 0·3 = 1 + 4 + 0</td><td>5</td></tr>
+<tr><td>(1, 1, 3)</td><td>1·1 + 1·(−2) + 3·3 = 1 − 2 + 9</td><td>8</td></tr>
+<tr><td>(1, 0, 1)</td><td>1·1 + 0·(−2) + 1·3 = 1 + 0 + 3</td><td>4</td></tr></tbody></table></div>
 <p>numpy: <code>X @ theta - y</code>.</p>` },
         { line: R`<b>The orange part \(2X^\top(X\theta - y)\)</b> — each column of \(X\) · the errors, then ×2: <div class="formula">\[2X^\top(X\theta - y) = 2\cdot(7, 1, 12) = (14, 2, 24)\]</div>`,
           why: R`<p>\(X^\top\) times a list = each <b>column</b> of \(X\), dotted with that list (part 2, step 4). The errors are \((0, 1, 3, 3)\):</p>
-\[\begin{aligned}\text{column 0: } & (1, 1, 1, 1)\cdot(0, 1, 3, 3) = 0 + 1 + 3 + 3 = 7\\ \text{column 1: } & (-1, -2, 1, 0)\cdot(0, 1, 3, 3) = 0 - 2 + 3 + 0 = 1\\ \text{column 2: } & (1, 0, 3, 1)\cdot(0, 1, 3, 3) = 0 + 0 + 9 + 3 = 12\end{aligned}\]
+<div class="tw"><table><thead><tr><th>column of \(X\)</th><th>· errors (0, 1, 3, 3)</th><th>result</th></tr></thead><tbody>
+<tr><td>(1, 1, 1, 1)</td><td>0 + 1 + 3 + 3</td><td>7</td></tr>
+<tr><td>(−1, −2, 1, 0)</td><td>0 − 2 + 3 + 0</td><td>1</td></tr>
+<tr><td>(1, 0, 3, 1)</td><td>0 + 0 + 9 + 3</td><td>12</td></tr></tbody></table></div>
 <p>numpy: <code>2 * X.T @ (X @ theta - y)</code>.</p>` },
         { line: R`<b>The blue part \(\lambda\,\mathrm{sign}(\theta)\)</b> — the sign of each knob, times \(\lambda = 1\): <div class="formula">\[1\cdot(\mathrm{sign}(1), \mathrm{sign}(-2), \mathrm{sign}(3)) = (1, -1, 1)\]</div>` },
         { line: R`<b>Put it together</b> — add the two parts, then take the step: <div class="formula">\[\nabla J = (14, 2, 24) + (1, -1, 1) = (15, 1, 25)\]</div><div class="formula">\[\begin{aligned}\theta_{\text{new}} &= (1, -2, 3) - 0.1\cdot(15, 1, 25)\\ &= (1 - 1.5,\ -2 - 0.1,\ 3 - 2.5) = (-0.5,\ -2.1,\ 0.5)\end{aligned}\]</div>Done.`,
@@ -84,26 +92,28 @@ np.sign(theta)   # array([ 1, -1,  1])</code></pre>
     },
 
     "2025C-q1.4": {
-      start: R`<p>\(J(\theta^*)\ \square\ J(\tilde\theta)\;\) because \(\;\square\)</p>`,
+      start: R`<p>\(J_\lambda(\theta^*)\ \square\ J_\lambda(\tilde\theta)\;\) because \(\;\square\)</p>`,
       moves: [
-        { line: R`\(\theta^*\) = where gradient descent on \(J_\lambda\) ends = the best possible \(\theta\) for \(J_\lambda\).` },
-        { line: R`\(\tilde\theta\) is the best for a <b>different</b> loss (no penalty), so on \(J_\lambda\) it can't beat \(\theta^*\): \(\;J_\lambda(\theta^*) \lt J_\lambda(\tilde\theta)\)`,
-          why: R`<p>"The winner of a race is at least as fast as anyone else in that race." \(\tilde\theta\) trained for another race, so it loses (strictly — it ignores the penalty).</p>` },
+        { line: R`<b>What θ* is</b> — gradient descent on \(J_\lambda\) ran until it stopped, so \(\theta^*\) is the <b>best</b> \(\theta\) for \(J_\lambda\).` },
+        { line: R`<b>What θ̃ is</b> — \((X^\top X)^{-1}X^\top y\) is the plain least-squares answer: the best \(\theta\) for the loss <b>without</b> the penalty.` },
+        { line: R`<b>Compare</b> — on \(J_\lambda\), nothing beats \(\theta^*\), and \(\tilde\theta\) ignores the penalty: <div class="formula">\[J_\lambda(\theta^*) \lt J_\lambda(\tilde\theta)\]</div>Done.`,
+          why: R`<p>"The winner of a race is faster than anyone else in <b>that</b> race." \(\tilde\theta\) trained for a different race (no penalty), so on \(J_\lambda\) it loses.</p>`,
+          extra: [{ label: "check it with numbers", html: R`<p>On 2025-C's data with \(\lambda = 1\): \(J_\lambda(\tilde\theta) = 13\), while the LASSO minimum is about 8.66 (computed with numpy — an illustration, not asked).</p>` }] },
       ],
       compare: R`Same argument as the official solution.`,
     },
-
     "2025C-q1.5": {
       start: R`<p>One line per bug (write at least three):</p><p><b>Line \(\square\):</b> <code>wrong</code> → should be <code>fix</code>, because \(\square\)</p>`,
       moves: [
-        { line: R`\(n\) = number of samples = rows. <b>Line 1:</b> <code>X.shape[1]</code> → <code>X.shape[0]</code>` },
-        { line: R`Validation = only validation data, no penalty. <b>Line 16:</b> → <code>y_pred = X_val @ w_star</code>. <b>Line 17:</b> <code>y_train</code> → <code>y_val</code>`,
+        { line: R`<b>n counts samples = rows.</b> <b>Line 1:</b> <code>X.shape[1]</code> → <code>X.shape[0]</code>`,
+          why: R`<p><code>shape[0]</code> = number of rows (samples), <code>shape[1]</code> = number of columns (features + the ones column).</p>` },
+        { line: R`<b>Validation uses only validation data, no penalty.</b> <b>Line 16:</b> → <code>y_pred = X_val @ w_star</code>. <b>Line 17:</b> <code>y_train</code> → <code>y_val</code>`,
+          why: R`<p>The point of cross-validation: score the model on rows it didn't train on, with plain squared error. So predict the validation rows, compare with the validation labels, and don't add the penalty.</p>`,
           extra: [{ label: "why lines 16–17 and not 15–16?", html: R`<p>The official solution calls them 15 and 16, but on the printed page (the numbers in the left margin) they are 16 and 17. Either way, quote the statement itself so the grader can't miss it.</p>` }] },
-        { line: R`We want the <b>smallest</b> average error. <b>Line 20:</b> <code>&gt;</code> → <code>&lt;</code>. <b>Line 21:</b> <code>np.sum</code> → <code>np.mean</code>. Done (5 bugs; 3 are enough).`,
-          why: R`<p>The CV risk of a \(\lambda\) is the <b>average</b> error over the folds, and we keep the \(\lambda\) with the lowest one. So compare with <code>&lt;</code>, and store the same mean you compared.</p>` },
+        { line: R`<b>Keep the smallest average error.</b> <b>Line 20:</b> <code>&gt;</code> → <code>&lt;</code>. <b>Line 21:</b> <code>np.sum</code> → <code>np.mean</code>. Done (5 bugs; 3 are enough).`,
+          why: R`<p>A \(\lambda\)'s score is the <b>average</b> error over the folds, and we keep the \(\lambda\) with the lowest score. So compare with <code>&lt;</code>, and store the same mean you compared.</p>` },
       ],
       compare: R`The official list has the same 5 bugs.`,
     },
-
   });
 })();

@@ -1,114 +1,96 @@
-# Walkthroughs ("Show next move") — writing standard
+# How the walkthroughs must be — the learner's guidelines
 
-## CASUAL MODE (current — overrides the older rules below where they conflict)
+These rules come from working through 2025-C Q1.2 together with the learner (severe ADHD, failed Moed B by getting
+stuck, knows single-variable calculus and numpy, does NOT own formal ML/math notation). Every rule below exists
+because something else failed. The reference implementation is `data/walks/regression.js` (2025-C Q1, parts 1–5).
 
-Learner, after trying the 10-move formal version of 2025-C Q1.2: "The extremely high level math notation is killing
-me. This is too formal, too strict. I need it more 'casual', in a way that's much shorter and I can earn 80 or 90% of
-the points at the cost of formality … The 10 steps are mostly mathematical jargon which is simply not the requirement
-… I need to find the method that works for me to study from and be in control rather than die in the details."
+## 1. The format (chosen by the learner)
+- **Question first.** The real exam part is on screen; under it, the solution is revealed one **move** at a time
+  ("Show next move" / key N). Moves double as a hint ladder: the learner tries on paper and reveals only when stuck.
+- **`start` — "Begin your answer like this".** Revealed before move 1. The **shape of the written answer** in exam
+  notation with □ blanks, e.g. "The function: J(θ) = □ / Its derivative by θⱼ: dJ/dθⱼ = □ / The gradient: ∇J(θ) = □".
+  It shows form, not content. ("I don't even know how to actually write the notations.")
+- **`compare`** — 1–2 sentences under the last move: which move matches which line of the official solution, plus
+  any official slip with the corrected value.
 
-- **Aim for 80–90% of the points, not full rigor.** Keep only what a grader gives points for: the key formula, the
-  right numbers, a one-phrase reason. Drop formal set-up lines ("translate the question", "name the bracket",
-  "differentiate one residual", index bookkeeping).
-- **2–4 moves per part** (at most ~5 for long code/bug parts). Each move = one plain-language instruction + the short
-  line to write, e.g. "Penalty part → λ·sign(θ)". The last move ends with "Done." / "That's the answer".
-- **Casual notation:** words where possible ("errors", "predictions − labels", "each column · errors", "sum over
-  samples"), and only the standard short symbols the exam itself uses (X, y, θ, Xᵀ, λ, sign). No ∂-fraction chains,
-  no Σ with limits, no (i) superscripts unless the exam answer needs them.
-- **why? = 1–3 casual sentences** (an analogy is welcome). Numbers in a why? are the short chain, not every product.
-- **start** stays: the answer's shape on paper with □ blanks.
-- **Sums:** whenever an official answer has a Σ, show what is inside it — put big brackets around the whole summand and
-  write it out term by term for the real number of samples. Learner misread 2Σᵢ xⱼ⁽ⁱ⁾(θᵀx⁽ⁱ⁾ − y⁽ⁱ⁾) as
-  "(Σ xⱼ) × (error)". Rule to state: *everything with an i in it is inside the sum.* Prefer a per-sample table with real numbers.
-- **Chain rule on a squared norm:** ‖v‖² is a sum of per-sample squares; apply "2 · stuff · (derivative of stuff)"
-  per sample, never to ‖v‖ as a whole (learner wrote 2·‖Xθ−y‖·xⱼ).
-- **Explain the way the learner thinks: concrete first, formula last.** Learner: "If I had to get the derivative of
-  (x²+3)² I'd write 2·(x²+3)·2x — I don't see that structure here." What worked: write the loss out with the REAL
-  table (one bracket per sample, real numbers), apply their single-variable pattern to each bracket, add up, check
-  with real θ — and only then say "the official formula is just this, written short". Never lead with Σ/index notation.
-- **Every derivation part has the learner's structure** (they asked for it: "show the function that I want to do the
-  derivative beforehand, and any manipulations we do to it before starting the derivation — like f(x) = (x²+3)², then
-  f'(x) = {solve here}"):
-  1. **The function** — copied from the question, labelled "The function"; the why? writes it out with the real data.
-  2. **Rewrite** — only if a real manipulation is needed (splitting, simplifying) — never just to introduce a new name.
-  3. **Derivative** — "dJ/dθⱼ = …" using the chain rule on the rewritten pieces.
-  4. **Never "write it short" in one jump.** Going from the per-knob formula to matrix form gets its own labelled steps:
-     **All knobs as a list** (the gradient = step 2 for each θ, one row per knob) → **Spot the pattern** (each sum =
-     a column of X · the list of brackets = Xᵀ(Xθ−y), with a real-number table) → **Put it together** (the answer).
-     Learner: "'write it short — that's the answer' … feels like magic and I don't know how to do it".
-  The `start` shows "The function: … = □" and "Its derivative: … = □".
-- **Computation parts get the same structure** (learner: part 3 "feels like magic … I need a clear structure like I had
-  from 1 to 2"): 1. write the rule/formula first; 2. plug the numbers into the pieces (e.g. each sample's bracket);
-  3. reuse the previous part's formula **one component at a time** (one move per knob / entry) with the full chain;
-  4. the final step. Always show the link to the part it builds on ("part 2's derivative").
-- **No new names or variables** (e.g. eᵢ, rᵢ, u) unless the official answer itself uses them. Keep brackets verbatim,
-  exactly as the question writes them. Learner: "why e_i now.. do we really need more variables and notations".
-- **Refer back to an expression with (…)**, e.g. "2 · (…) · x" = "the same bracket as before, copied as-is" — never with
-  a label like bracketᵢ. Say "sample 1's (…)" in words when samples must be told apart. Learner: "rather use (...)
-  instead of 'bracket i' … make it clear we're not introducing new ideas and notations when not required."
-- **"Select the pieces"** — the method that works best for this learner: take the formula, colour a piece, put an
-  `\underbrace{…}_{\text{this part = …}}` under it, and say what it equals ("this part = Xθ − y", "this part = column j
-  of X", "this whole list = Xᵀ(Xθ − y)"). Use it for every change of form (sum → matrix, per-knob → vector, rewriting).
-  Colours that work in both themes: orange `\color{#e8912d}`, blue `\color{#4c8dff}`. Labels at normal size and in the
-  piece's colour: `_{\textstyle\color{#e8912d}\text{this part = }X\theta - y}`.
-- **No sideways scrolling.** Break every long formula over lines with `\begin{aligned}` (≤ ~50 characters of math per line); put two formulas under each other, never side by side with ⟹.
-- Reference model: `data/walks/regression.js` (2025-C Q1, casual rewrite).
+## 2. Casual, short, 80–90% of the points
+- Aim for what a grader gives points for — the key formula, the right numbers, a one-phrase reason — not full rigor.
+  ("Too formal, too strict … I can earn 80 or 90% of the points at the cost of formality.")
+- **Few moves:** 2–5 per part. A move = **a bold label + one plain sentence + at most one or two formulas**.
+- Labels name the action: **The function**, **Derivative by θⱼ**, **All knobs as a list**, **Select the pieces**,
+  **Put it together**, **Errors Xθ − y**, **Line 16** … Last move ends with "Done." or "that's the answer".
+- No formal set-up moves ("translate the question", "name the bracket", index bookkeeping).
 
----
+## 3. Derivations follow the learner's own structure
+Like they would write f(x) = (x²+3)², then f′(x) = {solve here}:
+1. **The function** — copied from the question. Its why? writes it out with the real table (one bracket per sample).
+2. **Rewrite** — only if a real manipulation is needed (splitting, simplifying). Never just to introduce a name.
+3. **Derivative by θⱼ** — in their chain-rule pattern: 2 · (…) · (the number in front of θⱼ), i.e. exactly like
+   (x²+3)² → 2·(x²+3)·2x, applied to each bracket. Absolute values: |a| → sign(a).
+4. **All knobs as a list** — the gradient is that derivative written for θ₀, θ₁, θ₂, one row each.
+5. **Select the pieces** — turn the list into matrix form by pointing at pieces (§5).
+6. **Put it together** — the answer.
+Never jump from the per-knob formula to the matrix form in one move ("'write it short' … feels like magic").
 
-## Older rules (still apply unless the casual mode says otherwise)
+## 4. Notation: nothing new unless the exam forces it
+- **No new names or variables** (eᵢ, rᵢ, u, bracketᵢ …) unless the official answer itself uses them. ("Why e_i now…
+  do we really need more variables and notations.")
+- **Refer back with (…)** — "2 · (…) · x" = the same bracket as before, copied as-is. When samples must be told
+  apart, say it in words: "sample 1's (…) × sample 1's x₁".
+- **Sums:** always show what is inside Σ — everything with an i in it is inside — and write it out for the real
+  samples. (Learner read 2Σᵢ xⱼ⁽ⁱ⁾(θᵀx⁽ⁱ⁾ − y⁽ⁱ⁾) as "(Σ xⱼ) × (error)".)
+- **A squared norm is a sum of per-sample squares:** apply the chain rule per sample, never to ‖v‖ as a whole
+  (learner wrote 2·‖Xθ−y‖·xⱼ).
+- **Shorthands are definitions, not steps** — say so, then show it with the real numbers and the numpy equivalent:
+  sign(θ) = (sign θ₀, sign θ₁, sign θ₂) = `np.sign(theta)` → (1, −1, 1); θᵀx⁽ⁱ⁾ = the prediction θ₀ + θ₁x₁ + θ₂x₂;
+  Xθ − y = `X @ theta - y`.
 
-The learner has **severe ADHD**. Long notes failed ("too much on the screen", "can't hold earlier parts"); compressed
-notes failed ("jumpy"). They tried three prototypes and chose **B — question first, teach just in time**:
-the real exam part is on screen, and its solution is built in small **moves** revealed one at a time
-("Show next move" / key N). Each move is **one line**; the explanation sits behind a **why?** expander.
-Reference implementation (content + tone): `prototypes/b-question-first.html` (2025-C Q1.2, 10 moves).
+## 5. "Select the pieces" — the method that works best
+("I think it would make more sense to me if we rather 'select' pieces and say 'this part = X', 'this part = Xᵀ'.")
+- Colour a piece of the formula, put a brace under it, and say what it equals:
+  `\underbrace{\color{#e8912d}(\dots)}_{\textstyle\color{#e8912d}\text{this part = }X\theta - y}`.
+- Colours (readable in both themes): orange `#e8912d`, blue `#4c8dff`. Labels at normal size (`\textstyle`) and in the
+  piece's colour. Keep labels short so the formula fits.
+- Use it for every change of form: sum → matrix, one knob → all knobs, pieces of an answer ("this part = step 4's sums").
+- Later moves can refer to the colours: "the orange part 2Xᵀ(Xθ − y)".
 
-The same moves double as a **hint ladder**: on later questions the learner tries the part on paper and reveals
-moves only when stuck. So move 1 must already be useful on its own (the first move), and each move must make
-sense with only the earlier moves visible above it.
+## 6. Explanations (why?)
+- **Concrete first, formula last.** Start from the real exam table and numbers, in the learner's single-variable
+  pattern; only then "the official formula is just this, written short".
+- 1–3 short sentences, plus (optional) a small real-numbers table or a numpy line. Analogies welcome.
+- The why? is for understanding; the next move must be followable without opening it.
+- Optional `extra` blocks (collapsed, labelled): "check it with numbers", an official-solution slip, a Moed B trap.
 
-## Rules
-0. **`start` — "Begin your answer like this".** Revealed *before* move 1. The learner said: "I'm having problems
-   writing down on the paper as I don't even know how to actually write the notations." So `start` shows how the
-   written answer **looks on paper**: its opening line(s) in exam notation, with `\square` blanks for what they must
-   fill in (e.g. `\[\frac{\partial J_\lambda}{\partial\theta_j} = \;\square\]`), and — if useful — the shape of the
-   final line. It must not give away the content of the answer, only its form.
-1. **One move = one action, one line.** ≤ ~25 words plus at most one formula or one calculation line.
-   Start with a verb: "Write…", "Name…", "Compute…", "Differentiate…", "Compare…". No paragraphs in the line.
-2. **Moves build the exam answer.** The final move(s) are what the learner writes on the exam paper.
-   3–12 moves per part, roughly scaled to points. Long computations: one move per entry/row, with the full
-   chain on that line (e.g. `(1,−1,1)·(1,−2,3) = 1·1 + (−1)·(−2) + 1·3 = 1 + 2 + 3 = 6`).
-3. **why? = the teaching.** Plain words first, then the symbol, then (if needed) a small worked chain. Short
-   paragraphs, `<b>` lead-ins ("The picture.", "Why X…"). Explain every factor of a compound expression.
-   Point to the long reference notes when useful: "(Regression note 5)". The why? must never be required
-   to follow the *next line* — it is for understanding, not for continuity.
-4. **Optional extras** (`extra`: collapsed, labelled): e.g. "see it with the numbers", a trap, a slip in the
-   official solution. Keep traps from the learner's Moed B where relevant (`data/content.js` `mine` entries).
-5. **compare** (1–2 sentences, shown with the official solution): which move matches which line of the
-   official solution; flag any official slip with the corrected value.
-6. **Real material only — never invent questions.** Everything comes from the real exam part, its official
-   solution (images are authoritative), homework, lectures. Verify every number with python3/numpy.
-7. **Don't repeat what a previous part already walked through** in full: refer to it ("as in part 2, move 9").
+## 7. Layout
+- **No sideways scrolling.** Break long formulas with `\begin{aligned}` (≈ 50 characters of math per line); stack
+  two formulas vertically, never side by side with ⟹.
+- **Multi-row calculations (row · θ for each sample, column · errors, …) go in a small table**, not in a wide aligned formula.
+- Explanations for the learner go on the site, where math renders — not in the terminal chat.
 
-## File format — `data/walks/<topic>.js`
+## 8. Content rules
+- **Real material only — never invented questions.** Exam parts, official solutions (images are authoritative),
+  homework, lectures. Worked numbers come from the real exam tables.
+- Verify every number with python3/numpy. Flag official slips (in `compare` and an `extra`) with the corrected value.
+- Don't re-walk what an earlier part of the same question already did — refer to it ("part 2, step 4").
+
+## 9. File format and validation — `data/walks/<topic>.js`
 ```js
 (function () {
   const R = String.raw;
   window.WALKS = window.WALKS || {};
   Object.assign(window.WALKS, {
     "2025C-q1.2": {
-      start: R`\[\frac{\partial J_\lambda}{\partial \theta_j} = \;\square\]`,   // "Begin your answer like this"
+      start: R`<p><b>The function:</b></p>\[J(\theta) = \;\square\]`,
       moves: [
-        { line: R`Translate the question: …`, why: R`<p><b>The picture.</b> …</p>`,
-          extra: [{ label: "see it with 2025-C's numbers", html: R`…` }] },   // extra is optional
-        …
+        { line: R`<b>The function</b> — copy it from the question: <div class="formula">\[…\]</div>`,
+          why: R`<p>…</p>`,
+          extra: [{ label: "check it with numbers", html: R`…` }] },   // extra is optional
       ],
-      compare: R`Its first line is your move 8; its last line is your move 10.`,
+      compare: R`The official solution's last line is move 5.`,
     },
   });
 })();
 ```
-HTML inside `R\`…\``; math `\( \)` inline, `\[ \]` display (KaTeX; use `\begin{aligned}` to break long chains —
-the page must fit a laptop without sideways scrolling). Never `${`. `&lt;` for `<` inside `<pre><code>`.
-Validate: `node tools/check_walks.js data/walks/<topic>.js` must print ✓.
+HTML inside `R\`…\``; math `\( \)` inline, `\[ \]` display (KaTeX). Never `${`. `&lt;` for `<` inside `<pre><code>`.
+Every part needs `start`, `moves`, `compare`. Validate: `node tools/check_walks.js data/walks/<topic>.js` must print ✓.
+Then look at it in a browser at ~950 px width: no sideways scrolling anywhere.
