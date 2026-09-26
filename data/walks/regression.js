@@ -22,7 +22,15 @@
           why: R`<p><b>\(\|X\theta - y\|^2\) is a sum of squares</b>, one per sample: \(e_1^2 + e_2^2 + e_3^2 + e_4^2\), where \(e_i\) = sample \(i\)'s error (prediction − label).</p>
 <p><b>Use 2 · stuff · (derivative of stuff) on each error separately.</b> \(e_1 = \theta_0 + \theta_1 x_1 + \theta_2 x_2 - y_1\) with sample 1's \(x\)'s, so the derivative of \(e_1^2\) with respect to \(\theta_j\) is \(2\cdot e_1\cdot\)(sample 1's \(x_j\)). Same for every sample.</p>
 <p><b>Add them up:</b> \(2\cdot\)(each error × that sample's \(x_j\), summed) = \(2\cdot\)(column \(j\) of \(X\)) · (errors). All \(j\) at once: \(2X^\top(X\theta - y)\).</p>
-<p class="trapline"><b>Not</b> \(2\cdot\|X\theta - y\|\cdot x_j\): the length \(\|X\theta - y\|\) is one number, but every sample has its own \(x_j\) — the rule has to be applied per sample.</p>` },
+<p class="trapline"><b>Not</b> \(2\cdot\|X\theta - y\|\cdot x_j\): the length \(\|X\theta - y\|\) is one number, but every sample has its own \(x_j\) — the rule has to be applied per sample.</p>`,
+          extra: [{ label: "see it as a table (real numbers, θ = (1, −2, 3))", html: R`<p>Take knob \(\theta_1\) (so \(x_j\) = the \(x_1\) column). Each row = one sample. Apply "2 · error · x" per row, then add the column:</p>
+<div class="tw"><table><thead><tr><th>sample</th><th>its error</th><th>its \(x_1\)</th><th>2 · error · \(x_1\)</th></tr></thead><tbody>
+<tr><td>1</td><td>0</td><td>−1</td><td>2 · 0 · (−1) = 0</td></tr>
+<tr><td>2</td><td>1</td><td>−2</td><td>2 · 1 · (−2) = −4</td></tr>
+<tr><td>3</td><td>3</td><td>1</td><td>2 · 3 · 1 = 6</td></tr>
+<tr><td>4</td><td>3</td><td>0</td><td>2 · 3 · 0 = 0</td></tr>
+<tr><td colspan="3"><b>add the last column</b></td><td><b>0 − 4 + 6 + 0 = 2</b></td></tr></tbody></table></div>
+<p>2 is exactly the \(\theta_1\) entry of \(2X^\top(X\theta - y) = (14, 2, 24)\). The formula \(2X^\top(X\theta - y)\) is just this table, done for every knob at once.</p>` }] },
         { line: R`Penalty part \(\lambda(|\theta_0| + \dots + |\theta_p|)\) → \(\;\lambda\,\mathrm{sign}(\theta)\)`,
           why: R`<p>The derivative of \(|a|\) is just its sign: +1 if \(a\) is positive, −1 if negative. That's why the question says "assume no \(\theta\) is 0" — at 0 there's no derivative.</p>` },
         { line: R`Add them. That's the answer: <div class="formula">\[\nabla J(\theta) = 2X^\top(X\theta - y) + \lambda\,\mathrm{sign}(\theta)\]</div>`,
