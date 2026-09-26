@@ -52,7 +52,7 @@ pre code { background: none; padding: 0; }
 .side-foot button:hover, .imp:hover { color: var(--accent); }
 .imp input { display: none; }
 
-.main { padding: 28px 40px 80px; max-width: 980px; min-width: 0; }
+.main { padding: 28px 40px 80px; max-width: 980px; min-width: 0; width: 100%; margin: 0 auto; }
 .page-h h1 { margin: 0 0 8px; font-size: 30px; line-height: 1.2; }
 .kicker { color: var(--accent); font-weight: 600; font-size: 13px; text-transform: uppercase; letter-spacing: .06em; }
 .lede, .page-h p { max-width: 70ch; }
@@ -167,3 +167,42 @@ button.check { border-color: var(--accent); background: var(--accent-soft); colo
   .main { padding: 18px 16px 60px; }
   .blank { grid-template-columns: 1fr; } .blank .res { grid-column: 1; }
 }
+
+/* ── walkthrough: "Show next move" (format B, chosen by the learner) ───────── */
+.walk { margin-top: 12px; border-top: 1px solid var(--line); padding-top: 12px; }
+.walk-h { font-weight: 700; margin-bottom: 8px; }
+.walk-h .muted { font-weight: 400; font-size: 14px; }
+.mvs { list-style: none; padding: 0; margin: 0; display: grid; gap: 10px; }
+.mv { display: grid; grid-template-columns: 34px 1fr; gap: 12px; background: var(--panel2); border: 1px solid var(--line); border-radius: 12px; padding: 12px 16px; }
+.mv[hidden] { display: none; }
+.mv.latest { border-color: var(--accent); box-shadow: 0 0 0 3px var(--accent-soft); }
+.mv .n { width: 30px; height: 30px; border-radius: 50%; background: var(--accent-soft); color: var(--accent); font-weight: 700; display: grid; place-items: center; }
+.mv .body { min-width: 0; }
+.mv .line { font-weight: 600; overflow-x: auto; }
+.mv .line .katex-display { margin: .5em 0; }
+details.more { margin: 8px 0 0; }
+details.more > summary { font-size: 14.5px; font-weight: 600; color: var(--accent-ink); display: inline-block; padding: 2px 0; }
+details.more > summary::before { content: none; }
+details.more[open] > summary { margin-bottom: 4px; }
+.depth { border-left: 3px solid var(--accent); background: var(--panel); border-radius: 0 8px 8px 0; padding: 4px 14px 6px; margin-top: 4px; overflow-x: auto; }
+.depth p { margin: 8px 0; }
+.depth ul, .depth ol { padding-left: 22px; margin: 6px 0; }
+.walk-ctrl { display: flex; flex-wrap: wrap; align-items: center; gap: 10px; margin-top: 12px; }
+.walk-ctrl .primary { font: inherit; font-weight: 700; padding: 7px 18px; border-radius: 20px; border: 1px solid var(--accent); background: var(--accent); color: #fff; cursor: pointer; }
+.walk-ctrl .primary[hidden] { display: none; }
+.linkbtn { font: inherit; font-size: 13.5px; background: none; border: 1px solid var(--line); border-radius: 16px; color: var(--muted); padding: 3px 12px; cursor: pointer; }
+.linkbtn:hover { color: var(--accent-ink); border-color: var(--accent); }
+.linkbtn[hidden] { display: none; }
+.walk-done { margin-top: 10px; background: var(--got-bg); border-radius: 8px; padding: 2px 14px; }
+kbd { font: 12px ui-monospace, Consolas, monospace; border: 1px solid var(--line); border-radius: 4px; padding: 0 5px; background: var(--panel2); }
+a.noteref { text-decoration: underline dotted; }
+
+/* reference notes: collapsed on the topic page, or opened on top of a question */
+.refnotes > summary { font-size: 19px; padding: 10px 0; }
+.refnotes > summary .muted { font-size: 14px; font-weight: 400; }
+.refintro { margin: 6px 0 12px; }
+#notedlg { width: min(900px, 94vw); max-height: 88vh; padding: 0 20px 20px; border: 1px solid var(--line); border-radius: 14px; background: var(--bg); color: var(--ink); box-shadow: var(--shadow); }
+#notedlg::backdrop { background: rgba(0,0,0,.55); }
+.dlg-h { position: sticky; top: 0; z-index: 1; background: var(--bg); display: flex; justify-content: space-between; align-items: center; padding: 14px 0 8px; }
+.dlg-x { font: inherit; font-weight: 600; font-size: 14px; background: var(--panel2); color: var(--ink); border: 1px solid var(--line); border-radius: 16px; padding: 4px 12px; cursor: pointer; }
+@media (max-width: 520px) { .mv { grid-template-columns: 1fr; gap: 4px; padding: 10px 12px; } }

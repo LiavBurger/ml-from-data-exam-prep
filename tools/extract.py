@@ -32,6 +32,10 @@ OVERRIDES = {
     ("2025A", 4, 5): {"q": [(16, 64, 148), (16, 246, 590)], "sol": [(16, 160, 240)]},
     # figures with no text layer on a page of their own, so no line anchors them; optional 4th/5th value = right/left edge (pt)
     ("2025B", 4, 2): {"q_extra": [(13, 145, 262, 445, 12)]},   # the hinge-loss plots A/B/C
+    # sub-parts (b) and (c) are printed between the solution lines of (a) and (b)
+    ("2025B", 4, 1): {"q": [(12, 171, 225), (12, 287, 317), (12, 379, 409)]},
+    # the solution is printed right after the question; the code it refers to is on the next page
+    ("2025B", 4, 3): {"q": [(13, 415, 495), (14, 145, 540, 440, 8)], "sol": [(13, 500, 650)]},
     ("2026A", 3, 3): {"sol_extra": [(11, 78, 510)]},       # the solution's figure of the four mappings
 }   # 2025B has grader comment balloons in the right margin
 
