@@ -73,6 +73,10 @@ details[open] > summary::before { transform: rotate(90deg); }
 .move { background: var(--panel); border: 1px solid var(--line); border-radius: 12px; padding: 14px 20px; margin: 10px 0; }
 .move[open] { padding-bottom: 18px; }
 .move > summary { font-size: 17px; }
+.move { scroll-margin-top: 12px; }
+.close-note { display: block; margin: 18px auto 0; font: inherit; font-size: 13.5px; font-weight: 600; padding: 6px 16px; border-radius: 20px;
+  border: 1px solid var(--line); background: var(--panel2); color: var(--muted); cursor: pointer; }
+.close-note:hover { border-color: var(--accent); color: var(--accent-ink); }
 .move p, .move .recipe { margin: 10px 0 0; }
 .recipe ol { padding-left: 22px; margin: 6px 0; }
 .recipe li { margin: 6px 0; }

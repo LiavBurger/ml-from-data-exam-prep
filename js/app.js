@@ -123,6 +123,7 @@
         ${mv.table ? `<div class="tw"><table><thead><tr>${mv.table.head.map(h => `<th>${h}</th>`).join("")}</tr></thead>
           <tbody>${mv.table.rows.map(r => `<tr>${r.map(c => `<td>${c}</td>`).join("")}</tr>`).join("")}</tbody></table></div>` : ""}
         ${mv.trap ? `<p class="trap"><span class="tag trapt">Trap</span> ${mv.trap}</p>` : ""}
+        <button class="close-note">▲ Close this note</button>
       </details>`;
     }).join("");
     const notesNote = (N.moves || []).length >= 3 ? "" :
@@ -141,6 +142,11 @@
       ${moves || notesNote ? `<section><h2 class="sec">Notes</h2>${notesNote}${moves}</section>` : ""}
       ${t.questions.length ? `<section><h2 class="sec">Questions <span class="muted">— do them in this order, each one start to finish</span></h2>${qs}</section>` : ""}`;
     math($("#main"));
+    $("#main").querySelectorAll(".close-note").forEach(b => b.addEventListener("click", () => {
+      const d = b.closest("details");
+      d.open = false;
+      d.scrollIntoView({ block: "start" });   // keep your place: land on the note's title, not further down the page
+    }));
   }
 
   // ── question ─────────────────────────────────────────────────────────────
