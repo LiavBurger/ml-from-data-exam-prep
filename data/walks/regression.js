@@ -34,7 +34,13 @@
         { line: R`Penalty part \(\lambda(|\theta_0| + \dots + |\theta_p|)\) → \(\;\lambda\,\mathrm{sign}(\theta)\)`,
           why: R`<p>The derivative of \(|a|\) is just its sign: +1 if \(a\) is positive, −1 if negative. That's why the question says "assume no \(\theta\) is 0" — at 0 there's no derivative.</p>` },
         { line: R`Add them. That's the answer: <div class="formula">\[\nabla J(\theta) = 2X^\top(X\theta - y) + \lambda\,\mathrm{sign}(\theta)\]</div>`,
-          why: R`<p>The official solution also writes one entry at a time first: \(2\sum_i x^{(i)}_j(\theta^\top x^{(i)} - y^{(i)}) + \lambda\,\mathrm{sign}(\theta_j)\). Same thing, just not stacked — the matrix form above is enough.</p>` },
+          why: R`<p>The official solution also writes one entry at a time first: \(2\sum_i x^{(i)}_j(\theta^\top x^{(i)} - y^{(i)}) + \lambda\,\mathrm{sign}(\theta_j)\). Same thing, just not stacked — the matrix form above is enough.</p>`,
+          extra: [{ label: "how to read the official sum (what is inside Σ?)", html: R`<p><b>Everything that has an \(i\) in it is inside the sum.</b> Both \(x^{(i)}_j\) and \((\theta^\top x^{(i)} - y^{(i)})\) contain \(i\), so the sum covers their <b>product</b>:</p>
+\[2\sum_{i=1}^{n}\Big[\;x^{(i)}_j \cdot \big(\theta^\top x^{(i)} - y^{(i)}\big)\;\Big]\]
+<p>For each sample: (its \(x_j\)) × (its error). Then add the samples. Written out for 2025-C's 4 samples:</p>
+\[\begin{aligned}2\,\Big[\;&x^{(1)}_j\cdot(\text{error of sample 1})\\ +\;&x^{(2)}_j\cdot(\text{error of sample 2})\\ +\;&x^{(3)}_j\cdot(\text{error of sample 3})\\ +\;&x^{(4)}_j\cdot(\text{error of sample 4})\;\Big]\end{aligned}\]
+<p>It is <b>not</b> "(sum of the \(x_j\)'s) × (an error)": outside the sum there is no \(i\), so "the error of sample \(i\)" would have no meaning there.</p>
+<p>That's exactly the table under move 1: one row per sample, multiply inside the row, add the last column.</p>` }] },
       ],
       compare: R`The official solution's last line is exactly move 3.`,
     },
