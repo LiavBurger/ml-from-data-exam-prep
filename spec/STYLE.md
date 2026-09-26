@@ -38,7 +38,11 @@ after the notes they must be able to solve the real exam questions themselves.
    say so plainly in the note (and in the part's hint), with the corrected value.
 8. **Exam-level.** Cover every kind of part that appears in the topic's real questions; after the idea and
    example, the *On the exam* fields say how the exam phrases it, the first line to write, the recipe, and the trap.
-9. **Traps from Moed B** where relevant (the learner's actual mistakes are listed in `../MISSION.md` and in
+9. **Explain every factor of a compound expression.** For something like \((Xw-y)^\top\Gamma(Xw-y)\), say what *each*
+   factor contributes and show the simpler expression it generalizes (here: \(r^\top r\) = "each residual times itself",
+   with \(\Gamma\) slipped in between). Learner feedback: "we multiply the residuals by weights … then why do we multiply by
+   the residuals again?"
+10. **Traps from Moed B** where relevant (the learner's actual mistakes are listed in `../MISSION.md` and in
    the `mine` entries of `data/content.js`).
 
 ## Reference standard
