@@ -46,6 +46,11 @@ the points at the cost of formality … The 10 steps are mostly mathematical jar
 - **Refer back to an expression with (…)**, e.g. "2 · (…) · x" = "the same bracket as before, copied as-is" — never with
   a label like bracketᵢ. Say "sample 1's (…)" in words when samples must be told apart. Learner: "rather use (...)
   instead of 'bracket i' … make it clear we're not introducing new ideas and notations when not required."
+- **"Select the pieces"** — the method that works best for this learner: take the formula, colour a piece, put an
+  `\underbrace{…}_{\text{this part = …}}` under it, and say what it equals ("this part = Xθ − y", "this part = column j
+  of X", "this whole list = Xᵀ(Xθ − y)"). Use it for every change of form (sum → matrix, per-knob → vector, rewriting).
+  Colours that work in both themes: orange `\color{#e8912d}`, blue `\color{#4c8dff}`. Labels at normal size and in the
+  piece's colour: `_{\textstyle\color{#e8912d}\text{this part = }X\theta - y}`.
 - **No sideways scrolling.** Break every long formula over lines with `\begin{aligned}` (≤ ~50 characters of math per line); put two formulas under each other, never side by side with ⟹.
 - Reference model: `data/walks/regression.js` (2025-C Q1, casual rewrite).
 

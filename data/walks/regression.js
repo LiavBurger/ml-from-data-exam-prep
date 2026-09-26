@@ -35,18 +35,20 @@
 <p>Plus the penalty \(\lambda\,\mathrm{sign}(\theta_1) = 1\cdot(-1) = -1\): \(\;2 - 1 = 1\). That's the middle entry of part 3's gradient \((15, 1, 25)\).</p>` }] },
         { line: R`<b>All knobs as a list</b> — the gradient is step 2 written for \(\theta_0\), \(\theta_1\), \(\theta_2\) (for \(\theta_0\) the "number in front" is 1): <div class="formula">\[\nabla J = \begin{bmatrix} \sum_i 2\cdot(\dots)\cdot 1 \;+\; \lambda\,\mathrm{sign}(\theta_0)\\[4pt] \sum_i 2\cdot(\dots)\cdot x^{(i)}_1 \;+\; \lambda\,\mathrm{sign}(\theta_1)\\[4pt] \sum_i 2\cdot(\dots)\cdot x^{(i)}_2 \;+\; \lambda\,\mathrm{sign}(\theta_2)\end{bmatrix}\]</div>`,
           why: R`<p>"The gradient" is nothing new: it's the derivative by each knob, stacked into a list — one row per knob. (…) is the same bracket as in step 2, copied as-is (each sample's prediction − label).</p>` },
-        { line: R`<b>Spot the pattern</b> — each sum is (a column of \(X\)) · (every sample's (…), as a list), and that list is \(X\theta - y\). So the three sums together are \(X^\top(X\theta - y)\).`,
-          why: R`<p><b>One sum, written out</b> (the \(\theta_1\) row, 4 samples): sample 1's (…) × sample 1's \(x_1\) + sample 2's (…) × sample 2's \(x_1\) + sample 3's (…) × sample 3's \(x_1\) + sample 4's (…) × sample 4's \(x_1\)</p>
-<p>That's a <b>dot product</b>: (the \(x_1\) column of \(X\)) · (the four (…)'s, as a list).</p>
-<p><b>The four (…)'s, as a list</b> = each sample's prediction − label = \(X\theta - y\) (from part 1: \(X\theta\) = all predictions).</p>
-<p><b>\(X^\top\) times a list</b> = "each column of \(X\), dotted with that list", one result per column. That's exactly our three sums. So the sums are \(X^\top(X\theta - y)\).</p>`,
+        { line: R`<b>Select the pieces</b> — in each row of step 3, point at two pieces and say what they are: <div class="formula">\[\sum_i 2\cdot\underbrace{\color{#e8912d}(\dots)}_{\textstyle\color{#e8912d}\text{this part = }X\theta - y}\cdot\underbrace{\color{#4c8dff}x^{(i)}_j}_{\textstyle\color{#4c8dff}\text{this part = column } j\text{ of }X}\]</div>So each row is \(2\cdot\)(column \(j\) of \(X\)) · \((X\theta - y)\).`,
+          why: R`<p><b>Orange piece — this part = \(X\theta - y\).</b> The sum runs over the samples, so the orange (…) takes every sample's value: sample 1's (…), sample 2's (…), … Each (…) is that sample's prediction − label, and all of them as a list is exactly \(X\theta - y\) (part 1: \(X\theta\) = all the predictions).</p>
+<p><b>Blue piece — this part = column \(j\) of \(X\).</b> \(x^{(i)}_j\) over every sample is sample 1's \(x_j\), sample 2's \(x_j\), … — reading down column \(j\) of \(X\).</p>
+<p><b>The sum multiplies them entry by entry and adds up</b> — that's a dot product: (column \(j\) of \(X\)) · \((X\theta - y)\).</p>
+<p><b>Now select the whole list of rows:</b></p>
+\[\underbrace{\begin{bmatrix}\text{column 0 of }X\cdot(X\theta - y)\\ \text{column 1 of }X\cdot(X\theta - y)\\ \text{column 2 of }X\cdot(X\theta - y)\end{bmatrix}}_{\textstyle\text{this part = }X^\top(X\theta - y)}\]
+<p>Why: \(X^\top\) is \(X\) with its columns laid down as rows, and "\(X^\top\) times a list" dots each of those rows with the list — one result per column. That's exactly this list.</p>`,
           extra: [{ label: "see it with the real numbers (θ = (1, −2, 3))", html: R`<p>The four (…)'s, as a list: \(X\theta - y = (0, 1, 3, 3)\). Each column of \(X\) dotted with it:</p>
 <div class="tw"><table><thead><tr><th>row of \(\nabla J\)</th><th>column of \(X\)</th><th>· (0, 1, 3, 3)</th></tr></thead><tbody>
 <tr><td>\(\theta_0\)</td><td>(1, 1, 1, 1)</td><td>0 + 1 + 3 + 3 = 7</td></tr>
 <tr><td>\(\theta_1\)</td><td>(−1, −2, 1, 0)</td><td>0 − 2 + 3 + 0 = 1</td></tr>
 <tr><td>\(\theta_2\)</td><td>(1, 0, 3, 1)</td><td>0 + 0 + 9 + 3 = 12</td></tr></tbody></table></div>
 <p>So \(X^\top(X\theta - y) = (7, 1, 12)\): the three sums, done in one go.</p>` }] },
-        { line: R`<b>Put it together</b> — that's the answer: <div class="formula">\[\nabla J(\theta) = 2X^\top(X\theta - y) + \lambda\,\mathrm{sign}(\theta)\]</div>`,
+        { line: R`<b>Put it together</b> — select the two pieces of the step 3 list, and that's the answer: <div class="formula">\[\nabla J(\theta) = \underbrace{2X^\top(X\theta - y)}_{\textstyle\text{= step 4's sums}} + \underbrace{\lambda\,\mathrm{sign}(\theta)}_{\textstyle\text{= the signs}}\]</div>`,
           why: R`<ul><li>The 2 from every term comes out in front: \(2X^\top(X\theta - y)\).</li>
 <li>The three signs form one list: \(\lambda\,(\mathrm{sign}(\theta_0), \mathrm{sign}(\theta_1), \mathrm{sign}(\theta_2)) = \lambda\,\mathrm{sign}(\theta)\).</li></ul>
 <p>The official solution also writes step 2 with \(\theta^\top x^{(i)}\) — that's just short for the prediction \(\theta_0 + \theta_1 x^{(i)}_1 + \theta_2 x^{(i)}_2\).</p>` },
