@@ -161,7 +161,41 @@ button.check { border-color: var(--accent); background: var(--accent-soft); colo
 .qnav { display: flex; justify-content: space-between; gap: 12px; margin-top: 28px; flex-wrap: wrap; font-weight: 600; }
 .qnav a { text-decoration: none; }
 
+/* recipe cards */
+.rcards { margin: 4px 0 10px; }
+.rcard { border: 1px solid var(--line); border-left: 4px solid var(--accent); border-radius: 10px; background: var(--panel2); padding: 10px 14px; margin: 8px 0; }
+.rcard > summary { font-weight: 700; }
+.rcard .rk { font-size: 11px; font-weight: 700; text-transform: uppercase; letter-spacing: .06em; color: var(--accent-ink); background: var(--accent-soft); border-radius: 10px; padding: 1px 8px; margin-right: 4px; vertical-align: 1px; }
+.rc-body { margin-top: 8px; }
+.rc-body p { margin: 8px 0; }
+.rc-lines ol { margin: 6px 0 4px; padding-left: 24px; }
+.rc-lines li { margin: 7px 0; }
+.rc-num { background: var(--code-bg); border-radius: 8px; padding: 6px 12px; margin: 10px 0; overflow-x: auto; }
+.rc-num p { margin: 6px 0; } .rc-num ul { margin: 4px 0; padding-left: 20px; }
+.tag.num { color: var(--accent-ink); border: 1px solid currentColor; }
+.rc-drawers { display: grid; gap: 6px; margin-top: 10px; }
+.rc-drawers details { border: 1px solid var(--line); border-radius: 8px; padding: 6px 12px; background: var(--panel); }
+.rc-drawers summary { font-weight: 600; font-size: 14.5px; }
+.rc-drawers details > div { margin-top: 6px; }
+.rc-drawers details.side summary { color: var(--muted); font-weight: 500; }
+details.fullnotes > summary { font-size: 21px; font-weight: 700; margin: 34px 0 12px; }
+.sec-like { font-size: 21px; }
+/* 25/5 timer */
+.timer { position: fixed; right: 16px; bottom: 16px; z-index: 50; background: var(--panel); border: 1px solid var(--line); box-shadow: var(--shadow);
+  border-radius: 14px; padding: 8px 12px; min-width: 150px; text-align: center; }
+.timer.run.focus { border-color: var(--accent); }
+.timer.run.break { border-color: var(--got); }
+.t-ph { font-size: 12px; font-weight: 700; text-transform: uppercase; letter-spacing: .06em; color: var(--muted); }
+.timer.break .t-ph { color: var(--got-fg); }
+.t-bl { text-transform: none; letter-spacing: 0; font-weight: 500; }
+.t-time { font-size: 26px; font-weight: 700; font-variant-numeric: tabular-nums; line-height: 1.2; }
+.t-btns { display: flex; gap: 6px; justify-content: center; margin-top: 4px; }
+.t-btns button { font: inherit; font-size: 13px; font-weight: 600; padding: 3px 10px; border-radius: 14px; border: 1px solid var(--line); background: var(--panel2); color: var(--ink); cursor: pointer; }
+.t-btns button:hover { border-color: var(--accent); }
+.main { padding-bottom: 130px; }
+
 @media (max-width: 800px) {
+  .timer { right: 8px; bottom: 8px; min-width: 0; padding: 6px 10px; } .t-time { font-size: 20px; }
   .app { grid-template-columns: 1fr; }
   .side { position: static; height: auto; border-right: 0; border-bottom: 1px solid var(--line); }
   .main { padding: 18px 16px 60px; }

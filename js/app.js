@@ -5,6 +5,8 @@
   const M = window.MANIFEST, TOPICS = window.TOPICS, CODE = window.CODE, MOEDB = window.MOEDB || {};
   const NOTES = window.NOTES || {};
   const notesOf = t => NOTES[t.id] || { intro: t.intro || "", moves: [], hints: {} };
+  const CARDS = window.CARDS || {};
+  const cardsOf = t => CARDS[t.id] || { cards: {}, parts: {} };
   const KEY = "ml_examc_v1";
   const MARKS = { got: "Got it", shaky: "Shaky", fail: "Failed" };
 
@@ -87,8 +89,8 @@
       <section class="card how"><h2>Each study session</h2>
         <ol>
           <li><b>Retest first</b> (≈10 min): redo the parts below that you marked Failed or Shaky.</li>
-          <li><b>Next question in the topic you're on.</b> New topic? Read its notes first.</li>
-          <li>Work the question from part 1 to the end <b>on paper, with only the formula sheet</b>. Open the official solution only after writing something, then mark yourself honestly.</li>
+          <li><b>Start the 25-minute timer</b> (bottom corner). Take the 5-minute break when it rings.</li>
+          <li><b>Open the next question</b> in the topic you're on and go part by part: read the recipe card above the part (1–2 min), do the part <b>on paper</b>, then open the official solution and mark yourself honestly.</li>
         </ol></section>
 
       <section class="card"><h2>Retest first</h2>
@@ -126,8 +128,8 @@
         <button class="close-note">▲ Close this note</button>
       </details>`;
     }).join("");
-    const notesNote = (N.moves || []).length >= 3 ? "" :
-      `<p class="banner">${moves ? "More notes for this topic come next." : "Notes for this topic come next."} The questions below are complete and ready to practise.</p>`;
+    const CT = cardsOf(t), order = cardOrder(t);
+    const cardIndex = order.map(id => cardHtml(t, id, false, "")).join("");
     const qs = t.questions.map((q, i) => {
       const p = qProgress(q.id), mb = MOEDB[q.id];
       return `<a class="qcard ${p.done === p.total ? "done" : ""}" href="#/q/${q.id}">
@@ -138,9 +140,10 @@
       </a>`;
     }).join("");
     $("#main").innerHTML = `
-      <header class="page-h"><div class="kicker">Topic ${t.num}</div><h1>${esc(t.title)}</h1>${N.intro || t.intro || ""}</header>
-      ${moves || notesNote ? `<section><h2 class="sec">Notes</h2>${notesNote}${moves}</section>` : ""}
-      ${t.questions.length ? `<section><h2 class="sec">Questions <span class="muted">— do them in this order, each one start to finish</span></h2>${qs}</section>` : ""}`;
+      <header class="page-h"><div class="kicker">Topic ${t.num}</div><h1>${esc(t.title)}</h1>${CT.intro || N.intro || t.intro || ""}</header>
+      ${t.questions.length ? `<section><h2 class="sec">Questions <span class="muted">— in this order, each one part by part</span></h2>${qs}</section>` : ""}
+      ${cardIndex ? `<section><h2 class="sec">All recipe cards <span class="muted">— for review; each one also appears above the parts that need it</span></h2>${cardIndex}</section>` : ""}
+      ${moves ? `<section><details class="fullnotes"><summary><span class="sec-like">Full notes</span> <span class="muted">— long reference explanations, only if a card's "why" isn't enough</span></summary>${moves}</details></section>` : ""}`;
     math($("#main"));
     $("#main").querySelectorAll(".close-note").forEach(b => b.addEventListener("click", () => {
       const d = b.closest("details");
@@ -155,7 +158,7 @@
     const { t, q } = f, stem = M[qid] || {}, idx = t.questions.indexOf(q);
     const prev = t.questions[idx - 1], next = t.questions[idx + 1], mb = MOEDB[qid];
     const hints = notesOf(t).hints || {};
-    const parts = partsOf(qid).map(p => partCard(qid, p, Object.assign({}, (q.parts || {})[p] || {}, (hints[qid] || {})[p] ? { move: hints[qid][p] } : {}))).join("");
+    const parts = partsOf(qid).map(p => partCard(t, qid, p, Object.assign({}, (q.parts || {})[p] || {}, (hints[qid] || {})[p] ? { move: hints[qid][p] } : {}))).join("");
     $("#main").innerHTML = `
       <header class="page-h"><div class="kicker"><a href="#/t/${t.id}">Topic ${t.num} · ${esc(t.title)}</a> · question ${idx + 1} of ${t.questions.length}</div>
         <h1>${qLabel(qid)}</h1>
@@ -173,8 +176,42 @@
     if (focusPart) { const el = document.getElementById(`p-${qid}.${focusPart}`); if (el) el.scrollIntoView({ block: "start" }); }
   }
 
-  function partCard(qid, p, extra) {
+  // ── recipe cards ─────────────────────────────────────────────────────────
+  function cardOrder(t) {                       // card ids in order of first use along the topic's questions
+    const CT = cardsOf(t), seen = [];
+    t.questions.forEach(q => partsOf(q.id).forEach(p => (CT.parts[`${q.id}.${p}`] || []).forEach(id => { if (!seen.includes(id) && CT.cards[id]) seen.push(id); })));
+    Object.keys(CT.cards).forEach(id => { if (!seen.includes(id)) seen.push(id); });
+    return seen;
+  }
+  function cardUsed(t, id, exceptPid) {         // has the learner already marked a part that uses this card?
+    const CT = cardsOf(t);
+    return Object.entries(CT.parts).some(([pid, ids]) => pid !== exceptPid && ids.includes(id) && state.marks[pid]);
+  }
+  function cardHtml(t, id, open, note) {
+    const c = cardsOf(t).cards[id]; if (!c) return "";
+    return `
+      <details class="rcard" ${open ? "open" : ""}>
+        <summary><span class="rk">Recipe</span> ${c.title} <span class="muted">· ~${c.minutes || 2} min${note ? " · " + note : ""}</span></summary>
+        <div class="rc-body">
+          ${c.cue ? `<p><span class="tag cue">You'll see</span> ${c.cue}</p>` : ""}
+          <div class="rc-lines"><span class="tag first">Write these lines</span><ol>${(c.lines || []).map(l => `<li>${l}</li>`).join("")}</ol></div>
+          ${c.numbers ? `<div class="rc-num"><span class="tag num">With numbers</span>${c.numbers}</div>` : ""}
+          ${c.check ? `<p><span class="tag cue">Check</span> ${c.check}</p>` : ""}
+          ${c.trap ? `<p class="trap"><span class="tag trapt">Trap</span> ${c.trap}</p>` : ""}
+          ${(c.why || []).length || c.side ? `<div class="rc-drawers">
+            ${(c.why || []).map(([label, html]) => `<details class="why"><summary>${label}</summary><div>${html}</div></details>`).join("")}
+            ${c.side ? `<details class="side"><summary>Side notes <span class="muted">(not needed for points)</span></summary><div>${c.side}</div></details>` : ""}
+          </div>` : ""}
+        </div>
+      </details>`;
+  }
+
+  function partCard(t, qid, p, extra) {
     const pid = `${qid}.${p}`, m = M[pid] || {}, mark = (state.marks[pid] || {}).m;
+    const cards = (cardsOf(t).parts[pid] || []).map(id => {
+      const used = cardUsed(t, id, pid);
+      return cardHtml(t, id, !used, used ? "you've used this card — try from memory first" : "");
+    }).join("");
     const mine = extra.mine ? `
       <details class="mine"><summary>What you wrote in Moed B <span class="score">${extra.mine.score}</span></summary>
         ${extra.mine.img ? `<div class="img scan">${img(extra.mine.img, "your Moed B answer")}</div>` : ""}
@@ -182,6 +219,7 @@
     return `
       <article class="item ${mark || ""}" id="p-${pid}">
         <div class="item-h"><div><span class="src">Part ${p}</span> <span class="pts">${m.pts} pts${m.bonus ? " bonus" : ""}</span></div>${mark ? `<span class="pill ${mark}">${MARKS[mark]}</span>` : ""}</div>
+        ${cards ? `<div class="rcards">${cards}</div>` : ""}
         <div class="img q">${img(m.q, "part " + p)}</div>
         ${extra.code ? codeTrainer(extra.code) : ""}
         <div class="reveals">
@@ -247,6 +285,66 @@
     });
   }
 
+
+  // ── 25/5 study timer (fixed blocks: 25 min focus, 5 min break) ────────────
+  const TKEY = KEY + "_timer";
+  const PH = { focus: { len: 25 * 60, label: "Focus", next: "break" }, break: { len: 5 * 60, label: "Break", next: "focus" } };
+  let T = (() => { try { return JSON.parse(localStorage.getItem(TKEY)) || null; } catch (e) { return null; } })()
+    || { phase: "focus", running: false, endsAt: 0, left: PH.focus.len, day: "", blocks: 0 };
+  const today = () => new Date().toISOString().slice(0, 10);
+  if (T.day !== today()) { T.day = today(); T.blocks = 0; }
+  const tsave = () => { try { localStorage.setItem(TKEY, JSON.stringify(T)); } catch (e) {} };
+  const remaining = () => T.running ? Math.max(0, Math.round((T.endsAt - Date.now()) / 1000)) : T.left;
+  const mmss = sec => `${String(Math.floor(sec / 60)).padStart(2, "0")}:${String(sec % 60).padStart(2, "0")}`;
+  function chime() {
+    try {
+      const ac = new (window.AudioContext || window.webkitAudioContext)();
+      [0, 0.35, 0.7].forEach(dt => {
+        const o = ac.createOscillator(), g = ac.createGain();
+        o.frequency.value = T.phase === "break" ? 660 : 880; o.connect(g); g.connect(ac.destination);
+        g.gain.setValueAtTime(0.0001, ac.currentTime + dt);
+        g.gain.exponentialRampToValueAtTime(0.25, ac.currentTime + dt + 0.02);
+        g.gain.exponentialRampToValueAtTime(0.0001, ac.currentTime + dt + 0.3);
+        o.start(ac.currentTime + dt); o.stop(ac.currentTime + dt + 0.32);
+      });
+    } catch (e) {}
+  }
+  function tdraw() {
+    let el = document.getElementById("timer");
+    if (!el) { el = document.createElement("div"); el.id = "timer"; document.body.appendChild(el); }
+    const sec = remaining();
+    el.className = `timer ${T.phase} ${T.running ? "run" : ""}`;
+    el.innerHTML = `
+      <div class="t-ph">${PH[T.phase].label}${T.blocks ? ` <span class="t-bl" title="focus blocks finished today">· ${T.blocks} done today</span>` : ""}</div>
+      <div class="t-time">${mmss(sec)}</div>
+      <div class="t-btns">
+        <button data-a="toggle">${T.running ? "Pause" : sec === PH[T.phase].len ? "Start" : "Resume"}</button>
+        <button data-a="reset" title="restart this block">↺</button>
+        <button data-a="skip" title="skip to ${PH[T.phase].next}">Skip</button>
+      </div>`;
+    document.title = T.running ? `${mmss(sec)} ${PH[T.phase].label} · ML Exam C` : "ML Exam C — Study Site";
+  }
+  function tswitch() {                           // block finished → next phase; a break starts by itself, a focus block waits for you
+    if (T.phase === "focus") T.blocks++;
+    T.phase = PH[T.phase].next; T.left = PH[T.phase].len;
+    T.running = T.phase === "break"; T.endsAt = Date.now() + T.left * 1000;
+    tsave();
+  }
+  document.addEventListener("click", e => {
+    const b = e.target.closest("#timer button"); if (!b) return;
+    const a = b.dataset.a;
+    if (a === "toggle") {
+      if (T.running) { T.left = remaining(); T.running = false; }
+      else { T.endsAt = Date.now() + T.left * 1000; T.running = true; }
+    } else if (a === "reset") { T.running = false; T.left = PH[T.phase].len; }
+    else if (a === "skip") { T.phase = PH[T.phase].next; T.running = false; T.left = PH[T.phase].len; }
+    tsave(); tdraw();
+  });
+  setInterval(() => {
+    if (T.running && remaining() === 0) { chime(); tswitch(); }
+    tdraw();
+  }, 1000);
+
   // ── routing ──────────────────────────────────────────────────────────────
   function route() {
     const parts = location.hash.replace(/^#\/?/, "").split("/");
@@ -260,4 +358,5 @@
   try { const th = localStorage.getItem(KEY + "_theme"); if (th) document.documentElement.dataset.theme = th; } catch (e) {}
   window.addEventListener("hashchange", route);
   route();
+  tdraw();
 })();
