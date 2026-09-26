@@ -19,7 +19,10 @@
       start: R`<p>errors: \(\;r = X\theta - y\)</p>\[\nabla J = \;\square\; + \;\square\]<p>(one piece from the squared errors, one from the penalty)</p>`,
       moves: [
         { line: R`Squared-errors part → \(\;2X^\top(X\theta - y)\)`,
-          why: R`<p>Standard result from class. Same idea as 1-D: the derivative of (stuff)² is 2 · stuff · (derivative of stuff). "Stuff" is the errors; \(X^\top\) collects the derivative for every \(\theta\) at once. (More: Regression note 5.)</p>` },
+          why: R`<p><b>\(\|X\theta - y\|^2\) is a sum of squares</b>, one per sample: \(e_1^2 + e_2^2 + e_3^2 + e_4^2\), where \(e_i\) = sample \(i\)'s error (prediction − label).</p>
+<p><b>Use 2 · stuff · (derivative of stuff) on each error separately.</b> \(e_1 = \theta_0 + \theta_1 x_1 + \theta_2 x_2 - y_1\) with sample 1's \(x\)'s, so the derivative of \(e_1^2\) with respect to \(\theta_j\) is \(2\cdot e_1\cdot\)(sample 1's \(x_j\)). Same for every sample.</p>
+<p><b>Add them up:</b> \(2\cdot\)(each error × that sample's \(x_j\), summed) = \(2\cdot\)(column \(j\) of \(X\)) · (errors). All \(j\) at once: \(2X^\top(X\theta - y)\).</p>
+<p class="trapline"><b>Not</b> \(2\cdot\|X\theta - y\|\cdot x_j\): the length \(\|X\theta - y\|\) is one number, but every sample has its own \(x_j\) — the rule has to be applied per sample.</p>` },
         { line: R`Penalty part \(\lambda(|\theta_0| + \dots + |\theta_p|)\) → \(\;\lambda\,\mathrm{sign}(\theta)\)`,
           why: R`<p>The derivative of \(|a|\) is just its sign: +1 if \(a\) is positive, −1 if negative. That's why the question says "assume no \(\theta\) is 0" — at 0 there's no derivative.</p>` },
         { line: R`Add them. That's the answer: <div class="formula">\[\nabla J(\theta) = 2X^\top(X\theta - y) + \lambda\,\mathrm{sign}(\theta)\]</div>`,

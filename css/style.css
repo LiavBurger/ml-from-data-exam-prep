@@ -211,3 +211,5 @@ a.noteref { text-decoration: underline dotted; }
 .mv.start .n { background: var(--got-bg); color: var(--got-fg); }
 .paper { margin-top: 6px; background: var(--img-bg); color: #1c2230; border-radius: 8px; padding: 6px 14px; overflow-x: auto; overflow-y: hidden; }
 .paper p { margin: 6px 0; }
+
+.trapline { background: var(--trap-bg); border-left: 3px solid var(--trap); padding: 8px 12px; border-radius: 8px; margin: 10px 0; }
