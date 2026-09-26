@@ -44,17 +44,20 @@
     },
 
     "2025C-q1.3": {
-      start: R`\[\text{errors} = X\theta - y = \square \qquad \nabla J = \square \qquad \theta_{\text{new}} = \theta - 0.1\cdot\nabla J = \square\]`,
+      start: R`<p><b>The rule:</b></p>\[\theta_{\text{new}} = \theta - \eta\cdot(\text{the derivative})\]<p><b>The derivative, one knob at a time (from part 2):</b></p>\[\frac{dJ}{d\theta_j} = \sum_i 2\cdot(\text{bracket})\cdot x^{(i)}_j + \lambda\,\mathrm{sign}(\theta_j)\]<p><b>Then plug in:</b> brackets \(= \square\), \(\;\frac{dJ}{d\theta_0} = \square\), \(\;\frac{dJ}{d\theta_1} = \square\), \(\;\frac{dJ}{d\theta_2} = \square\), \(\;\theta_{\text{new}} = \square\)</p>`,
       moves: [
-        { line: R`Errors = predictions − labels = \((6, 5, 8, 4) - (6, 4, 5, 1) = (0, 1, 3, 3)\)`,
-          why: R`<p>Each prediction is a row of \(X\) times \(\theta = (1, -2, 3)\). Row 1: \(1\cdot 1 + (-1)(-2) + 1\cdot 3 = 1 + 2 + 3 = 6\). Same for the other rows: 5, 8, 4.</p>` },
-        { line: R`\(2X^\top\cdot\)errors: each column of \(X\) · errors → \((7, 1, 12)\), times 2 → \((14, 2, 24)\)`,
-          why: R`<p>Column 0 \((1,1,1,1)\cdot(0,1,3,3) = 7\). Column 1 \((-1,-2,1,0)\cdot(0,1,3,3) = -2 + 3 = 1\). Column 2 \((1,0,3,1)\cdot(0,1,3,3) = 9 + 3 = 12\).</p>` },
-        { line: R`Add \(\lambda\,\mathrm{sign}(\theta) = (1, -1, 1)\): \(\;\nabla J = (15, 1, 25)\)`,
-          extra: [{ label: "the official solution says (15, 0, 25) — it's a slip", html: R`<p>\(2 + (-1) = 1\), not 0. So the middle entry is 1, and later \(-2 - 0.1 = -2.1\). (Its first line also says "λ = 2" but it uses 1.)</p>` }] },
-        { line: R`Step: \(\theta - 0.1\cdot(15, 1, 25) = (1 - 1.5,\ -2 - 0.1,\ 3 - 2.5) = (-0.5,\ -2.1,\ 0.5)\). Done.` },
+        { line: R`<b>The rule</b> — write it first: <div class="formula">\[\theta_{\text{new}} = \theta - \eta\cdot(\text{the derivative})\]</div> Given: \(\theta = (1, -2, 3)\), \(\eta = 0.1\), \(\lambda = 1\).`,
+          why: R`<p>The derivative points uphill (where the loss grows). We want the loss to shrink, so we step the other way: <b>minus</b> a small piece (\(\eta = 0.1\)) of the derivative. One step = do this once.</p>` },
+        { line: R`<b>Plug \(\theta\) into each sample's bracket</b> (prediction − label), from part 2: <div class="formula">\[\begin{aligned}\text{sample 1:}\;\; &1 - 1\cdot(-2) + 1\cdot 3 - 6 = 1 + 2 + 3 - 6 = 0\\ \text{sample 2:}\;\; &1 - 2\cdot(-2) + 0\cdot 3 - 4 = 1 + 4 + 0 - 4 = 1\\ \text{sample 3:}\;\; &1 + 1\cdot(-2) + 3\cdot 3 - 5 = 1 - 2 + 9 - 5 = 3\\ \text{sample 4:}\;\; &1 + 0\cdot(-2) + 1\cdot 3 - 1 = 1 + 0 + 3 - 1 = 3\end{aligned}\]</div>`,
+          why: R`<p>These are part 2's brackets, \(\theta_0 + \theta_1 x_1 + \theta_2 x_2 - y\), with \(\theta_0 = 1,\ \theta_1 = -2,\ \theta_2 = 3\) put in. Each sample uses its own \(x_1, x_2, y\) from the table.</p>` },
+        { line: R`<b>Knob \(\theta_0\)</b> — part 2's derivative, each bracket × that sample's \(x_0\) (always 1): <div class="formula">\[\begin{aligned}\frac{dJ}{d\theta_0} &= 2\cdot(0\cdot 1 + 1\cdot 1 + 3\cdot 1 + 3\cdot 1)\\ &\quad + 1\cdot\mathrm{sign}(1)\\ &= 2\cdot 7 + 1 = 15\end{aligned}\]</div>`,
+          why: R`<p>The number in front of \(\theta_0\) in every bracket is 1 (it's the bias), so each bracket is multiplied by 1. \(\mathrm{sign}(\theta_0) = \mathrm{sign}(1) = +1\).</p>` },
+        { line: R`<b>Knob \(\theta_1\)</b> — each bracket × that sample's \(x_1\) = \((-1, -2, 1, 0)\): <div class="formula">\[\begin{aligned}\frac{dJ}{d\theta_1} &= 2\cdot\big(0\cdot(-1) + 1\cdot(-2) + 3\cdot 1 + 3\cdot 0\big)\\ &\quad + 1\cdot\mathrm{sign}(-2)\\ &= 2\cdot 1 - 1 = 1\end{aligned}\]</div>`,
+          extra: [{ label: "the official solution says 0 here — it's a slip", html: R`<p>\(2\cdot 1 + (-1) = 1\), not 0. (Its first line also says "λ = 2" but it uses 1.)</p>` }] },
+        { line: R`<b>Knob \(\theta_2\)</b> — each bracket × that sample's \(x_2\) = \((1, 0, 3, 1)\): <div class="formula">\[\begin{aligned}\frac{dJ}{d\theta_2} &= 2\cdot(0\cdot 1 + 1\cdot 0 + 3\cdot 3 + 3\cdot 1)\\ &\quad + 1\cdot\mathrm{sign}(3)\\ &= 2\cdot 12 + 1 = 25\end{aligned}\]</div> So the derivative is \((15, 1, 25)\).` },
+        { line: R`<b>The step</b> — the rule from move 1, knob by knob: <div class="formula">\[\begin{aligned}\theta_{\text{new}} &= (1, -2, 3) - 0.1\cdot(15, 1, 25)\\ &= (1 - 1.5,\; -2 - 0.1,\; 3 - 2.5)\\ &= (-0.5,\; -2.1,\; 0.5)\end{aligned}\]</div> Done.` },
       ],
-      compare: R`Same steps as the official solution, except its slip: the correct gradient is (15, 1, 25) and the new θ is (−0.5, −2.1, 0.5).`,
+      compare: R`Same steps as the official solution (it writes moves 3–5 as the matrix \(2X^\top(X\theta - y)\)). Its slip: the correct derivative is (15, 1, 25) and the new θ is (−0.5, −2.1, 0.5).`,
     },
 
     "2025C-q1.4": {

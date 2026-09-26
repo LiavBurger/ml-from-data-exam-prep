@@ -34,6 +34,10 @@ the points at the cost of formality … The 10 steps are mostly mathematical jar
   3. **Derivative** — "dJ/dθⱼ = …" using the chain rule on the rewritten pieces.
   4. **Write it short** — the compact/official form = the answer.
   The `start` shows "The function: … = □" and "Its derivative: … = □".
+- **Computation parts get the same structure** (learner: part 3 "feels like magic … I need a clear structure like I had
+  from 1 to 2"): 1. write the rule/formula first; 2. plug the numbers into the pieces (e.g. each sample's bracket);
+  3. reuse the previous part's formula **one component at a time** (one move per knob / entry) with the full chain;
+  4. the final step. Always show the link to the part it builds on ("part 2's derivative").
 - **No new names or variables** (e.g. eᵢ, rᵢ, u) unless the official answer itself uses them. Keep brackets verbatim,
   exactly as the question writes them. Learner: "why e_i now.. do we really need more variables and notations".
 - **No sideways scrolling.** Break every long formula over lines with `\begin{aligned}` (≤ ~50 characters of math per line); put two formulas under each other, never side by side with ⟹.
