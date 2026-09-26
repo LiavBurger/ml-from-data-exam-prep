@@ -22,6 +22,10 @@ the points at the cost of formality … The 10 steps are mostly mathematical jar
   "(Σ xⱼ) × (error)". Rule to state: *everything with an i in it is inside the sum.* Prefer a per-sample table with real numbers.
 - **Chain rule on a squared norm:** ‖v‖² is a sum of per-sample squares; apply "2 · stuff · (derivative of stuff)"
   per sample, never to ‖v‖ as a whole (learner wrote 2·‖Xθ−y‖·xⱼ).
+- **Explain the way the learner thinks: concrete first, formula last.** Learner: "If I had to get the derivative of
+  (x²+3)² I'd write 2·(x²+3)·2x — I don't see that structure here." What worked: write the loss out with the REAL
+  table (one bracket per sample, real numbers), apply their single-variable pattern to each bracket, add up, check
+  with real θ — and only then say "the official formula is just this, written short". Never lead with Σ/index notation.
 - Reference model: `data/walks/regression.js` (2025-C Q1, casual rewrite).
 
 ---
