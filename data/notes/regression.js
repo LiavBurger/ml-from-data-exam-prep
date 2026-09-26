@@ -115,11 +115,21 @@
 <p>A sample with \(\gamma_i = 2\) counts twice as much as one with \(\gamma_i = 1\).</p>
 <p><b>Writing it with matrices.</b> 2026-A Q1.1 asks for matrices such that \(J = (Xw - y)^\top\,\Gamma\,(Xw - y)\) (this exam calls the weights \(w\) instead of \(\theta\)). \(X\) and \(y\) are built exactly as above. \(\Gamma\) ("capital gamma") is a square \(n \times n\) matrix with the weights on its diagonal and zeros everywhere else. 2026-A's weights are \(\gamma = (2, 1, 1, 2)\), so:</p>
 \[\Gamma = \mathrm{diag}(2, 1, 1, 2) = \begin{bmatrix}2&0&0&0\\0&1&0&0\\0&0&1&0\\0&0&0&2\end{bmatrix}\]
-<p><b>Why that product equals \(\sum_i \gamma_i r_i^2\).</b> Write the residual vector as \(r = Xw - y = (r_1, r_2, r_3, r_4)\). First multiply \(\Gamma\) by \(r\): because \(\Gamma\) is diagonal, each residual just gets multiplied by its own weight:</p>
+<p><b>Why that product equals \(\sum_i \gamma_i r_i^2\) — three small steps.</b> Write the residual vector as \(r = Xw - y = (r_1, r_2, r_3, r_4)\).</p>
+<p><i>Step A — plain least squares is already "\(r\) times \(r\)".</i> The plain loss is \(\sum_i r_i^2 = r_1\cdot r_1 + r_2\cdot r_2 + r_3\cdot r_3 + r_4\cdot r_4\): every residual multiplied by <b>itself</b>, then added up. That is exactly the dot product of \(r\) with itself, written \(r^\top r\). (The \(^\top\) turns the column \(r\) into a row, so that row × column gives a single number.) So each residual needs to appear <b>twice</b> — once from each side — because the loss <b>squares</b> it.</p>
+<p><i>Step B — slip the weights in between.</i> We want each squared residual multiplied by its weight: \(\gamma_i\,r_i\cdot r_i\). Multiplying \(\Gamma\) by \(r\) handles the weight and <b>one</b> of the two copies of \(r_i\). Because \(\Gamma\) is diagonal, each residual just gets multiplied by its own weight:</p>
 \[\Gamma r = \begin{bmatrix}2r_1\\ 1r_2\\ 1r_3\\ 2r_4\end{bmatrix}\]
-<p>Then \(r^\top(\Gamma r)\) is the dot product of \(r\) with that vector:</p>
+<p>These are the "weighted residuals" \(\gamma_i r_i\) — but each \(r_i\) appears only once, so nothing is squared yet.</p>
+<p><i>Step C — the second copy of \(r\) does the squaring.</i> The \((Xw - y)^\top = r^\top\) on the left supplies the second copy: the dot product of \(r\) with \(\Gamma r\) multiplies each \(r_i\) by its own \(\gamma_i r_i\):</p>
 \[r^\top \Gamma r = r_1\cdot 2r_1 + r_2\cdot r_2 + r_3\cdot r_3 + r_4\cdot 2r_4 = 2r_1^2 + r_2^2 + r_3^2 + 2r_4^2 = \sum_i \gamma_i r_i^2\]
-<p>That is exactly the weighted loss: every squared residual, multiplied by its sample's weight.</p>`,
+<p>That is exactly the weighted loss: every squared residual, multiplied by its sample's weight. It is the plain \(r^\top r\) from step A with \(\Gamma\) placed in the middle.</p>
+<p><b>With numbers — and why we can't stop at \(\Gamma r\).</b> 2026-A's labels are \(y = (1, 2, 4, 5)\). At the starting point \(w = (0,0,0)\) every prediction is 0, so the residuals are \(r = Xw - y = (0-1,\ 0-2,\ 0-4,\ 0-5) = (-1, -2, -4, -5)\).</p>
+<ul>
+<li>Step B: \(\Gamma r = (2\cdot(-1),\ 1\cdot(-2),\ 1\cdot(-4),\ 2\cdot(-5)) = (-2, -2, -4, -10)\).<br>If we just added these up we'd get \(-2 - 2 - 4 - 10 = -18\): a <b>negative</b> "loss", because the residuals keep their signs and errors in opposite directions would cancel. That is why we don't stop here.</li>
+<li>Step C: \(r^\top(\Gamma r) = (-1)(-2) + (-2)(-2) + (-4)(-4) + (-5)(-10) = 2 + 4 + 16 + 50 = 72\).</li>
+<li>Check against the definition: \(\sum_i \gamma_i r_i^2 = 2\cdot(-1)^2 + 1\cdot(-2)^2 + 1\cdot(-4)^2 + 2\cdot(-5)^2 = 2\cdot 1 + 1\cdot 4 + 1\cdot 16 + 2\cdot 25 = 2 + 4 + 16 + 50 = 72\) ✓</li>
+</ul>
+<p>For comparison, the unweighted loss is \(r^\top r = 1 + 4 + 16 + 25 = 46\); the weights add one extra copy of samples 1 and 4's squared errors: \(46 + 1 + 25 = 72\).</p>`,
       cue: R`Part 1 of almost every Q1: "Write down the data matrix \(X\) such that \(X\theta\) produces the vector of predictions" (2025-A, 2025-B, 2025-C); the weighted version adds \(\Gamma\) (2026-A).`,
       first: R`Draw the table: a column of 1s, then the feature columns in their order, one row per sample. Then write \(y\) in the same row order.`,
       recipe: R`Weighted: \(X\) and \(y\) as usual, plus \(\Gamma = \mathrm{diag}(\gamma_1, \dots, \gamma_n)\) — weights on the diagonal, zeros elsewhere.`,
