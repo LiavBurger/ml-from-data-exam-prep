@@ -34,6 +34,7 @@ the points at the cost of formality … The 10 steps are mostly mathematical jar
   3. **Derivative** — "dJ/dθⱼ = …" using the chain rule on the rewritten pieces.
   4. **Write it short** — the compact/official form = the answer.
   The `start` shows "The function: … = □" and "Its derivative: … = □".
+- **No sideways scrolling.** Break every long formula over lines with `\begin{aligned}` (≤ ~50 characters of math per line); put two formulas under each other, never side by side with ⟹.
 - Reference model: `data/walks/regression.js` (2025-C Q1, casual rewrite).
 
 ---
