@@ -14,4 +14,6 @@ python3 tools/contact.py 2026B 3    # QA sheet of one question's cuts -> build/
 ```
 Solutions are detected by their exact blue colour (0x2E74B5). Wrong cuts are fixed with `OVERRIDES` in `tools/extract.py`.
 
-Content lives in `data/content.js` (topics, first moves, items, code-blank answers).
+Topics, questions, Moed B answers and code-blank answers live in `data/content.js`. Each topic's notes and per-part hints live in `data/notes/<topic>.js`, written to the standard in `spec/STYLE.md` and validated with `node tools/check_notes.js data/notes/<topic>.js`.
+
+Before deploying: `python3 tools/stamp.py` (cache-busting version stamps in index.html).
