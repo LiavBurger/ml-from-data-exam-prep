@@ -51,6 +51,9 @@
         { line: R`<b>Put it together</b> — select the two pieces of the step 3 list, and that's the answer: <div class="formula">\[\nabla J(\theta) = \underbrace{2X^\top(X\theta - y)}_{\textstyle\text{= step 4's sums}} + \underbrace{\lambda\,\mathrm{sign}(\theta)}_{\textstyle\text{= the signs}}\]</div>`,
           why: R`<ul><li>The 2 from every term comes out in front: \(2X^\top(X\theta - y)\).</li>
 </ul>
+<p><b>sign(θ) with numbers:</b> \(\theta = (1, -2, 3)\) is short for the list \((\theta_0, \theta_1, \theta_2)\). sign of each: \(\mathrm{sign}(1) = +1\), \(\mathrm{sign}(-2) = -1\), \(\mathrm{sign}(3) = +1\). So \(\mathrm{sign}(\theta) = (1, -1, 1)\) — exactly like numpy:</p>
+<pre><code>theta = np.array([1, -2, 3])
+np.sign(theta)   # array([ 1, -1,  1])</code></pre>
 <p><b>Where \(\lambda\,\mathrm{sign}(\theta)\) comes from — nothing is calculated, it's a shorthand.</b> Select the signs column of step 3:</p>
 \[\underbrace{\begin{bmatrix}\lambda\,\mathrm{sign}(\theta_0)\\ \lambda\,\mathrm{sign}(\theta_1)\\ \lambda\,\mathrm{sign}(\theta_2)\end{bmatrix}}_{\textstyle\text{this part}} = \lambda\cdot\underbrace{\begin{bmatrix}\mathrm{sign}(\theta_0)\\ \mathrm{sign}(\theta_1)\\ \mathrm{sign}(\theta_2)\end{bmatrix}}_{\textstyle\text{this part = sign}(\theta)}\]
 <ul><li>\(\lambda\) is in every row, so it comes out in front — like \((2a, 2b, 2c) = 2\cdot(a, b, c)\).</li>
