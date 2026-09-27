@@ -74,7 +74,7 @@
           why: R`<p><code>shape[0]</code> = number of rows (samples), <code>shape[1]</code> = number of columns.</p>` },
         { line: R`<b>Score on the held-out fold, no penalty.</b> <b>Line 16:</b> <code>X_train @ w_star</code> → <code>X_val @ w_star</code>. <b>Line 17:</b> delete <code>+ lmd * np.sum(w_star[1:] ** 2)</code>`,
           size: R`<p><code>X_val @ w_star</code>: (validation rows, 3) @ (3,) → one prediction per validation row ✓ — same length as <code>y_val</code>.</p><p><code>X_train @ w_star</code>: one per <b>training</b> row — a different length from <code>y_val</code> ✗</p>`,
-          why: R`<p>We predict the rows the model didn't train on, and we only care how good the predictions are: plain squared error.</p>` },
+          why: R`<p>Two functions, two jobs: <b>inside <code>solve_ridge_regression</code></b> the penalty is used — it finds \(w^*\) by minimizing squared error + \(\lambda\cdot\)(weights²) on the training folds. <b>This function only chooses \(\lambda\)</b>: it takes that \(w^*\), predicts the held-out fold, and scores it with plain squared error. The penalty already did its job inside the solver. (Keeping it here would also give a bigger \(\lambda\) an extra cost just for being bigger, not for predicting worse.)</p>` },
         { line: R`<b>Compare the average over the folds.</b> <b>Line 20:</b> <code>if risk &lt; min_cv_risk</code> → <code>if np.mean(lo_risk) &lt; min_cv_risk</code>. Done (4 bugs; 3 are enough).`,
           why: R`<p><code>risk</code> is only the last fold's score. The \(\lambda\)'s score is the average over all folds — the same number line 21 stores.</p>` },
       ],
