@@ -67,6 +67,9 @@ The `start` is the same four sentence openers with □ blanks.
 - **Concrete first, formula last.** Start from the real exam table and numbers, in the learner's single-variable
   pattern; only then "the official formula is just this, written short".
 - 1–3 short sentences, plus (optional) a small real-numbers table or a numpy line. Analogies welcome.
+- **Never state a known formula as a given.** If a move uses a result like θ̃ = (XᵀX)⁻¹Xᵀy, its why? shows where it comes
+  from in the learner's structure (the function → derivative → set = 0 → solve), reusing earlier parts. (Learner:
+  "How did we get from (XᵀX)⁻¹Xᵀy to ‖Xθ−y‖²?")
 - The why? is for understanding; the next move must be followable without opening it.
 - Optional `extra` blocks (collapsed, labelled): "check it with numbers", an official-solution slip, a Moed B trap.
 
