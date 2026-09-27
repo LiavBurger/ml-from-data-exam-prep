@@ -30,7 +30,7 @@ for (const [pid, wk] of Object.entries(window.WALKS)) {
   (wk.moves || []).forEach((mv, i) => {
     moves++;
     if (!mv.line) err(`${pid} move ${i + 1}`, "empty line");
-    check(`${pid} move ${i + 1}.line`, mv.line); check(`${pid} move ${i + 1}.why`, mv.why);
+    check(`${pid} move ${i + 1}.line`, mv.line); check(`${pid} move ${i + 1}.why`, mv.why); check(`${pid} move ${i + 1}.size`, mv.size);
     (mv.extra || []).forEach((x, k) => { if (!x.label) err(`${pid} move ${i + 1}`, "extra without label"); check(`${pid} move ${i + 1}.extra[${k}]`, x.html); });
     const words = String(mv.line).replace(/\\\[[\s\S]*?\\\]|\\\([\s\S]*?\\\)/g, " F ").replace(/<[^>]+>/g, " ").split(/\s+/).filter(Boolean).length;
     if (words > 40) err(`${pid} move ${i + 1}`, `line has ${words} words (keep it to one short line)`);

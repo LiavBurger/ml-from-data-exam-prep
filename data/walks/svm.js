@@ -21,9 +21,11 @@
       start: R`<p><b>(a)</b> Decision boundary: \(\{(x_1, x_2) : \;\square = 0\}\)</p><p><b>(b)</b> Decision rule: \(\hat y(x) = \mathrm{sign}(\;\square\;)\)</p><p><b>(c)</b> Margin = distance to the closest sample:</p>\[\frac{|\square|}{\sqrt{w_1^2 + w_2^2}} = \;\square\]`,
       moves: [
         { line: R`<b>Distance of each sample to \(x_1 + x_2 = 0\)</b> — |score| divided by the length of \(w = (1, 1)\): <div class="formula">\[\frac{|x_1 + x_2|}{\sqrt{1^2 + 1^2}} = \frac{4}{\sqrt2} = 2\sqrt2 \quad\text{for all four}\]</div>`,
+          size: R`\[\|w\| = \sqrt{\underbrace{w^\top}_{\textstyle 1\times 2}\,\underbrace{w}_{\textstyle 2\times 1}} = \sqrt{1^2 + 1^2}\]<p>Here \(w = (1, 1)\) is only the 2 feature weights, no bias. inner 2 = 2 ✓ · result = one number ✓</p>`,
           why: R`<p>🧠 know by heart (it's not on the formula sheet): distance from a point to the line = \(|w_0 + w_1x_1 + w_2x_2|\,/\,\|w\|\), with \(\|w\| = \sqrt{w_1^2 + w_2^2}\) (no \(w_0\) in it).</p>
 <p>Why: the score is 0 on the line and grows by \(\|w\|\) for every step of 1 straight away from it. So score ÷ \(\|w\|\) = distance. Part 1 already gave \(|x_1 + x_2| = 4\) for every sample.</p>` },
         { line: R`<b>Same distance to all → max-margin.</b> (a) \(\{(x_1, x_2) : x_1 + x_2 = 0\}\). (b) \(\hat y(x) = \mathrm{sign}(x_1 + x_2)\), i.e. \(\mathrm{sign}(w^\top x)\) with \(w = (0, 1, 1)\) (bias first).`,
+          size: R`\[\underbrace{w^\top}_{\textstyle 1\times 3}\,\underbrace{x}_{\textstyle 3\times 1} = \text{one score}\]<p>Bias first: \(w = (0, 1, 1)\) is 3 long, so \(x = (1, x_1, x_2)\), with a 1 for the bias. inner 3 = 3 ✓ · \((0, 1, 1)\cdot(1, x_1, x_2) = x_1 + x_2\) ✓</p><p>Without the 1: (1×3)(2×1), inner 3 ≠ 2 ✗</p>`,
           why: R`<p>Why nothing beats it: \((2, 2)\) and \((-2, -2)\) are \(\sqrt{4^2 + 4^2} = 4\sqrt2\) apart. Any separating line crosses between them, so it is at most half of that, \(2\sqrt2\), from one of them. Our line is \(2\sqrt2\) from both, so it already has the best possible margin.</p>` },
         { line: R`<b>(c) The margin</b> = distance to the closest sample \(= 2\sqrt2 \approx 2.83\). Done.` },
       ],
@@ -35,8 +37,10 @@
       start: R`\[w = (\square, \square, \square)\]<p>Scores \(w^\top x^{(i)}\): \(\;\square, \square, \square, \square\;\) = the labels, so every \((\dots)\) is 0 and \(J(w) = \square\)</p>`,
       moves: [
         { line: R`<b>\(J \ge 0\)</b> — it is \(\tfrac1n\) · a sum of squares \((w^\top x^{(i)} - y^{(i)})^2\). So a \(w\) with \(J = 0\) is the minimum.`,
+          size: R`\[\underbrace{w^\top}_{\textstyle 1\times 3}\,\underbrace{x^{(i)}}_{\textstyle 3\times 1} - \underbrace{y^{(i)}}_{\textstyle 1\times 1} = \text{one number}\]<p>\(x^{(i)} = (1, x_1, x_2)\), with a 1 for the bias. inner 3 = 3 ✓ · each bracket is one number, so its square is one number too ✓</p>`,
           why: R`<p>You don't need to know LMS by heart:</p><p>[sheet: Least mean squares classification]</p><p>It writes the same loss split by class, \((1 - w^\top x)^2\) for positives and \((1 + w^\top x)^2\) for negatives. Both are 0 when the score equals the label.</p>` },
         { line: R`<b>Part 2's line, scaled to ±1</b> — \(w = (0, 1, 1)\) scores \((4, 4, -4, -4)\). Divide by 4: <div class="formula">\[w = (0, \tfrac14, \tfrac14) \;\text{ scores }\; (1, 1, -1, -1) = y\]</div>`,
+          size: R`\[\underbrace{X}_{\textstyle 4\times 3}\,\underbrace{w}_{\textstyle 3\times 1} = \underbrace{(1, 1, -1, -1)}_{\textstyle 4\times 1}\]<p>4 samples × (1 + 2 features); inner 3 = 3 ✓ · result 4×1 = one score per sample ✓ (each row of the why? table is one row of \(X\) · \(w\))</p><p>Wrong order: \(wX\) = (3×1)(4×3), inner 1 ≠ 4 ✗</p>`,
           why: R`<p>Each score = row \((1, x_1, x_2)\) · \(w\):</p>
 <div class="tw"><table><thead><tr><th>row</th><th>· \((0, \tfrac14, \tfrac14)\)</th><th>score</th><th>label</th></tr></thead><tbody>
 <tr><td>(1, 2, 2)</td><td>0 + 0.5 + 0.5</td><td>1</td><td>+1</td></tr>
@@ -45,6 +49,7 @@
 <tr><td>(1, −3, −1)</td><td>0 − 0.75 − 0.25</td><td>−1</td><td>−1</td></tr></tbody></table></div>
 <p>Dividing by 4 doesn't move the line (same signs), it only makes the scores the right size.</p>` },
         { line: R`<b>Every (…) is 0</b> — \(w^\top x^{(i)} - y^{(i)} = 0\) for all four samples, so \(J = 0\). The LMS classifier is \(w = (0, \tfrac14, \tfrac14)\). Done.`,
+          size: R`\[\underbrace{X}_{\textstyle 4\times 3}\,\underbrace{w}_{\textstyle 3\times 1} - \underbrace{y}_{\textstyle 4\times 1} = \underbrace{(0, 0, 0, 0)}_{\textstyle 4\times 1}\]<p>inner 3 = 3 ✓ · four scores minus four labels = four brackets, all 0 ✓</p><p>numpy: <code>X.shape</code> = (4, 3), <code>y.shape</code> = (4,), so <code>lstsq</code> returns shape (3,), one weight per knob ✓</p>`,
           extra: [{ label: "check it with numpy", html: R`<pre><code>np.linalg.lstsq(X, y, rcond=None)[0]
 # array([0.  , 0.25, 0.25])</code></pre><p>Same \(w\), and it's the only one (\(X\) has rank 3).</p>` }] },
       ],
@@ -55,11 +60,14 @@
       point: R`Max-margin only cares about the closest samples: \((2, 3)\) is farther away than them, so nothing changes. LMS cares about every sample's score = label: \((2, 3)\) scores 1.25, not 1, so LMS changes.`,
       moves: [
         { line: R`<b>Max-margin: where is (2, 3)?</b> Score \(2 + 3 = 5 \gt 0\), so it's on the correct side. Its distance \(5/\sqrt2 \approx 3.54\) is more than the margin \(2\sqrt2 \approx 2.83\).`,
+          size: R`\[\underbrace{w^\top}_{\textstyle 1\times 3}\,\underbrace{x}_{\textstyle 3\times 1} = (0, 1, 1)\cdot(1, 2, 3) = 5\]<p>inner 3 = 3 ✓ · one score. The distance divides by \(\|w\|\) of the 2 feature weights \((1, 1)\) only: \(\sqrt{w^\top w}\) = √((1×2)(2×1)) = \(\sqrt2\) ✓</p>`,
           why: R`<p>Distance = |score| ÷ length of \(w = (1, 1)\) = \(|x_1 + x_2|/\sqrt{1^2 + 1^2}\), so \((2, 3)\) is \(5/\sqrt2\) away. (Same formula as part 2, move 1.)</p>` },
         { line: R`<b>So max-margin doesn't change.</b> The old line still has margin \(2\sqrt2\), and adding a sample can never increase the best margin. So nothing beats the old line.`,
           why: R`<p>The margin = distance to the <b>closest</b> sample. A new sample either is closer (margin shrinks) or isn't (margin stays). It can never make it bigger.</p>` },
-        { line: R`<b>LMS: the new (…) isn't 0.</b> With \(w = (0, \tfrac14, \tfrac14)\): \(\tfrac14\cdot 2 + \tfrac14\cdot 3 - 1 = 0.25\). <div class="formula">\[J = \tfrac15\big(0^2 + 0^2 + 0^2 + 0^2 + 0.25^2\big) = \tfrac1{80}\]</div>` },
+        { line: R`<b>LMS: the new (…) isn't 0.</b> With \(w = (0, \tfrac14, \tfrac14)\): \(\tfrac14\cdot 2 + \tfrac14\cdot 3 - 1 = 0.25\). <div class="formula">\[J = \tfrac15\big(0^2 + 0^2 + 0^2 + 0^2 + 0.25^2\big) = \tfrac1{80}\]</div>`,
+          size: R`\[\underbrace{X}_{\textstyle 5\times 3}\,\underbrace{w}_{\textstyle 3\times 1} - \underbrace{y}_{\textstyle 5\times 1} = \underbrace{(0, 0, 0, 0, 0.25)}_{\textstyle 5\times 1}\]<p>The new sample adds a 5th row \((1, 2, 3)\), so \(X\) is now 5×3. inner 3 = 3 ✓ · five brackets, so \(\tfrac15\) ✓</p>` },
         { line: R`<b>A nudged line does better</b> — \(w = (-\varepsilon, \tfrac14, \tfrac14)\): <div class="formula">\[J = \varepsilon^2 - \tfrac{\varepsilon}{10} + \tfrac1{80} \lt \tfrac1{80} \;\text{ for } 0 \lt \varepsilon \lt 0.1\]</div>So \(w = (0, \tfrac14, \tfrac14)\) is no longer the minimum: LMS changes. Done.`,
+          size: R`\[\underbrace{X}_{\textstyle 5\times 3}\,\underbrace{w}_{\textstyle 3\times 1} = \underbrace{\text{scores}}_{\textstyle 5\times 1}\]<p>inner 3 = 3 ✓ · \(w = (-\varepsilon, \tfrac14, \tfrac14)\): the \(-\varepsilon\) meets \(X\)'s column of 1s, so all 5 scores drop by \(\varepsilon\) ✓</p>\[\underbrace{X^\top}_{\textstyle 3\times 5}\,\underbrace{(Xw - y)}_{\textstyle 5\times 1} = 3\times 1\]<p>(the gradient in "another way") inner 5 = 5 ✓ · one entry per knob ✓ · wrong order \(X(Xw - y)\) = (5×3)(5×1) ✗</p>`,
           why: R`<p>\(-\varepsilon\) lowers every score by \(\varepsilon\). The four old (…) become \(-\varepsilon\), the new one becomes \(0.25 - \varepsilon\):</p>
 \[\begin{aligned}J &= \tfrac15\big(4\varepsilon^2 + (\tfrac14 - \varepsilon)^2\big)\\ &= \tfrac15\big(4\varepsilon^2 + \tfrac1{16} - \tfrac{\varepsilon}{2} + \varepsilon^2\big)\\ &= \tfrac15\big(5\varepsilon^2 - \tfrac{\varepsilon}{2} + \tfrac1{16}\big)\\ &= \varepsilon^2 - \tfrac{\varepsilon}{10} + \tfrac1{80}\end{aligned}\]
 <p>Below \(\tfrac1{80}\) when \(\varepsilon^2 - \tfrac{\varepsilon}{10} \lt 0\), i.e. \(0 \lt \varepsilon \lt 0.1\). Example \(\varepsilon = 0.05\): \(0.0025 - 0.005 + 0.0125 = 0.01 \lt 0.0125\).</p>`,
@@ -83,10 +91,12 @@
 <tr><td>(3, 1)</td><td>+</td><td>\(\sqrt{5.5^2 + 2.5^2} \approx 6.04\)</td></tr></tbody></table></div>
 <p>Anything between 0.71 and 3.81 works.</p>` },
         { line: R`<b>Expand the circle, select the pieces</b> — orange = numbers, blue = features: <div class="formula">\[\begin{aligned}&(x_1 + 2.5)^2 + (x_2 + 1.5)^2 - 1^2\\ &= \textcolor{#e8912d}{7.5}\cdot\textcolor{#4c8dff}{1} + \textcolor{#e8912d}{5}\,\textcolor{#4c8dff}{x_1} + \textcolor{#e8912d}{3}\,\textcolor{#4c8dff}{x_2} + \textcolor{#e8912d}{1}\,\textcolor{#4c8dff}{x_1^2} + \textcolor{#e8912d}{1}\,\textcolor{#4c8dff}{x_2^2}\end{aligned}\]</div><div class="formula">\[\textcolor{#4c8dff}{\varphi(x) = (1, x_1, x_2, x_1^2, x_2^2)}\]</div><div class="formula">\[\textcolor{#e8912d}{w = (7.5, 5, 3, 1, 1)}\]</div>`,
+          size: R`\[\underbrace{w^\top}_{\textstyle 1\times 5}\,\underbrace{\varphi(x)}_{\textstyle 5\times 1} = \text{one score}\]<p>\(\varphi\) has 5 entries, so \(w\) needs 5 weights: inner 5 = 5 ✓ · one number ✓. The 2-long \(x\) only goes in through \(\varphi\): \(w^\top x\) = (1×5)(2×1) ✗</p>`,
           why: R`<p>(squared distance to the centre) − \(r^2\) is negative inside the circle and positive outside. Expand each bracket:</p>
 \[\begin{aligned}(x_1 + 2.5)^2 &= x_1^2 + 5x_1 + 6.25\\ (x_2 + 1.5)^2 &= x_2^2 + 3x_2 + 2.25\\ 6.25 + 2.25 - 1 &= 7.5\end{aligned}\]
 <p>In general it's \(w = (a^2 + b^2 - r^2,\ -2a,\ -2b,\ 1,\ 1)\), as in the official solution.</p>` },
         { line: R`<b>Check every sample</b> — \(w^\top\varphi(x)\) = 31.5, 35.5, −0.5, −0.5, 13.5: signs +, +, −, −, + = the labels. The hyperplane is \(\{z : w^\top z = 0\}\). Done.`,
+          size: R`\[\underbrace{\Phi}_{\textstyle 5\times 5}\,\underbrace{w}_{\textstyle 5\times 1} = \underbrace{(31.5, 35.5, -0.5, -0.5, 13.5)}_{\textstyle 5\times 1}\]<p>\(\Phi\) = one row \(\varphi(x^{(i)})\) per sample: 5 samples × 5 features (square only by chance). inner 5 = 5 ✓ · one score per sample ✓</p>`,
           why: R`<div class="tw"><table><thead><tr><th>sample</th><th>\(7.5 + 5x_1 + 3x_2 + x_1^2 + x_2^2\)</th><th>sign</th><th>label</th></tr></thead><tbody>
 <tr><td>(2, 2)</td><td>7.5 + 10 + 6 + 4 + 4 = 31.5</td><td>+</td><td>+</td></tr>
 <tr><td>(3, 1)</td><td>7.5 + 15 + 3 + 9 + 1 = 35.5</td><td>+</td><td>+</td></tr>
@@ -105,11 +115,14 @@
       start: R`<p><b>(a)</b> The line: \(\;\square = 0\;\) (\(w = (\square, \square)\), \(w_0 = \square\))</p><p><b>(b)</b> Every sample: \(y_i(w^\top x^{(i)} + w_0) = \square\), so the margin is</p>\[\frac{1}{\|w\|} = \;\square\]<p><b>(c)</b> New sample: \(y(w^\top x + w_0) = \square \ge 1\), so \(\;\square\)</p>`,
       moves: [
         { line: R`<b>(a) Midway between the two lines</b> — halfway between \(x_1 - x_2 = 1\) and \(x_1 - x_2 = -1\) is <div class="formula">\[x_1 - x_2 = 0 \qquad (w = (1, -1),\ w_0 = 0)\]</div>`,
+          size: R`\[\underbrace{w^\top}_{\textstyle 1\times 2}\,\underbrace{x}_{\textstyle 2\times 1} + \underbrace{w_0}_{\textstyle 1\times 1} = x_1 - x_2\]<p>Here the bias \(w_0\) is kept apart, so \(w = (1, -1)\) and \(x = (x_1, x_2)\) are both 2 long, no 1 in front of \(x\). inner 2 = 2 ✓ · one score ✓</p>`,
           why: R`<p>Every sample has \(x_1 - x_2 = +1\) (positives) or \(-1\) (negatives). The line where \(x_1 - x_2 = 0\) is exactly halfway, so it's equally far from every sample. (Grader's note: "they only need to specify the line".)</p>` },
         { line: R`<b>(b) y · score = 1 for every sample</b> — positives: \((+1)(1) = 1\); negatives: \((-1)(-1) = 1\). All are on the margin, so <div class="formula">\[\text{margin} = \frac{1}{\|w\|} = \frac{1}{\sqrt{1^2 + (-1)^2}} = \frac{\sqrt2}{2} \approx 0.707\]</div>`,
+          size: R`\[\underbrace{y_i}_{\textstyle 1\times 1}\big(\underbrace{w^\top}_{\textstyle 1\times 2}\,\underbrace{x^{(i)}}_{\textstyle 2\times 1} + w_0\big) = 1\]\[\|w\| = \sqrt{\underbrace{w^\top}_{\textstyle 1\times 2}\,\underbrace{w}_{\textstyle 2\times 1}} = \sqrt2\]<p>inner 2 = 2 ✓ · the bracket is one number, times the label (one number) ✓. All 10 samples at once: \(Xw + w_0\) = (10×2)(2×1) = one score per sample ✓</p>`,
           why: R`<p>The SVM constraint is \(y_i(w^\top x^{(i)} + w_0) \ge 1\) with \(\xi_i = 0\). Samples with exactly 1 are the closest ones. You don't need to know it by heart:</p><p>[sheet: Primal objective function (to minimize)]</p>
 <p>Their distance = |score| ÷ \(\|w\|\) = \(1/\sqrt2\). The 1 is a score, not a distance: answering "margin = 1" gets only partial credit (grader's note).</p>` },
         { line: R`<b>(c) The new sample \((2, 0)\):</b> \((+1)(2 - 0) = 2 \ge 1\), correct side and outside the margin. The old line keeps its margin, and a margin can't grow by adding a sample, so nothing changes. Done.`,
+          size: R`\[\underbrace{w^\top}_{\textstyle 1\times 2}\,\underbrace{(2, 0)}_{\textstyle 2\times 1} + 0 = 2\]<p>inner 2 = 2 ✓ · one score, times \(y = +1\) → 2 ✓</p>`,
           why: R`<p>The margin = distance to the <b>closest</b> sample. A new sample either is closer (margin shrinks) or isn't (margin stays). It can never make it bigger, so no other line can beat the old one.</p>`,
           extra: [{ label: "the official (c) says the margin \"cannot shrink\" — read it as \"cannot grow\"", html: R`<p>"Cannot shrink" is true only for this sample (it's outside the margin band). The general fact the argument needs: adding a sample can never make the margin <b>grow</b> (a sample inside the band does shrink it). 2025-C Q3.4's solution says it right: "the margin cannot increase by adding samples".</p>` }] },
       ],
@@ -133,8 +146,10 @@
       start: R`<p>One line per bug (write at least three):</p><p><b>Line \(\square\):</b> <code>wrong</code> → should be <code>fix</code>, because \(\square\)</p>`,
       moves: [
         { line: R`<b>n counts rows; the SVM brings its own bias.</b> <b>Line 1:</b> <code>X.shape[1]</code> → <code>X.shape[0]</code>. <b>Line 2:</b> delete it (no ones column).`,
+          size: R`<p><code>X.shape</code> = (n_samples, p_features) = (rows, columns). So <code>shape[0]</code> = n ✓, <code>shape[1]</code> = p ✗.</p><p>Line 2 glues <code>np.ones((n, 1))</code> next to <code>X</code>: it needs n rows like <code>X</code>. With the line 1 bug it's (p, 1) next to (n, p) ✗. Fixed, <code>X</code> becomes (n, p + 1): a 1s column doing <code>w0</code>'s job, so the bias counts twice ✗.</p>`,
           why: R`<p>The docstring says <code>X</code> is n_samples × p_features, so samples are rows: <code>shape[0]</code>. The solver returns its own <code>w0</code> and <code>z_pred</code> adds it, so a ones column would count the bias twice.</p>` },
         { line: R`<b>Score the held-out rows by mistakes.</b> <b>Line 20:</b> <code>X_train @ w + w0</code> → <code>X_val @ w + w0</code>. <b>Line 22:</b> → <code>risk = np.mean(y_val != y_pred)</code>.`,
+          size: R`<p><code>X_val @ w + w0</code>: (n_val, p) @ (p,) = (n_val,), plus one number = one score per validation row ✓, the same length as <code>y_val</code>.</p><p><code>X_train @ w</code> is (n_train,): with 5 folds about 4× longer than <code>y_val</code> ✗.</p><p><code>y_val != y_pred</code>: (n_val,) vs (n_val,) → <code>np.mean</code> = one number, the fraction wrong ✓</p>`,
           why: R`<p>Validation must predict the rows the model didn't train on. And the hinge objective has \(C\) inside it, so a bigger \(C\) inflates the number by itself: comparing it across \(C\)'s means nothing. What we care about is the fraction of validation rows predicted wrong.</p>` },
         { line: R`<b>Compare the average over folds.</b> <b>Line 26:</b> <code>if risk &lt; min_cv_risk</code> → <code>if np.mean(lo_risk) &lt; min_cv_risk</code>. Done (5 bugs; 3 are enough).`,
           why: R`<p><code>risk</code> is only the last fold's number. The CV risk of this \(C\) is the average over all folds, and that's also what line 27 stores.</p>` ,
@@ -148,7 +163,8 @@
       point: R`\(u^\top v\) is just a dot product — one number. Plug it into \((1 + u^\top v)^2\).`,
       start: R`\[K(u, v) = (1 + u^\top v)^2 = (1 + \square)^2 = \square\]`,
       moves: [
-        { line: R`<b>\(u^\top v\)</b> — multiply matching entries and add: \(1\cdot 3 + 0\cdot 0 = 3\).` },
+        { line: R`<b>\(u^\top v\)</b> — multiply matching entries and add: \(1\cdot 3 + 0\cdot 0 = 3\).`,
+          size: R`\[\underbrace{u^\top}_{\textstyle 1\times 2}\,\underbrace{v}_{\textstyle 2\times 1} = 1\cdot 3 + 0\cdot 0 = 3\]<p>inner 2 = 2 ✓ · result 1×1 = one number, so \(1 + u^\top v\) is a number you can square ✓</p><p>\(uv^\top\) = (2×1)(1×2) = 2×2 ✗</p>` },
         { line: R`<b>Add 1, square:</b> \((1 + 3)^2 = 4^2 = 16\). Done.` },
       ],
       compare: R`Same as the official \((1 + 1\cdot 3 + 0\cdot 0)^2 = 4^2 = 16\).`,
@@ -170,6 +186,7 @@
 <tr><td>\(u_2^2v_2^2\)</td><td>\(u_2^2\)</td><td>\(v_2^2\)</td></tr></tbody></table></div>
 <p>Matching products, added up = a dot product. The orange column is \(\varphi(u)\), the blue one is \(\varphi(v)\).</p>` },
         { line: R`<b>Put it together</b> — the pieces of \(u\), as a list, with \(x\) in place of \(u\): <div class="formula">\[\varphi(x) = \big(1,\ \sqrt2x_1,\ \sqrt2x_2,\ \sqrt2x_1x_2,\ x_1^2,\ x_2^2\big) \in \mathbb{R}^6\]</div>Done.`,
+          size: R`\[K(u, v) = \underbrace{\varphi(u)^\top}_{\textstyle 1\times 6}\,\underbrace{\varphi(v)}_{\textstyle 6\times 1}\]<p>6 terms in the expansion → 6 entries each. inner 6 = 6 ✓ · one number, like \(K\) ✓. \(x\) goes in 2 long, \(\varphi(x)\) comes out 6 long.</p><p>\(\varphi(v)^\top\varphi(u)\) is (1×6)(6×1) = one number either way — a dot product doesn't care about order. (The ℝ⁹ answer: (1×9)(9×1), also one number.)</p>`,
           extra: [{ label: "check it with part 1's numbers", html: R`<p>\(\varphi(1, 0) = (1, \sqrt2, 0, 0, 1, 0)\), \(\varphi(3, 0) = (1, 3\sqrt2, 0, 0, 9, 0)\). Dot product: \(1 + \sqrt2\cdot 3\sqrt2 + 9 = 1 + 6 + 9 = 16\) = part 1's \(K\). ✓</p>` },
                   { label: "the other official answer (ℝ⁹)", html: R`<p>\(\varphi(x) = (1, x_1, x_2, x_1, x_1^2, x_1x_2, x_2, x_2x_1, x_2^2)\): all products \(x_jx_l\) with \(x_0 = 1\). The repeats give the 2's instead of the \(\sqrt2\)'s. Either one gets full points.</p>` }] },
       ],
@@ -180,6 +197,7 @@
       point: R`The original data isn't separable: the − sample \((0, 0)\) sits exactly between the + samples \((3, 0)\) and \((-3, 0)\). \(\varphi_A\) and \(\varphi_D\) are linear, so they keep that; \(\varphi_B\) puts a − and a + on the same point; only \(\varphi_C\) (the squares) separates.`,
       moves: [
         { line: R`<b>Map every sample</b> — one column per mapping (table in why?).`,
+          size: R`\[\underbrace{\varphi_D(x)}_{\textstyle 2\times 1} = \underbrace{\begin{pmatrix}2 & -1\\ 1 & 2\end{pmatrix}}_{\textstyle 2\times 2}\,\underbrace{\begin{pmatrix}x_1\\ x_2\end{pmatrix}}_{\textstyle 2\times 1}\]<p>inner 2 = 2 ✓ · each mapping takes a 2-long sample to a 2-long one, so each mapping's column is 5 samples × 2 numbers ✓</p>`,
           why: R`<div class="tw"><table><thead><tr><th>sample</th><th>\(y\)</th><th>\(\varphi_A\)</th><th>\(\varphi_B\)</th><th>\(\varphi_C\)</th><th>\(\varphi_D\)</th></tr></thead><tbody>
 <tr><td>1 (0, 0)</td><td>−</td><td>(0, 0)</td><td>(0, 0)</td><td>(0, 0)</td><td>(0, 0)</td></tr>
 <tr><td>2 (1, 1)</td><td>−</td><td>(1, 1)</td><td>(1, 1)</td><td>(1, 1)</td><td>(1, 3)</td></tr>
@@ -190,8 +208,10 @@
           why: R`<p>A line's score is linear, so the score of the middle point is the average of the two ends' scores. If both + samples score \(\gt 0\), the middle scores \(\gt 0\) too, so sample 1 is called +. No line gets all three right.</p>` },
         { line: R`<b>\(\varphi_B\) — not separable.</b> Sample 1 (−) and sample 4 (+) both land on \((0, 0)\): the same point with different labels.` },
         { line: R`<b>\(\varphi_C\) — separable.</b> The negatives land on \(z_1 + z_2 = 0\) and 2, the positives on 9. Cut at 3: <div class="formula">\[w_0 = -3,\ w_1 = w_2 = 1:\;\; \mathrm{sign}(-3 + x_1^2 + x_2^2)\]</div>`,
+          size: R`\[\underbrace{w^\top}_{\textstyle 1\times 3}\,\underbrace{(1, z_1, z_2)}_{\textstyle 3\times 1} = -3 + z_1 + z_2\]<p>\(w = (w_0, w_1, w_2) = (-3, 1, 1)\), bias first, so the mapped sample gets a 1 in front. inner 3 = 3 ✓ · one score. All five: \(Zw\) = (5×3)(3×1) = \((-3, -1, 6, 6, 6)\) ✓</p>`,
           why: R`<p>Scores \(-3 + z_1 + z_2\): sample 1: −3, sample 2: −1, samples 3, 4, 5: 6. All the right signs.</p>` },
         { line: R`<b>\(\varphi_D\) — not separable.</b> It's a linear mapping (new features = weighted sums of \(x_1, x_2\)), so "exactly between" survives: \((0, 0)\) is still the midpoint of \((6, 3)\) and \((-6, -3)\). Done.`,
+          size: R`\[\underbrace{\begin{pmatrix}2 & -1\\ 1 & 2\end{pmatrix}}_{\textstyle 2\times 2}\,\underbrace{\begin{pmatrix}3\\ 0\end{pmatrix}}_{\textstyle 2\times 1} = \underbrace{\begin{pmatrix}6\\ 3\end{pmatrix}}_{\textstyle 2\times 1}\]<p>inner 2 = 2 ✓. The same matrix sends \((-3, 0)\) to \((-6, -3)\) and \((0, 0)\) to \((0, 0)\), so the midpoint stays the midpoint ✓</p>`,
           why: R`<p>Same reason as \(\varphi_A\): the middle point's score is the average of the two ends' scores. If \((6, 3)\) and \((-6, -3)\) (both +) score \(\gt 0\), then \((0, 0)\) scores \(\gt 0\) too, so sample 1 (−) is called +.</p>` },
       ],
       compare: R`Same four verdicts as the official answer, with the same \(w_0 = -3\), \(w_1 = w_2 = 1\) for \(\varphi_C\). (Its \(\varphi_B\) line prints sample 4 as "(0,0,−)"; sample 4 is +, which is the whole point.)`,
@@ -201,10 +221,12 @@
       point: R`Kernel perceptron = ordinary perceptron on part 2's \(\varphi(x)\), and it converges iff that mapped data is separable. Part 3's \(\varphi_C\) line uses only \(1, x_1^2, x_2^2\), which are inside part 2's \(\varphi\), so yes.`,
       moves: [
         { line: R`<b>Kernel perceptron = perceptron on \(\varphi(x)\)</b> — \(K(u, v) = \varphi(u)^\top\varphi(v)\) with part 2's \(\varphi\): <div class="formula">\[\varphi(x) = \big(1,\ \sqrt2x_1,\ \sqrt2x_2,\ \sqrt2x_1x_2,\ x_1^2,\ x_2^2\big)\]</div>So it's the ordinary perceptron run on the mapped samples.`,
+          size: R`\[\underbrace{\varphi(u)^\top}_{\textstyle 1\times 6}\,\underbrace{\varphi(v)}_{\textstyle 6\times 1} = K(u, v)\]<p>inner 6 = 6 ✓ · one number, just like \(x^{(j)\top}x^{(i)}\) = (1×2)(2×1) that it replaces ✓</p>\[\underbrace{\Phi}_{\textstyle 5\times 6}\,\underbrace{\Phi^\top}_{\textstyle 6\times 5} = \underbrace{K}_{\textstyle 5\times 5}\]<p>All pairs at once (Gram matrix): inner 6 = 6 ✓ · one entry per pair of samples ✓</p>`,
           why: R`<p>The dual perceptron only ever uses the samples through dot products \(x^{(j)\top}x^{(i)}\). Replacing each one by \(K = \varphi^\top\varphi\) is the same as replacing every sample \(x\) by \(\varphi(x)\).</p>` },
         { line: R`<b>The perceptron converges (with a small enough learning rate) iff the data is linearly separable.</b> So: is the \(\varphi\)-mapped data separable?`,
           why: R`<p>🧠 know by heart (it's not on the formula sheet). Write it in exactly these words: they're the official solution's.</p>` },
         { line: R`<b>Yes — part 3 already separates it.</b> \(-3 + x_1^2 + x_2^2\) uses only \(1, x_1^2, x_2^2\), all inside part 2's \(\varphi\): <div class="formula">\[w = (-3, 0, 0, 0, 1, 1)\]</div>So it's guaranteed to converge. Done.`,
+          size: R`\[\underbrace{\Phi}_{\textstyle 5\times 6}\,\underbrace{w}_{\textstyle 6\times 1} = \underbrace{(-3, -1, 6, 6, 6)}_{\textstyle 5\times 1}\]<p>One weight per entry of \(\varphi\): inner 6 = 6 ✓ · one score per sample ✓. Per sample: \(w^\top\varphi(x)\) = (1×6)(6×1).</p>`,
           why: R`<p>\(w^\top\varphi(x) = -3\cdot 1 + 0\cdot\sqrt2x_1 + 0\cdot\sqrt2x_2 + 0\cdot\sqrt2x_1x_2 + 1\cdot x_1^2 + 1\cdot x_2^2\), which is part 3's \(\varphi_C\) rule. On the five samples it scores \(-3, -1, 6, 6, 6\): both − negative, all + positive.</p>`,
           extra: [{ label: "check it with numbers", html: R`<p>Running the dual perceptron in numpy (all \(\lambda = 0\) at the start; on a mistake, \(\lambda_i \mathrel{+}= 0.01\)): the 6th pass makes no mistakes, with \(\lambda = (0.02, 0.04, 0.01, 0.01, 0)\).</p>` }] },
       ],
@@ -217,6 +239,7 @@
         { line: R`<b>(1) One round per fold:</b> <code>range(m)</code>.`,
           why: R`<p><code>np.arange(n)[i::m]</code> is fold \(i\), so \(i\) must run over 0, 1, …, m − 1.</p>` },
         { line: R`<b>(2) Predict the held-out rows:</b> <code>X[left_out_indices, :]</code>.`,
+          size: R`<p><code>X[left_out_indices, :]</code>: about n/m rows (n/5 in the example), all columns → <code>pred</code> has one entry per left-out row, the same length as <code>y[left_out_indices]</code> ✓</p><p><code>X_train</code> has about 4n/5 rows → <code>pred == y[...]</code> lengths don't match ✗</p>`,
           why: R`<p>The next line compares <code>pred</code> with <code>y[left_out_indices]</code>, so it must predict those same rows, which the model didn't train on.</p>` },
         { line: R`<b>(3) Average over the folds:</b> <code>np.mean(fold_scores)</code>.` },
         { line: R`<b>(4) Accuracy: higher is better:</b> <code>&gt;</code>. Done.`,

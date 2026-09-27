@@ -226,3 +226,9 @@ a.sheetref { font-weight: 600; text-decoration: underline dotted; }
 .mv.point .n { background: var(--shaky-bg); color: var(--shaky-fg); }
 .pointtext { margin-top: 4px; font-size: 16.5px; }
 .pointtext p { margin: 4px 0; }
+
+/* "Size check" under matrix moves: sizes under each piece; inner numbers match, outer = result */
+.sizecheck { margin-top: 8px; border: 1px dashed var(--line); border-radius: 8px; padding: 4px 12px 6px; font-size: 14.5px; overflow-x: auto; overflow-y: hidden; }
+.sizecheck p { margin: 4px 0; }
+.sizecheck .katex-display { margin: .4em 0; }
+.tag.sizetag { color: var(--muted); border: 1px solid currentColor; margin: 6px 0 2px; }

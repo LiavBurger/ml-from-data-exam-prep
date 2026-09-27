@@ -10,6 +10,7 @@
       start: R`\[X = \begin{bmatrix}1 & \square & \square\\ 1 & \square & \square\\ 1 & \square & \square\\ 1 & \square & \square\end{bmatrix} \qquad y = \begin{bmatrix}\square\\ \square\\ \square\\ \square\end{bmatrix}\]`,
       moves: [
         { line: R`<b>X</b> — one row per sample: a 1, then \(x_1\), then \(x_2\): <div class="formula">\[X = \begin{bmatrix}1&-1&1\\1&-2&0\\1&1&3\\1&0&1\end{bmatrix}\]</div>`,
+          size: R`\[\underbrace{X}_{\textstyle 4\times 3}\,\underbrace{\theta}_{\textstyle 3\times 1} = \underbrace{X\theta}_{\textstyle 4\times 1}\]<p>4 samples × (1 + 2 features); inner 3 = 3 ✓ · result 4×1 = one prediction per sample ✓</p>`,
           why: R`<p>Why the 1: a row of \(X\) times \(\theta\) must give that sample's prediction. Sample 1:</p>
 \[\begin{aligned}&(1, -1, 1)\cdot(\theta_0, \theta_1, \theta_2)\\ &= \underbrace{\color{#e8912d}\theta_0\cdot 1}_{\textstyle\color{#e8912d}\text{the 1 is for }\theta_0} + \theta_1\cdot(-1) + \theta_2\cdot 1\end{aligned}\]
 <p>That's exactly the question's bracket \(\theta_0 + \theta_1 x_1 + \theta_2 x_2\) for sample 1. Without the 1, \(\theta_0\) would have nothing to multiply.</p>` },
@@ -41,6 +42,7 @@
         { line: R`<b>All knobs as a list</b> — the gradient is step 2 written for \(\theta_0\), \(\theta_1\), \(\theta_2\) (for \(\theta_0\) the "number in front" is 1); (…) = each sample's prediction − label: <div class="formula">\[\nabla J = \begin{bmatrix} \sum_i 2\cdot(\dots)\cdot 1 \;+\; \lambda\,\mathrm{sign}(\theta_0)\\[4pt] \sum_i 2\cdot(\dots)\cdot x^{(i)}_1 \;+\; \lambda\,\mathrm{sign}(\theta_1)\\[4pt] \sum_i 2\cdot(\dots)\cdot x^{(i)}_2 \;+\; \lambda\,\mathrm{sign}(\theta_2)\end{bmatrix}\]</div>`,
           why: R`<p>"The gradient" is nothing new: it's the derivative by each knob, stacked into a list — one row per knob. (…) is the same bracket as in step 2, copied as-is (each sample's prediction − label).</p>` },
         { line: R`<b>Select the pieces</b> — in each row of step 3, point at two pieces and say what they are: <div class="formula">\[\sum_i 2\cdot\underbrace{\color{#e8912d}(\dots)}_{\textstyle\color{#e8912d}\text{this part = }X\theta - y}\cdot\underbrace{\color{#4c8dff}x^{(i)}_j}_{\textstyle\color{#4c8dff}\text{this part = column } j\text{ of }X}\]</div>So each row is \(2\cdot\)(column \(j\) of \(X\)) · \((X\theta - y)\).`,
+          size: R`\[\underbrace{(\text{column } j\text{ of }X)^\top}_{\textstyle 1\times 4}\,\underbrace{(X\theta - y)}_{\textstyle 4\times 1} = \text{one number}\]<p>Both lists are 4 long (one entry per sample) → one number per knob. The official writes it \((X\theta - y)^\top X_j\): that's (1×4)(4×1) too — the same number, a dot product doesn't care about order.</p>`,
           why: R`<p><b>Orange piece — this part = \(X\theta - y\).</b> The sum runs over the samples, so the orange (…) takes every sample's value: sample 1's (…), sample 2's (…), … Each (…) is that sample's prediction − label, and all of them as a list is exactly \(X\theta - y\): each row of \(X\) is \((1, x_1, x_2)\) for one sample, so row · \(\theta\) = \(\theta_0 + \theta_1 x_1 + \theta_2 x_2\) = that sample's prediction, and \(X\theta\) = all the predictions (part 1).</p>
 <p><b>Blue piece — this part = column \(j\) of \(X\).</b> \(x^{(i)}_j\) over every sample is sample 1's \(x_j\), sample 2's \(x_j\), … — reading down column \(j\) of \(X\).</p>
 <p><b>The sum multiplies them entry by entry and adds up</b> — that's a dot product: (column \(j\) of \(X\)) · \((X\theta - y)\).</p>
@@ -54,6 +56,7 @@
 <tr><td>\(\theta_2\)</td><td>(1, 0, 3, 1)</td><td>0 + 0 + 9 + 3 = 12</td></tr></tbody></table></div>
 <p>So \(X^\top(X\theta - y) = (7, 1, 12)\): the three sums, done in one go.</p>` }] },
         { line: R`<b>Put it together</b> — stack step 3's rows: the sums 2 · (column \(j\) of \(X\)) · \((X\theta - y)\) become \(2X^\top(X\theta - y)\) (\(X^\top\)'s rows = \(X\)'s columns), and the \(\lambda\,\mathrm{sign}(\theta_j)\) become \(\lambda\,\mathrm{sign}(\theta)\): <div class="formula">\[\nabla J(\theta) = \underbrace{2X^\top(X\theta - y)}_{\textstyle\text{= step 4's sums}} + \underbrace{\lambda\,\mathrm{sign}(\theta)}_{\textstyle\text{= the signs}}\]</div>`,
+          size: R`\[\underbrace{X^\top}_{\textstyle 3\times 4}\,\underbrace{(X\theta - y)}_{\textstyle 4\times 1} = \underbrace{\nabla J}_{\textstyle 3\times 1}\]<p>inner 4 = 4 ✓ · result 3×1 = one entry per knob ✓ · \(\mathrm{sign}(\theta)\) is 3×1 too, so they add ✓</p><p>Wrong order: \(X(X\theta - y)\) = (4×3)(4×1) — inner 3 ≠ 4 ✗</p>`,
           why: R`<ul><li>The 2 from every term comes out in front: \(2X^\top(X\theta - y)\).</li>
 </ul>
 <p><b>sign(θ) with numbers:</b> \(\theta = (1, -2, 3)\) is short for the list \((\theta_0, \theta_1, \theta_2)\). sign of each: \(\mathrm{sign}(1) = +1\), \(\mathrm{sign}(-2) = -1\), \(\mathrm{sign}(3) = +1\). So \(\mathrm{sign}(\theta) = (1, -1, 1)\) — exactly like numpy:</p>
@@ -73,9 +76,11 @@ np.sign(theta)   # array([ 1, -1,  1])</code></pre>
       start: R`<p><b>The formula (from part 2), with the numbers plugged in:</b></p>\[\nabla J = 2X^\top(X\theta - y) + \lambda\,\mathrm{sign}(\theta) = \;\square\]<p><b>The step:</b></p>\[\theta_{\text{new}} = \theta - 0.1\cdot\nabla J = \;\square\]`,
       moves: [
         { line: R`<b>The formula</b> — part 2's answer, and the step rule: <div class="formula">\[\nabla J = \underbrace{\color{#e8912d}2X^\top(X\theta - y)}_{\textstyle\color{#e8912d}\text{from the squared brackets}} + \underbrace{\color{#4c8dff}\lambda\,\mathrm{sign}(\theta)}_{\textstyle\color{#4c8dff}\text{from }\lambda|\theta_j|}\]</div><div class="formula">\[\theta_{\text{new}} = \theta - 0.1\cdot\nabla J\]</div>We know \(\theta = (1, -2, 3)\), \(\lambda = 1\), and the step size 0.1 (the question's \(\eta\)).`,
+          size: R`\[\underbrace{X^\top}_{\textstyle 3\times 4}\,\underbrace{(X\theta - y)}_{\textstyle 4\times 1} = 3\times 1 \qquad \underbrace{\theta}_{\textstyle 3\times 1} - 0.1\cdot\underbrace{\nabla J}_{\textstyle 3\times 1}\]<p>The gradient has one entry per knob, like \(\theta\), so the step subtracts entry by entry ✓</p>`,
           why: R`<p>"One iteration of gradient descent" = compute the gradient at the current \(\theta\), then take one small step against it. The gradient points uphill, so we subtract it to go downhill.</p>
 <p>Where the formula comes from: each squared bracket \((\theta_0 + \theta_1 x_1 + \theta_2 x_2 - y)^2\) → 2 · (…) · (the number in front of \(\theta_j\)); stacked over the three knobs that's \(2X^\top(X\theta - y)\). Each \(\lambda|\theta_j|\) → \(\lambda\,\mathrm{sign}(\theta_j)\), stacked: \(\lambda\,\mathrm{sign}(\theta)\). (Worked out step by step in part 2.)</p>` },
         { line: R`<b>Errors \(X\theta - y\)</b> — each row of \(X\) · \(\theta\) gives a prediction, then subtract the label: <div class="formula">\[X\theta - y = (6, 5, 8, 4) - (6, 4, 5, 1) = (0, 1, 3, 3)\]</div>`,
+          size: R`\[\underbrace{X}_{\textstyle 4\times 3}\,\underbrace{\theta}_{\textstyle 3\times 1} - \underbrace{y}_{\textstyle 4\times 1} = \underbrace{\text{errors}}_{\textstyle 4\times 1}\]<p>inner 3 = 3 ✓ · four predictions minus four labels = four errors ✓</p>`,
           why: R`<p>Each prediction is one row of \(X\) (from part 1) times \(\theta = (1, -2, 3)\):</p>
 <div class="tw"><table><thead><tr><th>row of \(X\)</th><th>· \(\theta = (1, -2, 3)\)</th><th>prediction</th></tr></thead><tbody>
 <tr><td>(1, −1, 1)</td><td>1·1 + (−1)·(−2) + 1·3 = 1 + 2 + 3</td><td>6</td></tr>
@@ -84,6 +89,7 @@ np.sign(theta)   # array([ 1, -1,  1])</code></pre>
 <tr><td>(1, 0, 1)</td><td>1·1 + 0·(−2) + 1·3 = 1 + 0 + 3</td><td>4</td></tr></tbody></table></div>
 <p>numpy: <code>X @ theta - y</code>.</p>` },
         { line: R`<b>The orange part \(2X^\top(X\theta - y)\)</b> — each column of \(X\) · the errors, then ×2: <div class="formula">\[2X^\top(X\theta - y) = 2\cdot(7, 1, 12) = (14, 2, 24)\]</div>`,
+          size: R`\[\underbrace{X^\top}_{\textstyle 3\times 4}\,\underbrace{(0, 1, 3, 3)}_{\textstyle 4\times 1} = \underbrace{(7, 1, 12)}_{\textstyle 3\times 1}\]<p>inner 4 = 4 ✓ · result = 3 numbers, one per knob ✓ (one row of \(X^\top\) = one column of \(X\))</p>`,
           why: R`<p>\(X^\top\) times a list = each <b>column</b> of \(X\), dotted with that list (part 2, step 4). The errors are \((0, 1, 3, 3)\):</p>
 <div class="tw"><table><thead><tr><th>column of \(X\)</th><th>· errors (0, 1, 3, 3)</th><th>result</th></tr></thead><tbody>
 <tr><td>(1, 1, 1, 1)</td><td>0 + 1 + 3 + 3</td><td>7</td></tr>
@@ -102,6 +108,7 @@ np.sign(theta)   # array([ 1, -1,  1])</code></pre>
       moves: [
         { line: R`<b>\(\theta^*\) is the best \(\theta\) for \(J_\lambda\)</b> — gradient descent on \(J_\lambda\) ran until it converged.` },
         { line: R`<b>So any other \(\theta\) — like \(\tilde\theta\) — gives a larger \(J_\lambda\):</b> <div class="formula">\[J_\lambda(\theta^*) \lt J_\lambda(\tilde\theta)\]</div>Done.`,
+          size: R`\[\underbrace{(X^\top X)^{-1}}_{\textstyle 3\times 3}\,\underbrace{X^\top}_{\textstyle 3\times 4}\,\underbrace{y}_{\textstyle 4\times 1} = \underbrace{\tilde\theta}_{\textstyle 3\times 1}\]<p>\(X^\top X\) = (3×4)(4×3) = 3×3, so its inverse is 3×3 · then (3×3)(3×4)(4×1) = 3×1 — one weight per knob, like \(\theta\) ✓</p>`,
           why: R`<p>Strictly "\(\lt\)" because \(\tilde\theta\) is a different \(\theta\): it was found without the penalty ([sheet: Least squares solution]), so it isn't \(J_\lambda\)'s best point.</p>` },
       ],
       compare: R`Same argument as the official solution: θ* minimizes \(J_{\lambda=1}\), θ̃ minimizes the plain squared error, so \(J_{\lambda=1}(\theta^*) \lt J_{\lambda=1}(\tilde\theta)\).`,
@@ -112,8 +119,10 @@ np.sign(theta)   # array([ 1, -1,  1])</code></pre>
       start: R`<p>One line per bug (write at least three):</p><p><b>Line \(\square\):</b> <code>wrong</code> → should be <code>fix</code>, because \(\square\)</p>`,
       moves: [
         { line: R`<b>n counts samples = rows.</b> <b>Line 1:</b> <code>X.shape[1]</code> → <code>X.shape[0]</code>`,
+          size: R`<p><code>X.shape</code> = (n, 3) = (rows, columns) = (samples, 1 + features). So <code>shape[0]</code> = n ✓, <code>shape[1]</code> = 3 ✗.</p>`,
           why: R`<p><code>shape[0]</code> = number of rows (samples), <code>shape[1]</code> = number of columns (features + the ones column).</p>` },
         { line: R`<b>Validation uses only validation data, no penalty.</b> <b>Line 16:</b> → <code>y_pred = X_val @ w_star</code>. <b>Line 17:</b> <code>y_train</code> → <code>y_val</code>`,
+          size: R`<p><code>X_val @ w_star</code>: (validation rows × 3) @ (3,) = one prediction per validation row ✓ — so compare with <code>y_val</code> (same length), not <code>y_train</code> (different length).</p>`,
           why: R`<p>The point of cross-validation: score the model on rows it didn't train on, with plain squared error. So predict the validation rows, compare with the validation labels, and don't add the penalty.</p>`,
           extra: [{ label: "why lines 16–17 and not 15–16?", html: R`<p>The official solution calls them 15 and 16, but on the printed page (the numbers in the left margin) they are 16 and 17. Either way, quote the statement itself so the grader can't miss it.</p>` }] },
         { line: R`<b>Keep the smallest average error.</b> <b>Line 20:</b> <code>&gt;</code> → <code>&lt;</code>. <b>Line 21:</b> <code>np.sum</code> → <code>np.mean</code>. Done (5 bugs; 3 are enough).`,

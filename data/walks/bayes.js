@@ -165,12 +165,14 @@
       start: R`\[\begin{bmatrix}0&1&2\\1&0&2\\1&1&0\end{bmatrix}\begin{bmatrix}p(y = \mathrm{A} \mid x)\\ p(y = \mathrm{B} \mid x)\\ p(y = \mathrm{C} \mid x)\end{bmatrix} = \begin{bmatrix}\square\\ \square\\ \square\end{bmatrix}\]<p>Smallest → \(\square\)</p>`,
       moves: [
         { line: R`<b>Row = what you say, column = the truth</b> — so row \(y\) times the posterior of each truth, added up, is the expected cost of saying \(y\).`,
+          size: R`\[\underbrace{(\text{row } y\text{ of }\lambda)}_{\textstyle 1\times 3}\,\underbrace{p(\cdot \mid x)}_{\textstyle 3\times 1} = \text{one number}\]<p>3 truths (A, B, C) in both → inner 3 = 3 ✓ · result = one cost for saying \(y\) ✓</p>`,
           why: R`<p>You don't need to know this by heart: [sheet: Expected risk of predicting class label y] is \(\sum_{y'} \pi_{y'} P(X = x \mid Y = y')\,\lambda_{y,y'}\). It uses the joints (0.16, 0.15, 0.09); the posteriors are those ÷ 0.4, the same for every row, so the smallest is the same.</p>
 <p>Direction check: \(\lambda_{\mathrm{B},\mathrm{C}} = 2\) = say Blofish, truth Catfish — the "twice as bad" mistake.</p>` },
         { line: R`<b>Multiply</b> — with part 2's full-Bayes posteriors \((0.4,\ 0.375,\ 0.225)\): <div class="tw"><table><thead><tr><th>say</th><th>row · posteriors</th><th>cost</th></tr></thead><tbody>
 <tr><td>A</td><td>\(0 \cdot 0.4 + 1 \cdot 0.375 + 2 \cdot 0.225\)</td><td>\(0.825\)</td></tr>
 <tr><td>B</td><td>\(1 \cdot 0.4 + 0 \cdot 0.375 + 2 \cdot 0.225\)</td><td>\(0.85\)</td></tr>
-<tr><td>C</td><td>\(1 \cdot 0.4 + 1 \cdot 0.375 + 0 \cdot 0.225\)</td><td>\(0.775\)</td></tr></tbody></table></div>` },
+<tr><td>C</td><td>\(1 \cdot 0.4 + 1 \cdot 0.375 + 0 \cdot 0.225\)</td><td>\(0.775\)</td></tr></tbody></table></div>`,
+          size: R`\[\underbrace{\lambda}_{\textstyle 3\times 3}\,\underbrace{p(\cdot \mid x)}_{\textstyle 3\times 1} = \underbrace{\text{costs}}_{\textstyle 3\times 1}\]<p>rows = what you say, columns = the truth · inner 3 = 3 ✓ · result 3×1 = one cost per prediction ✓</p><p>Wrong order: \(p(\cdot \mid x)\,\lambda\) = (3×1)(3×3) — inner 1 ≠ 3 ✗</p>` },
         { line: R`<b>Smallest</b> — 0.775 → <b>Catfish (C)</b>. Done.`,
           why: R`<p>Catfish is the least likely species, but any wrong answer on a Catfish costs 2, so saying C is the safe bet.</p>` },
       ],

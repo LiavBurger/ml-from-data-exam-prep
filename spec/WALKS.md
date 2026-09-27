@@ -89,6 +89,21 @@ found using …" → "both are plugged into the same …, so …". The `start` g
   sign(θ) = (sign θ₀, sign θ₁, sign θ₂) = `np.sign(theta)` → (1, −1, 1); θᵀx⁽ⁱ⁾ = the prediction θ₀ + θ₁x₁ + θ₂x₂;
   Xθ − y = `X @ theta - y`.
 
+## 4b. Size check on EVERY matrix step
+The learner: *"I'm having troubles with the matrix expressions. After getting the partial derivatives, we then somehow
+change the transpose and X location, this sort of stuff mixes me up. I only realised much later when the
+multiplication didn't work."* So every move that forms, rewrites or evaluates a matrix/vector product (Xθ, Xθ − y,
+Xᵀ(…), XᵀΓ(…), (XᵀX)⁻¹Xᵀy, X′, Γ, w − η·grad, `X.T @ z`, `X_val @ w` …) gets a **`size`** field on the move:
+- The product with each piece's size under it, using THIS question's real numbers (e.g. n = 4 samples, 3 knobs):
+  `\[\underbrace{X^\top}_{3\times 4}\,\underbrace{(X\theta - y)}_{4\times 1} = \underbrace{\nabla J}_{3\times 1}\]`
+- One short line: "inner 4 = 4 ✓ · result 3×1 = one entry per knob ✓", and where it helps, the order that does NOT fit:
+  "X(Xθ − y) = (4×3)(4×1) ✗".
+- **Dot products:** when a solution flips aᵀb ↔ bᵀa (e.g. (Xθ − y)ᵀXⱼ vs Xⱼᵀ(Xθ − y)), the size check says
+  "(1×4)(4×1) = one number either way — a dot product doesn't care about order".
+- Rule to repeat: "write the size under each piece; the inner numbers must match; the outer numbers give the result".
+- Code: numpy shapes, e.g. `X.shape = (n, 3)`, `X_b.T @ z` = (3×b)(b×1).
+Rendered as a dashed "Size check" box under the move line (always visible once the move is shown).
+
 ## 5. "Select the pieces" — the method that works best
 ("I think it would make more sense to me if we rather 'select' pieces and say 'this part = X', 'this part = Xᵀ'.")
 - Colour a piece of the formula, put a brace under it, and say what it equals:
@@ -143,6 +158,7 @@ found using …" → "both are plugged into the same …, so …". The `start` g
       moves: [
         { line: R`<b>The function</b> — copy it from the question: <div class="formula">\[…\]</div>`,
           why: R`<p>…</p>`,
+          size: R`\[\underbrace{X^\top}_{3\times 4}\,\underbrace{(X\theta - y)}_{4\times 1}\]<p>inner 4 = 4 ✓</p>`,   // matrix steps only
           extra: [{ label: "check it with numbers", html: R`…` }] },   // extra is optional
       ],
       compare: R`The official solution's last line is move 5.`,
