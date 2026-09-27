@@ -32,6 +32,15 @@ Like they would write f(x) = (x²+3)², then f′(x) = {solve here}:
 6. **Put it together** — the answer.
 Never jump from the per-knob formula to the matrix form in one move ("'write it short' … feels like magic").
 
+## 3b. Argument / comparison parts follow the learner's template
+("It would be better if questions like this would be structured this way: θ* is the best possible θ for the loss
+function {} / θ̃ is the best possible θ for the loss function {} / Look at the structure, we can see that … / This is
+why …")
+1. **"A is the best possible … for …"** — one move per object, each with its defining formula written out.
+2. **"Look at the structure, we can see that …"** — select the pieces (colours + braces) that make the difference.
+3. **"This is why …"** — the conclusion, as the answer.
+The `start` is the same four sentence openers with □ blanks.
+
 ## 4. Notation: nothing new unless the exam forces it
 - **No new names or variables** (eᵢ, rᵢ, u, bracketᵢ …) unless the official answer itself uses them. ("Why e_i now…
   do we really need more variables and notations.")

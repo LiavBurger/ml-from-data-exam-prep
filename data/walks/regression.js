@@ -92,16 +92,24 @@ np.sign(theta)   # array([ 1, -1,  1])</code></pre>
     },
 
     "2025C-q1.4": {
-      start: R`<p>\(J_\lambda(\theta^*)\ \square\ J_\lambda(\tilde\theta)\;\) because \(\;\square\)</p>`,
+      start: R`<p>\(\theta^*\) is the best possible \(\theta\) for the loss function \(\;\square\)</p>
+<p>\(\tilde\theta\) is the best possible \(\theta\) for the loss function \(\;\square\)</p>
+<p>Look at the structure, we can see that \(\;\square\)</p>
+<p>This is why \(\;J_\lambda(\theta^*)\ \square\ J_\lambda(\tilde\theta)\)</p>`,
       moves: [
-        { line: R`<b>What θ* is</b> — gradient descent on \(J_\lambda\) ran until it stopped, so \(\theta^*\) is the <b>best</b> \(\theta\) for \(J_\lambda\).` },
-        { line: R`<b>What θ̃ is</b> — \((X^\top X)^{-1}X^\top y\) is the plain least-squares answer: the best \(\theta\) for the loss <b>without</b> the penalty.` },
-        { line: R`<b>Compare</b> — on \(J_\lambda\), nothing beats \(\theta^*\), and \(\tilde\theta\) ignores the penalty: <div class="formula">\[J_\lambda(\theta^*) \lt J_\lambda(\tilde\theta)\]</div>Done.`,
-          why: R`<p>"The winner of a race is faster than anyone else in <b>that</b> race." \(\tilde\theta\) trained for a different race (no penalty), so on \(J_\lambda\) it loses.</p>`,
-          extra: [{ label: "check it with numbers", html: R`<p>On 2025-C's data with \(\lambda = 1\): \(J_\lambda(\tilde\theta) = 13\), while the LASSO minimum is about 8.66 (computed with numpy — an illustration, not asked).</p>` }] },
+        { line: R`<b>\(\theta^*\) is the best possible \(\theta\) for the loss function</b> — the one gradient descent ran on, <b>with</b> the penalty: <div class="formula">\[J_\lambda(\theta) = \|X\theta - y\|^2 + \lambda\|\theta\|_1\]</div>`,
+          why: R`<p>Parts 2–3 ran gradient descent on \(J_\lambda\), and the question says it ran "until it converges". So \(\theta^*\) is the lowest point of \(J_\lambda\).</p>` },
+        { line: R`<b>\(\tilde\theta\) is the best possible \(\theta\) for the loss function</b> — plain least squares, <b>no</b> penalty: <div class="formula">\[J_0(\theta) = \|X\theta - y\|^2\]</div>`,
+          why: R`<p>\((X^\top X)^{-1}X^\top y\) is the closed-form answer of plain least squares: the \(\theta\) with the smallest squared error, ignoring any penalty.</p>` },
+        { line: R`<b>Look at the structure, we can see that</b> both are scored on \(J_\lambda\) — the loss \(\theta^*\) was built for. \(\tilde\theta\) only looked at the orange part and ignored the blue part: <div class="formula">\[J_\lambda(\theta) = \underbrace{\color{#e8912d}\|X\theta - y\|^2}_{\textstyle\color{#e8912d}\tilde\theta\text{ minimized this}} + \underbrace{\color{#4c8dff}\lambda\|\theta\|_1}_{\textstyle\color{#4c8dff}\tilde\theta\text{ ignored this}}\]</div>`,
+          why: R`<p>The comparison is \(J_\lambda(\theta^*)\) vs \(J_\lambda(\tilde\theta)\) — the same \(J_\lambda\) on both sides. So the question is really: "on \(\theta^*\)'s own loss, can anyone beat \(\theta^*\)?"</p>` },
+        { line: R`<b>This is why</b> \(\tilde\theta\) can't beat \(\theta^*\) on \(J_\lambda\) — nothing can, \(\theta^*\) is its lowest point: <div class="formula">\[J_\lambda(\theta^*) \lt J_\lambda(\tilde\theta)\]</div>Done.`,
+          why: R`<p>"The winner of a race is faster than anyone else in <b>that</b> race." \(\tilde\theta\) trained for a different race (no penalty), so on \(J_\lambda\) it loses. It's strictly \(\lt\) (not \(=\)) because \(\tilde\theta\) ignores the penalty, so it has no reason to land exactly on \(J_\lambda\)'s lowest point.</p>`,
+          extra: [{ label: "check it with numbers", html: R`<p>On 2025-C's data with \(\lambda = 1\): \(J_\lambda(\tilde\theta) = 13\), while the lowest value of \(J_\lambda\) is about 8.66 (computed with numpy — an illustration, not asked). \(8.66 \lt 13\) ✓</p>` }] },
       ],
-      compare: R`Same argument as the official solution.`,
+      compare: R`Same argument as the official solution: θ* minimizes \(J_{\lambda=1}\), θ̃ minimizes the plain squared error \(J_{\lambda=0}\), so \(J_{\lambda=1}(\theta^*) \lt J_{\lambda=1}(\tilde\theta)\).`,
     },
+
     "2025C-q1.5": {
       start: R`<p>One line per bug (write at least three):</p><p><b>Line \(\square\):</b> <code>wrong</code> → should be <code>fix</code>, because \(\square\)</p>`,
       moves: [
