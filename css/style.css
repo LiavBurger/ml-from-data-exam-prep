@@ -218,7 +218,7 @@ a.noteref { text-decoration: underline dotted; }
 .sheetpage img { display: block; width: 100%; height: auto; background: #fff; border-radius: 6px; margin: 10px 0; }
 .lookfor { background: var(--accent-soft); border-radius: 8px; padding: 6px 12px; margin: 6px 0 0; }
 .sheet-h { align-items: flex-start; gap: 12px; }
-a.sheetref { font-weight: 600; text-decoration: underline dotted; white-space: nowrap; }
+a.sheetref { font-weight: 600; text-decoration: underline dotted; }
 #sheetbtn { color: var(--accent-ink); font-weight: 600; }
 
 /* "The point": the one realization the part tests */
