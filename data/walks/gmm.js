@@ -65,7 +65,7 @@
           why: R`<p>Check: \(3.057 + 0.943 = 4\) experiments. This is \(n_j = \sum_i r(i,j)\) in [sheet: Maximization updates].</p>` },
         { line: R`<b>Soft heads and tails</b> — each experiment's heads count \(r(i,Q)\cdot h_i\) toward the quarter: <div class="formula">\[\begin{array}{c|c|c|c|c|c} \text{exp.} & r(i,Q) & h & r\cdot h & t & r\cdot t\\ \hline 1 & 0.604 & 3 & 1.812 & 2 & 1.208\\ 2 & 0.990 & 0 & 0 & 5 & 4.950\\ 3 & 0.859 & 2 & 1.718 & 3 & 2.577\\ 4 & 0.604 & 3 & 1.812 & 2 & 1.208\\ \hline \text{add} & & & 5.342 & & 9.943\end{array}\]</div>So \(\mathbb E[n_{QH}] = 5.342\), \(\mathbb E[n_{QT}] = 9.943\).`,
           why: R`<p>Check: \(5.342 + 9.943 = 15.285 = 5\cdot 3.057\) — every experiment has 5 tosses.</p>` },
-        { line: R`<b>Same fractions as part 2</b>, with the soft counts: <div class="formula">\[\begin{aligned}\pi_Q &\leftarrow \frac{3.057}{3.057 + 0.943} = \frac{3.057}{4} = 0.764\\ p_{QH} &\leftarrow \frac{5.342}{5.342 + 9.943} = \frac{5.342}{15.285} = 0.349\end{aligned}\]</div>Done.`,
+        { line: R`<b>Same fractions as part 2</b> — count / total of its pair, with the soft counts: <div class="formula">\[\begin{aligned}\pi_Q &\leftarrow \frac{3.057}{3.057 + 0.943} = \frac{3.057}{4} = 0.764\\ p_{QH} &\leftarrow \frac{5.342}{5.342 + 9.943} = \frac{5.342}{15.285} = 0.349\end{aligned}\]</div>Done.`,
           why: R`<p>Part 2's MLE was count / total. The M-step is exactly that, with the counts replaced by the soft counts. (Unrounded responsibilities give 0.3495; 0.349 or 0.350 are both fine.)</p>`,
           extra: [{ label: "official slip in E[n_N]", html: R`<p>It writes \(\mathbb E[n_N] = \sum_{i=1}^{5} r(i,Q)\). It means \(\sum_{i=1}^{4} r(i,N)\) — the numbers it adds (0.396 + 0.010 + 0.141 + 0.396) are the right ones.</p>` }] },
       ],
@@ -75,7 +75,7 @@
     "2025B-q5.5": {
       point: R`<p>\(p_{QH} = p_{NH}\), so the two coins are identical and the data can't tell them apart: every \(r = 0.5\). So \(\pi_Q\) stays 0.5 and \(p_{QH}\) = all heads / all tosses.</p>`,
       moves: [
-        { line: R`<b>Two identical coins</b> — \(p_{QH} = p_{NH} = 0.8\) and both priors are 0.5, so joint Q = joint N in every experiment. So every \(r(i,Q) = 0.5\): <div class="formula">\[r(1,Q) = \frac{0.01024}{0.01024 + 0.01024} = 0.5\]</div>`,
+        { line: R`<b>Two identical coins</b> — \(p_{QH} = p_{NH} = 0.8\) and both priors are 0.5, so joint Q = joint N in every experiment. So every \(r(i,Q) = 0.5\). Experiment 1 (3 heads, 2 tails): <div class="formula">\[\begin{aligned}\text{joint Q} = \text{joint N} &= 0.5\cdot 0.8^3\cdot 0.2^2 = 0.01024\\ r(1,Q) &= \frac{0.01024}{0.01024 + 0.01024} = 0.5\end{aligned}\]</div>`,
           why: R`<p>Joint Q \(= 0.5\cdot 0.8^h\cdot 0.2^t\) and joint N \(= 0.5\cdot 0.8^h\cdot 0.2^t\) — the same expression. Something divided by twice itself is 0.5. The data can't tell two identical coins apart.</p>` },
         { line: R`<b>\(\pi_Q\)</b> — \(\mathbb E[n_Q] = 0.5 + 0.5 + 0.5 + 0.5 = 2\), so \(\pi_Q \leftarrow 2/4 = 0.5\) (unchanged).` },
         { line: R`<b>\(p_{QH}\)</b> — each experiment's heads and tails count half: <div class="formula">\[\begin{aligned}\mathbb E[n_{QH}] &= 0.5\cdot(3 + 0 + 2 + 3) = 4\\ \mathbb E[n_{QT}] &= 0.5\cdot(2 + 5 + 3 + 2) = 6\\ p_{QH} &\leftarrow \frac{4}{4 + 6} = 0.4\end{aligned}\]</div>Done.`,
@@ -104,7 +104,7 @@
       moves: [
         { line: R`<b>Count</b> — heads per experiment: 3, 1, 4, 2. Gold = experiments 1 and 3, silver = 2 and 4: <div class="formula">\[\begin{array}{c|c|c|c} & \text{experiments} & \text{heads} & \text{tosses}\\ \hline \text{gold} & 2 & 3 + 4 = 7 & 5 + 5 = 10\\ \text{silver} & 2 & 1 + 2 = 3 & 5 + 5 = 10\end{array}\]</div>` },
         { line: R`<b>Each MLE = count / total</b>: <div class="formula">\[\begin{aligned}\pi_G &= \tfrac{2}{4} = 0.5\\ p_G &= \tfrac{7}{10} = 0.7\\ p_S &= \tfrac{3}{10} = 0.3\end{aligned}\]</div>Done.`,
-          why: R`<p>🧠 Know by heart: the MLE of a probability is count / total (not on the sheet; closest is \(\pi_j = n_j/n\) in [sheet: Maximization updates]). Where it comes from: the log-likelihood, each count times the log of its probability (as in 2025-B Q5.2):</p>
+          why: R`<p>🧠 Know by heart: the MLE of a probability is count / total (not on the sheet; closest is \(\pi_j = n_j/n\) in [sheet: Maximization updates]). Where it comes from: each experiment's probability = prior × tosses (e.g. experiment 1, gold, 3 heads: \(\pi_G\,p_G^3(1-p_G)^2\)). All the data = the product of the 4 experiments; the log turns the product into a sum and brings the powers down, so each count lands in front of its log (we did the same in 2025-B Q5.2):</p>
 \[\begin{aligned}\ell = \;&2\log\pi_G + 2\log(1-\pi_G)\\ &+ 7\log p_G + 3\log(1-p_G)\\ &+ 3\log p_S + 7\log(1-p_S)\end{aligned}\]
 <p>Take the \(p_G\) pair. Derivative: \(\frac{7}{p} - \frac{3}{1-p} = 0\), so \(7(1-p) = 3p\), so \(7 = 10p\), so \(p = 0.7\). Every pair works the same way.</p>` },
       ],
@@ -127,7 +127,7 @@
     },
 
     "2026A-q5.4": {
-      point: R`<p>Same counting as the MLE in part 2, but each experiment counts as its responsibility instead of 1 or 0. \(p_S\) is about silver, so it uses the silver responsibilities.</p>`,
+      point: R`<p>Same counting as the MLE in part 2, but each experiment counts as its responsibility instead of 1 or 0; then each update = soft count / soft total. \(p_S\) is about silver, so it uses the silver responsibilities.</p>`,
       start: R`\[\begin{aligned}\mathbb E[n_G] &= \textstyle\sum_i r(i,G) = \square\\ \mathbb E[n_S] &= \textstyle\sum_i r(i,S) = \square\\ \mathbb E[n_{SH}] &= \textstyle\sum_i r(i,S)\,h_i = \square\\ \mathbb E[n_{ST}] &= \textstyle\sum_i r(i,S)\,t_i = \square\\ \pi_G &\leftarrow \square, \qquad p_S \leftarrow \square\end{aligned}\]`,
       moves: [
         { line: R`<b>Soft count of experiments</b> — experiment \(i\) counts as \(r(i,G)\) of a gold coin: <div class="formula">\[\begin{aligned}\mathbb E[n_G] &= 0.5 + 0.9961 + 0.0588 + 0.9412 = 2.4961\\ \mathbb E[n_S] &= 0.5 + 0.0039 + 0.9412 + 0.0588 = 1.5039\end{aligned}\]</div>`,
@@ -170,7 +170,7 @@
     },
 
     "2026B-q5.2": {
-      point: R`<p>\(r(i,j)\) = this component's term from part 1, divided by \(f(x_i)\) from part 1. Six divisions.</p>`,
+      point: R`<p>\(r(i,j)\) = this component's term \(\pi_j\,\phi(x_i;\mu_j,1)\), divided by \(f(x_i)\) = both terms added (both already computed in part 1). Six divisions.</p>`,
       start: R`\[r(i,j) = \frac{\pi_j\,\phi(x_i;\mu_j,1)}{f(x_i)} = \frac{\square}{\square} = \square\qquad\text{(six times)}\]`,
       moves: [
         { line: R`<b>The formula</b> — both pieces are already in part 1: <div class="formula">\[r(i,j) = \frac{\underbrace{\color{#e8912d}\pi_j\,\phi(x_i;\mu_j,\sigma_j)}_{\textstyle\color{#e8912d}\text{this part = a term from part 1}}}{\underbrace{\color{#4c8dff}\textstyle\sum_{j'}\pi_{j'}\,\phi(x_i;\mu_{j'},\sigma_{j'})}_{\textstyle\color{#4c8dff}\text{this part = } f(x_i)\text{ from part 1}}}\]</div>`,
@@ -198,14 +198,14 @@
     },
 
     "2026B-q5.4": {
-      point: R`<p>MAP = pick the class with the bigger prior × class density. A's density is just a GMM, read from the table like part 1.</p>`,
+      point: R`<p>MAP = pick the class with the bigger prior × class density. A's density is just a GMM; every \(\phi\) is read from the table at the distance \(|x - \mu|\) (like part 1).</p>`,
       start: R`\[\begin{aligned}f(x, A) &= \pi_A\,f(x\mid A)\\ &= \tfrac12\big[\tfrac12\,\phi(x;-2,1) + \tfrac12\,\phi(x;2,1)\big] = \square\\ f(x, B) &= \pi_B\,f(x\mid B) = \tfrac12\,\phi(x;0,1) = \square\end{aligned}\]
 <p>\(\square \gt \square\), so predict \(\square\). (For \(x = 0\) and for \(x = 2\).)</p>`,
       moves: [
-        { line: R`<b>\(x = 0\)</b> — distances to the means −2, 2, 0 are 2, 2, 0: <div class="formula">\[\begin{aligned}f(0, A) &= \tfrac12\big[\tfrac12\cdot 0.054 + \tfrac12\cdot 0.054\big] = 0.027\\ f(0, B) &= \tfrac12\cdot 0.399 = 0.200\end{aligned}\]</div>\(0.027 \lt 0.200\), so predict <b>B</b>.`,
+        { line: R`<b>\(x = 0\)</b> — distances to the means −2, 2, 0 are 2, 2, 0, so the table gives \(\phi\) = 0.054, 0.054, 0.399: <div class="formula">\[\begin{aligned}f(0, A) &= \tfrac12\big[\tfrac12\cdot 0.054 + \tfrac12\cdot 0.054\big] = 0.027\\ f(0, B) &= \tfrac12\cdot 0.399 = 0.200\end{aligned}\]</div>\(0.027 \lt 0.200\), so predict <b>B</b>.`,
           why: R`<p>MAP compares \(f(x, y) = \pi_y\cdot f(x\mid Y = y)\): the posterior is \(P(X\mid Y)\,P(Y)/P(X)\) ([sheet: Class posterior probability], [sheet: Class prior]), and \(P(X)\) is the same for both classes, so compare only the tops.</p>
 <p>Two layers of weights: the class prior \(\pi_A = \frac12\) outside the bracket, and the \(\frac12\)'s of A's GMM inside. Both multiply.</p>` },
-        { line: R`<b>\(x = 2\)</b> — distances to −2, 2, 0 are 4, 0, 2: <div class="formula">\[\begin{aligned}f(2, A) &= \tfrac12\big[\tfrac12\cdot 0.0001 + \tfrac12\cdot 0.399\big] = 0.100\\ f(2, B) &= \tfrac12\cdot 0.054 = 0.027\end{aligned}\]</div>\(0.100 \gt 0.027\), so predict <b>A</b>. Done.`,
+        { line: R`<b>\(x = 2\)</b> — distances to −2, 2, 0 are 4, 0, 2, so \(\phi\) = 0.0001, 0.399, 0.054: <div class="formula">\[\begin{aligned}f(2, A) &= \tfrac12\big[\tfrac12\cdot 0.0001 + \tfrac12\cdot 0.399\big] = 0.100\\ f(2, B) &= \tfrac12\cdot 0.054 = 0.027\end{aligned}\]</div>\(0.100 \gt 0.027\), so predict <b>A</b>. Done.`,
           why: R`<p>\(x = 2\) sits on the centre of one of A's two bumps; \(x = 0\) sits between A's bumps but on B's centre.</p>`,
           extra: [{ label: "official slip: x = 0 in the last line", html: R`<p>Its last line says "Because \(f(x=0, Y=A) \gt f(x=0, Y=B)\)". It means \(x = 2\): \(0.100 \gt 0.027\).</p>` }] },
       ],

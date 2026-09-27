@@ -55,7 +55,7 @@
       point: R`Max-margin only cares about the closest samples: \((2, 3)\) is farther away than them, so nothing changes. LMS cares about every sample's score = label: \((2, 3)\) scores 1.25, not 1, so LMS changes.`,
       moves: [
         { line: R`<b>Max-margin: where is (2, 3)?</b> Score \(2 + 3 = 5 \gt 0\), so it's on the correct side. Its distance \(5/\sqrt2 \approx 3.54\) is more than the margin \(2\sqrt2 \approx 2.83\).`,
-          why: R`<p>Same distance formula as part 2, move 1: \(|x_1 + x_2|/\sqrt2\).</p>` },
+          why: R`<p>Distance = |score| ÷ length of \(w = (1, 1)\) = \(|x_1 + x_2|/\sqrt{1^2 + 1^2}\), so \((2, 3)\) is \(5/\sqrt2\) away. (Same formula as part 2, move 1.)</p>` },
         { line: R`<b>So max-margin doesn't change.</b> The old line still has margin \(2\sqrt2\), and adding a sample can never increase the best margin. So nothing beats the old line.`,
           why: R`<p>The margin = distance to the <b>closest</b> sample. A new sample either is closer (margin shrinks) or isn't (margin stays). It can never make it bigger.</p>` },
         { line: R`<b>LMS: the new (…) isn't 0.</b> With \(w = (0, \tfrac14, \tfrac14)\): \(\tfrac14\cdot 2 + \tfrac14\cdot 3 - 1 = 0.25\). <div class="formula">\[J = \tfrac15\big(0^2 + 0^2 + 0^2 + 0^2 + 0.25^2\big) = \tfrac1{80}\]</div>` },
@@ -64,7 +64,7 @@
 \[\begin{aligned}J &= \tfrac15\big(4\varepsilon^2 + (\tfrac14 - \varepsilon)^2\big)\\ &= \tfrac15\big(4\varepsilon^2 + \tfrac1{16} - \tfrac{\varepsilon}{2} + \varepsilon^2\big)\\ &= \tfrac15\big(5\varepsilon^2 - \tfrac{\varepsilon}{2} + \tfrac1{16}\big)\\ &= \varepsilon^2 - \tfrac{\varepsilon}{10} + \tfrac1{80}\end{aligned}\]
 <p>Below \(\tfrac1{80}\) when \(\varepsilon^2 - \tfrac{\varepsilon}{10} \lt 0\), i.e. \(0 \lt \varepsilon \lt 0.1\). Example \(\varepsilon = 0.05\): \(0.0025 - 0.005 + 0.0125 = 0.01 \lt 0.0125\).</p>`,
           extra: [{ label: "the official solution writes w = (ε, ¼, ¼) — it's a slip", html: R`<p>With \(+\varepsilon\) every score goes <b>up</b>, so the loss goes up: at \(\varepsilon = 0.05\) it is \(\tfrac15(4\cdot 0.05^2 + 0.3^2) = 0.02 \gt 0.0125\). Its own \((\tfrac14 - \varepsilon)^2\) and "move the line toward the positives" both need \(w_0 = -\varepsilon\).</p>` },
-                  { label: "another way: the gradient isn't 0", html: R`<p>Like Regression 2025-C Q1.2, with a \(\tfrac15\) in front: \(\nabla J = \tfrac25 X^\top(Xw - y)\). The errors are \((0, 0, 0, 0, 0.25)\), so only the new row \((1, 2, 3)\) counts:</p>\[\nabla J = \tfrac25\cdot 0.25\cdot(1, 2, 3) = (0.1,\ 0.2,\ 0.3) \ne 0\]` }] },
+                  { label: "another way: the gradient isn't 0", html: R`<p>\(J = \tfrac15\sum_i (w^\top x^{(i)} - y^{(i)})^2\). Each squared bracket → 2 · (…) · (the number in front of \(w_j\), i.e. that sample's \(x_j\)). Stacked over the knobs \(w_0, w_1, w_2\): \(\nabla J = \tfrac25 X^\top(Xw - y)\). (We saw this in 2025-C Q1, part 2.) The errors are \((0, 0, 0, 0, 0.25)\), so only the new row \((1, 2, 3)\) counts:</p>\[\nabla J = \tfrac25\cdot 0.25\cdot(1, 2, 3) = (0.1,\ 0.2,\ 0.3) \ne 0\]` }] },
       ],
       compare: R`Moves 1–2 are the official max-margin sentence ("correctly classified, farther away, the margin cannot increase"). Moves 3–4 are its LMS part, with one slip: the official \(w = (\varepsilon, \tfrac14, \tfrac14)\) must be \((-\varepsilon, \tfrac14, \tfrac14)\).`,
     },
@@ -110,6 +110,7 @@
           why: R`<p>The SVM constraint is \(y_i(w^\top x^{(i)} + w_0) \ge 1\) with \(\xi_i = 0\). Samples with exactly 1 are the closest ones. You don't need to know it by heart:</p><p>[sheet: Primal objective function (to minimize)]</p>
 <p>Their distance = |score| ÷ \(\|w\|\) = \(1/\sqrt2\). The 1 is a score, not a distance: answering "margin = 1" gets only partial credit (grader's note).</p>` },
         { line: R`<b>(c) The new sample \((2, 0)\):</b> \((+1)(2 - 0) = 2 \ge 1\), correct side and outside the margin. The old line keeps its margin, and a margin can't grow by adding a sample, so nothing changes. Done.`,
+          why: R`<p>The margin = distance to the <b>closest</b> sample. A new sample either is closer (margin shrinks) or isn't (margin stays). It can never make it bigger, so no other line can beat the old one.</p>`,
           extra: [{ label: "the official (c) says the margin \"cannot shrink\" — read it as \"cannot grow\"", html: R`<p>"Cannot shrink" is true only for this sample (it's outside the margin band). The general fact the argument needs: adding a sample can never make the margin <b>grow</b> (a sample inside the band does shrink it). 2025-C Q3.4's solution says it right: "the margin cannot increase by adding samples".</p>` }] },
       ],
       compare: R`Move 1 is the official \(x_1 - x_2 = 0\), \(w = (1, -1)\), \(w_0 = 0\). Move 2 is its \(1/\|w\| = \sqrt2/2\). Move 3 is its (c), with "cannot shrink" read as "cannot grow".`,
@@ -190,7 +191,8 @@
         { line: R`<b>\(\varphi_B\) — not separable.</b> Sample 1 (−) and sample 4 (+) both land on \((0, 0)\): the same point with different labels.` },
         { line: R`<b>\(\varphi_C\) — separable.</b> The negatives land on \(z_1 + z_2 = 0\) and 2, the positives on 9. Cut at 3: <div class="formula">\[w_0 = -3,\ w_1 = w_2 = 1:\;\; \mathrm{sign}(-3 + x_1^2 + x_2^2)\]</div>`,
           why: R`<p>Scores \(-3 + z_1 + z_2\): sample 1: −3, sample 2: −1, samples 3, 4, 5: 6. All the right signs.</p>` },
-        { line: R`<b>\(\varphi_D\) — not separable.</b> It's a linear mapping (new features = weighted sums of \(x_1, x_2\)), so "exactly between" survives: \((0, 0)\) is still the midpoint of \((6, 3)\) and \((-6, -3)\). Done.` },
+        { line: R`<b>\(\varphi_D\) — not separable.</b> It's a linear mapping (new features = weighted sums of \(x_1, x_2\)), so "exactly between" survives: \((0, 0)\) is still the midpoint of \((6, 3)\) and \((-6, -3)\). Done.`,
+          why: R`<p>Same reason as \(\varphi_A\): the middle point's score is the average of the two ends' scores. If \((6, 3)\) and \((-6, -3)\) (both +) score \(\gt 0\), then \((0, 0)\) scores \(\gt 0\) too, so sample 1 (−) is called +.</p>` },
       ],
       compare: R`Same four verdicts as the official answer, with the same \(w_0 = -3\), \(w_1 = w_2 = 1\) for \(\varphi_C\). (Its \(\varphi_B\) line prints sample 4 as "(0,0,−)"; sample 4 is +, which is the whole point.)`,
     },
@@ -198,12 +200,12 @@
     "2026A-q3.4": {
       point: R`Kernel perceptron = ordinary perceptron on part 2's \(\varphi(x)\), and it converges iff that mapped data is separable. Part 3's \(\varphi_C\) line uses only \(1, x_1^2, x_2^2\), which are inside part 2's \(\varphi\), so yes.`,
       moves: [
-        { line: R`<b>Kernel perceptron = perceptron on \(\varphi(x)\)</b> — \(K(u, v) = \varphi(u)^\top\varphi(v)\) with part 2's \(\varphi\), so it's the ordinary perceptron run on the mapped samples.`,
+        { line: R`<b>Kernel perceptron = perceptron on \(\varphi(x)\)</b> — \(K(u, v) = \varphi(u)^\top\varphi(v)\) with part 2's \(\varphi\): <div class="formula">\[\varphi(x) = \big(1,\ \sqrt2x_1,\ \sqrt2x_2,\ \sqrt2x_1x_2,\ x_1^2,\ x_2^2\big)\]</div>So it's the ordinary perceptron run on the mapped samples.`,
           why: R`<p>The dual perceptron only ever uses the samples through dot products \(x^{(j)\top}x^{(i)}\). Replacing each one by \(K = \varphi^\top\varphi\) is the same as replacing every sample \(x\) by \(\varphi(x)\).</p>` },
         { line: R`<b>The perceptron converges (with a small enough learning rate) iff the data is linearly separable.</b> So: is the \(\varphi\)-mapped data separable?`,
           why: R`<p>🧠 know by heart (it's not on the formula sheet). Write it in exactly these words: they're the official solution's.</p>` },
         { line: R`<b>Yes — part 3 already separates it.</b> \(-3 + x_1^2 + x_2^2\) uses only \(1, x_1^2, x_2^2\), all inside part 2's \(\varphi\): <div class="formula">\[w = (-3, 0, 0, 0, 1, 1)\]</div>So it's guaranteed to converge. Done.`,
-          why: R`<p>\(w^\top\varphi(x) = -3\cdot 1 + 0\cdot\sqrt2x_1 + 0\cdot\sqrt2x_2 + 0\cdot\sqrt2x_1x_2 + 1\cdot x_1^2 + 1\cdot x_2^2\), which is part 3's \(\varphi_C\) rule.</p>`,
+          why: R`<p>\(w^\top\varphi(x) = -3\cdot 1 + 0\cdot\sqrt2x_1 + 0\cdot\sqrt2x_2 + 0\cdot\sqrt2x_1x_2 + 1\cdot x_1^2 + 1\cdot x_2^2\), which is part 3's \(\varphi_C\) rule. On the five samples it scores \(-3, -1, 6, 6, 6\): both − negative, all + positive.</p>`,
           extra: [{ label: "check it with numbers", html: R`<p>Running the dual perceptron in numpy (all \(\lambda = 0\) at the start; on a mistake, \(\lambda_i \mathrel{+}= 0.01\)): the 6th pass makes no mistakes, with \(\lambda = (0.02, 0.04, 0.01, 0.01, 0)\).</p>` }] },
       ],
       compare: R`Same argument as the official answer: kernel perceptron = perceptron on the full quadratic variety (part 2); converges iff separable; part 3's \(\varphi_C\) is contained in it.`,

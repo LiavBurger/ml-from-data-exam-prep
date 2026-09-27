@@ -38,13 +38,13 @@
 \[\begin{aligned}&\pi_\mathrm{A}\cdot p(x_1 = \mathrm{p} \mid y = \mathrm{A})\cdot p(x_2 = 5 \mid y = \mathrm{A}) = \square\\ &\pi_\mathrm{B}\cdot p(x_1 = \mathrm{p} \mid y = \mathrm{B})\cdot p(x_2 = 5 \mid y = \mathrm{B}) = \square\\ &p(x) = \square + \square = \square\\ &p(y = \mathrm{A} \mid x) = \dfrac{\square}{\square} \qquad p(y = \mathrm{B} \mid x) = \dfrac{\square}{\square}\end{aligned}\]
 <p>MAP \(= \square\). Then the same for sample 22, \(x = (\mathrm{r}, 3)\).</p>`,
       moves: [
-        { line: R`<b>Sample 21, \(x = (\mathrm{p}, 5)\)</b> — joint = prior × part 1's two numbers; posterior = joint ÷ the sum \(0.125\): <div class="tw"><table><thead><tr><th>class</th><th>joint</th><th>posterior</th></tr></thead><tbody>
+        { line: R`<b>Sample 21, \(x = (\mathrm{p}, 5)\)</b> — joint = prior × \(p(\mathrm{purple} \mid \text{class})\) × \(p(5 \mid \text{class})\) (part 1's numbers); posterior = joint ÷ the sum \(0.025 + 0.1 = 0.125\): <div class="tw"><table><thead><tr><th>class</th><th>joint</th><th>posterior</th></tr></thead><tbody>
 <tr><td>A</td><td>\(0.4 \times 0.25 \times 0.25 = 0.025\)</td><td>\(\dfrac{0.025}{0.125} = 0.2\)</td></tr>
 <tr><td>B</td><td>\(0.6 \times \dfrac23 \times 0.25 = 0.1\)</td><td>\(\dfrac{0.1}{0.125} = 0.8\)</td></tr></tbody></table></div>MAP: <b>B</b>.`,
           why: R`<p><b>Joint</b> = the fraction of flowers that are A <b>and</b> look like \(x\) = (fraction that is A) × (fraction of the A's that look like \(x\)) = \(\pi_\mathrm{A}\cdot p(x \mid y = \mathrm{A})\).</p>
 <p><b>Naive</b> = inside one class the features are treated as independent, so \(p(x \mid y = \mathrm{A}) = p(x_1 \mid \mathrm{A})\cdot p(x_2 \mid \mathrm{A})\): part 1's two numbers multiplied. [sheet: Class conditional probability (Likelihood)]</p>
 <p><b>Divide by the sum:</b> every flower that looks like \(x\) is A or B, so \(p(x)\) = joint A + joint B. The posterior is Bayes' rule: \(p(y \mid x) = \dfrac{\pi_y\, p(x \mid y)}{p(x)}\) = joint ÷ \(p(x)\). (🧠 know this one by heart — the sheet only names the pieces: [sheet: Class posterior probability] \(= P(Y \mid X)\).)</p>` },
-        { line: R`<b>Sample 22, \(x = (\mathrm{r}, 3)\)</b> — same, the sum is \(0.175\): <div class="tw"><table><thead><tr><th>class</th><th>joint</th><th>posterior</th></tr></thead><tbody>
+        { line: R`<b>Sample 22, \(x = (\mathrm{r}, 3)\)</b> — joint = prior × \(p(\mathrm{red} \mid \text{class})\) × \(p(3 \mid \text{class})\); posterior = joint ÷ the sum \(0.075 + 0.1 = 0.175\): <div class="tw"><table><thead><tr><th>class</th><th>joint</th><th>posterior</th></tr></thead><tbody>
 <tr><td>A</td><td>\(0.4 \times 0.75 \times 0.25 = 0.075\)</td><td>\(\dfrac{0.075}{0.175} = \dfrac37 \approx 0.429\)</td></tr>
 <tr><td>B</td><td>\(0.6 \times \dfrac13 \times 0.5 = 0.1\)</td><td>\(\dfrac{0.1}{0.175} = \dfrac47 \approx 0.571\)</td></tr></tbody></table></div>MAP: <b>B</b>. Done.`,
           why: R`<p>Posteriors add to 1 (\(\tfrac37 + \tfrac47 = 1\)); joints don't. Report the posteriors, not the joints.</p>` },
@@ -55,8 +55,8 @@
     "2025A-q5.3": {
       point: R`Both samples came out B, so build a flower that looks "very A": in part 1, pick the colour and the petal count where A's number beats B's most — red (0.75 vs 0.333) and 4 petals (0.5 vs 0.25). Then show A's posterior is bigger.`,
       moves: [
-        { line: R`<b>Take \(x = (\mathrm{r}, 4)\)</b> — the two joints, like part 2: <div class="formula">\[\begin{aligned}\text{A: }\ 0.4 \times 0.75 \times 0.5 &= 0.15\\ \text{B: }\ 0.6 \times \dfrac13 \times 0.25 &= 0.05\end{aligned}\]</div>` },
-        { line: R`<b>Posteriors</b> — the sum is \(0.2\): <div class="formula">\[\begin{aligned}p(\mathrm{A} \mid x) &= \dfrac{0.15}{0.2} = 0.75\\ p(\mathrm{B} \mid x) &= \dfrac{0.05}{0.2} = 0.25\end{aligned}\]</div>MAP: <b>A</b>. Done.`,
+        { line: R`<b>Take \(x = (\mathrm{r}, 4)\)</b> — joint = prior × \(p(\mathrm{red} \mid \text{class})\) × \(p(4 \mid \text{class})\), part 1's numbers (like part 2): <div class="formula">\[\begin{aligned}\text{A: }\ 0.4 \times 0.75 \times 0.5 &= 0.15\\ \text{B: }\ 0.6 \times \dfrac13 \times 0.25 &= 0.05\end{aligned}\]</div>` },
+        { line: R`<b>Posteriors</b> — each joint ÷ the sum \(0.15 + 0.05 = 0.2\): <div class="formula">\[\begin{aligned}p(\mathrm{A} \mid x) &= \dfrac{0.15}{0.2} = 0.75\\ p(\mathrm{B} \mid x) &= \dfrac{0.05}{0.2} = 0.25\end{aligned}\]</div>MAP: <b>A</b>. Done.`,
           why: R`<p>(r, 5) works too: joints 0.075 vs 0.05, so A with posterior 0.6. You need only one.</p>` },
       ],
       compare: R`Same flower (r, 4) and the same numbers as the official solution.`,
@@ -123,7 +123,7 @@
     },
 
     "2025C-q4.3": {
-      point: R`Naive Bayes = one fin at a time, then multiply. "Upper = yes" is in two rows of each species, so add both; same for "lower = no". After that it's part 2 again.`,
+      point: R`Naive Bayes = one fin at a time, then multiply. "Upper = yes" is in two rows of each species, so add both; same for "lower = no". Then joint = prior × the two fractions, and each joint ÷ the sum of the joints (as in part 2).`,
       start: R`\[\begin{aligned}p(X_1 = \text{yes} \mid y = j) &= \dfrac{\square + \square}{\square}\\ p(X_2 = \text{no} \mid y = j) &= \dfrac{\square + \square}{\square}\\ \text{joint} &= \pi_j\cdot\square\cdot\square\end{aligned}\]<p>Then the sum of the joints, and each joint ÷ the sum (like part 2).</p>`,
       moves: [
         { line: R`<b>The six fractions</b> — each adds every row with that fin value: <div class="tw"><table><thead><tr><th></th><th>\(p(X_1 = \text{yes} \mid j)\)</th><th>\(p(X_2 = \text{no} \mid j)\)</th></tr></thead><tbody>
@@ -143,8 +143,8 @@
     "2025C-q4.4": {
       point: R`Nothing new to compute: the prediction is the species with the biggest posterior — in part 2 and in part 3.`,
       moves: [
-        { line: R`<b>Full Bayes</b> — part 2's biggest posterior is 0.4 → <b>Armfish (A)</b>.` },
-        { line: R`<b>Naive Bayes</b> — part 3's biggest is 0.416 → <b>Armfish (A)</b>. Same species, so they agree. Done.` },
+        { line: R`<b>Full Bayes</b> — part 2's posteriors are A 0.4, B 0.375, C 0.225. Biggest: 0.4 → <b>Armfish (A)</b>.` },
+        { line: R`<b>Naive Bayes</b> — part 3's posteriors are A 0.416, B 0.390, C 0.195. Biggest: 0.416 → <b>Armfish (A)</b>. Same species, so they agree. Done.` },
       ],
       compare: R`Same as the official answer: Armfish under both (0.4 and 0.416).`,
     },
@@ -152,8 +152,8 @@
     "2025C-q4.5": {
       point: R`Equal priors multiply every joint by the same number, so they can't change the winner. Drop them and compare only \(p(\text{yes}, \text{no} \mid j)\) — you already have these from parts 2 and 3.`,
       moves: [
-        { line: R`<b>Full Bayes</b> — part 2, move 1: <div class="formula">\[\begin{aligned}\mathrm{A}&: \dfrac{16}{60} \approx 0.267\\ \mathrm{B}&: \dfrac{15}{24} = 0.625\\ \mathrm{C}&: \dfrac{9}{16} = 0.5625\end{aligned}\]</div>Biggest → <b>Blofish (B)</b>.` },
-        { line: R`<b>Naive Bayes</b> — part 3's products: <div class="formula">\[\begin{aligned}\mathrm{A}&: \dfrac45\cdot\dfrac13 \approx 0.267\\ \mathrm{B}&: \dfrac56\cdot\dfrac34 = 0.625\\ \mathrm{C}&: \dfrac34\cdot\dfrac58 \approx 0.469\end{aligned}\]</div>Biggest → <b>Blofish (B)</b>. Done.`,
+        { line: R`<b>Full Bayes</b> — \(p(\text{yes}, \text{no} \mid j)\) = the (yes, no) count ÷ species \(j\)'s fish (part 2, move 1): <div class="formula">\[\begin{aligned}\mathrm{A}&: \dfrac{16}{60} \approx 0.267\\ \mathrm{B}&: \dfrac{15}{24} = 0.625\\ \mathrm{C}&: \dfrac{9}{16} = 0.5625\end{aligned}\]</div>Biggest → <b>Blofish (B)</b>.` },
+        { line: R`<b>Naive Bayes</b> — \(p(X_1 = \text{yes} \mid j)\cdot p(X_2 = \text{no} \mid j)\), the two fractions from part 3: <div class="formula">\[\begin{aligned}\mathrm{A}&: \dfrac45\cdot\dfrac13 \approx 0.267\\ \mathrm{B}&: \dfrac56\cdot\dfrac34 = 0.625\\ \mathrm{C}&: \dfrac34\cdot\dfrac58 \approx 0.469\end{aligned}\]</div>Biggest → <b>Blofish (B)</b>. Done.`,
           why: R`<p>MAP (part 4) said Armfish only because Armfish is common (\(\pi_\mathrm{A} = 0.6\)). The fins alone point to Blofish.</p>`,
           extra: [{ label: "the official solution prints \"0625\"", html: R`<p>It means 0.625.</p>` }] },
       ],
@@ -206,7 +206,7 @@
       point: R`Part 1 says the MLE of a Poisson rate is the average. So \(\hat\lambda_\mathrm{R}\) = the average of the R users' counts, \(\hat\lambda_\mathrm{M}\) = of the M users'. Each prior = that class's share of the 10 users.`,
       start: R`\[\hat\lambda_\mathrm{R} = \frac{\square}{8} = \square \qquad \hat\lambda_\mathrm{M} = \frac{\square}{2} = \square\]\[\hat\pi_\mathrm{R} = \frac{\square}{10} = \square \qquad \hat\pi_\mathrm{M} = \frac{\square}{10} = \square\]`,
       moves: [
-        { line: R`<b>Rates = averages, per class</b> — R = users 1–8, M = users 9–10: <div class="formula">\[\begin{aligned}\hat\lambda_\mathrm{R} &= \frac{1 + 1 + 2 + 2 + 2 + 2 + 3 + 3}{8} = \frac{16}{8} = 2\\ \hat\lambda_\mathrm{M} &= \frac{4 + 4}{2} = \frac82 = 4\end{aligned}\]</div>`,
+        { line: R`<b>Rates = averages, per class</b> — \(\hat\lambda = \frac1n\sum_i x_i\) (part 1), on each class's own users: R = users 1–8, M = users 9–10: <div class="formula">\[\begin{aligned}\hat\lambda_\mathrm{R} &= \frac{1 + 1 + 2 + 2 + 2 + 2 + 3 + 3}{8} = \frac{16}{8} = 2\\ \hat\lambda_\mathrm{M} &= \frac{4 + 4}{2} = \frac82 = 4\end{aligned}\]</div>`,
           why: R`<p>\(\lambda_\mathrm{R}\) describes regular users only, so it's fitted on the R users only. Averaging all ten (2.4) would give one rate for everyone, which can't tell the classes apart.</p>`,
           extra: [{ label: "Moed B trap", html: R`<p>You got the priors but left out the rates (2/5). The rates are just these two averages.</p>` }] },
         { line: R`<b>Priors = shares</b>: <div class="formula">\[\hat\pi_\mathrm{R} = \frac{8}{10} = 0.8 \qquad \hat\pi_\mathrm{M} = \frac{2}{10} = 0.2\]</div>Done.`,
@@ -233,14 +233,14 @@
     },
 
     "2026B-q4.4": {
-      point: R`Same comparison as part 3 at \(x = 4\), but now \(\pi_\mathrm{M}\) is the unknown and \(\pi_\mathrm{R} = 1 - \pi_\mathrm{M}\). Solve for \(\pi_\mathrm{M}\).`,
+      point: R`M wins when its joint is bigger: \(\pi_\mathrm{M}\cdot\mathrm{Poiss}(4 \mid 4) \gt \pi_\mathrm{R}\cdot\mathrm{Poiss}(4 \mid 2)\) (part 3's comparison at \(x = 4\)). But now \(\pi_\mathrm{M}\) is the unknown and \(\pi_\mathrm{R} = 1 - \pi_\mathrm{M}\). Solve for \(\pi_\mathrm{M}\).`,
       start: R`\[\pi_\mathrm{M}\cdot\mathrm{Poiss}(4 \mid 4) \gt (1 - \pi_\mathrm{M})\cdot\mathrm{Poiss}(4 \mid 2)\]\[\iff \frac{\pi_\mathrm{M}}{1 - \pi_\mathrm{M}} \gt \square\]\[\iff \pi_\mathrm{M} \gt \square \approx \square\]<p>This is \(\square\) than \(\hat\pi_\mathrm{M} = 0.2\), because \(\square\)</p>`,
       moves: [
-        { line: R`<b>Part 3's rule at \(x = 4\), prior as a letter</b>: <div class="formula">\[\pi_\mathrm{M}\cdot\frac{4^4 e^{-4}}{4!} \gt (1 - \pi_\mathrm{M})\cdot\frac{2^4 e^{-2}}{4!}\]</div>` },
+        { line: R`<b>M's joint \(\gt\) R's joint at \(x = 4\), prior as a letter</b> — each joint = prior × Poisson, with \(\lambda = 4\) (M) and \(\lambda = 2\) (R) from part 2 (part 3's rule): <div class="formula">\[\pi_\mathrm{M}\cdot\frac{4^4 e^{-4}}{4!} \gt (1 - \pi_\mathrm{M})\cdot\frac{2^4 e^{-2}}{4!}\]</div>` },
         { line: R`<b>Priors on one side</b> — divide both sides by \((1 - \pi_\mathrm{M})\cdot\frac{4^4 e^{-4}}{4!}\): <div class="formula">\[\frac{\pi_\mathrm{M}}{1 - \pi_\mathrm{M}} \gt \frac{2^4 e^{-2}}{4^4 e^{-4}} = \frac{e^2}{16}\]</div>`,
           why: R`<p>\(4!\) cancels; \(\tfrac{2^4}{4^4} = \tfrac{16}{256} = \tfrac{1}{16}\); \(\tfrac{e^{-2}}{e^{-4}} = e^2\).</p>` },
         { line: R`<b>Solve for \(\pi_\mathrm{M}\)</b> — multiply by \(16(1 - \pi_\mathrm{M})\): <div class="formula">\[\begin{aligned}16\pi_\mathrm{M} &\gt e^2 - e^2\pi_\mathrm{M}\\ \pi_\mathrm{M}(16 + e^2) &\gt e^2\\ \pi_\mathrm{M} &\gt \frac{e^2}{16 + e^2} = \frac{7.389}{23.389} \approx 0.316\end{aligned}\]</div>`,
-          why: R`<p>Same moves as 2025-A Q5.4: multiply out, put the \(\pi_\mathrm{M}\) terms on one side, divide. At exactly 0.316 the two joints tie.</p>` },
+          why: R`<p>Multiply out, put the \(\pi_\mathrm{M}\) terms on one side (add \(e^2\pi_\mathrm{M}\) to both sides), divide by \(16 + e^2\) (same moves as 2025-A Q5.4). At exactly 0.316 the two joints tie.</p>` },
         { line: R`<b>Compare with 0.2</b> — 0.316 is <b>larger</b>. That fits part 3: with \(\hat\pi_\mathrm{M} = 0.2\), \(x = 4\) was R, so \(\pi_\mathrm{M}\) has to go up to get M. Done.`,
           why: R`<p>4 packets is exactly M's typical count, but M is rare, so its prior must be big enough before we call it.</p>` },
       ],
@@ -254,7 +254,7 @@
         { line: R`<b>Cost of each prediction</b> — each costs only when the truth is the other class: <div class="formula">\[\begin{aligned}\text{say M:}\quad &C_{\mathrm{M},\mathrm{R}}\cdot 0.8\cdot\mathrm{Poiss}(4 \mid 2)\\ \text{say R:}\quad &C_{\mathrm{R},\mathrm{M}}\cdot 0.2\cdot\mathrm{Poiss}(4 \mid 4)\end{aligned}\]</div>`,
           why: R`<p>You don't need to know this by heart: [sheet: Expected risk of predicting class label y] is \(\sum_{y'} \pi_{y'} P(X = x \mid Y = y')\,\lambda_{y,y'}\), with \(C\) in place of \(\lambda\). For "say M" the truth-M term costs \(C_{\mathrm{M},\mathrm{M}} = 0\), so only the truth-R term is left.</p>` },
         { line: R`<b>M is cheaper</b> — say-M cost \(\lt\) say-R cost; divide both sides by \(C_{\mathrm{M},\mathrm{R}}\cdot 0.2\cdot\mathrm{Poiss}(4 \mid 4)\): <div class="formula">\[\frac{C_{\mathrm{R},\mathrm{M}}}{C_{\mathrm{M},\mathrm{R}}} \gt \frac{0.8\cdot\mathrm{Poiss}(4 \mid 2)}{0.2\cdot\mathrm{Poiss}(4 \mid 4)}\]</div>` },
-        { line: R`<b>Simplify</b> — \(\tfrac{0.8}{0.2} = 4\), and the Poisson ratio is part 4's \(\tfrac{e^2}{16}\): <div class="formula">\[\begin{aligned}\frac{C_{\mathrm{R},\mathrm{M}}}{C_{\mathrm{M},\mathrm{R}}} &\gt 4\cdot\frac{e^2}{16} = \frac{e^2}{4}\\ &= \frac{7.389}{4} \approx 1.847\end{aligned}\]</div>Done.`,
+        { line: R`<b>Simplify</b> — \(\tfrac{0.8}{0.2} = 4\). Poisson ratio: \(4!\) cancels, \(\tfrac{2^4}{4^4} = \tfrac{1}{16}\), \(\tfrac{e^{-2}}{e^{-4}} = e^2\), so it's \(\tfrac{e^2}{16}\) (as in part 4): <div class="formula">\[\begin{aligned}\frac{C_{\mathrm{R},\mathrm{M}}}{C_{\mathrm{M},\mathrm{R}}} &\gt 4\cdot\frac{e^2}{16} = \frac{e^2}{4}\\ &= \frac{7.389}{4} \approx 1.847\end{aligned}\]</div>Done.`,
           why: R`<p>\(C_{\mathrm{R},\mathrm{M}}\) = a missed threat, \(C_{\mathrm{M},\mathrm{R}}\) = a false alarm. So \(x = 4\) is called M only if a missed threat costs more than ≈ 1.85 false alarms.</p>` },
       ],
       compare: R`Moves 2–3 are the official lines (written as a ratio "\(\gt 1\)" first): \(\tfrac{e^2}{4} \approx 1.847\).`,

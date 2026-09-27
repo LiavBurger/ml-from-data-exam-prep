@@ -16,7 +16,7 @@
 <p>If wrong: \(\;\Delta w = -0.1\,(\hat y^{(i)} - y^{(i)})\,x^{(i)} = \square\), new \(w = \square\)</p>
 <p>If right: "no update".</p>`,
       moves: [
-        { line: R`<b>Add the 1</b> — as in Regression (2025-C Q1.1), a 1 in front of each sample, for \(w_0\): <div class="formula">\[\begin{aligned}&x^{(1)} = (1, 1, 1, 0) &&x^{(2)} = (1, -1, 0, 2)\\ &x^{(3)} = (1, 2, 1, 1) &&x^{(4)} = (1, 0, -1, 1)\end{aligned}\]</div>Start: \(w = (-1, 0, 0, 0)\).` },
+        { line: R`<b>Add the 1</b> — a 1 in front of each sample, so the score \(w^\top x = w_0\cdot 1 + w_1x_1 + w_2x_2 + w_3x_3\) includes \(w_0\) (as in Regression, 2025-C Q1.1): <div class="formula">\[\begin{aligned}&x^{(1)} = (1, 1, 1, 0) &&x^{(2)} = (1, -1, 0, 2)\\ &x^{(3)} = (1, 2, 1, 1) &&x^{(4)} = (1, 0, -1, 1)\end{aligned}\]</div>Start: \(w = (-1, 0, 0, 0)\).` },
         { line: R`<b>Sample 1</b> — score \((-1)\cdot 1 + 0 + 0 + 0 = -1\), sign \(-1 \ne 1 = y^{(1)}\): wrong, so update: <div class="formula">\[\begin{aligned}\Delta w &= -0.1\cdot(-1 - 1)\cdot(1, 1, 1, 0)\\ &= (0.2,\ 0.2,\ 0.2,\ 0)\\ w &= (-0.8,\ 0.2,\ 0.2,\ 0)\end{aligned}\]</div>`,
           why: R`<p>\(\hat y - y = -1 - 1 = -2\), and \(-0.1\cdot(-2) = +0.2\). So \(\Delta w\) = 0.2 × the sample, and the new \(w\) is the old one plus it, entry by entry: \((-1 + 0.2,\ 0 + 0.2,\ 0 + 0.2,\ 0 + 0)\).</p>
 <p>Shortcut: wrong on a \(y = +1\) sample → add \(0.2\cdot x\). Wrong on a \(y = -1\) sample → \(\hat y - y = 1 - (-1) = 2\), so subtract \(0.2\cdot x\).</p>` },
@@ -32,7 +32,7 @@
     },
 
     "2025A-q4.2": {
-      point: R`"After" means the final \(w\) from part 1, not the scores from during the pass. Score every sample with it and take the sign.`,
+      point: R`"After" means the final \(w = (-0.6, 0.6, 0.4, 0.2)\) from part 1, not the scores from during the pass. Score every sample with it and take the sign.`,
       start: R`<p>For each sample: \(\;w^\top x^{(i)} = \square\), so \(\;\hat y^{(i)} = \mathrm{sign}(\square) = \square\)</p>`,
       moves: [
         { line: R`<b>Scores with the final \(w = (-0.6, 0.6, 0.4, 0.2)\)</b> — each sample (with its 1) · \(w\): <div class="formula">\[Xw = (0.4,\ -0.8,\ 1.2,\ -0.8)\]</div>`,
@@ -99,9 +99,9 @@
         { line: R`<b>(1) and (2)</b> — the library imported as np is <code>numpy</code>. \(\sigma(z) = \frac{1}{1 + e^{-z}}\) in numpy: <code>1 / (1 + np.exp(-z))</code>.`,
           why: R`<p>You don't need to know \(\sigma\) by heart: [sheet: Sigmoid function].</p>` },
         { line: R`<b>(3) The scores</b> — line 15 puts <code>z</code> into sigmoid, so <code>z</code> = every sample's score \(w^\top x^{(i)}\): <code>X_with_bias @ w</code>.`,
-          why: R`<p>As in Regression (2025-C Q1.3, move 2): <code>X @ theta</code> = one score per row. It's <code>X_with_bias</code> because \(w\) includes \(w_0\) (line 11 makes \(w\) as long as a row of <code>X_with_bias</code>).</p>` },
+          why: R`<p>Row \(i\) of <code>X_with_bias</code> is \((1, x^{(i)}_1, \dots)\); times \(w\) that's \(w_0 + w_1x^{(i)}_1 + \dots\) = sample \(i\)'s score. So <code>X_with_bias @ w</code> = one score per row (as in Regression, 2025-C Q1.3, move 2). It's <code>X_with_bias</code> because \(w\) includes \(w_0\) (line 11 makes \(w\) as long as a row of <code>X_with_bias</code>).</p>` },
         { line: R`<b>(4) One step downhill</b> — current \(w\) minus step size × gradient: <code>w - eta * grad</code>. Done.`,
-          why: R`<p>Same step as \(\theta - 0.1\cdot\nabla J\) in Regression (2025-C Q1.3). Line 16's <code>grad</code> is [sheet: BCE loss gradient] without the \(\frac1n\), which only rescales the step.</p>` },
+          why: R`<p>The gradient points uphill (where the loss grows), so minus a small step of it (<code>eta</code> × <code>grad</code>) lowers the loss (same step as \(\theta - 0.1\cdot\nabla J\) in Regression, 2025-C Q1.3). Line 16's <code>grad</code> is [sheet: BCE loss gradient] without the \(\frac1n\), which only rescales the step.</p>` },
       ],
       compare: R`Same four blanks as the official solution.`,
     },
@@ -120,7 +120,7 @@
     "2025B-q3.2": {
       point: R`Separable means <b>some</b> line gets every sample right. The given \(w\) already does (part 1), so we have one.`,
       moves: [
-        { line: R`<b>The given \(w\) gets all six right</b> — part 1 predicted 1, 0, 1, 0, 1, 0; the true labels are 1, 0, 1, 0, 1, 0.` },
+        { line: R`<b>The given \(w\) gets all six right</b> — score \(\ge 0\) → "1" (part 1): the scores 1.4, −0.8, 0.8, −1.6, 0.4, −0.4 give 1, 0, 1, 0, 1, 0; the true labels are 1, 0, 1, 0, 1, 0.` },
         { line: R`<b>So its line separates them</b> — the hyperplane \(w^\top x = 0\) has every "1" on the + side and every "0" on the − side: <b>necessarily separable</b>. Done.` },
       ],
       compare: R`Same as the official answer: \(\{x : w^\top x = 0\}\) is a separating hyperplane.`,
@@ -165,7 +165,7 @@
     },
 
     "2025B-q3.6": {
-      point: R`A kernel is just the dot product of mapped features, \(K(u, v) = \varphi(u)^\top\varphi(v)\). Pick the quadratic one: its features include \(x_1^2\) and \(x_2^2\), so the data is separable there (part 5), and the Perceptron always converges on separable data.`,
+      point: R`A kernel is just the dot product of mapped features, \(K(u, v) = \varphi(u)^\top\varphi(v)\). Pick the quadratic one: its features include \(x_1^2\) and \(x_2^2\), so the circle "\(x_1^2 + x_2^2 > 0.4\) → positive" is a line there: the data is separable (part 5), and the Perceptron always converges on separable data.`,
       start: R`<p>\(K(u, v) = \square\)</p>
 <p>It equals \(\varphi(u)^\top\varphi(v)\) for \(\;\varphi(x) = \square\)</p>
 <p>In that space the data is □ (part 5), so the dual Perceptron □</p>`,
@@ -176,7 +176,7 @@
           why: R`<p>\(\varphi(u)^\top\varphi(v)\), entry by entry: \(1\cdot 1\), \(\sqrt2u_1\cdot\sqrt2v_1 = 2u_1v_1\), \(\sqrt2u_2\cdot\sqrt2v_2 = 2u_2v_2\), \(u_1^2v_1^2\), \(u_2^2v_2^2\), \(\sqrt2u_1u_2\cdot\sqrt2v_1v_2 = 2u_1u_2v_1v_2\). The \(\sqrt2\)'s are only there to make the 2's.</p>`,
           extra: [{ label: "check it with numbers (two points from the figure)", html: R`<p>\(u = (0, 0.8)\), \(v = (0.2, 0.3)\). Kernel: \(u^\top v = 0 + 0.24\), so \(K = 1.24^2 = 1.5376\).</p>
 <p>Expanded: \(1 + 0 + 2\cdot 0.24 + 0 + 0.64\cdot 0.09 + 0 = 1 + 0.48 + 0.0576 = 1.5376\). ✓</p>` }] },
-        { line: R`<b>Separable there, so it converges</b> — this \(\varphi\) contains \(1, x_1^2, x_2^2\), so part 5's circle is a line in it: \(w = (-0.4, 0, 0, 1, 1, 0)\). The Perceptron converges on separable data. Done.`,
+        { line: R`<b>Separable there, so it converges</b> — this \(\varphi\) contains \(1, x_1^2, x_2^2\), so the circle rule \(-0.4 + x_1^2 + x_2^2 > 0\) (part 5) is a line in it: \(w = (-0.4, 0, 0, 1, 1, 0)\). The Perceptron converges on separable data. Done.`,
           why: R`<p>\(w^\top\varphi(x) = -0.4 + x_1^2 + x_2^2\): exactly part 5's rule. The grader: no full proof needed — the kernel plus "it's the dot product of the quadratic features" is enough.</p>` },
       ],
       compare: R`Same kernel, expansion and argument as the official answer.`,
@@ -241,9 +241,9 @@
       point: R`Every blank is spelled out around it: the hint \(\sum_i z_i x^{(i)}\), <code>self.learning_rate</code>, <code>BCE_loss(X, y)</code> on this batch, and the comment "loss <b>change</b>".`,
       moves: [
         { line: R`<b>(1) The hint's sum</b> — \(\sum_i z_i\,x^{(i)}\) over this batch's rows is \(X_b^\top z\): <code>X_b.T @ z</code>.`,
-          why: R`<p>As in Regression (2025-C Q1.2, step 4): "each row times its number, added up" = \(X^\top\)(the list of numbers). You don't need part 3 for this.</p>` },
+          why: R`<p>\(\sum_i z_i\,x^{(i)} = z_1x^{(1)} + z_2x^{(2)} + \dots\): each row of \(X_b\) times its number \(z_i\), added up. The columns of \(X_b^\top\) are those rows, so \(X_b^\top z\) does exactly that (as in Regression, 2025-C Q1.2, step 4). You don't need part 3 for this.</p>` },
         { line: R`<b>(2) One step downhill</b> — weights minus learning rate × gradient: <code>self.w - self.learning_rate * grad</code>.`,
-          why: R`<p>Same step as 2025-A Q4.5 blank 4, with the class's names.</p>` },
+          why: R`<p>The gradient points uphill (where the loss grows), so minus a small step of it lowers the loss; <code>self.learning_rate</code> sets the step size (same step as 2025-A Q4.5, blank 4).</p>` },
         { line: R`<b>(3) The loss on this batch</b> — <code>BCE_loss(X, y)</code> evaluates \(L(w)\) on a dataset; give it the batch: <code>self.BCE_loss(X_b, y_b)</code>.`,
           why: R`<p>It takes the original labels <code>y_b</code> (like your HW3 <code>BCE_loss</code>, it converts to 0/1 inside).</p>` },
         { line: R`<b>(4) Stop when the loss stops changing</b> — the comment says loss <b>change</b>: <code>abs(previous_loss - current_loss) &lt; self.eps</code>. Done.`,

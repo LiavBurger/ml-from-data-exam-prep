@@ -125,7 +125,12 @@ found using …" → "both are plugged into the same …, so …". The `start` g
 - **Real material only — never invented questions.** Exam parts, official solutions (images are authoritative),
   homework, lectures. Worked numbers come from the real exam tables.
 - Verify every number with python3/numpy. Flag official slips (in `compare` and an `extra`) with the corrected value.
-- Don't re-walk what an earlier part of the same question already did — refer to it ("part 2, step 4").
+- **Every location is self-contained.** A reference ("we've seen this in 2025-C Q1, part 2") may be ADDED, but it never
+  REPLACES the explanation. The learner: *"It's good to say 'we've seen similar in x', but it doesn't mean we should
+  have no clear explanation in this exact location."* So wherever a move, start or point relies on something from
+  another question, part or note, it states the actual step here — short, in the learner's structure, with this
+  question's own numbers — and the pointer comes after, in brackets. Within the same question, "part 2's answer" is
+  fine only if the formula/value is written out right here.
 
 ## 9. File format and validation — `data/walks/<topic>.js`
 ```js

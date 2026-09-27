@@ -51,13 +51,13 @@
   0 /   \ 1
    -     +          rows 3, 5
 rows 1,4,6,7</code></pre>Done.`,
-          why: R`<p>Every leaf is pure, so zero training error, and move 1 shows depth 1 can't work. \(X_4\) first, then \(X_3\), works too (the official second tree).</p>` },
+          why: R`<p>Every leaf is pure, so zero training error. Depth 1 can't work: every feature's 0-child mixes row 1 \((-)\) with a \(+\) row (move 1). \(X_4\) first, then \(X_3\), works too (the official second tree).</p>` },
       ],
       compare: R`Move 3 is the official first tree (its second tree asks \(X_4\) first), and move 1 is its last sentence.`,
     },
 
     "2025B-q2.4": {
-      point: R`<p>Just follow the part-3 tree. Only the features the tree asks about matter.</p>`,
+      point: R`<p>Just follow the tree: ask \(X_3\) (1 → \(+\)); if 0, ask \(X_4\) (1 → \(+\), 0 → \(-\)) (the part-3 tree). Only the features the tree asks about matter.</p>`,
       moves: [
         { line: R`<b>Read the values</b> — \(x = (0, 1, 0, 0)\) means \(X_1 = 0\), \(X_2 = 1\), \(X_3 = 0\), \(X_4 = 0\).` },
         { line: R`<b>Follow the tree</b> — the root asks \(X_3\): it's 0, so go to \(X_4\). \(X_4 = 0\), so leaf \(-\). Prediction: \(-\). Done.`,
@@ -117,7 +117,7 @@ rows 1,4,6,7</code></pre>Done.`,
 <tr><td>Action</td><td>\(1-,\ 2+\)</td><td>\(\tfrac12\)</td></tr>
 <tr><td>Comedy</td><td>\(3-,\ 4-\)</td><td>\(0\)</td></tr>
 <tr><td>Drama</td><td>\(5+,\ 6+\)</td><td>\(0\)</td></tr></tbody></table></div>`,
-          why: R`<p>A pure child: \(1 - 1^2 - 0^2 = 0\). Half and half: \(\tfrac12\), as in part 1.</p>` },
+          why: R`<p>A pure child: \(1 - 1^2 - 0^2 = 0\). Half and half: \(1 - \tfrac14 - \tfrac14 = \tfrac12\) (as in part 1).</p>` },
         { line: R`<b>Plug in</b> — one term per genre, \(\varphi(S) = \tfrac12\) from part 1: <div class="formula">\[\begin{aligned}\Delta\varphi(\text{Genre}) &= \tfrac12 - \left(\tfrac26\cdot\tfrac12 + \tfrac26\cdot 0 + \tfrac26\cdot 0\right)\\ &= \tfrac12 - \tfrac16 = \tfrac13\end{aligned}\]</div>Done.`,
           why: R`<p>🧠 The reduction formula isn't on the sheet (only [sheet: Gini impurity]): \(\varphi(S) - \sum_v \frac{|S_v|}{|S|}\varphi(S_v)\), with \(v\) = Action, Comedy, Drama.</p>` },
       ],
@@ -125,10 +125,10 @@ rows 1,4,6,7</code></pre>Done.`,
     },
 
     "2025C-q2.3": {
-      point: R`<p>Same children and weights as part 2. Only the impurity changes: entropy instead of Gini.</p>`,
+      point: R`<p>Same children and weights as part 2: Action \(\{1-, 2+\}\), Comedy \(\{3-, 4-\}\), Drama \(\{5+, 6+\}\), 2 of the 6 each. Only the impurity changes: entropy instead of Gini.</p>`,
       start: R`\[\mathrm{IG}(\text{Genre}) = H(S) - \sum_{v} \frac{|S_v|}{|S|}\,H(S_v) = \;\square\]`,
       moves: [
-        { line: R`<b>Entropies</b> — [sheet: Entropy]. The parent and Action are half and half, Comedy and Drama are pure: <div class="formula">\[\begin{aligned}H(\tfrac12) &= -\tfrac12\log_2\tfrac12 - \tfrac12\log_2\tfrac12 = 1\\ H(0) &= H(1) = 0\end{aligned}\]</div>`,
+        { line: R`<b>Entropies</b> — [sheet: Entropy]. The parent (3 likes, 3 dislikes) and Action \(\{1-, 2+\}\) are half and half; Comedy \(\{3-, 4-\}\) and Drama \(\{5+, 6+\}\) are pure: <div class="formula">\[\begin{aligned}H(\tfrac12) &= -\tfrac12\log_2\tfrac12 - \tfrac12\log_2\tfrac12 = 1\\ H(0) &= H(1) = 0\end{aligned}\]</div>`,
           why: R`<p>\(\log_2\tfrac12 = -1\), because \(2^{-1} = \tfrac12\). A pure node: \(-1\cdot\log_2 1 - 0 = 0\) (\(0\cdot\log 0\) counts as 0).</p>` },
         { line: R`<b>Plug in</b>: <div class="formula">\[\begin{aligned}\mathrm{IG}(\text{Genre}) &= 1 - \left(\tfrac26\cdot 1 + \tfrac26\cdot 0 + \tfrac26\cdot 0\right)\\ &= 1 - \tfrac13 = \tfrac23\end{aligned}\]</div>Done.` },
       ],
@@ -157,7 +157,7 @@ rows 1,4,6,7</code></pre>Done.`,
       moves: [
         { line: R`<b>The pruned tree</b> — Genre only; each child is a leaf with its majority label. Comedy \(\{3-, 4-\}\) → dislike. So the instance goes Genre = Comedy → <b>dislike (−)</b>.`,
           why: R`<p>Pruning a node = replace it by a leaf labelled with the majority of the training rows that reach it. Action \(\{1-, 2+\}\) is a 1–1 tie, but this instance never goes there.</p>` },
-        { line: R`<b>Did pruning change it?</b> No. In the part-4 tree Comedy was already a leaf (−). Pruning only removed the Time question under Action. Done.` },
+        { line: R`<b>Did pruning change it?</b> No. The unpruned tree (part 4) asks Genre, then Time only under Action; Comedy was already a leaf (−). Pruning only removed the Time question under Action. Done.` },
       ],
       compare: R`Same as the official solution: dislike (−) in both the pruned and the unpruned tree.`,
     },
@@ -199,7 +199,7 @@ rows 1,4,6,7</code></pre>Done.`,
     },
 
     "2025A-q3.2": {
-      point: R`<p>The four samples have four different \((X_2, X_3)\) combinations. So asking \(X_2\), then \(X_3\), gives every sample its own leaf: zero error at depth 2 (and part 1 rules out depth 1).</p>`,
+      point: R`<p>The four samples have four different \((X_2, X_3)\) combinations. So asking \(X_2\), then \(X_3\), gives every sample its own leaf: zero error at depth 2. Depth 1 can't: every feature has a branch with both a \(+\) and a \(-\) (part 1).</p>`,
       moves: [
         { line: R`<b>Look at \((X_2, X_3)\)</b> — samples 1–4 have \((0,0)\), \((0,1)\), \((1,0)\), \((1,1)\). All four are different.`,
           why: R`<p>Two yes/no questions make 4 leaves. If every sample has its own combination, each lands in its own leaf, and each leaf just takes its sample's label.</p>` },
@@ -215,7 +215,7 @@ rows 1,4,6,7</code></pre>Done.`,
     },
 
     "2025A-q3.3": {
-      point: R`<p>The tree never asks \(X_1\). So take a training vector, flip \(x_1\) (now it's new, but the tree's answer is the same), and give it the opposite label.</p>`,
+      point: R`<p>The tree only asks \(X_2\), then \(X_3\): \(+\) when they differ, \(-\) when they're equal (the part-2 tree). It never asks \(X_1\). So take a training vector, flip \(x_1\) (now it's new, but the tree's answer is the same), and give it the opposite label.</p>`,
       moves: [
         { line: R`<b>A new vector</b> — sample 1 is \((0,0,0)\); flip \(x_1\): \((1,0,0)\). It's not in the training data, and the tree still says \(-\) (\(X_2 = 0\), \(X_3 = 0\)).` },
         { line: R`<b>Give it the opposite label</b>: \((1, 0, 0, +)\). Done.`,
@@ -259,7 +259,7 @@ rows 1,4,6,7</code></pre>Done.`,
 <p><b>Plug in:</b> \(\mathrm{IG}(S, X_7) = \square = 0\)</p>`,
       moves: [
         { line: R`<b>Positive fractions are equal too</b> — each is 1 minus the negative fraction. Call it \(r\) (the official name); multiplied out: <div class="formula">\[p_0 = r\,(p_0+n_0) \qquad p_1 = r\,(p_1+n_1)\]</div>` },
-        { line: R`<b>The parent has fraction \(r\) too</b> — add the two: <div class="formula">\[\frac{p_0+p_1}{|S|} = \frac{r\,(p_0+n_0+p_1+n_1)}{p_0+n_0+p_1+n_1} = r\]</div>`,
+        { line: R`<b>The parent has fraction \(r\) too</b> — add the two (the parent holds both children, so \(|S| = p_0+n_0+p_1+n_1\)):<div class="formula">\[\frac{p_0+p_1}{|S|} = \frac{r\,(p_0+n_0+p_1+n_1)}{p_0+n_0+p_1+n_1} = r\]</div>`,
           why: R`<p>This is the step that proves something: the parent's fraction is not given, it follows from the children.</p>` },
         { line: R`<b>Plug in</b> — entropy depends only on the fraction, so all three are \(H(r)\): <div class="formula">\[\begin{aligned}\mathrm{IG} &= H(r) - \frac{|S_0|}{|S|}H(r) - \frac{|S_1|}{|S|}H(r)\\ &= H(r)\Big(1 - \underbrace{\color{#e8912d}\frac{|S_0| + |S_1|}{|S|}}_{\textstyle\color{#e8912d}\text{this part = 1}}\Big) = 0\end{aligned}\]</div>Done.`,
           why: R`<p>[sheet: Entropy] with 2 classes: \(H(r) = -r\log r - (1-r)\log(1-r)\). It only sees \(r\). Same proof as 2025-B Q2.6.</p>` },
@@ -325,11 +325,11 @@ rows 1,4,6,7</code></pre>Done.`,
     "2026A-q2.5": {
       point: R`<p>One iteration = pop the root, score <b>every</b> attribute, split by the best one, and push its children into the queue. \(X_1\) wins (0.18).</p>`,
       moves: [
-        { line: R`<b>Pop the root</b> — \(S\) = samples 1–5, mixed, so not a leaf. Part 3 scored \(X_1\), \(X_4\); now \(X_2\), \(X_3\): <div class="tw"><table><thead><tr><th>child</th><th>samples</th><th>\(\varphi\)</th></tr></thead><tbody>
+        { line: R`<b>Pop the root</b> — \(S\) = samples 1–5, mixed, so not a leaf. Part 3 gave \(\Delta\varphi(X_1) = 0.18\), \(\Delta\varphi(X_4) = 0.0133\); now \(X_2\), \(X_3\): <div class="tw"><table><thead><tr><th>child</th><th>samples</th><th>\(\varphi\)</th></tr></thead><tbody>
 <tr><td>\(X_2 = 0\)</td><td>\(1-,2+\)</td><td>\(0.5\)</td></tr><tr><td>\(X_2 = 1\)</td><td>\(3+,4-,5+\)</td><td>\(\tfrac49\)</td></tr>
 <tr><td>\(X_3 = 0\)</td><td>\(1-,3+,5+\)</td><td>\(\tfrac49\)</td></tr><tr><td>\(X_3 = 1\)</td><td>\(2+,4-\)</td><td>\(0.5\)</td></tr></tbody></table></div>`,
-          why: R`<p>The algorithm scores <b>every</b> attribute, not just the two from part 3.</p>` },
-        { line: R`<b>Both reductions</b> — one child of 2 at 0.5, one of 3 at \(\tfrac49\): <div class="formula">\[\begin{aligned}\Delta\varphi(X_2) = \Delta\varphi(X_3) &= 0.48 - \tfrac25\cdot 0.5 - \tfrac35\cdot\tfrac49\\ &= 0.0133\end{aligned}\]</div>` },
+          why: R`<p>The algorithm scores <b>every</b> attribute, not just the two from part 3. A 1–1 child: \(1 - 0.5^2 - 0.5^2 = 0.5\). A 2–1 child: \(1 - \left(\tfrac23\right)^2 - \left(\tfrac13\right)^2 = 1 - \tfrac49 - \tfrac19 = \tfrac49\).</p>` },
+        { line: R`<b>Both reductions</b> — root Gini \(1 - 0.6^2 - 0.4^2 = 0.48\) (3 \(+\), 2 \(-\)); one child of 2 at 0.5, one of 3 at \(\tfrac49\): <div class="formula">\[\begin{aligned}\Delta\varphi(X_2) = \Delta\varphi(X_3) &= 0.48 - \tfrac25\cdot 0.5 - \tfrac35\cdot\tfrac49\\ &= 0.0133\end{aligned}\]</div>` },
         { line: R`<b>Pick \(X_1\), push the children</b> — 0.18 beats 0.0133. \(v_1 = \{x^{(1)}\}\), \(v_2 = \{x^{(2)}, x^{(3)}, x^{(4)}, x^{(5)}\}\): <pre><code>      v_root [X1 ?]
         0 /     \ 1
         v1       v2
@@ -390,7 +390,7 @@ rows 1,4,6,7</code></pre>Done.`,
     "2026B-q2.3": {
       point: R`<p>Removing a sample only changes the tree if a threshold depends on it. Only sample 3 is alone above the red band: without it the tree has no upper cut, so it calls sample 3 red. 1 error out of 8.</p>`,
       moves: [
-        { line: R`<b>Most rounds keep the part-2 tree</b> — it's right on all 8, so it still has zero error on any 7, and it gets the left-out one right.`,
+        { line: R`<b>Most rounds keep the part-2 tree</b> — \(X_2 \lt 2.5 \to\) B; else \(X_2 \lt 7 \to\) R, else B. It's right on all 8, so it still has zero error on any 7, and it gets the left-out one right.`,
           why: R`<p>Its thresholds stay available: without any one sample except 3, \(X_2\) still has values on both sides of 2.5 and of 7, so both midpoints are still candidates.</p>` },
         { line: R`<b>Except sample 3</b> — the only one with \(X_2 = 8\). Without it, \(X_2\)'s values are 1, 2, 3, 6: no midpoint 7. Tree: \(X_2 \lt 2.5 \to\) B, else R. Sample 3 → R, but it's B: error.`,
           why: R`<p>On the other seven, blue is \(X_2 \in \{1, 2, 2\}\) and red is \(X_2 \in \{3, 3, 6, 6\}\). One cut at 2.5 already separates them, so a depth-1 tree does it (the official choice).</p>` },
