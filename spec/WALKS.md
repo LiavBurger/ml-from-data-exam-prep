@@ -27,6 +27,23 @@ different loss, both are scored on J_λ, so θ* wins"). The moves are that sente
 **Argument / compare parts** use exactly the learner's chain: "A = … found using …" → "B = … found using …" →
 "both are plugged into …, so …". (Model: 2025-C Q1.4.)
 
+## 0.5 THE POINT — every part starts with it
+The learner, after understanding 2025-C Q1.4: *"The point is to simplify. Basically now that I understand it, it
+literally doesn't matter what θ̃ was obtained with. [θ* is the best for J_λ, so anything else scores worse.] That's the
+point of the question. That's what I need to understand, in every question!"*
+
+- Every part has a **`point`**: the ONE realization the part tests, in 1–2 plain sentences, in the learner's style.
+  It is revealed first ("💡 The point"), before anything else. Everything after it just executes the point.
+- Find it by asking: "what does the grader want me to notice?" Strip everything that doesn't matter (e.g. how θ̃
+  was obtained). Examples (2025-C Q1):
+  - 1.4: "It doesn't matter how θ̃ was found: θ* is the best θ for J_λ, so every other θ gives a larger J_λ."
+  - 1.3: "One gradient-descent step = plug the numbers into part 2's gradient, then θ − 0.1 · gradient."
+  - 1.5: "Cross-validation = train on the other folds, score plain squared error on the held-out fold, average,
+    keep the smallest. Each bug breaks one of these."
+- After the point, keep the moves to what's needed to write the answer (often 2–3).
+- **`start` ("Begin your answer like this") is OPTIONAL** — only where *writing the notation* is the hurdle
+  (derivations, calculations, matrices). Never for argument / compare parts.
+
 ## 1. The format (chosen by the learner)
 - **Question first.** The real exam part is on screen; under it, the solution is revealed one **move** at a time
   ("Show next move" / key N). Moves double as a hint ladder: the learner tries on paper and reveals only when stuck.
@@ -129,5 +146,5 @@ found using …" → "both are plugged into the same …, so …". The `start` g
 })();
 ```
 HTML inside `R\`…\``; math `\( \)` inline, `\[ \]` display (KaTeX). Never `${`. `&lt;` for `<` inside `<pre><code>`.
-Every part needs `start`, `moves`, `compare`. Validate: `node tools/check_walks.js data/walks/<topic>.js` must print ✓.
+Every part needs `point`, `moves`, `compare`; `start` is optional. Validate: `node tools/check_walks.js data/walks/<topic>.js` must print ✓.
 Then look at it in a browser at ~950 px width: no sideways scrolling anywhere.

@@ -220,3 +220,9 @@ a.noteref { text-decoration: underline dotted; }
 .sheet-h { align-items: flex-start; gap: 12px; }
 a.sheetref { font-weight: 600; text-decoration: underline dotted; white-space: nowrap; }
 #sheetbtn { color: var(--accent-ink); font-weight: 600; }
+
+/* "The point": the one realization the part tests */
+.mv.point { border-color: var(--shaky); }
+.mv.point .n { background: var(--shaky-bg); color: var(--shaky-fg); }
+.pointtext { margin-top: 4px; font-size: 16.5px; }
+.pointtext p { margin: 4px 0; }

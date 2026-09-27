@@ -6,6 +6,7 @@
   Object.assign(window.WALKS, {
 
     "2025C-q1.1": {
+      point: R`<p>\(X\) is just the table with a column of 1s in front (the 1 is for \(\theta_0\)); \(y\) is the label column.</p>`,
       start: R`\[X = \begin{bmatrix}1 & \square & \square\\ 1 & \square & \square\\ 1 & \square & \square\\ 1 & \square & \square\end{bmatrix} \qquad y = \begin{bmatrix}\square\\ \square\\ \square\\ \square\end{bmatrix}\]`,
       moves: [
         { line: R`<b>X</b> — one row per sample: a 1, then \(x_1\), then \(x_2\): <div class="formula">\[X = \begin{bmatrix}1&-1&1\\1&-2&0\\1&1&3\\1&0&1\end{bmatrix}\]</div>`,
@@ -17,6 +18,7 @@
       compare: R`Same \(X\) and \(y\) as the official answer.`,
     },
     "2025C-q1.2": {
+      point: R`<p>The gradient = the derivative by each weight, stacked into a list. Each squared bracket gives 2 · (…) · (its \(x\)), the penalty gives \(\lambda\,\mathrm{sign}\) — and the list is \(2X^\top(X\theta - y) + \lambda\,\mathrm{sign}(\theta)\).</p>`,
       start: R`<p><b>The function:</b></p>\[J(\theta) = \;\square\]<p><b>Its derivative by one knob \(\theta_j\):</b></p>\[\frac{dJ}{d\theta_j} = \;\square\]<p><b>The gradient (all knobs as a list):</b></p>\[\nabla J(\theta) = \;\square\]`,
       moves: [
         { line: R`<b>The function</b> — copy it from the question (it's our \(f\)): <div class="formula">\[\begin{aligned}J(\theta) = \;&\sum_{i}\big(\theta_0 + \theta_1 x^{(i)}_1 + \theta_2 x^{(i)}_2 - y^{(i)}\big)^2\\ &+ \lambda\big(|\theta_0| + |\theta_1| + |\theta_2|\big)\end{aligned}\]</div>`,
@@ -67,6 +69,7 @@ np.sign(theta)   # array([ 1, -1,  1])</code></pre>
     },
 
     "2025C-q1.3": {
+      point: R`<p>One gradient-descent step = plug the numbers into part 2's gradient, then \(\theta_{\text{new}} = \theta - 0.1\cdot\)gradient.</p>`,
       start: R`<p><b>The formula (from part 2), with the numbers plugged in:</b></p>\[\nabla J = 2X^\top(X\theta - y) + \lambda\,\mathrm{sign}(\theta) = \;\square\]<p><b>The step:</b></p>\[\theta_{\text{new}} = \theta - 0.1\cdot\nabla J = \;\square\]`,
       moves: [
         { line: R`<b>The formula</b> — part 2's answer, and the step rule: <div class="formula">\[\nabla J = \underbrace{\color{#e8912d}2X^\top(X\theta - y)}_{\textstyle\color{#e8912d}\text{this part: moves 2–3}} + \underbrace{\color{#4c8dff}\lambda\,\mathrm{sign}(\theta)}_{\textstyle\color{#4c8dff}\text{this part: move 4}}\]</div><div class="formula">\[\theta_{\text{new}} = \theta - 0.1\cdot\nabla J\]</div>We know \(\theta = (1, -2, 3)\), \(\lambda = 1\), and the step size 0.1 (the question's \(\eta\)).`,
@@ -94,20 +97,17 @@ np.sign(theta)   # array([ 1, -1,  1])</code></pre>
     },
 
     "2025C-q1.4": {
-      start: R`<p>\(\theta^*\) = the weights found using \(\;\square\)</p>
-<p>\(\tilde\theta\) = the weights found using \(\;\square\)</p>
-<p>Both are plugged into the same \(\;\square\), so \(\;J_\lambda(\theta^*)\ \square\ J_\lambda(\tilde\theta)\)</p>`,
+      point: R`<p>It doesn't matter how \(\tilde\theta\) was found: \(\theta^*\) is the best \(\theta\) for \(J_\lambda\), so every other \(\theta\) gives a larger \(J_\lambda\). So \(J_\lambda(\theta^*) \lt J_\lambda(\tilde\theta)\).</p>`,
       moves: [
-        { line: R`<b>\(\theta^*\)</b> = the weights found <b>using</b> \(J_\lambda\) (gradient descent on \(J_\lambda\), until it converged).` },
-        { line: R`<b>\(\tilde\theta\)</b> = the weights found using a <b>different</b> loss: plain least squares \(\|X\theta - y\|^2\), no penalty.`,
-          why: R`<p>You don't need to know this by heart: [sheet: Least squares solution] is \(w = (X^\top X)^{-1}X^\top y\) — that's \(\tilde\theta\).</p>` },
-        { line: R`<b>Both are plugged into the same \(J_\lambda\).</b> \(\theta^*\) was found as the best for \(J_\lambda\), so \(\tilde\theta\) can't beat it: <div class="formula">\[J_\lambda(\theta^*) \lt J_\lambda(\tilde\theta)\]</div>Done.`,
-          why: R`<p>Otherwise gradient descent would have found \(\tilde\theta\) instead of \(\theta^*\). It's strictly "\(\lt\)" because \(\tilde\theta\) ignored the penalty, so it isn't \(J_\lambda\)'s best point.</p>` },
+        { line: R`<b>\(\theta^*\) is the best \(\theta\) for \(J_\lambda\)</b> — gradient descent on \(J_\lambda\) ran until it converged.` },
+        { line: R`<b>So any other \(\theta\) — like \(\tilde\theta\) — gives a larger \(J_\lambda\):</b> <div class="formula">\[J_\lambda(\theta^*) \lt J_\lambda(\tilde\theta)\]</div>Done.`,
+          why: R`<p>Strictly "\(\lt\)" because \(\tilde\theta\) is a different \(\theta\): it was found without the penalty ([sheet: Least squares solution]), so it isn't \(J_\lambda\)'s best point.</p>` },
       ],
       compare: R`Same argument as the official solution: θ* minimizes \(J_{\lambda=1}\), θ̃ minimizes the plain squared error, so \(J_{\lambda=1}(\theta^*) \lt J_{\lambda=1}(\tilde\theta)\).`,
     },
 
     "2025C-q1.5": {
+      point: R`<p>Cross-validation = train on the other folds, score plain squared error on the held-out fold, average over the folds, keep the \(\lambda\) with the smallest average. Each bug breaks one of these.</p>`,
       start: R`<p>One line per bug (write at least three):</p><p><b>Line \(\square\):</b> <code>wrong</code> → should be <code>fix</code>, because \(\square\)</p>`,
       moves: [
         { line: R`<b>n counts samples = rows.</b> <b>Line 1:</b> <code>X.shape[1]</code> → <code>X.shape[0]</code>`,

@@ -261,15 +261,19 @@
 
   // ── walkthrough: the solution in small moves, revealed one at a time ─────
   function walkHtml(pid) {
-    const w = WALKS[pid], shown = Math.min((state.walk || {})[pid] || 0, w.moves.length + (w.start ? 1 : 0));
+    const w = WALKS[pid], shown = Math.min((state.walk || {})[pid] || 0, w.moves.length + (w.start ? 1 : 0) + (w.point ? 1 : 0));
     return `<div class="walk" data-pid="${pid}">
       <div class="walk-h">Solve it step by step <span class="muted">— try it on paper first; reveal a move only when you need it (key <kbd>N</kbd>)</span></div>
-      <ol class="mvs">${w.start ? `
-        <li class="mv start" ${shown > 0 ? "" : "hidden"}>
+      <ol class="mvs">${w.point ? `
+        <li class="mv point" ${shown > 0 ? "" : "hidden"}>
+          <div class="n">💡</div>
+          <div class="body"><div class="line">The point</div><div class="pointtext">${linkNotes(w.point)}</div></div>
+        </li>` : ""}${w.start ? `
+        <li class="mv start" ${shown > (w.point ? 1 : 0) ? "" : "hidden"}>
           <div class="n">✍</div>
           <div class="body"><div class="line">Begin your answer like this:</div><div class="paper">${linkNotes(w.start)}</div></div>
         </li>` : ""}${w.moves.map((mv, i) => `
-        <li class="mv" ${i + (w.start ? 1 : 0) < shown ? "" : "hidden"}>
+        <li class="mv" ${i + (w.start ? 1 : 0) + (w.point ? 1 : 0) < shown ? "" : "hidden"}>
           <div class="n">${i + 1}</div>
           <div class="body">
             <div class="line">${linkNotes(mv.line)}</div>
@@ -290,10 +294,11 @@
     const pid = box.dataset.pid, mvs = [...box.querySelectorAll(".mv")];
     const shown = Math.min((state.walk || {})[pid] || 0, mvs.length), end = shown >= mvs.length;
     mvs.forEach((m, k) => { m.hidden = k >= shown; m.classList.toggle("latest", k === shown - 1); });
-    const next = $(".next", box), hasStart = !!box.querySelector(".mv.start"), nMoves = mvs.length - (hasStart ? 1 : 0);
-    const movesShown = Math.max(0, shown - (hasStart ? 1 : 0));
+    const next = $(".next", box), hasPoint = !!box.querySelector(".mv.point"), hasStart = !!box.querySelector(".mv.start");
+    const pre = (hasPoint ? 1 : 0) + (hasStart ? 1 : 0), nMoves = mvs.length - pre;
+    const movesShown = Math.max(0, shown - pre);
     next.hidden = end;
-    next.textContent = shown === 0 && hasStart ? "Show how to start" : movesShown === 0 ? "Show first move" : "Show next move";
+    next.textContent = shown === 0 && hasPoint ? "Show the point" : shown < pre ? "Show how to start" : movesShown === 0 ? "Show first move" : "Show next move";
     $(".cnt", box).textContent = movesShown ? `move ${movesShown} of ${nMoves}` : `${nMoves} moves`;
     $(".all", box).hidden = end; $(".reset", box).hidden = !shown;
     $(".walk-done", box).hidden = !end;
