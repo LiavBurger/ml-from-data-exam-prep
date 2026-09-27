@@ -113,10 +113,16 @@ np.sign(theta)   # array([ 1, -1,  1])</code></pre>
 </ol>
 <p>So \(\tilde\theta = (X^\top X)^{-1}X^\top y\) is simply "the lowest point of \(\|X\theta - y\|^2\)". (More: Regression note 9.)</p>` },
         { line: R`<b>Look at the structure, we can see that</b> both are scored on \(J_\lambda\) — the loss \(\theta^*\) was built for. \(\tilde\theta\) only looked at the orange part and ignored the blue part: <div class="formula">\[J_\lambda(\theta) = \underbrace{\color{#e8912d}\|X\theta - y\|^2}_{\textstyle\color{#e8912d}\tilde\theta\text{ minimized this}} + \underbrace{\color{#4c8dff}\lambda\|\theta\|_1}_{\textstyle\color{#4c8dff}\tilde\theta\text{ ignored this}}\]</div>`,
-          why: R`<p>The comparison is \(J_\lambda(\theta^*)\) vs \(J_\lambda(\tilde\theta)\) — the same \(J_\lambda\) on both sides. So the question is really: "on \(\theta^*\)'s own loss, can anyone beat \(\theta^*\)?"</p>` },
+          why: R`<p><b>Careful: \(\theta^*\) and \(\tilde\theta\) are not losses — they are two sets of knobs</b> (two \(\theta\) vectors). "With / without penalty" only says which loss each was <b>chosen</b> with.</p>
+<p>The question scores <b>both</b> on the same \(J_\lambda\) — the penalty is counted for both. So it's really asking: "on \(\theta^*\)'s own loss, can anyone beat \(\theta^*\)?"</p>`,
+          extra: [{ label: "the scoreboard (real numbers) — θ̃ wins one part, loses overall", html: R`<p>2025-C's data, \(\lambda = 1\). Each \(\theta\) scored on both parts of \(J_\lambda\):</p>
+<div class="tw"><table><thead><tr><th></th><th>knobs</th><th><span style="color:#e8912d">squared error</span></th><th><span style="color:#4c8dff">penalty</span></th><th>\(J_\lambda\) = total</th></tr></thead><tbody>
+<tr><td>\(\tilde\theta\) (chosen without penalty)</td><td>(−3.14, −3.93, 4.14)</td><td><b>1.79</b> ✓ smaller</td><td>11.21</td><td>13.00</td></tr>
+<tr><td>\(\theta^*\) (chosen with penalty)</td><td>(0, −2.20, 2.36)</td><td>4.10</td><td><b>4.56</b> ✓ smaller</td><td><b>8.66</b> ✓ smaller</td></tr></tbody></table></div>
+<p>\(\tilde\theta\) is better on the squared error alone — it ignored everything else to get there. But its knobs are big, so it pays a big penalty. On the full \(J_\lambda\), \(\theta^*\) wins.</p>
+<p class="muted">(\(\theta^*\) computed with numpy — an illustration, the exam doesn't ask for these numbers.)</p>` }] },
         { line: R`<b>This is why</b> \(\tilde\theta\) can't beat \(\theta^*\) on \(J_\lambda\) — nothing can, \(\theta^*\) is its lowest point: <div class="formula">\[J_\lambda(\theta^*) \lt J_\lambda(\tilde\theta)\]</div>Done.`,
-          why: R`<p>"The winner of a race is faster than anyone else in <b>that</b> race." \(\tilde\theta\) trained for a different race (no penalty), so on \(J_\lambda\) it loses. It's strictly \(\lt\) (not \(=\)) because \(\tilde\theta\) ignores the penalty, so it has no reason to land exactly on \(J_\lambda\)'s lowest point.</p>`,
-          extra: [{ label: "check it with numbers", html: R`<p>On 2025-C's data with \(\lambda = 1\): \(J_\lambda(\tilde\theta) = 13\), while the lowest value of \(J_\lambda\) is about 8.66 (computed with numpy — an illustration, not asked). \(8.66 \lt 13\) ✓</p>` }] },
+          why: R`<p>"The winner of a race is faster than anyone else in <b>that</b> race." \(\tilde\theta\) trained for a different race (no penalty), so on \(J_\lambda\) it loses. It's strictly \(\lt\) (not \(=\)) because \(\tilde\theta\) ignores the penalty, so it has no reason to land exactly on \(J_\lambda\)'s lowest point.</p>` },
       ],
       compare: R`Same argument as the official solution: θ* minimizes \(J_{\lambda=1}\), θ̃ minimizes the plain squared error \(J_{\lambda=0}\), so \(J_{\lambda=1}(\theta^*) \lt J_{\lambda=1}(\tilde\theta)\).`,
     },
