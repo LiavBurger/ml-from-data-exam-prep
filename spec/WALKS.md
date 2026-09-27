@@ -4,6 +4,29 @@ These rules come from working through 2025-C Q1.2 together with the learner (sev
 stuck, knows single-variable calculus and numpy, does NOT own formal ML/math notation). Every rule below exists
 because something else failed. The reference implementation is `data/walks/regression.js` (2025-C Q1, parts 1–5).
 
+## 0. How this learner thinks — the gold standard (read this first)
+When asked to explain part 4 of 2025-C Q1 in their own words, the learner wrote the complete, correct answer:
+
+> θ* and θ̃ are the weights. J_λ(θ*) is the loss function value of J_λ with the optimal weights that were found USING
+> this same loss function. θ̃ was found using a different loss function, the least squares solution. Then we're using
+> the loss function J_λ, with the weights θ̃ (that were found with the other loss function). Obviously θ* would be
+> better (smaller) than θ̃ with this loss function (assuming they're different), otherwise we'd find θ̃ rather than θ*.
+
+That is how every walkthrough must read: **short plain sentences that each say what a thing IS, chained by "so" /
+"otherwise"** — no framing, no analogies, no side tables. The learner then said: *"now that you understand EXACTLY
+how my brain breaks this stuff down, this is what I need! Not all the fluffing around."*
+
+**No fluff.** Every sentence must move toward the answer. Cut: analogies ("the winner of a race…"), scoreboards and
+illustrations nobody asked for, repeated explanations, "careful: …" notes, restating the question. Allowed extras:
+an official-solution slip (short), a formula-sheet pointer, a Moed B trap (one sentence). A why? is normally
+1–3 sentences; only derivation steps (§3) get a longer why? with the per-bracket chain rule.
+
+**Before writing a part, find its idea in one sentence in the learner's style** ("θ* was found using J_λ, θ̃ with a
+different loss, both are scored on J_λ, so θ* wins"). The moves are that sentence, split up.
+
+**Argument / compare parts** use exactly the learner's chain: "A = … found using …" → "B = … found using …" →
+"both are plugged into …, so …". (Model: 2025-C Q1.4.)
+
 ## 1. The format (chosen by the learner)
 - **Question first.** The real exam part is on screen; under it, the solution is revealed one **move** at a time
   ("Show next move" / key N). Moves double as a hint ladder: the learner tries on paper and reveals only when stuck.
@@ -32,14 +55,9 @@ Like they would write f(x) = (x²+3)², then f′(x) = {solve here}:
 6. **Put it together** — the answer.
 Never jump from the per-knob formula to the matrix form in one move ("'write it short' … feels like magic").
 
-## 3b. Argument / comparison parts follow the learner's template
-("It would be better if questions like this would be structured this way: θ* is the best possible θ for the loss
-function {} / θ̃ is the best possible θ for the loss function {} / Look at the structure, we can see that … / This is
-why …")
-1. **"A is the best possible … for …"** — one move per object, each with its defining formula written out.
-2. **"Look at the structure, we can see that …"** — select the pieces (colours + braces) that make the difference.
-3. **"This is why …"** — the conclusion, as the answer.
-The `start` is the same four sentence openers with □ blanks.
+## 3b. Argument / comparison parts
+Use the learner's own chain from §0 (model: 2025-C Q1.4): "A = the weights found using …" → "B = the weights
+found using …" → "both are plugged into the same …, so …". The `start` gives these sentence openers with □.
 
 ## 4. Notation: nothing new unless the exam forces it
 - **No new names or variables** (eᵢ, rᵢ, u, bracketᵢ …) unless the official answer itself uses them. ("Why e_i now…
@@ -66,7 +84,7 @@ The `start` is the same four sentence openers with □ blanks.
 ## 6. Explanations (why?)
 - **Concrete first, formula last.** Start from the real exam table and numbers, in the learner's single-variable
   pattern; only then "the official formula is just this, written short".
-- 1–3 short sentences, plus (optional) a small real-numbers table or a numpy line. Analogies welcome.
+- 1–3 short sentences. A small real-numbers table or a numpy line only where it replaces words (derivations). No analogies.
 - **Known facts → the formula sheet.** The learner gets the official formula sheet in the exam and won't derive
   facts there ("I wouldn't figure this out during the exam … I don't know it"). Whenever a move uses a known result,
   point to the exact sheet entry with `[sheet: Entry name]` (renders as a clickable "📄 Formula sheet → Entry name"

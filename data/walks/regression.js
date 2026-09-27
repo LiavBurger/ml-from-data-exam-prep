@@ -94,37 +94,17 @@ np.sign(theta)   # array([ 1, -1,  1])</code></pre>
     },
 
     "2025C-q1.4": {
-      start: R`<p>\(\theta^*\) is the best possible \(\theta\) for the loss function \(\;\square\)</p>
-<p>\(\tilde\theta\) is the best possible \(\theta\) for the loss function \(\;\square\)</p>
-<p>Look at the structure, we can see that \(\;\square\)</p>
-<p>This is why \(\;J_\lambda(\theta^*)\ \square\ J_\lambda(\tilde\theta)\)</p>`,
+      start: R`<p>\(\theta^*\) = the weights found using \(\;\square\)</p>
+<p>\(\tilde\theta\) = the weights found using \(\;\square\)</p>
+<p>Both are plugged into the same \(\;\square\), so \(\;J_\lambda(\theta^*)\ \square\ J_\lambda(\tilde\theta)\)</p>`,
       moves: [
-        { line: R`<b>\(\theta^*\) is the best possible \(\theta\) for the loss function</b> — the one gradient descent ran on, <b>with</b> the penalty: <div class="formula">\[J_\lambda(\theta) = \|X\theta - y\|^2 + \lambda\|\theta\|_1\]</div>`,
-          why: R`<p>Parts 2–3 ran gradient descent on \(J_\lambda\), and the question says it ran "until it converges". So \(\theta^*\) is the lowest point of \(J_\lambda\).</p>` },
-        { line: R`<b>\(\tilde\theta\) is the best possible \(\theta\) for the loss function</b> — plain least squares, <b>no</b> penalty: <div class="formula">\[J_0(\theta) = \|X\theta - y\|^2\]</div>You don't need to know this by heart: [sheet: Least squares solution] says \(w = (X^\top X)^{-1}X^\top y\) — that's \(\tilde\theta\).`,
-          why: R`<p><b>In the exam: recognise it from the formula sheet</b> — the line "Least squares solution" is exactly \((X^\top X)^{-1}X^\top y\). The rest of this box is optional: where it comes from.</p>
-<p><b>Where \((X^\top X)^{-1}X^\top y\) comes from</b> — it's the formula for the \(\theta\) with the smallest \(\|X\theta - y\|^2\). You can get it the same way you'd find the minimum of \(f(x)\): solve \(f'(x) = 0\).</p>
-<ol>
-<li><b>The function:</b> \(\;\|X\theta - y\|^2\) — part 2's loss without the penalty.</li>
-<li><b>Derivative:</b> \(\;2X^\top(X\theta - y)\) — part 2's orange part.</li>
-<li><b>Lowest point → derivative = 0:</b> \(\;2X^\top(X\theta - y) = 0\)</li>
-<li><b>Solve for \(\theta\):</b> multiply out, move \(X^\top y\) to the other side, then "divide" by \(X^\top X\) (multiply by its inverse):
-\[\begin{aligned}X^\top X\,\theta - X^\top y &= 0\\ X^\top X\,\theta &= X^\top y\\ \theta &= (X^\top X)^{-1}X^\top y\end{aligned}\]</li>
-</ol>
-<p>So \(\tilde\theta = (X^\top X)^{-1}X^\top y\) is simply "the lowest point of \(\|X\theta - y\|^2\)". (More: Regression note 9.)</p>` },
-        { line: R`<b>Look at the structure, we can see that</b> both are scored on \(J_\lambda\) — the loss \(\theta^*\) was built for. \(\tilde\theta\) only looked at the orange part and ignored the blue part: <div class="formula">\[J_\lambda(\theta) = \underbrace{\color{#e8912d}\|X\theta - y\|^2}_{\textstyle\color{#e8912d}\tilde\theta\text{ minimized this}} + \underbrace{\color{#4c8dff}\lambda\|\theta\|_1}_{\textstyle\color{#4c8dff}\tilde\theta\text{ ignored this}}\]</div>`,
-          why: R`<p><b>Careful: \(\theta^*\) and \(\tilde\theta\) are not losses — they are two sets of knobs</b> (two \(\theta\) vectors). "With / without penalty" only says which loss each was <b>chosen</b> with.</p>
-<p>The question scores <b>both</b> on the same \(J_\lambda\) — the penalty is counted for both. So it's really asking: "on \(\theta^*\)'s own loss, can anyone beat \(\theta^*\)?"</p>`,
-          extra: [{ label: "the scoreboard (real numbers) — θ̃ wins one part, loses overall", html: R`<p>2025-C's data, \(\lambda = 1\). Each \(\theta\) scored on both parts of \(J_\lambda\):</p>
-<div class="tw"><table><thead><tr><th></th><th>knobs</th><th><span style="color:#e8912d">squared error</span></th><th><span style="color:#4c8dff">penalty</span></th><th>\(J_\lambda\) = total</th></tr></thead><tbody>
-<tr><td>\(\tilde\theta\) (chosen without penalty)</td><td>(−3.14, −3.93, 4.14)</td><td><b>1.79</b> ✓ smaller</td><td>11.21</td><td>13.00</td></tr>
-<tr><td>\(\theta^*\) (chosen with penalty)</td><td>(0, −2.20, 2.36)</td><td>4.10</td><td><b>4.56</b> ✓ smaller</td><td><b>8.66</b> ✓ smaller</td></tr></tbody></table></div>
-<p>\(\tilde\theta\) is better on the squared error alone — it ignored everything else to get there. But its knobs are big, so it pays a big penalty. On the full \(J_\lambda\), \(\theta^*\) wins.</p>
-<p class="muted">(\(\theta^*\) computed with numpy — an illustration, the exam doesn't ask for these numbers.)</p>` }] },
-        { line: R`<b>This is why</b> \(\tilde\theta\) can't beat \(\theta^*\) on \(J_\lambda\) — nothing can, \(\theta^*\) is its lowest point: <div class="formula">\[J_\lambda(\theta^*) \lt J_\lambda(\tilde\theta)\]</div>Done.`,
-          why: R`<p>"The winner of a race is faster than anyone else in <b>that</b> race." \(\tilde\theta\) trained for a different race (no penalty), so on \(J_\lambda\) it loses. It's strictly \(\lt\) (not \(=\)) because \(\tilde\theta\) ignores the penalty, so it has no reason to land exactly on \(J_\lambda\)'s lowest point.</p>` },
+        { line: R`<b>\(\theta^*\)</b> = the weights found <b>using</b> \(J_\lambda\) (gradient descent on \(J_\lambda\), until it converged).` },
+        { line: R`<b>\(\tilde\theta\)</b> = the weights found using a <b>different</b> loss: plain least squares \(\|X\theta - y\|^2\), no penalty.`,
+          why: R`<p>You don't need to know this by heart: [sheet: Least squares solution] is \(w = (X^\top X)^{-1}X^\top y\) — that's \(\tilde\theta\).</p>` },
+        { line: R`<b>Both are plugged into the same \(J_\lambda\).</b> \(\theta^*\) was found as the best for \(J_\lambda\), so \(\tilde\theta\) can't beat it: <div class="formula">\[J_\lambda(\theta^*) \lt J_\lambda(\tilde\theta)\]</div>Done.`,
+          why: R`<p>Otherwise gradient descent would have found \(\tilde\theta\) instead of \(\theta^*\). It's strictly "\(\lt\)" because \(\tilde\theta\) ignored the penalty, so it isn't \(J_\lambda\)'s best point.</p>` },
       ],
-      compare: R`Same argument as the official solution: θ* minimizes \(J_{\lambda=1}\), θ̃ minimizes the plain squared error \(J_{\lambda=0}\), so \(J_{\lambda=1}(\theta^*) \lt J_{\lambda=1}(\tilde\theta)\).`,
+      compare: R`Same argument as the official solution: θ* minimizes \(J_{\lambda=1}\), θ̃ minimizes the plain squared error, so \(J_{\lambda=1}(\theta^*) \lt J_{\lambda=1}(\tilde\theta)\).`,
     },
 
     "2025C-q1.5": {
