@@ -100,7 +100,15 @@ np.sign(theta)   # array([ 1, -1,  1])</code></pre>
         { line: R`<b>\(\theta^*\) is the best possible \(\theta\) for the loss function</b> — the one gradient descent ran on, <b>with</b> the penalty: <div class="formula">\[J_\lambda(\theta) = \|X\theta - y\|^2 + \lambda\|\theta\|_1\]</div>`,
           why: R`<p>Parts 2–3 ran gradient descent on \(J_\lambda\), and the question says it ran "until it converges". So \(\theta^*\) is the lowest point of \(J_\lambda\).</p>` },
         { line: R`<b>\(\tilde\theta\) is the best possible \(\theta\) for the loss function</b> — plain least squares, <b>no</b> penalty: <div class="formula">\[J_0(\theta) = \|X\theta - y\|^2\]</div>`,
-          why: R`<p>\((X^\top X)^{-1}X^\top y\) is the closed-form answer of plain least squares: the \(\theta\) with the smallest squared error, ignoring any penalty.</p>` },
+          why: R`<p><b>Where \((X^\top X)^{-1}X^\top y\) comes from</b> — it's the formula for the \(\theta\) with the smallest \(\|X\theta - y\|^2\). You can get it the same way you'd find the minimum of \(f(x)\): solve \(f'(x) = 0\).</p>
+<ol>
+<li><b>The function:</b> \(\;\|X\theta - y\|^2\) — part 2's loss without the penalty.</li>
+<li><b>Derivative:</b> \(\;2X^\top(X\theta - y)\) — part 2's orange part.</li>
+<li><b>Lowest point → derivative = 0:</b> \(\;2X^\top(X\theta - y) = 0\)</li>
+<li><b>Solve for \(\theta\):</b> multiply out, move \(X^\top y\) to the other side, then "divide" by \(X^\top X\) (multiply by its inverse):
+\[\begin{aligned}X^\top X\,\theta - X^\top y &= 0\\ X^\top X\,\theta &= X^\top y\\ \theta &= (X^\top X)^{-1}X^\top y\end{aligned}\]</li>
+</ol>
+<p>So \(\tilde\theta = (X^\top X)^{-1}X^\top y\) is simply "the lowest point of \(\|X\theta - y\|^2\)". (More: Regression note 9.)</p>` },
         { line: R`<b>Look at the structure, we can see that</b> both are scored on \(J_\lambda\) — the loss \(\theta^*\) was built for. \(\tilde\theta\) only looked at the orange part and ignored the blue part: <div class="formula">\[J_\lambda(\theta) = \underbrace{\color{#e8912d}\|X\theta - y\|^2}_{\textstyle\color{#e8912d}\tilde\theta\text{ minimized this}} + \underbrace{\color{#4c8dff}\lambda\|\theta\|_1}_{\textstyle\color{#4c8dff}\tilde\theta\text{ ignored this}}\]</div>`,
           why: R`<p>The comparison is \(J_\lambda(\theta^*)\) vs \(J_\lambda(\tilde\theta)\) — the same \(J_\lambda\) on both sides. So the question is really: "on \(\theta^*\)'s own loss, can anyone beat \(\theta^*\)?"</p>` },
         { line: R`<b>This is why</b> \(\tilde\theta\) can't beat \(\theta^*\) on \(J_\lambda\) — nothing can, \(\theta^*\) is its lowest point: <div class="formula">\[J_\lambda(\theta^*) \lt J_\lambda(\tilde\theta)\]</div>Done.`,
