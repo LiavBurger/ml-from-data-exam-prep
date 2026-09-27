@@ -58,10 +58,12 @@
         </a>`;
       }).join("")}</nav>
       <div class="side-foot">
+        <button id="sheetbtn">📄 Formula sheet</button>
         <button id="theme">${document.documentElement.dataset.theme === "light" ? "🌙 Dark mode" : "☀️ Light mode"}</button>
         <button id="export">Download progress backup</button>
         <label class="imp">Restore backup<input type="file" id="import" accept="application/json"></label>
       </div>`;
+    $("#sheetbtn").onclick = () => openSheet(null);
     $("#theme").onclick = () => {
       const cur = document.documentElement.dataset.theme || "dark";
       document.documentElement.dataset.theme = cur === "dark" ? "light" : "dark";
@@ -134,6 +136,8 @@
     return (notesOf(t).moves || []).findIndex(mv => String(mv.title).trim().startsWith(n + " ·"));
   }
   function linkNotes(html) {
+    html = String(html).replace(/\[sheet: ([^\]]+)\]/g, (m, name) =>
+      `<a href="#" class="sheetref" data-name="${esc(name)}">📄 Formula sheet → ${esc(name)}</a>`);
     const names = Object.keys(TOPIC_NAMES).sort((a, b) => b.length - a.length).map(n => n.replace(/[.*+?^()|[\]\\]/g, "\\$&"));
     return String(html).replace(new RegExp(`\\b(${names.join("|")}) notes? (\\d+)`, "g"),
       (m, name, n) => `<a href="#" class="noteref" data-t="${TOPIC_NAMES[name]}" data-n="${n}">${m}</a>`);
@@ -154,6 +158,28 @@
   document.addEventListener("click", e => {
     const a = e.target.closest("a.noteref"); if (!a) return;
     e.preventDefault(); openNote(a.dataset.t, +a.dataset.n);
+  });
+  // the official formula sheet, on top of the current page (you get it in the exam)
+  function openSheet(name) {
+    const S = window.SHEET; if (!S) return;
+    const where = name ? S.index[name] : null;
+    let dlg = $("#notedlg");
+    if (!dlg) { dlg = document.createElement("dialog"); dlg.id = "notedlg"; document.body.appendChild(dlg); }
+    const page = (src, id) => `<div class="sheetpage" id="${id}"><img src="${src}" alt="formula sheet page"></div>`;
+    dlg.innerHTML = `<div class="dlg-h sheet-h"><div><span class="kicker">📄 Formula sheet — you get this in the exam</span>
+        ${name ? `<p class="lookfor">Look for: <b>${esc(name)}</b>${where ? ` <span class="muted">(${where.startsWith("ext") ? "extension, " : ""}page ${where.split("-")[1]})</span>` : ""}</p>` : ""}</div>
+        <button class="dlg-x" aria-label="Close">✕ Close</button></div>
+      ${S.pages.map((src, i) => page(src, "sheet-" + (i + 1))).join("")}
+      <details class="more" ${where && where.startsWith("ext") ? "open" : ""}><summary>Extension to the formula sheet (only for eligible students)</summary>
+        ${S.ext.map((src, i) => page(src, "ext-" + (i + 1))).join("")}</details>`;
+    $(".dlg-x", dlg).onclick = () => dlg.close();
+    dlg.addEventListener("click", e => { if (e.target === dlg) dlg.close(); });
+    dlg.showModal(); dlg.scrollTop = 0;
+    if (where) { const el = dlg.querySelector("#" + where); if (el) setTimeout(() => el.scrollIntoView({ block: "start" }), 50); }
+  }
+  document.addEventListener("click", e => {
+    const a = e.target.closest("a.sheetref"); if (!a) return;
+    e.preventDefault(); openSheet(a.dataset.name);
   });
 
   // ── topic ────────────────────────────────────────────────────────────────

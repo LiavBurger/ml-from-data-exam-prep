@@ -29,7 +29,9 @@
 <p><b>Penalty:</b> only \(|\theta_j|\) contains \(\theta_j\). The derivative of \(|a|\) is its sign: +1 if positive, −1 if negative.</p>
 <p>Written out for knob \(\theta_1\) with the 4 real brackets:</p>
 \[\begin{aligned}\frac{dJ}{d\theta_1} = \;&2\cdot(\theta_0 - 1\theta_1 + 1\theta_2 - 6)\cdot(-1)\\ +\;&2\cdot(\theta_0 - 2\theta_1 + 0\theta_2 - 4)\cdot(-2)\\ +\;&2\cdot(\theta_0 + 1\theta_1 + 3\theta_2 - 5)\cdot(1)\\ +\;&2\cdot(\theta_0 + 0\theta_1 + 1\theta_2 - 1)\cdot(0)\\ +\;&\lambda\,\mathrm{sign}(\theta_1)\end{aligned}\]`,
-          extra: [{ label: "check it with numbers (θ = (1, −2, 3), knob θ₁)", html: R`<div class="tw"><table><thead><tr><th>sample</th><th>(…) for this sample</th><th>its \(x_1\)</th><th>2 · (…) · \(x_1\)</th></tr></thead><tbody>
+          extra: [{ label: "is this on the formula sheet?", html: R`<p>Yes: [sheet: Square error loss gradient]. It shows <b>one sample</b>, with a \(\tfrac12\) in front: \(\nabla\,\tfrac12(y - w^\top x)^2 = (w^\top x - y)\,x\).</p>
+<p>Our loss has no \(\tfrac12\), so each sample gives <b>2 ·</b> (prediction − label) · \(x\) — exactly step 2 (the ½ is what cancels the 2). Add over the samples and you have step 2.</p>` },
+                  { label: "check it with numbers (θ = (1, −2, 3), knob θ₁)", html: R`<div class="tw"><table><thead><tr><th>sample</th><th>(…) for this sample</th><th>its \(x_1\)</th><th>2 · (…) · \(x_1\)</th></tr></thead><tbody>
 <tr><td>1</td><td>1 + 2 + 3 − 6 = 0</td><td>−1</td><td>0</td></tr><tr><td>2</td><td>1 + 4 + 0 − 4 = 1</td><td>−2</td><td>−4</td></tr>
 <tr><td>3</td><td>1 − 2 + 9 − 5 = 3</td><td>1</td><td>6</td></tr><tr><td>4</td><td>1 + 0 + 3 − 1 = 3</td><td>0</td><td>0</td></tr>
 <tr><td colspan="3"><b>add</b></td><td><b>2</b></td></tr></tbody></table></div>
@@ -99,8 +101,9 @@ np.sign(theta)   # array([ 1, -1,  1])</code></pre>
       moves: [
         { line: R`<b>\(\theta^*\) is the best possible \(\theta\) for the loss function</b> — the one gradient descent ran on, <b>with</b> the penalty: <div class="formula">\[J_\lambda(\theta) = \|X\theta - y\|^2 + \lambda\|\theta\|_1\]</div>`,
           why: R`<p>Parts 2–3 ran gradient descent on \(J_\lambda\), and the question says it ran "until it converges". So \(\theta^*\) is the lowest point of \(J_\lambda\).</p>` },
-        { line: R`<b>\(\tilde\theta\) is the best possible \(\theta\) for the loss function</b> — plain least squares, <b>no</b> penalty: <div class="formula">\[J_0(\theta) = \|X\theta - y\|^2\]</div>`,
-          why: R`<p><b>Where \((X^\top X)^{-1}X^\top y\) comes from</b> — it's the formula for the \(\theta\) with the smallest \(\|X\theta - y\|^2\). You can get it the same way you'd find the minimum of \(f(x)\): solve \(f'(x) = 0\).</p>
+        { line: R`<b>\(\tilde\theta\) is the best possible \(\theta\) for the loss function</b> — plain least squares, <b>no</b> penalty: <div class="formula">\[J_0(\theta) = \|X\theta - y\|^2\]</div>You don't need to know this by heart: [sheet: Least squares solution] says \(w = (X^\top X)^{-1}X^\top y\) — that's \(\tilde\theta\).`,
+          why: R`<p><b>In the exam: recognise it from the formula sheet</b> — the line "Least squares solution" is exactly \((X^\top X)^{-1}X^\top y\). The rest of this box is optional: where it comes from.</p>
+<p><b>Where \((X^\top X)^{-1}X^\top y\) comes from</b> — it's the formula for the \(\theta\) with the smallest \(\|X\theta - y\|^2\). You can get it the same way you'd find the minimum of \(f(x)\): solve \(f'(x) = 0\).</p>
 <ol>
 <li><b>The function:</b> \(\;\|X\theta - y\|^2\) — part 2's loss without the penalty.</li>
 <li><b>Derivative:</b> \(\;2X^\top(X\theta - y)\) — part 2's orange part.</li>

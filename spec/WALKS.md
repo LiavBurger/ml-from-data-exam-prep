@@ -67,6 +67,13 @@ The `start` is the same four sentence openers with □ blanks.
 - **Concrete first, formula last.** Start from the real exam table and numbers, in the learner's single-variable
   pattern; only then "the official formula is just this, written short".
 - 1–3 short sentences, plus (optional) a small real-numbers table or a numpy line. Analogies welcome.
+- **Known facts → the formula sheet.** The learner gets the official formula sheet in the exam and won't derive
+  facts there ("I wouldn't figure this out during the exam … I don't know it"). Whenever a move uses a known result,
+  point to the exact sheet entry with `[sheet: Entry name]` (renders as a clickable "📄 Formula sheet → Entry name"
+  that opens the sheet on the right page; names must match `data/sheet.js` — the checker enforces it), e.g.
+  `[sheet: Least squares solution]`, `[sheet: Square error loss gradient]`, `[sheet: Responsibilities update]`.
+  Say "you don't need to know this by heart". If the fact is NOT on the sheet, flag it as "🧠 know by heart" — rare.
+  Any derivation of such a fact is optional, inside the why?.
 - **Never state a known formula as a given.** If a move uses a result like θ̃ = (XᵀX)⁻¹Xᵀy, its why? shows where it comes
   from in the learner's structure (the function → derivative → set = 0 → solve), reusing earlier parts. (Learner:
   "How did we get from (XᵀX)⁻¹Xᵀy to ‖Xθ−y‖²?")

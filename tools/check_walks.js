@@ -6,11 +6,13 @@ const root = path.dirname(__dirname);
 global.window = {};
 const katex = require(path.join(root, "vendor/katex.min.js"));
 require(path.join(root, "data/manifest.js"));
+require(path.join(root, "data/sheet.js"));
 require(path.resolve(process.argv[2]));
 let errors = 0, moves = 0;
 const err = (w, m) => { errors++; console.log(`✗ ${w}: ${m}`); };
 function check(w, html) {
   if (typeof html !== "string") return;
+  for (const m of html.matchAll(/\[sheet: ([^\]]+)\]/g)) if (!window.SHEET.index[m[1]]) err(w, `unknown formula-sheet entry "${m[1]}"`);
   for (const m of html.matchAll(/\\\[([\s\S]*?)\\\]|\\\(([\s\S]*?)\\\)/g)) {
     const tex = m[1] !== undefined ? m[1] : m[2];
     try { katex.renderToString(tex, { throwOnError: true, displayMode: m[1] !== undefined }); }
