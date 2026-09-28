@@ -19,6 +19,7 @@
         { line: R`<b>Add the 1</b> — a 1 in front of each sample, so the score \(w^\top x = w_0\cdot 1 + w_1x_1 + w_2x_2 + w_3x_3\) includes \(w_0\) (as in Regression, 2025-C Q1.1): <div class="formula">\[\begin{aligned}&x^{(1)} = (1, 1, 1, 0) &&x^{(2)} = (1, -1, 0, 2)\\ &x^{(3)} = (1, 2, 1, 1) &&x^{(4)} = (1, 0, -1, 1)\end{aligned}\]</div>Start: \(w = (-1, 0, 0, 0)\).`,
           size: R`\[\underbrace{w^\top}_{\textstyle 1\times 4}\,\underbrace{x^{(i)}}_{\textstyle 4\times 1} = \text{one number}\]<p>4 = the 1 + 3 features, in both \(w\) and \(x^{(i)}\) · inner 4 = 4 ✓ · result = one score per sample ✓</p>` },
         { line: R`<b>Sample 1</b> — score \((-1)\cdot 1 + 0 + 0 + 0 = -1\), sign \(-1 \ne 1 = y^{(1)}\): wrong, so update: <div class="formula">\[\begin{aligned}\Delta w &= -0.1\cdot(-1 - 1)\cdot(1, 1, 1, 0)\\ &= (0.2,\ 0.2,\ 0.2,\ 0)\\ w &= (-0.8,\ 0.2,\ 0.2,\ 0)\end{aligned}\]</div>`,
+          remember: R`\[\hat y = \mathrm{sign}(w^\top x)\]<p>The Perceptron's prediction (with the 1 in front of \(x\), so \(w_0\) is in). Not on the sheet, and the question's reminder only says "compute \(\hat y^{(i)}\)". The update \(\Delta w\) is printed in the question.</p>`,
           size: R`\[\underbrace{w^\top}_{\textstyle 1\times 4}\,\underbrace{x^{(1)}}_{\textstyle 4\times 1} = -1\]\[\underbrace{0.2}_{\textstyle \text{number}}\cdot\underbrace{x^{(1)}}_{\textstyle 4\times 1} = \underbrace{\Delta w}_{\textstyle 4\times 1}\]<p>score: inner 4 = 4 ✓ → one number · \(\Delta w\) is 4×1 like \(w\), so \(w + \Delta w\) adds entry by entry ✓</p>`,
           why: R`<p>\(\hat y - y = -1 - 1 = -2\), and \(-0.1\cdot(-2) = +0.2\). So \(\Delta w\) = 0.2 × the sample, and the new \(w\) is the old one plus it, entry by entry: \((-1 + 0.2,\ 0 + 0.2,\ 0 + 0.2,\ 0 + 0)\).</p>
 <p>Shortcut: wrong on a \(y = +1\) sample → add \(0.2\cdot x\). Wrong on a \(y = -1\) sample → \(\hat y - y = 1 - (-1) = 2\), so subtract \(0.2\cdot x\).</p>` },
@@ -48,7 +49,8 @@
 <tr><td>(1, 2, 1, 1)</td><td>−0.6 + 1.2 + 0.4 + 0.2</td><td>1.2</td></tr>
 <tr><td>(1, 0, −1, 1)</td><td>−0.6 + 0 − 0.4 + 0.2</td><td>−0.8</td></tr></tbody></table></div>
 <p>numpy: <code>X @ w</code>. Sample 1 scored −1 during the pass (older \(w\)); with the final \(w\) it's 0.4.</p>` },
-        { line: R`<b>Signs</b> — \(\hat y = (1, -1, 1, -1)\). Done (all four match the true labels).` },
+        { line: R`<b>Signs</b> — \(\hat y = (1, -1, 1, -1)\). Done (all four match the true labels).`,
+          remember: R`\[\hat y = \mathrm{sign}(w^\top x)\]<p>The Perceptron's prediction. Not on the sheet.</p>` },
       ],
       compare: R`Same four scores and signs as the official solution.`,
     },
@@ -108,6 +110,7 @@
           size: R`<p><code>X_with_bias.shape</code> = (n, d + 1): one row per sample, the 1 + d features (part 1's table: (4, 4)). <code>w.shape</code> = (d + 1,) (line 11).</p>\[\underbrace{\texttt{X\_with\_bias}}_{\textstyle n\times(d+1)}\,\underbrace{w}_{\textstyle (d+1)\times 1} = \underbrace{z}_{\textstyle n\times 1}\]<p>inner d + 1 = d + 1 ✓ · one score per sample ✓ · <code>sigmoid</code> works entry by entry, so <code>y_hat</code> is (n,) like <code>y</code> ✓ (line 16 subtracts them)</p>`,
           why: R`<p>Row \(i\) of <code>X_with_bias</code> is \((1, x^{(i)}_1, \dots)\); times \(w\) that's \(w_0 + w_1x^{(i)}_1 + \dots\) = sample \(i\)'s score. So <code>X_with_bias @ w</code> = one score per row (as in Regression, 2025-C Q1.3, move 2). It's <code>X_with_bias</code> because \(w\) includes \(w_0\) (line 11 makes \(w\) as long as a row of <code>X_with_bias</code>).</p>` },
         { line: R`<b>(4) One step downhill</b> — current \(w\) minus step size × gradient: <code>w - eta * grad</code>. Done.`,
+          remember: R`\[w \leftarrow w - \eta\,\nabla L(w)\]<p>One gradient-descent step. Not on the sheet. Here \(\eta\) is <code>eta</code>, \(\nabla L\) is <code>grad</code>.</p>`,
           size: R`\[\underbrace{\texttt{X\_with\_bias.T}}_{\textstyle (d+1)\times n}\,\underbrace{(\hat y - y)}_{\textstyle n\times 1} = \underbrace{\texttt{grad}}_{\textstyle (d+1)\times 1}\]\[\underbrace{w}_{\textstyle (d+1)\times 1} - \eta\cdot\underbrace{\texttt{grad}}_{\textstyle (d+1)\times 1}\]<p>Line 16: inner n = n ✓ · <code>grad</code> has one entry per knob, like <code>w</code>, so the step subtracts entry by entry ✓</p>`,
           why: R`<p>The gradient points uphill (where the loss grows), so minus a small step of it (<code>eta</code> × <code>grad</code>) lowers the loss (same step as \(\theta - 0.1\cdot\nabla J\) in Regression, 2025-C Q1.3). Line 16's <code>grad</code> is [sheet: BCE loss gradient] without the \(\frac1n\), which only rescales the step.</p>` },
       ],
@@ -119,6 +122,7 @@
       point: R`The table gives scores \(w^\top x\), not probabilities. \(\sigma(\text{score}) \ge \tfrac12\) exactly when the score \(\ge 0\), so the label is just the sign of the score.`,
       moves: [
         { line: R`<b>Predict 1 when \(\sigma \ge \tfrac12\)</b> — \(\sigma(0) = \tfrac12\) and \(\sigma\) only goes up, so \(\sigma(w^\top x) \ge \tfrac12\) exactly when \(w^\top x \ge 0\).`,
+          remember: R`\[\text{predict } 1 \iff P(Y = 1 \mid x) = \sigma(w^\top x) \ge \tfrac12\]<p>The ½ cut is from class. Not on the sheet: [sheet: Logistic regression posterior model] gives only the probability.</p>`,
           size: R`\[\underbrace{w^\top}_{\textstyle 1\times(p+1)}\,\underbrace{x^{(i)}}_{\textstyle (p+1)\times 1} = \text{one number}\]<p>\(w \in \mathbb R^{p+1}\), and \(x^{(i)}\) has its \(x_0 = 1\) too · inner p + 1 = p + 1 ✓ · one score per sample: the table's column, 6 scores for 6 samples ✓</p>`,
           why: R`<p>\(\sigma(0) = \frac{1}{1 + e^0} = \frac12\) [sheet: Sigmoid function]. Bigger score → smaller \(e^{-t}\) → bigger \(\sigma\). So "above ½" = "score above 0". The grader gave 0 points for comparing the scores themselves with ½.</p>` },
         { line: R`<b>Read the signs</b> — 1.4, 0.8, 0.4 are positive: samples 1, 3, 5 → "1". −0.8, −1.6, −0.4 are negative: samples 2, 4, 6 → "0". Done.` },
@@ -129,7 +133,8 @@
     "2025B-q3.2": {
       point: R`Separable means <b>some</b> line gets every sample right. The given \(w\) already does (part 1), so we have one.`,
       moves: [
-        { line: R`<b>The given \(w\) gets all six right</b> — score \(\ge 0\) → "1" (part 1): the scores 1.4, −0.8, 0.8, −1.6, 0.4, −0.4 give 1, 0, 1, 0, 1, 0; the true labels are 1, 0, 1, 0, 1, 0.` },
+        { line: R`<b>The given \(w\) gets all six right</b> — score \(\ge 0\) → "1" (part 1): the scores 1.4, −0.8, 0.8, −1.6, 0.4, −0.4 give 1, 0, 1, 0, 1, 0; the true labels are 1, 0, 1, 0, 1, 0.`,
+          remember: R`\[\hat y = 1 \iff \sigma(w^\top x) \ge \tfrac12 \iff w^\top x \ge 0\]<p>So LoR's decision boundary is the hyperplane \(w^\top x = 0\). Not on the sheet: [sheet: Logistic regression posterior model] gives only the probability.</p>` },
         { line: R`<b>So its line separates them</b> — the hyperplane \(w^\top x = 0\) has every "1" on the + side and every "0" on the − side: <b>necessarily separable</b>. Done.` },
       ],
       compare: R`Same as the official answer: \(\{x : w^\top x = 0\}\) is a separating hyperplane.`,
@@ -139,6 +144,7 @@
       point: R`TPR = 1 and FPR = 0 just means zero mistakes. Changing \(w_0\) moves every score by the same amount, so if every positive scores above every negative, a shift of \(w_0\) fixes the one mistake.`,
       moves: [
         { line: R`<b>The one mistake</b> — sample 8 is a "0" with score \(0.2 > 0\): a false positive. Everything else is right.`,
+          remember: R`\[\hat y = 1 \iff \sigma(w^\top x) \ge \tfrac12 \iff w^\top x \ge 0\]<p>LoR's cut. Not on the sheet: [sheet: Logistic regression posterior model] gives only the probability.</p>`,
           why: R`<p>TPR = TP / (TP + FN) is 1 only if FN = 0. FPR = FP / (FP + TN) is 0 only if FP = 0. So we need no missed "1" and no flagged "0".</p>` },
         { line: R`<b>Lowest "1" vs highest "0"</b> — the "1"s score 1.4, 0.8, 0.4, 1.1 (lowest <b>0.4</b>); the "0"s score −0.8, −1.6, −0.4, 0.2 (highest <b>0.2</b>). \(0.4 > 0.2\), so a cut at 0.3 splits them.` },
         { line: R`<b>Shift \(w_0\)</b> — \(w_0' = w_0 - 0.3\), other weights the same: every score drops by 0.3. <div class="formula">\[\begin{aligned}\text{"1"s: }&1.1,\ 0.5,\ 0.1,\ 0.8 \;\gt 0\\ \text{"0"s: }&-1.1,\ -1.9,\ -0.7,\ -0.1 \;\lt 0\end{aligned}\]</div>So TPR = 4/4 = 1, FPR = 0/4 = 0: <b>yes</b>. Done.`,
@@ -183,13 +189,15 @@
       moves: [
         { line: R`<b>The kernel</b> — the quadratic kernel: <div class="formula">\[K(u, v) = (1 + u^\top v)^2\]</div>`,
           size: R`\[\underbrace{u^\top}_{\textstyle 1\times 2}\,\underbrace{v}_{\textstyle 2\times 1} = \text{one number}\]<p>\(u, v\) = two samples, 2 features each · inner 2 = 2 ✓ · so \(1 + u^\top v\) and its square are plain numbers: one \(K\) per pair of samples ✓</p>`,
-          why: R`<p>🧠 Know this one by heart (not on the formula sheet). The dual Perceptron only uses dot products between samples; replacing each by \(K\) = running the Perceptron on \(\varphi(x)\) without building \(\varphi\).</p>` },
+          remember: R`\[K(u, v) = (1 + u^\top v)^2\]<p>The quadratic kernel from class; every kernel is \(K(u, v) = \varphi(u)^\top\varphi(v)\) for some \(\varphi\). Not on the sheet (neither is the dual Perceptron).</p>`,
+          why: R`<p>The dual Perceptron only uses dot products between samples; replacing each by \(K\) = running the Perceptron on \(\varphi(x)\) without building \(\varphi\).</p>` },
         { line: R`<b>It's a dot product of quadratic features</b> — expand both sides, they match term by term: <div class="formula">\[\begin{aligned}(1 + u_1v_1 + u_2v_2)^2 = \;&1 + 2u_1v_1 + 2u_2v_2\\ &+ u_1^2v_1^2 + u_2^2v_2^2 + 2u_1u_2v_1v_2\end{aligned}\]</div><div class="formula">\[\varphi(x) = (1,\ \sqrt2x_1,\ \sqrt2x_2,\ x_1^2,\ x_2^2,\ \sqrt2x_1x_2)\]</div>`,
           size: R`\[\underbrace{\varphi(u)^\top}_{\textstyle 1\times 6}\,\underbrace{\varphi(v)}_{\textstyle 6\times 1} = (1 + u^\top v)^2\]<p>\(\varphi\) turns 2 features into 6 · inner 6 = 6 ✓ · one number, like the kernel ✓</p>`,
           why: R`<p>\(\varphi(u)^\top\varphi(v)\), entry by entry: \(1\cdot 1\), \(\sqrt2u_1\cdot\sqrt2v_1 = 2u_1v_1\), \(\sqrt2u_2\cdot\sqrt2v_2 = 2u_2v_2\), \(u_1^2v_1^2\), \(u_2^2v_2^2\), \(\sqrt2u_1u_2\cdot\sqrt2v_1v_2 = 2u_1u_2v_1v_2\). The \(\sqrt2\)'s are only there to make the 2's.</p>`,
           extra: [{ label: "check it with numbers (two points from the figure)", html: R`<p>\(u = (0, 0.8)\), \(v = (0.2, 0.3)\). Kernel: \(u^\top v = 0 + 0.24\), so \(K = 1.24^2 = 1.5376\).</p>
 <p>Expanded: \(1 + 0 + 2\cdot 0.24 + 0 + 0.64\cdot 0.09 + 0 = 1 + 0.48 + 0.0576 = 1.5376\). ✓</p>` }] },
         { line: R`<b>Separable there, so it converges</b> — this \(\varphi\) contains \(1, x_1^2, x_2^2\), so the circle rule \(-0.4 + x_1^2 + x_2^2 > 0\) (part 5) is a line in it: \(w = (-0.4, 0, 0, 1, 1, 0)\). The Perceptron converges on separable data. Done.`,
+          remember: R`<p><b>The Perceptron converges (with a small enough learning rate) iff the data is linearly separable</b> — here: separable after \(\varphi\).</p><p>Not on the sheet.</p>`,
           size: R`\[\underbrace{w^\top}_{\textstyle 1\times 6}\,\underbrace{\varphi(x)}_{\textstyle 6\times 1} = -0.4 + x_1^2 + x_2^2\]<p>\(w\) needs one entry per entry of \(\varphi\): 6 here, not part 5's 2 · inner 6 = 6 ✓ · one number per sample ✓</p>`,
           why: R`<p>\(w^\top\varphi(x) = -0.4 + x_1^2 + x_2^2\): exactly part 5's rule. The grader: no full proof needed — the kernel plus "it's the dot product of the quadratic features" is enough.</p>` },
       ],
@@ -203,6 +211,7 @@
         { line: R`<b>Scores with the bias</b> — \(w = (w_0, w_1, w_2) = (1, -1, 2)\): <div class="formula">\[\begin{aligned}\text{sample 1: }&1 - 1\cdot 2 + 2\cdot 0 = -1\\ \text{sample 2: }&1 - 1\cdot 0 + 2\cdot 1 = 3\end{aligned}\]</div>`,
           size: R`\[\underbrace{\begin{bmatrix}1&2&0\\1&0&1\end{bmatrix}}_{\textstyle 2\times 3}\underbrace{\begin{bmatrix}1\\-1\\2\end{bmatrix}}_{\textstyle 3\times 1} = \underbrace{\begin{bmatrix}-1\\3\end{bmatrix}}_{\textstyle 2\times 1}\]<p>2 samples × (1 + 2 features) · inner 3 = 3 ✓ · one score per sample ✓ · one row alone: \(w^\top x^{(i)}\) = (1×3)(3×1) = one number</p>` },
         { line: R`<b>The sign decides</b> — \(\Phi\) is increasing with \(\Phi(0) = \tfrac12\), like \(\sigma\) in 2025-B Q3.1. So \(-1 \lt 0\): sample 1 <b>negative</b>; \(3 > 0\): sample 2 <b>positive</b>. Done.`,
+          remember: R`\[\text{positive} \iff \hat y_w(x) \ge \tfrac12\]<p>The ½ cut from class (in LoR: \(\sigma(w^\top x) \ge \tfrac12 \iff w^\top x \ge 0\)). Not on the sheet: [sheet: Logistic regression posterior model] gives only the probability. Here \(\Phi\) plays \(\sigma\)'s role.</p>`,
           why: R`<p>\(\Phi(t)\) = area under the bell left of \(t\). The bell is symmetric, so half the area is left of 0: \(\Phi(0) = \tfrac12\). Moving \(t\) right adds area, so \(\Phi\) goes up.</p>`,
           extra: [{ label: "your Moed B", html: R`<p>You had −1 and 3 right, then tried to integrate \(\Phi(-1)\) by hand and crossed it all out (0/4). The sign plus the sentence above was all four points.</p>` }] },
       ],
@@ -261,6 +270,7 @@
           size: R`<p><code>X_b.shape</code> = (b, d): the batch's b rows (b = <code>batch_size</code>), d = <code>X.shape[1]</code> = one column per knob (<code>self.w_</code> has <code>X.shape[1]</code> entries). <code>z.shape</code> = (b,): one \(z_i\) per row.</p>\[\underbrace{\texttt{X\_b.T}}_{\textstyle d\times b}\,\underbrace{z}_{\textstyle b\times 1} = \underbrace{\texttt{grad}}_{\textstyle d\times 1}\]<p>inner b = b ✓ · one entry per knob, like <code>self.w</code> ✓</p><p>Wrong order: <code>X_b @ z</code> = (b, d) @ (b,) — inner d ≠ b ✗</p>`,
           why: R`<p>\(\sum_i z_i\,x^{(i)} = z_1x^{(1)} + z_2x^{(2)} + \dots\): each row of \(X_b\) times its number \(z_i\), added up. The columns of \(X_b^\top\) are those rows, so \(X_b^\top z\) does exactly that (as in Regression, 2025-C Q1.2, step 4). You don't need part 3 for this.</p>` },
         { line: R`<b>(2) One step downhill</b> — weights minus learning rate × gradient: <code>self.w - self.learning_rate * grad</code>.`,
+          remember: R`\[w \leftarrow w - \eta\,\nabla L(w)\]<p>One gradient-descent step. Not on the sheet. Here \(\eta\) is <code>self.learning_rate</code>, \(\nabla L\) is <code>grad</code>.</p>`,
           size: R`\[\underbrace{\texttt{self.w}}_{\textstyle d\times 1} - \eta\cdot\underbrace{\texttt{grad}}_{\textstyle d\times 1}\]<p>\(\eta\) = <code>self.learning_rate</code>, a number · both (d,) — one entry per knob, so the step subtracts entry by entry ✓</p>`,
           why: R`<p>The gradient points uphill (where the loss grows), so minus a small step of it lowers the loss; <code>self.learning_rate</code> sets the step size (same step as 2025-A Q4.5, blank 4).</p>` },
         { line: R`<b>(3) The loss on this batch</b> — <code>BCE_loss(X, y)</code> evaluates \(L(w)\) on a dataset; give it the batch: <code>self.BCE_loss(X_b, y_b)</code>.`,

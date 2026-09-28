@@ -95,6 +95,7 @@ window.SHEET = {
 "Covariance": "ext-2",
 "Correlation": "ext-2",
 "P (B)": "ext-2",
+"Bayes' rule": "ext-2",
 "Objective Functions": "ext-2",
 "Least mean squares regression": "ext-3",
 "Least mean squares classification": "ext-3",

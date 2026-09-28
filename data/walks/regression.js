@@ -27,13 +27,15 @@
 \[\begin{aligned}J(\theta) = \;&(\theta_0 - 1\theta_1 + 1\theta_2 - 6)^2 &&\leftarrow \text{sample 1}\\ +\;&(\theta_0 - 2\theta_1 + 0\theta_2 - 4)^2 &&\leftarrow \text{sample 2}\\ +\;&(\theta_0 + 1\theta_1 + 3\theta_2 - 5)^2 &&\leftarrow \text{sample 3}\\ +\;&(\theta_0 + 0\theta_1 + 1\theta_2 - 1)^2 &&\leftarrow \text{sample 4}\\ +\;&\lambda\big(|\theta_0| + |\theta_1| + |\theta_2|\big)\end{aligned}\]
 <p>Each bracket is "prediction − label" for one sample.</p>` },
         { line: R`<b>Derivative by \(\theta_j\)</b> — like \(2\cdot(x^2+3)\cdot 2x\): 2 · (…) · (the number in front of \(\theta_j\)), where (…) is the bracket copied as-is, and \(|\theta_j| \to \mathrm{sign}(\theta_j)\): <div class="formula">\[\begin{aligned}\frac{dJ}{d\theta_j} = \;&\sum_{i} 2\cdot\big(\theta_0 + \theta_1 x^{(i)}_1 + \theta_2 x^{(i)}_2 - y^{(i)}\big)\cdot x^{(i)}_j\\ &+ \lambda\,\mathrm{sign}(\theta_j)\end{aligned}\]</div>`,
+          remember: R`\[\frac{d}{da}\,|a| = \mathrm{sign}(a)\]<p>+1 if \(a > 0\), −1 if \(a < 0\). Not on the sheet. Here \(a\) is \(\theta_j\).</p>`,
           why: R`<p><b>Each squared bracket:</b> \((\dots)^2 \to 2\cdot(\dots)\cdot(\text{derivative of }(\dots))\) — the same move as \((x^2+3)^2 \to 2\cdot(x^2+3)\cdot 2x\).</p>
 <p><b>Derivative of (…) by \(\theta_j\):</b> (…) is a plain sum like \(\theta_0 - 2\theta_1 + 0\theta_2 - 4\). Its derivative by \(\theta_1\) is just the number in front of \(\theta_1\): here \(-2\) — that sample's \(x_1\). In general it's that sample's \(x_j\), written \(x^{(i)}_j\) (for \(\theta_0\) it's 1).</p>
 <p><b>Penalty:</b> only \(|\theta_j|\) contains \(\theta_j\). The derivative of \(|a|\) is its sign: +1 if positive, −1 if negative.</p>
 <p>Written out for knob \(\theta_1\) with the 4 real brackets:</p>
 \[\begin{aligned}\frac{dJ}{d\theta_1} = \;&2\cdot(\theta_0 - 1\theta_1 + 1\theta_2 - 6)\cdot(-1)\\ +\;&2\cdot(\theta_0 - 2\theta_1 + 0\theta_2 - 4)\cdot(-2)\\ +\;&2\cdot(\theta_0 + 1\theta_1 + 3\theta_2 - 5)\cdot(1)\\ +\;&2\cdot(\theta_0 + 0\theta_1 + 1\theta_2 - 1)\cdot(0)\\ +\;&\lambda\,\mathrm{sign}(\theta_1)\end{aligned}\]`,
-          extra: [{ label: "is this on the formula sheet?", html: R`<p>Yes: [sheet: Square error loss gradient]. It shows <b>one sample</b>, with a \(\tfrac12\) in front: \(\nabla\,\tfrac12(y - w^\top x)^2 = (w^\top x - y)\,x\).</p>
-<p>Our loss has no \(\tfrac12\), so each sample gives <b>2 ·</b> (prediction − label) · \(x\) — exactly step 2 (the ½ is what cancels the 2). Add over the samples and you have step 2.</p>` },
+          extra: [{ label: "is this on the formula sheet?", html: R`<p>Only the one-sample version: [sheet: Square error loss gradient]. It shows <b>one sample</b>, with a \(\tfrac12\) in front: \(\nabla\,\tfrac12(y - w^\top x)^2 = (w^\top x - y)\,x\).</p>
+<p>Our loss has no \(\tfrac12\), so each sample gives <b>2 ·</b> (prediction − label) · \(x\) — exactly step 2 (the ½ is what cancels the 2). Add over the samples and you have step 2.</p>
+<p>The matrix form \(2X^\top(X\theta - y)\) is <b>not</b> on the sheet — moves 3–5 build it. Neither is \(|\theta_j| \to \mathrm{sign}(\theta_j)\) (the box above).</p>` },
                   { label: "check it with numbers (θ = (1, −2, 3), knob θ₁)", html: R`<div class="tw"><table><thead><tr><th>sample</th><th>(…) for this sample</th><th>its \(x_1\)</th><th>2 · (…) · \(x_1\)</th></tr></thead><tbody>
 <tr><td>1</td><td>1 + 2 + 3 − 6 = 0</td><td>−1</td><td>0</td></tr><tr><td>2</td><td>1 + 4 + 0 − 4 = 1</td><td>−2</td><td>−4</td></tr>
 <tr><td>3</td><td>1 − 2 + 9 − 5 = 3</td><td>1</td><td>6</td></tr><tr><td>4</td><td>1 + 0 + 3 − 1 = 3</td><td>0</td><td>0</td></tr>
@@ -56,6 +58,7 @@
 <tr><td>\(\theta_2\)</td><td>(1, 0, 3, 1)</td><td>0 + 0 + 9 + 3 = 12</td></tr></tbody></table></div>
 <p>So \(X^\top(X\theta - y) = (7, 1, 12)\): the three sums, done in one go.</p>` }] },
         { line: R`<b>Put it together</b> — stack step 3's rows: the sums 2 · (column \(j\) of \(X\)) · \((X\theta - y)\) become \(2X^\top(X\theta - y)\) (\(X^\top\)'s rows = \(X\)'s columns), and the \(\lambda\,\mathrm{sign}(\theta_j)\) become \(\lambda\,\mathrm{sign}(\theta)\): <div class="formula">\[\nabla J(\theta) = \underbrace{2X^\top(X\theta - y)}_{\textstyle\text{= step 4's sums}} + \underbrace{\lambda\,\mathrm{sign}(\theta)}_{\textstyle\text{= the signs}}\]</div>`,
+          remember: R`\[\nabla\,\|Xw - y\|^2 = 2X^\top(Xw - y)\]<p>The squared-error part of this answer — remember it; it's the shortcut next time. Not on the sheet in this form: [sheet: Square error loss gradient] only has <b>one sample with a ½</b>, \((w^\top x - y)\,x\). Here \(w\) is \(\theta\).</p>`,
           size: R`\[\underbrace{X^\top}_{\textstyle 3\times 4}\,\underbrace{(X\theta - y)}_{\textstyle 4\times 1} = \underbrace{\nabla J}_{\textstyle 3\times 1}\]<p>inner 4 = 4 ✓ · result 3×1 = one entry per knob ✓ · \(\mathrm{sign}(\theta)\) is 3×1 too, so they add ✓</p><p>Wrong order: \(X(X\theta - y)\) = (4×3)(4×1) — inner 3 ≠ 4 ✗</p>`,
           why: R`<ul><li>The 2 from every term comes out in front: \(2X^\top(X\theta - y)\).</li>
 </ul>
@@ -76,6 +79,7 @@ np.sign(theta)   # array([ 1, -1,  1])</code></pre>
       start: R`<p><b>The formula (from part 2), with the numbers plugged in:</b></p>\[\nabla J = 2X^\top(X\theta - y) + \lambda\,\mathrm{sign}(\theta) = \;\square\]<p><b>The step:</b></p>\[\theta_{\text{new}} = \theta - 0.1\cdot\nabla J = \;\square\]`,
       moves: [
         { line: R`<b>The formula</b> — part 2's answer, and the step rule: <div class="formula">\[\nabla J = \underbrace{\color{#e8912d}2X^\top(X\theta - y)}_{\textstyle\color{#e8912d}\text{from the squared brackets}} + \underbrace{\color{#4c8dff}\lambda\,\mathrm{sign}(\theta)}_{\textstyle\color{#4c8dff}\text{from }\lambda|\theta_j|}\]</div><div class="formula">\[\theta_{\text{new}} = \theta - 0.1\cdot\nabla J\]</div>We know \(\theta = (1, -2, 3)\), \(\lambda = 1\), and the step size 0.1 (the question's \(\eta\)).`,
+          remember: R`\[w \leftarrow w - \eta\,\nabla J(w)\]<p>One gradient-descent step. Not on the sheet. Here \(w\) is \(\theta\), \(\eta = 0.1\).</p>`,
           size: R`\[\underbrace{X^\top}_{\textstyle 3\times 4}\,\underbrace{(X\theta - y)}_{\textstyle 4\times 1} = 3\times 1 \qquad \underbrace{\theta}_{\textstyle 3\times 1} - 0.1\cdot\underbrace{\nabla J}_{\textstyle 3\times 1}\]<p>The gradient has one entry per knob, like \(\theta\), so the step subtracts entry by entry ✓</p>`,
           why: R`<p>"One iteration of gradient descent" = compute the gradient at the current \(\theta\), then take one small step against it. The gradient points uphill, so we subtract it to go downhill.</p>
 <p>Where the formula comes from: each squared bracket \((\theta_0 + \theta_1 x_1 + \theta_2 x_2 - y)^2\) → 2 · (…) · (the number in front of \(\theta_j\)); stacked over the three knobs that's \(2X^\top(X\theta - y)\). Each \(\lambda|\theta_j|\) → \(\lambda\,\mathrm{sign}(\theta_j)\), stacked: \(\lambda\,\mathrm{sign}(\theta)\). (Worked out step by step in part 2.)</p>` },
@@ -119,9 +123,11 @@ np.sign(theta)   # array([ 1, -1,  1])</code></pre>
       start: R`<p>One line per bug (write at least three):</p><p><b>Line \(\square\):</b> <code>wrong</code> → should be <code>fix</code>, because \(\square\)</p>`,
       moves: [
         { line: R`<b>n counts samples = rows.</b> <b>Line 1:</b> <code>X.shape[1]</code> → <code>X.shape[0]</code>`,
+          remember: R`<p><code>X.shape</code> = (rows, columns) = (samples, features) → <code>X.shape[0]</code> = number of samples.</p><p>numpy — not on the sheet.</p>`,
           size: R`<p><code>X.shape</code> = (n, 3) = (rows, columns) = (samples, 1 + features). So <code>shape[0]</code> = n ✓, <code>shape[1]</code> = 3 ✗.</p>`,
           why: R`<p><code>shape[0]</code> = number of rows (samples), <code>shape[1]</code> = number of columns (features + the ones column).</p>` },
         { line: R`<b>Validation uses only validation data, no penalty.</b> <b>Line 16:</b> → <code>y_pred = X_val @ w_star</code>. <b>Line 17:</b> <code>y_train</code> → <code>y_val</code>`,
+          remember: R`<p>k-fold cross-validation, for each \(\lambda\): train on the other folds (with the penalty), score the held-out fold with <b>plain</b> squared error (no penalty), <b>average</b> over the folds; keep the \(\lambda\) with the <b>smallest</b> average.</p><p>Not on the sheet.</p>`,
           size: R`<p><code>X_val @ w_star</code>: (validation rows × 3) @ (3,) = one prediction per validation row ✓ — so compare with <code>y_val</code> (same length), not <code>y_train</code> (different length).</p>`,
           why: R`<p>The point of cross-validation: score the model on rows it didn't train on, with plain squared error. So predict the validation rows, compare with the validation labels, and don't add the penalty.</p>`,
           extra: [{ label: "why lines 16–17 and not 15–16?", html: R`<p>The official solution calls them 15 and 16, but on the printed page (the numbers in the left margin) they are 16 and 17. Either way, quote the statement itself so the grader can't miss it.</p>` }] },

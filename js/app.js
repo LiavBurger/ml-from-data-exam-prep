@@ -277,6 +277,7 @@
           <div class="n">${i + 1}</div>
           <div class="body">
             <div class="line">${linkNotes(mv.line)}</div>
+            ${mv.remember ? `<div class="remember"><span class="rtag">🧠 Remember from class</span>${linkNotes(mv.remember)}</div>` : ""}
             ${mv.size ? `<div class="sizecheck"><span class="tag sizetag">Size check</span>${linkNotes(mv.size)}</div>` : ""}
             ${mv.why ? `<details class="more"><summary>why?</summary><div class="depth">${linkNotes(mv.why)}</div></details>` : ""}
             ${(mv.extra || []).map(x => `<details class="more"><summary>${esc(x.label)}</summary><div class="depth">${linkNotes(x.html)}</div></details>`).join("")}

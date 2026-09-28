@@ -25,7 +25,8 @@
 <p><b>For \(X_4\):</b> the same, \(\Delta\varphi(S, X_4) = \square\)</p>`,
       moves: [
         { line: R`<b>The formula</b> — before, minus each child weighted by its share of the rows. \(\varphi(S) = \tfrac12\) from part 1: <div class="formula">\[\begin{aligned}\Delta\varphi(S, A) = \varphi(S) &- \frac{|S_{A=0}|}{|S|}\,\varphi(S_{A=0})\\ &- \frac{|S_{A=1}|}{|S|}\,\varphi(S_{A=1})\end{aligned}\]</div>`,
-          why: R`<p>🧠 Know this one by heart: the sheet only has [sheet: Gini impurity], not the reduction. \(S_{A=0}\) = the rows with \(A = 0\).</p>` },
+          why: R`<p>\(S_{A=0}\) = the rows with \(A = 0\).</p>`,
+          remember: R`\[\Delta\varphi(S, A) = \varphi(S) - \sum_{v} \frac{|S_v|}{|S|}\,\varphi(S_v)\]<p>Not on the sheet: it only has the impurity itself, [sheet: Gini impurity]. Here \(v\) = 0, 1, so \(S_v\) is \(S_{A=0}\), \(S_{A=1}\).</p>` },
         { line: R`<b>\(X_1\)</b> — both children are 2 \(+\) out of 4, like the parent: <div class="tw"><table><thead><tr><th>child</th><th>rows</th><th>labels</th><th>\(\varphi\)</th></tr></thead><tbody>
 <tr><td>\(X_1 = 0\)</td><td>1–4</td><td>\(-\,+\,+\,-\)</td><td>\(\tfrac12\)</td></tr>
 <tr><td>\(X_1 = 1\)</td><td>5–8</td><td>\(+\,-\,-\,+\)</td><td>\(\tfrac12\)</td></tr></tbody></table></div><div class="formula">\[\Delta\varphi(S, X_1) = \tfrac12 - \tfrac48\cdot\tfrac12 - \tfrac48\cdot\tfrac12 = 0\]</div>`,
@@ -93,7 +94,8 @@ rows 1,4,6,7</code></pre>Done.`,
         { line: R`<b>The parent has proportion \(p\) too</b> — its positives are both children's positives added: <div class="formula">\[\begin{aligned}\frac{n_+}{n} &= \frac{p\,n^{(1)} + p\,n^{(2)}}{n^{(1)} + n^{(2)}}\\ &= \frac{p\,(n^{(1)} + n^{(2)})}{n^{(1)} + n^{(2)}} = p\end{aligned}\]</div>`,
           why: R`<p>The parent holds both children, so \(n = n^{(1)} + n^{(2)}\) and \(n_+ = n_+^{(1)} + n_+^{(2)}\). This step is the proof: the grader takes off 2 points if you just assume the parent has \(p\).</p>` },
         { line: R`<b>Plug in</b> — impurity depends only on the proportion, so \(\varphi(S) = \varphi(S_1) = \varphi(S_2) = \varphi(p)\): <div class="formula">\[\begin{aligned}\Delta\varphi &= \varphi(p) - \frac{n^{(1)}}{n}\varphi(p) - \frac{n^{(2)}}{n}\varphi(p)\\ &= \varphi(p)\Big(1 - \underbrace{\color{#e8912d}\frac{n^{(1)} + n^{(2)}}{n}}_{\textstyle\color{#e8912d}\text{this part = 1}}\Big) = 0\end{aligned}\]</div>Done.`,
-          why: R`<p>Gini, entropy, any impurity is a function of the proportion only. That's why it holds "regardless of the impurity measure". Doing it only for Gini costs ½–1 point.</p>` },
+          why: R`<p>Gini, entropy, any impurity is a function of the proportion only. That's why it holds "regardless of the impurity measure". Doing it only for Gini costs ½–1 point.</p>`,
+          remember: R`\[\Delta\varphi(S, A) = \varphi(S) - \sum_{v} \frac{|S_v|}{|S|}\,\varphi(S_v)\]<p>Not on the sheet: it only has the impurities themselves, [sheet: Gini impurity] and [sheet: Entropy]. Here the two children are \(S_1, S_2\) with sizes \(n^{(1)}, n^{(2)}\), and \(|S| = n\).</p>` },
       ],
       compare: R`Same steps as the official solution. Its second denominator has a typo: it numbers the children (0), (1) instead of (1), (2); it should read \(n_+^{(1)} + n_-^{(1)} + n_+^{(2)} + n_-^{(2)}\).`,
     },
@@ -117,9 +119,9 @@ rows 1,4,6,7</code></pre>Done.`,
 <tr><td>Action</td><td>\(1-,\ 2+\)</td><td>\(\tfrac12\)</td></tr>
 <tr><td>Comedy</td><td>\(3-,\ 4-\)</td><td>\(0\)</td></tr>
 <tr><td>Drama</td><td>\(5+,\ 6+\)</td><td>\(0\)</td></tr></tbody></table></div>`,
-          why: R`<p>A pure child: \(1 - 1^2 - 0^2 = 0\). Half and half: \(1 - \tfrac14 - \tfrac14 = \tfrac12\) (as in part 1).</p>` },
-        { line: R`<b>Plug in</b> — one term per genre, \(\varphi(S) = \tfrac12\) from part 1: <div class="formula">\[\begin{aligned}\Delta\varphi(\text{Genre}) &= \tfrac12 - \left(\tfrac26\cdot\tfrac12 + \tfrac26\cdot 0 + \tfrac26\cdot 0\right)\\ &= \tfrac12 - \tfrac16 = \tfrac13\end{aligned}\]</div>Done.`,
-          why: R`<p>🧠 The reduction formula isn't on the sheet (only [sheet: Gini impurity]): \(\varphi(S) - \sum_v \frac{|S_v|}{|S|}\varphi(S_v)\), with \(v\) = Action, Comedy, Drama.</p>` },
+          why: R`<p>A pure child: \(1 - 1^2 - 0^2 = 0\). Half and half: \(1 - \tfrac14 - \tfrac14 = \tfrac12\) (as in part 1).</p>`,
+          remember: R`\[\Delta\varphi(S, A) = \varphi(S) - \sum_{v} \frac{|S_v|}{|S|}\,\varphi(S_v)\]<p>Not on the sheet: it only has the impurity itself, [sheet: Gini impurity]. Here \(v\) = Action, Comedy, Drama.</p>` },
+        { line: R`<b>Plug in</b> — one term per genre, \(\varphi(S) = \tfrac12\) from part 1: <div class="formula">\[\begin{aligned}\Delta\varphi(\text{Genre}) &= \tfrac12 - \left(\tfrac26\cdot\tfrac12 + \tfrac26\cdot 0 + \tfrac26\cdot 0\right)\\ &= \tfrac12 - \tfrac16 = \tfrac13\end{aligned}\]</div>Done.` },
       ],
       compare: R`Same as the official solution.`,
     },
@@ -129,7 +131,8 @@ rows 1,4,6,7</code></pre>Done.`,
       start: R`\[\mathrm{IG}(\text{Genre}) = H(S) - \sum_{v} \frac{|S_v|}{|S|}\,H(S_v) = \;\square\]`,
       moves: [
         { line: R`<b>Entropies</b> — [sheet: Entropy]. The parent (3 likes, 3 dislikes) and Action \(\{1-, 2+\}\) are half and half; Comedy \(\{3-, 4-\}\) and Drama \(\{5+, 6+\}\) are pure: <div class="formula">\[\begin{aligned}H(\tfrac12) &= -\tfrac12\log_2\tfrac12 - \tfrac12\log_2\tfrac12 = 1\\ H(0) &= H(1) = 0\end{aligned}\]</div>`,
-          why: R`<p>\(\log_2\tfrac12 = -1\), because \(2^{-1} = \tfrac12\). A pure node: \(-1\cdot\log_2 1 - 0 = 0\) (\(0\cdot\log 0\) counts as 0).</p>` },
+          why: R`<p>\(\log_2\tfrac12 = -1\), because \(2^{-1} = \tfrac12\). A pure node: \(-1\cdot\log_2 1 - 0 = 0\) (\(0\cdot\log 0\) counts as 0).</p>`,
+          remember: R`\[\mathrm{IG}(S, A) = H(S) - \sum_{v} \frac{|S_v|}{|S|}\,H(S_v)\]<p>Not on the sheet: it only has [sheet: Entropy]. Same shape as part 2's Gini reduction, with \(H\) instead of \(\varphi\). Here \(v\) = Action, Comedy, Drama.</p>` },
         { line: R`<b>Plug in</b>: <div class="formula">\[\begin{aligned}\mathrm{IG}(\text{Genre}) &= 1 - \left(\tfrac26\cdot 1 + \tfrac26\cdot 0 + \tfrac26\cdot 0\right)\\ &= 1 - \tfrac13 = \tfrac23\end{aligned}\]</div>Done.` },
       ],
       compare: R`Same as the official solution.`,
@@ -156,7 +159,8 @@ rows 1,4,6,7</code></pre>Done.`,
       point: R`<p>Pruning to the root keeps only the Genre question. The removed question (Time) was under Action, and a Comedy instance never goes there, so the prediction can't change.</p>`,
       moves: [
         { line: R`<b>The pruned tree</b> — Genre only; each child is a leaf with its majority label. Comedy \(\{3-, 4-\}\) → dislike. So the instance goes Genre = Comedy → <b>dislike (−)</b>.`,
-          why: R`<p>Pruning a node = replace it by a leaf labelled with the majority of the training rows that reach it. Action \(\{1-, 2+\}\) is a 1–1 tie, but this instance never goes there.</p>` },
+          why: R`<p>Pruning a node = replace it by a leaf labelled with the majority of the training rows that reach it. Action \(\{1-, 2+\}\) is a 1–1 tie, but this instance never goes there.</p>`,
+          remember: R`<p>Pruning a node = cut off everything below it; it becomes a leaf that predicts the <b>majority label</b> of the training samples reaching it.</p><p>Not on the sheet.</p>` },
         { line: R`<b>Did pruning change it?</b> No. The unpruned tree (part 4) asks Genre, then Time only under Action; Comedy was already a leaf (−). Pruning only removed the Time question under Action. Done.` },
       ],
       compare: R`Same as the official solution: dislike (−) in both the pruned and the unpruned tree.`,
@@ -301,7 +305,7 @@ rows 1,4,6,7</code></pre>Done.`,
 <p><b>\(X_4\):</b> children \(\square\), \(\;\Delta\varphi(X_4) = \square\)</p>`,
       moves: [
         { line: R`<b>The root</b> — 3 \(+\) (samples 2, 3, 5) and 2 \(-\) out of 5, [sheet: Gini impurity]: <div class="formula">\[\varphi(S) = 1 - 0.6^2 - 0.4^2 = 1 - 0.36 - 0.16 = 0.48\]</div>`,
-          why: R`<p>The reduction = before − each child weighted by its share of samples (🧠 know by heart, not on the sheet).</p>` },
+          remember: R`\[\Delta\varphi(S, A) = \varphi(S) - \sum_{v} \frac{|S_v|}{|S|}\,\varphi(S_v)\]<p>Not on the sheet: it only has the impurity itself, [sheet: Gini impurity]. Here \(v\) = 0, 1 (the two values of \(X_1\), then of \(X_4\)).</p>` },
         { line: R`<b>\(X_1\)</b> — children: <div class="tw"><table><thead><tr><th>child</th><th>samples</th><th>\(\varphi\)</th></tr></thead><tbody>
 <tr><td>\(X_1 = 0\)</td><td>\(1-\)</td><td>\(0\)</td></tr>
 <tr><td>\(X_1 = 1\)</td><td>\(2+,3+,4-,5+\)</td><td>\(1 - 0.75^2 - 0.25^2 = 0.375\)</td></tr></tbody></table></div><div class="formula">\[\Delta\varphi(X_1) = 0.48 - \tfrac15\cdot 0 - \tfrac45\cdot 0.375 = 0.18\]</div>` },
@@ -316,7 +320,8 @@ rows 1,4,6,7</code></pre>Done.`,
     "2026A-q2.4": {
       point: R`<p>The algorithm must pick the attribute with the <b>largest</b> reduction, and must put the new children <b>into the queue</b> so they get processed too.</p>`,
       moves: [
-        { line: R`<b>Faulty: step b.3.ii</b> — "smallest impurity reduction" → <b>largest</b>. We want the question that removes the most impurity.` },
+        { line: R`<b>Faulty: step b.3.ii</b> — "smallest impurity reduction" → <b>largest</b>. We want the question that removes the most impurity.`,
+          remember: R`<p>The class tree algorithm, for each node popped from \(Q\): pure → leaf; otherwise split on the attribute with the <b>largest</b> impurity reduction, and <b>push each child into \(Q\)</b>.</p><p>Not on the sheet.</p>` },
         { line: R`<b>Omitted: step b.3.iii</b> — after making the children, <b>add each child of \(v\) to the queue \(Q\)</b>. Otherwise the loop ends after the root, and nothing below it is ever checked or split. Done.` },
       ],
       compare: R`Same two corrections as the official solution.`,
@@ -328,13 +333,15 @@ rows 1,4,6,7</code></pre>Done.`,
         { line: R`<b>Pop the root</b> — \(S\) = samples 1–5, mixed, so not a leaf. Part 3 gave \(\Delta\varphi(X_1) = 0.18\), \(\Delta\varphi(X_4) = 0.0133\); now \(X_2\), \(X_3\): <div class="tw"><table><thead><tr><th>child</th><th>samples</th><th>\(\varphi\)</th></tr></thead><tbody>
 <tr><td>\(X_2 = 0\)</td><td>\(1-,2+\)</td><td>\(0.5\)</td></tr><tr><td>\(X_2 = 1\)</td><td>\(3+,4-,5+\)</td><td>\(\tfrac49\)</td></tr>
 <tr><td>\(X_3 = 0\)</td><td>\(1-,3+,5+\)</td><td>\(\tfrac49\)</td></tr><tr><td>\(X_3 = 1\)</td><td>\(2+,4-\)</td><td>\(0.5\)</td></tr></tbody></table></div>`,
-          why: R`<p>The algorithm scores <b>every</b> attribute, not just the two from part 3. A 1–1 child: \(1 - 0.5^2 - 0.5^2 = 0.5\). A 2–1 child: \(1 - \left(\tfrac23\right)^2 - \left(\tfrac13\right)^2 = 1 - \tfrac49 - \tfrac19 = \tfrac49\).</p>` },
+          why: R`<p>The algorithm scores <b>every</b> attribute, not just the two from part 3. A 1–1 child: \(1 - 0.5^2 - 0.5^2 = 0.5\). A 2–1 child: \(1 - \left(\tfrac23\right)^2 - \left(\tfrac13\right)^2 = 1 - \tfrac49 - \tfrac19 = \tfrac49\).</p>`,
+          remember: R`\[\Delta\varphi(S, A) = \varphi(S) - \sum_{v} \frac{|S_v|}{|S|}\,\varphi(S_v)\]<p>Not on the sheet: it only has the impurity itself, [sheet: Gini impurity]. Here \(v\) = 0, 1.</p>` },
         { line: R`<b>Both reductions</b> — root Gini \(1 - 0.6^2 - 0.4^2 = 0.48\) (3 \(+\), 2 \(-\)); one child of 2 at 0.5, one of 3 at \(\tfrac49\): <div class="formula">\[\begin{aligned}\Delta\varphi(X_2) = \Delta\varphi(X_3) &= 0.48 - \tfrac25\cdot 0.5 - \tfrac35\cdot\tfrac49\\ &= 0.0133\end{aligned}\]</div>` },
         { line: R`<b>Pick \(X_1\), push the children</b> — 0.18 beats 0.0133. \(v_1 = \{x^{(1)}\}\), \(v_2 = \{x^{(2)}, x^{(3)}, x^{(4)}, x^{(5)}\}\): <pre><code>      v_root [X1 ?]
         0 /     \ 1
         v1       v2
        {1}    {2,3,4,5}</code></pre>\(Q = [v_1, v_2]\). Done.`,
-          why: R`<p>\(v_1\) is pure, but it becomes a leaf only when it's popped, in the next iteration. After iteration 1 it's just waiting in \(Q\).</p>` },
+          why: R`<p>\(v_1\) is pure, but it becomes a leaf only when it's popped, in the next iteration. After iteration 1 it's just waiting in \(Q\).</p>`,
+          remember: R`<p>The class tree algorithm (part 4's corrected version): split on the attribute with the <b>largest</b> impurity reduction, and <b>push each child into \(Q\)</b>.</p><p>Not on the sheet.</p>` },
       ],
       compare: R`Same result as the official solution: \(X_1\), \(v_1 = \{x^{(1)}\}\), \(v_2 = \{x^{(2)},\dots,x^{(5)}\}\), \(Q = \{v_1, v_2\}\). Its slips: it swaps the children of \(X_2\) and \(X_3\) (\(X_2 = 0\) is 0.5, not 0.444; same final 0.0133), says "computed in (1)" instead of (3), and labels both branches \(v_1\) in the drawing.`,
     },
@@ -348,7 +355,8 @@ rows 1,4,6,7</code></pre>Done.`,
 <p><b>Best:</b> \(X_1 = \square\) with IG \(= \square\)</p>`,
       moves: [
         { line: R`<b>Parent and candidates</b> — 4 B, 4 R, so \(H(S) = 1\) ([sheet: Entropy]). Distinct \(X_1\) values 2, 3, 4, 5, 6, 8 → midpoints 2.5, 3.5, 4.5, 5.5, 7.`,
-          why: R`<p>\(H(\tfrac12) = -\tfrac12\log_2\tfrac12 - \tfrac12\log_2\tfrac12 = 1\). Any \(t\) between 4 and 5 sends the same samples left, so one candidate per gap is enough. 3 and 6 appear twice but count once.</p>` },
+          why: R`<p>\(H(\tfrac12) = -\tfrac12\log_2\tfrac12 - \tfrac12\log_2\tfrac12 = 1\). Any \(t\) between 4 and 5 sends the same samples left, so one candidate per gap is enough. 3 and 6 appear twice but count once.</p>`,
+          remember: R`\[\mathrm{IG}(S, A) = H(S) - \sum_{v} \frac{|S_v|}{|S|}\,H(S_v)\]<p>Not on the sheet: it only has [sheet: Entropy]. Here the two sides are left \((X_1 \lt t)\) and right, out of \(|S| = 8\).</p>` },
         { line: R`<b>Each side: count, then \(H\)</b>: <div class="tw"><table><thead><tr><th>\(t\)</th><th>left</th><th>\(H\)</th><th>right</th><th>\(H\)</th></tr></thead><tbody>
 <tr><td>2.5</td><td>\(1\text{B}\,0\text{R}\)</td><td>0</td><td>\(3\text{B}\,4\text{R}\)</td><td>0.985</td></tr>
 <tr><td>3.5</td><td>\(2\text{B}\,1\text{R}\)</td><td>0.9183</td><td>\(2\text{B}\,3\text{R}\)</td><td>0.971</td></tr>

@@ -122,13 +122,30 @@ Rendered as a dashed "Size check" box under the move line (always visible once t
   point to the exact sheet entry with `[sheet: Entry name]` (renders as a clickable "📄 Formula sheet → Entry name"
   that opens the sheet on the right page; names must match `data/sheet.js` — the checker enforces it), e.g.
   `[sheet: Least squares solution]`, `[sheet: Square error loss gradient]`, `[sheet: Responsibilities update]`.
-  Say "you don't need to know this by heart". If the fact is NOT on the sheet, flag it as "🧠 know by heart" — rare.
+  Say "you don't need to know this by heart" ONLY when the sheet has it in the form the move uses (same shape,
+  matrix vs. one sample, with/without ½, same symbols up to renaming). Otherwise → §6b.
   Any derivation of such a fact is optional, inside the why?.
 - **Never state a known formula as a given.** If a move uses a result like θ̃ = (XᵀX)⁻¹Xᵀy, its why? shows where it comes
   from in the learner's structure (the function → derivative → set = 0 → solve), reusing earlier parts. (Learner:
   "How did we get from (XᵀX)⁻¹Xᵀy to ‖Xθ−y‖²?")
 - The why? is for understanding; the next move must be followable without opening it.
 - Optional `extra` blocks (collapsed, labelled): "check it with numbers", an official-solution slip, a Moed B trap.
+
+## 6b. 🧠 Remember from class — LOUD, never hidden
+Learner: *"When there's a thing I should just 'remember from class', I want it loud and clear where relevant. In part 4
+I basically have to remember that the gradient of ‖Xw−y‖² is 2Xᵀ(Xw−y). It's unclear to me from the cheat sheet."*
+- A fact the move needs that the learner must bring from memory gets a `remember` field on that move. It renders as a
+  visible purple box "🧠 Remember from class", right under the line — **never inside why?**.
+- Counts as "from memory": not on the sheet at all, OR on the sheet only in a different form the learner would have to
+  translate (the sheet's square-error gradient is one sample with a ½, (wᵀx − y)x — the matrix form 2Xᵀ(Xw−y) is
+  memory), OR only on the extension sheet (eligibility unknown — say "extension sheet, if you get it").
+- Content: the fact itself as one formula/sentence, in the general form you'd write from memory (letters from class:
+  X, w/θ, y), then one short line: what the sheet has instead (with `[sheet: …]`) or "not on the sheet", and how it maps
+  to this question if the letters differ (e.g. "here X is X′").
+- Put it on the FIRST move of each part that needs the fact (every part is self-contained — repeat it in each part).
+- Not for: arithmetic, the question's own definitions, things derived in that same part, basic calculus/algebra the
+  learner confirmed they know (derivative of x², chain rule, dot product, matrix × vector).
+- The checker rejects "by heart"/🧠 left inside a why? of a move that has `remember`.
 
 ## 7. Layout
 - **No sideways scrolling.** Break long formulas with `\begin{aligned}` (≈ 50 characters of math per line); stack
@@ -158,6 +175,7 @@ Rendered as a dashed "Size check" box under the move line (always visible once t
       moves: [
         { line: R`<b>The function</b> — copy it from the question: <div class="formula">\[…\]</div>`,
           why: R`<p>…</p>`,
+          remember: R`\[\nabla\,\|Xw - y\|^2 = 2X^\top(Xw - y)\]<p>Not on the sheet in this form: …</p>`,   // §6b, only when needed
           size: R`\[\underbrace{X^\top}_{3\times 4}\,\underbrace{(X\theta - y)}_{4\times 1}\]<p>inner 4 = 4 ✓</p>`,   // matrix steps only
           extra: [{ label: "check it with numbers", html: R`…` }] },   // extra is optional
       ],
