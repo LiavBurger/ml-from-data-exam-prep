@@ -364,6 +364,11 @@
       el.querySelectorAll("button.mk").forEach(x => x.classList.toggle("on", cur === x.dataset.m));
       const pill = $(".item-h .pill", card); if (pill) pill.remove();
       if (cur) $(".item-h", card).insertAdjacentHTML("beforeend", `<span class="pill ${cur}">${MARKS[cur]}</span>`);
+      if (cur) {   // marked: fold the part back up (solution, Moed B answer, notes, moves) and stay on it
+        card.querySelectorAll("details[open]").forEach(d => d.open = false);
+        card.querySelectorAll(".walk").forEach(w => walkSet(w, 0, false));
+        card.scrollIntoView({ block: "start" });
+      }
       renderSide(findQ(id.split(".")[0]).t.id);
     }));
     $("#main").querySelectorAll(".walk").forEach(box => {
