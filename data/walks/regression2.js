@@ -185,7 +185,7 @@
 
     // ───────────────────────── 2026-A Q1 (weighted least squares) ─────────────────────────
     "2026A-q1.1": {
-      point: R`<p>They give you \(J\) as a sum and want it as a matrix product. Work backwards: write the sum out, fill in the pieces you already know (\(X\), \(y\)), then ask what \(\Gamma\) has to do to make the two equal.</p>`,
+      point: R`<p>They give you \(J\) as a sum and want it as a matrix product. Work backwards: write the sum out, fill in the pieces you already know (\(X\), \(y\)). What's left is \(\Gamma\): it must turn each bracket into (its \(\gamma\) × the bracket).</p>`,
       start: R`<p><b>What I have</b> — the sum, written out for the 4 samples:</p>\[J = \;\square\]<p><b>What it must equal:</b></p>\[(Xw - y)^\top\,\Gamma\,(Xw - y)\]<p><b>Known pieces:</b> \(X = \square \quad y = \square\)</p><p><b>Unknown:</b> \(\Gamma = \square\) (size □ × □)</p>`,
       moves: [
         { line: R`<b>Write the sum out</b> — one term per sample: its \(\gamma\) · (prediction − label)², numbers from the table: <div class="formula">\[\begin{aligned}J = \;&2\cdot(w_0 + w_1 - 1)^2 &&\leftarrow\text{sample 1}\\ +\;&1\cdot(w_0 + w_2 - 2)^2 &&\leftarrow\text{sample 2}\\ +\;&1\cdot(w_0 + w_1 + w_2 - 4)^2 &&\leftarrow\text{sample 3}\\ +\;&2\cdot(w_0 + 2w_1 + w_2 - 5)^2 &&\leftarrow\text{sample 4}\end{aligned}\]</div>`,
@@ -193,15 +193,20 @@
         { line: R`<b>Fill in what you know</b> — the four brackets, stacked as a list, are always \(Xw - y\). So \(X\) and \(y\) are the usual ones: <div class="formula">\[X = \begin{bmatrix}1&1&0\\1&0&1\\1&1&1\\1&2&1\end{bmatrix} \qquad y = \begin{bmatrix}1\\2\\4\\5\end{bmatrix}\]\[Xw - y = \begin{bmatrix}w_0 + w_1 - 1\\ w_0 + w_2 - 2\\ w_0 + w_1 + w_2 - 4\\ w_0 + 2w_1 + w_2 - 5\end{bmatrix}\]</div>`,
           size: R`\[\underbrace{X}_{\textstyle 4\times 3}\,\underbrace{w}_{\textstyle 3\times 1} - \underbrace{y}_{\textstyle 4\times 1} = 4\times 1\]<p>4 samples × (1 + 2 features); inner 3 = 3 ✓ · a list of 4 brackets, one per sample ✓</p>`,
           why: R`<p>Row 1 of \(X\) is \((1, 1, 0)\): a 1 for \(w_0\), then sample 1's \(x_1\), \(x_2\). Row · \(w\) = \(w_0 + w_1\) = sample 1's prediction; minus \(y\)'s first entry (1) = bracket 1.</p>` },
-        { line: R`<b>What's left: \(\Gamma\).</b> Its size first — it sits between a 1×4 and a 4×1, so it's 4×4.`,
-          size: R`\[\underbrace{(Xw - y)^\top}_{\textstyle 1\times 4}\,\underbrace{\Gamma}_{\textstyle ?\times ?}\,\underbrace{(Xw - y)}_{\textstyle 4\times 1} = \text{one number}\]<p>Inner sizes must match on both sides: 4 rows, 4 columns → \(\Gamma\) is 4×4 ✓</p>` },
-        { line: R`<b>Simplest guess: \(\Gamma = I\)</b> (does nothing). Then it's the list dotted with itself = each bracket squared, added: <div class="formula">\[\begin{aligned}(Xw - y)^\top(Xw - y) = \;&(w_0 + w_1 - 1)^2\\ +\;&(w_0 + w_2 - 2)^2\\ +\;&(w_0 + w_1 + w_2 - 4)^2\\ +\;&(w_0 + 2w_1 + w_2 - 5)^2\end{aligned}\]</div>Almost \(J\) — only the \(\gamma\)'s in front (2, 1, 1, 2) are missing.`,
-          why: R`<p>\(I\) has 1s on the diagonal and 0s elsewhere, so \(I\cdot v = v\). A list dotted with itself = every entry squared, added up (that's \(\|Xw - y\|^2\), the plain squared error).</p>` },
-        { line: R`<b>Fix the difference</b> — each bracket needs its own \(\gamma\) in front. Put the \(\gamma\)'s where \(I\) had its 1s: <div class="formula">\[\Gamma = \begin{bmatrix}2&0&0&0\\0&1&0&0\\0&0&1&0\\0&0&0&2\end{bmatrix} = \mathrm{diag}(2, 1, 1, 2)\]</div>\(\Gamma(Xw - y)\) = each bracket times its \(\gamma\); dotted with \(Xw - y\) that's \(2\cdot(\dots)^2 + 1\cdot(\dots)^2 + 1\cdot(\dots)^2 + 2\cdot(\dots)^2 = J\) ✓. Done.`,
-          size: R`\[\underbrace{\Gamma}_{\textstyle 4\times 4}\,\underbrace{(Xw - y)}_{\textstyle 4\times 1} = 4\times 1\]<p>Still a list of 4 — each bracket times its own \(\gamma\) ✓</p>`,
-          why: R`<p><b>Why zeros everywhere else:</b> a number off the diagonal mixes two samples. E.g. a 3 in row 1, column 2 would add \(3\cdot(w_0 + w_1 - 1)(w_0 + w_2 - 2)\) — \(J\) has no such term.</p>` },
+        { line: R`<b>What's left: \(\Gamma\).</b> Look at one term of \(J\): \(2\cdot(\dots)_1^2 = (\dots)_1 \cdot 2(\dots)_1\) — a bracket times (its \(\gamma\) × the same bracket). So \(J\) is two lists dotted: <div class="formula">\[J = \begin{bmatrix}(\dots)_1\\ (\dots)_2\\ (\dots)_3\\ (\dots)_4\end{bmatrix}\cdot\begin{bmatrix}2\,(\dots)_1\\ 1\,(\dots)_2\\ 1\,(\dots)_3\\ 2\,(\dots)_4\end{bmatrix}\]</div>`,
+          why: R`<p>\((\dots)_1\) = sample 1's bracket from move 1, \(w_0 + w_1 - 1\); \((\dots)_2\) = sample 2's, and so on. Dotting two lists = multiply entry by entry, then add: \((\dots)_1\cdot 2(\dots)_1 + (\dots)_2\cdot 1(\dots)_2 + \dots\) = exactly move 1's \(J\).</p>` },
+        { line: R`<b>Select the pieces</b> of the matrix form — the same kind of dot product: <div class="formula">\[\underbrace{\color{#e8912d}(Xw - y)^\top}_{\textstyle\color{#e8912d}\text{the brackets}}\quad\underbrace{\color{#4c8dff}\Gamma\,(Xw - y)}_{\textstyle\color{#4c8dff}\gamma\,\times\,\text{each bracket}}\]</div>Orange = the first list already. So blue must be the second list.`,
+          size: R`\[\underbrace{\Gamma}_{\textstyle ?\times ?}\,\underbrace{(Xw - y)}_{\textstyle 4\times 1} = \underbrace{\text{list of 4}}_{\textstyle 4\times 1}\]<p>Inner: \(\Gamma\) needs 4 columns · result has 4 rows, so \(\Gamma\) has 4 rows → 4×4 ✓</p>` },
+        { line: R`<b>Find \(\Gamma\) row by row</b> — each row · the brackets = one entry of the blue list:
+<div class="tw"><table><thead><tr><th>entry</th><th>row</th></tr></thead><tbody>
+<tr><td>\(2\,(\dots)_1\)</td><td>\((2, 0, 0, 0)\)</td></tr>
+<tr><td>\(1\,(\dots)_2\)</td><td>\((0, 1, 0, 0)\)</td></tr>
+<tr><td>\(1\,(\dots)_3\)</td><td>\((0, 0, 1, 0)\)</td></tr>
+<tr><td>\(2\,(\dots)_4\)</td><td>\((0, 0, 0, 2)\)</td></tr></tbody></table></div>
+<div class="formula">\[\Gamma = \begin{bmatrix}2&0&0&0\\0&1&0&0\\0&0&1&0\\0&0&0&2\end{bmatrix} = \mathrm{diag}(2, 1, 1, 2)\]</div>Done.`,
+          why: R`<p>Row 1: \((2, 0, 0, 0)\cdot\big((\dots)_1, (\dots)_2, (\dots)_3, (\dots)_4\big) = 2(\dots)_1 + 0 + 0 + 0\) ✓. Any other number in row 1 would drag another sample's bracket into entry 1 — so zeros. That's why the \(\gamma\)'s end up on the diagonal.</p>` },
       ],
-      compare: R`Same \(X\), \(y\), \(\Gamma\) as the official answer; its "explanation (not required)" is moves 4–5.`,
+      compare: R`Same \(X\), \(y\), \(\Gamma\) as the official answer; its "explanation (not required)" is moves 3–5 read backwards.`,
     },
 
     "2026A-q1.2": {
