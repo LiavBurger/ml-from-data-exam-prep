@@ -78,7 +78,9 @@ of the sum, which is the basic trick that needs to be done."* Model: **2026-A Q1
    except Xⱼ is the same in each row → constant, out (orange); the stacked Xⱼᵀ rows = Xᵀ. → final formula. Size check.
    Penalty rows stack into a vector (λ·sign(wⱼ) → λ·sign(w); 2λwⱼ with w₀ excluded → 2λ(0, w₁, w₂)).
 Never name the bracket (no rᵢ, eᵢ — learner: "I rather not use rᵢ"): write it out in the function and derivative,
-then call it (…)ᵢ = sample i's bracket for the list. Model for a non-squared loss: 2026-B Q1.3.
+then say "the bracket = entry i of Xw − y" and write the list with it, e.g. (Xw − y)² sign(Xw − y), entry by entry
+(learner: "I prefer it shorter. I can 'see' already the regular structure of Xw − y"). Model for a non-squared loss:
+2026-B Q1.3.
 No colored "select the pieces" underbraces beyond the constant highlight here; no "all knobs as a list" move.
 The `start`: "The function: □ / Derivative by one weight wⱼ: dJ/dwⱼ = □ = □ / All weights (the gradient): ∇J = □".
 
