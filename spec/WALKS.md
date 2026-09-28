@@ -76,6 +76,18 @@ Never jump from the per-knob formula to the matrix form in one move ("'write it 
 Use the learner's own chain from §0 (model: 2025-C Q1.4): "A = the weights found using …" → "B = the weights
 found using …" → "both are plugged into the same …, so …". The `start` gives these sentence openers with □.
 
+## 3c. "Find the matrices so that <sum> = <matrix form>" parts — work backwards, never guess
+Learner (2026-A Q1.1): *"I understand the solution. I don't understand how I would've come up with it myself …
+There's 0 intuition as to why I'd try with I."* So no lucky guesses (never "try I and adjust"). Every step must follow
+from the previous one:
+1. **Write the sum out** for the real samples (numbers from the table) — what I have.
+2. **Write what the target looks like** (e.g. ‖X′θ − y′‖² = one (row · θ − label)² per row; (Xw − y)ᵀΓ(Xw − y) = the
+   brackets dotted with something).
+3. **Fill in the pieces you already know** (X, y are always the same) and say what's left.
+4. **Match the leftover term by term / row by row** with matrix × vector ("row i · the list must give entry i").
+5. Put it together + size check.
+The `start` shows "What I have: □ / What it must equal/look like: □ / Answer: □". Model: 2026-A Q1.1, 2025-B Q1.2.
+
 ## 4. Notation: nothing new unless the exam forces it
 - **No new names or variables** (eᵢ, rᵢ, u, bracketᵢ …) unless the official answer itself uses them. ("Why e_i now…
   do we really need more variables and notations.")
