@@ -71,6 +71,9 @@ of the sum, which is the basic trick that needs to be done."* Model: **2026-A Q1
 3. **Write it with matrices** — take the constant out of the sum (highlight ONLY it: orange underbrace "constant"),
    then the rest "entry × entry, added up" = a dot product: Σᵢ xⱼ⁽ⁱ⁾·(…) = Xⱼᵀ(list), with **Xⱼ = column j of X**.
    Size check (1×n)(n×1) = one number; without ᵀ it fails.
+   Its why? always answers the learner's question "but xⱼ and γᵢ can also be taken out of the sum?": only things
+   without an i (same for every sample) come out; things with an i get packed into lists (Xⱼ, Γ(Xw−y), …) and the
+   sum becomes the dot product of those lists.
 4. **From one weight to ∇J** — ∇J = the list of all partials: stack move 3 for w₀, w₁, w₂ as a column; everything
    except Xⱼ is the same in each row → constant, out (orange); the stacked Xⱼᵀ rows = Xᵀ. → final formula. Size check.
    Penalty rows stack into a vector (λ·sign(wⱼ) → λ·sign(w); 2λwⱼ with w₀ excluded → 2λ(0, w₁, w₂)).
