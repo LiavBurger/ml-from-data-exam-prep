@@ -370,7 +370,12 @@
       const n = () => (state.walk || {})[box.dataset.pid] || 0, total = box.querySelectorAll(".mv").length;
       $(".next", box).onclick = () => walkSet(box, Math.min(n() + 1, total), true);
       $(".all", box).onclick = () => walkSet(box, total, false);
-      $(".reset", box).onclick = () => walkSet(box, 0, false);
+      $(".reset", box).onclick = () => {
+        walkSet(box, 0, false);
+        // moves collapsed: jump back to this part's question, not somewhere further down the page
+        const card = box.closest('[id^="p-"]') || box;
+        card.scrollIntoView({ block: "start" });
+      };
       walkUpdate(box, false);
     });
     $("#main").querySelectorAll(".code").forEach(box => {
