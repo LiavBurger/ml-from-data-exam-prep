@@ -403,4 +403,26 @@
   try { const th = localStorage.getItem(KEY + "_theme"); if (th) document.documentElement.dataset.theme = th; } catch (e) {}
   window.addEventListener("hashchange", route);
   route();
+  // refresh returns to the part you were on: keep the part in view in the address (#/q/<question>/<part>)
+  if ("scrollRestoration" in history) history.scrollRestoration = "manual";
+  let st = 0;
+  window.addEventListener("scroll", () => {
+    clearTimeout(st);
+    st = setTimeout(() => {
+      const parts = location.hash.replace(/^#\/?/, "").split("/");
+      if (parts[0] !== "q") return;
+      const cards = [...document.querySelectorAll('article.item[id^="p-"]')];
+      const cur = cards.filter(c => c.getBoundingClientRect().top <= 120).pop() || cards[0];
+      if (!cur) return;
+      const p = cur.id.split(".").pop(), h = `#/q/${parts[1]}/${p}`;
+      if (location.hash !== h) history.replaceState(null, "", h);
+    }, 200);
+  }, { passive: true });
+  // images above the part load after the first jump and push it down — jump again once they're in
+  window.addEventListener("load", () => {
+    const parts = location.hash.replace(/^#\/?/, "").split("/");
+    if (parts[0] !== "q" || !parts[2]) return;
+    const el = document.getElementById(`p-${parts[1]}.${parts[2]}`);
+    if (el) el.scrollIntoView({ block: "start" });
+  });
 })();
