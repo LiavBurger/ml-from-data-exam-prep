@@ -50,7 +50,8 @@ window.TOPICS = [
       } },
     { id: "2026B-q1", summary: "Your Moed B question: KNN vs linear predictions, normalization, cubic-loss gradient, fill in GD code.",
       parts: {
-        1: { move: R`Linear: \(w^\top x\) with the ones column. KNN: distance table, then average the \(k\) nearest labels.` },
+        1: { mine: { img: "images/mine/2026B-q1.1.png", score: "9 / 9", what: R`Full marks — predictions and test MSE for all three models, and 2-NN picked as best (lowest MSE).` },
+             move: R`Linear: \(w^\top x\) with the ones column. KNN: distance table, then average the \(k\) nearest labels.` },
         2: { mine: { img: "images/mine/2026B-q1.2.png", score: "2 / 4", what: R`You divided by the <b>sum</b> of \(X_1\) (150) instead of its \(L_2\) norm, and you didn't normalize \(X_2\). The question says "\(L_2\) norm of the vector composed of all values of that feature across all training samples".` },
              move: R`\(\|X_1\| = \sqrt{\sum x_1^2}\), \(\|X_2\| = \sqrt{\sum x_2^2}\) over the training rows. Divide every value of each column (train and test) by its norm, then redo 1-NN.` },
         3: { mine: { score: "0 / 6", what: "Left blank." },
@@ -110,6 +111,7 @@ window.TOPICS = [
              move: R`Predict M iff \(\pi_M\,\mathrm{Poiss}(x\mid\lambda_M) > \pi_R\,\mathrm{Poiss}(x\mid\lambda_R)\). In the ratio \(x!\) cancels; use the given \(e^t\) table.` },
         4: { mine: { score: "0 / 5", what: "Left blank." }, move: R`Same inequality at \(x = 4\) with \(\pi_R = 1 - \pi_M\); solve for \(\pi_M\).` },
         5: { mine: { score: "0 / 5", what: "Left blank." }, move: R`Same inequality with the costs multiplying each side; solve for the ratio \(C_{R,M}/C_{M,R}\).` },
+        6: { mine: { score: "0 / 3 (bonus)", what: "Left blank." } },
       } },
   ],
 },
@@ -155,6 +157,9 @@ window.TOPICS = [
     { id: "2026A-q2", summary: "Minimum-depth tree, remove one sample, Gini reduction, fix the tree algorithm, run one iteration." },
     { id: "2026B-q2", summary: "Your Moed B question: entropy IG, a depth-2 tree, leave-one-out error, a mapping for a depth-1 tree.",
       parts: {
+        1: { mine: { img: "images/mine/2026B-q2.1.png", score: "8 / 8", what: R`Full marks — entropy of both sides for every \(X_1\) threshold, and the largest gain at \(X_1 < 4.5\).` } },
+        2: { mine: { img: "images/mine/2026B-q2.2.png", score: "5 / 5", what: R`Full marks — a depth-2 tree with zero training error.` } },
+        3: { mine: { img: "images/mine/2026B-q2.3.png", score: "7 / 7", what: R`Full marks — every left-out sample is classified correctly except sample 3, so the average error is \(1/8\).` } },
         4: { mine: { img: "images/mine/2026B-q2.4.png", score: "1 / 5", what: R`You plugged single points into \(\varphi\) but didn't look for the pattern first: \(y = R\) exactly when \(x_2 \in (2.5, 6.5)\).` },
              move: R`Find the interval that holds the red points, then turn "inside an interval" into one threshold by squaring: \(x_2 \in (2.5, 6.5) \iff (x_2 - 4.5)^2 < 4\).` },
       } },
