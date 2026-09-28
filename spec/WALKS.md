@@ -61,16 +61,21 @@ point of the question. That's what I need to understand, in every question!"*
   **Put it together**, **Errors Xθ − y**, **Line 16** … Last move ends with "Done." or "that's the answer".
 - No formal set-up moves ("translate the question", "name the bracket", index bookkeeping).
 
-## 3. Derivations follow the learner's own structure
-Like they would write f(x) = (x²+3)², then f′(x) = {solve here}:
+## 3. Gradients: one weight → matrix pieces → stack (THE structure — learner-approved 2026-A Q1.2)
+Learner, after writing dJ/dwⱼ = Σ 2γᵢ(…)xⱼ⁽ⁱ⁾ = 2Xⱼ Γ(Xw−y) themselves: *"This is how I want these sort of explanations
+done … It's simple and works for my ADHD brain. At most, highlight 'constant' for whatever it is that can be taken out
+of the sum, which is the basic trick that needs to be done."* Model: **2026-A Q1.2**. Every gradient part:
 1. **The function** — copied from the question. Its why? writes it out with the real table (one bracket per sample).
-2. **Rewrite** — only if a real manipulation is needed (splitting, simplifying). Never just to introduce a name.
-3. **Derivative by θⱼ** — in their chain-rule pattern: 2 · (…) · (the number in front of θⱼ), i.e. exactly like
-   (x²+3)² → 2·(x²+3)·2x, applied to each bracket. Absolute values: |a| → sign(a).
-4. **All knobs as a list** — the gradient is that derivative written for θ₀, θ₁, θ₂, one row each.
-5. **Select the pieces** — turn the list into matrix form by pointing at pieces (§5).
-6. **Put it together** — the answer.
-Never jump from the per-knob formula to the matrix form in one move ("'write it short' … feels like magic").
+2. **Derivative by one weight wⱼ** — as a sum, chain-rule pattern: 2 · (…) · (the number in front of wⱼ) = xⱼ⁽ⁱ⁾,
+   exactly like (x²+3)² → 2·(x²+3)·2x. Absolute values: |a| → sign(a). Penalty terms: their own derivative, added.
+3. **Write it with matrices** — take the constant out of the sum (highlight ONLY it: orange underbrace "constant"),
+   then the rest "entry × entry, added up" = a dot product: Σᵢ xⱼ⁽ⁱ⁾·(…) = Xⱼᵀ(list), with **Xⱼ = column j of X**.
+   Size check (1×n)(n×1) = one number; without ᵀ it fails.
+4. **From one weight to ∇J** — ∇J = the list of all partials: stack move 3 for w₀, w₁, w₂ as a column; everything
+   except Xⱼ is the same in each row → constant, out (orange); the stacked Xⱼᵀ rows = Xᵀ. → final formula. Size check.
+   Penalty rows stack into a vector (λ·sign(wⱼ) → λ·sign(w); 2λwⱼ with w₀ excluded → 2λ(0, w₁, w₂)).
+No colored "select the pieces" underbraces beyond the constant highlight here; no "all knobs as a list" move.
+The `start`: "The function: □ / Derivative by one weight wⱼ: dJ/dwⱼ = □ = □ / All weights (the gradient): ∇J = □".
 
 ## 3b. Argument / comparison parts
 Use the learner's own chain from §0 (model: 2025-C Q1.4): "A = the weights found using …" → "B = the weights
