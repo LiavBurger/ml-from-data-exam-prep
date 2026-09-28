@@ -165,8 +165,20 @@
           size: R`<p><code>theta - eta * grad</code>: (3,) − (3,) → (3,), one entry per knob ✓</p><p><code>np.linalg.norm(grad)</code>: (3,) → one number, so it can be compared with <code>eps</code> ✓</p>`,
           why: R`<p><code>grad</code> is a list and <code>eps</code> a number, so compare the gradient's length: <code>np.linalg.norm(grad)</code>.</p>`,
           extra: [{ label: "Moed B trap", html: R`<p>In 2026-B Q1.4 you wrote <code>grad &lt; epsilon</code> — a list compared with a number; it needs <code>np.linalg.norm(grad)</code>.</p>` }] },
-        { line: R`<b>(5) the squared errors</b> (the <code>np.mean</code> is already around the blank): <code>(y_hat - y) ** 2</code>. Done.`,
-          size: R`<p><code>y_hat - y</code>: (n,) − (n,) → (n,); <code>** 2</code> is entry by entry → (n,); <code>np.mean</code> → one number ✓</p>` },
+        { line: R`<b>(5) the squared errors</b> — the "sum" is already there: <code>np.mean</code> = add them all up ÷ how many. So the blank is just the list of squared errors: <code>(y_hat - y) ** 2</code>. Done.`,
+          size: R`<p><code>y_hat - y</code>: (n,) − (n,) → (n,); <code>** 2</code> is entry by entry → (n,); <code>np.mean</code> → one number ✓</p>`,
+          why: R`<p>Select the pieces of <code>np.mean((y_hat - y) ** 2)</code>:</p>
+<ul><li><code>y_hat - y</code> = the list of errors, one per sample (numpy subtracts entry by entry).</li>
+<li><code>** 2</code> = each error squared — still a list.</li>
+<li><code>np.mean(…)</code> = <b>adds the list up</b> and divides by how many → one number.</li></ul>
+<p>With part 4's \(\theta = (1, 2.8, 1.8)\) and this question's 4 samples:</p>
+<div class="tw"><table><thead><tr><th>sample</th><th><code>y_hat</code></th><th><code>y</code></th><th><code>y_hat - y</code></th><th><code>** 2</code></th></tr></thead><tbody>
+<tr><td>1</td><td>1 + 2.8 + 3.6 = 7.4</td><td>2</td><td>5.4</td><td>29.16</td></tr>
+<tr><td>2</td><td>1 + 5.6 + 0 = 6.6</td><td>0</td><td>6.6</td><td>43.56</td></tr>
+<tr><td>3</td><td>1 + 8.4 + 1.8 = 11.2</td><td>4</td><td>7.2</td><td>51.84</td></tr>
+<tr><td>4</td><td>1 + 0 − 1.8 = −0.8</td><td>−1</td><td>0.2</td><td>0.04</td></tr>
+<tr><td colspan="4"><code>np.mean</code> = (29.16 + 43.56 + 51.84 + 0.04) ÷ 4</td><td><b>31.15</b></td></tr></tbody></table></div>
+<p>Strictly that's the <i>average</i> of the squared errors, not the sum — the comment is a bit loose. ÷ 4 doesn't change which \(\theta\) is best.</p>` },
       ],
       compare: R`Same five expressions as the official answer.`,
     },
