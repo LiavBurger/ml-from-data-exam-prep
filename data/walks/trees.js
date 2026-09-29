@@ -37,6 +37,7 @@
           why: R`<p>\(X_4 = 0\): \(p = \tfrac26 = \tfrac13\), so \(\varphi = 1 - \left(\tfrac13\right)^2 - \left(\tfrac23\right)^2 = 1 - \tfrac19 - \tfrac49 = \tfrac49\). And \(\tfrac68\cdot\tfrac49 = \tfrac{24}{72} = \tfrac13\).</p>` },
       ],
       compare: R`Same steps as the official solution; the last lines of moves 2 and 3 are its bold \(\mathbf 0\) and \(\tfrac16\).`,
+      slip: R`The official pairs are (fraction −, fraction +). That's why \(X_4 = 1\), where both samples are +, is \((0, 1)\). Gini gives the same number in either order, so don't worry if you wrote them the other way.`,
     },
 
     "2025B-q2.3": {
@@ -65,6 +66,7 @@ rows 1,4,6,7</code></pre>Done.`,
           why: R`<p>\(X_1\) and \(X_2\) are never asked. The other tree (\(X_4\) first) also gives \(-\).</p>` },
       ],
       compare: R`Same as the official solution: \(-\) in both trees.`,
+      slip: R`“Both trees above” = the two depth-2 trees in part 3's official solution (\(X_3\) first or \(X_4\) first). \(x = (0,1,0,0)\) has \(X_3 = X_4 = 0\), so both say −.`,
     },
 
     "2025B-q2.5": {
@@ -98,6 +100,7 @@ rows 1,4,6,7</code></pre>Done.`,
           remember: R`\[\Delta\varphi(S, A) = \varphi(S) - \sum_{v} \frac{|S_v|}{|S|}\,\varphi(S_v)\]<p>Not on the sheet: it only has the impurities themselves, [sheet: Gini impurity] and [sheet: Entropy]. Here the two children are \(S_1, S_2\) with sizes \(n^{(1)}, n^{(2)}\), and \(|S| = n\).</p>` },
       ],
       compare: R`Same steps as the official solution. Its second denominator has a typo: it numbers the children (0), (1) instead of (1), (2); it should read \(n_+^{(1)} + n_-^{(1)} + n_+^{(2)} + n_-^{(2)}\).`,
+      slip: R`Typo in the second denominator: it numbers the children (0), (1) instead of (1), (2). It should be \(n_+^{(1)} + n_-^{(1)} + n_+^{(2)} + n_-^{(2)}\). Further down, \(n^{(v)}\) just means the size of child \(v\).`,
     },
 
     // ═════════════════════════════════════════════ 2025-C Q2
@@ -109,6 +112,7 @@ rows 1,4,6,7</code></pre>Done.`,
         { line: R`<b>Plug in</b> — [sheet: Gini impurity]: <div class="formula">\[\varphi_{Gini}(\tfrac12) = 1 - \tfrac14 - \tfrac14 = \tfrac12\]</div>Done.` },
       ],
       compare: R`Same as the official solution.`,
+      slip: R`Read it as \(1 - (\tfrac12)^2 - (\tfrac12)^2 = 1 - \tfrac14 - \tfrac14 = \tfrac12\). The square goes on the whole ½; the brackets just got lost in typesetting.`,
     },
 
     "2025C-q2.2": {
@@ -153,6 +157,7 @@ rows 1,4,6,7</code></pre>Done.`,
           extra: [{ label: "official slip: \"Age\"", html: R`<p>The official text says the Action instances "can be split according to the Age attribute", but its drawing uses Time. The drawing is right: instances 1 and 2 are both Young.</p>` }] },
       ],
       compare: R`Move 3 is the official tree. Its text says "Age" for the second split, but its drawing (and move 2) use Time, which is the correct one.`,
+      slip: R`The text says the two Action instances are split by Age, but both are Young. The split is on Time (Weekend −, Weekday +), which is what the drawing shows.`,
     },
 
     "2025C-q2.5": {
@@ -189,6 +194,7 @@ rows 1,4,6,7</code></pre>Done.`,
         { line: R`<b>Pick the best</b> — Genre has the smallest CV error, \(\tfrac13\). Done.` },
       ],
       compare: R`Same counts as the official table (2, 4, 4, so Genre). Its Time / instance 6 cell says "+ (Err)", but without 6 the Weekday branch is \(\{2+, 4-\}\), a tie, so the prediction is − (move 2). Still an error, so the count of 4 stands.`,
+      slip: R`In the Time column, instance 6's cell should be “− (Err)”, not “+ (Err)”. Without 6, the Weekday leaf is {2+, 4−}, a tie, so it predicts −. Still an error, so Time's count of 4 stands.`,
     },
 
     // ═════════════════════════════════════════════ 2025-A Q3
@@ -200,6 +206,7 @@ rows 1,4,6,7</code></pre>Done.`,
         { line: R`<b>So</b> any depth-1 tree misclassifies at least one sample. Done.` },
       ],
       compare: R`Same pairs as the official solution.`,
+      slip: R`“2nd / 3rd / 4th sample” just means the 2nd, 3rd, 4th row of the table, top to bottom. The table itself has no sample numbers.`,
     },
 
     "2025A-q3.2": {
@@ -216,6 +223,7 @@ rows 1,4,6,7</code></pre>Done.`,
           extra: [{ label: "official slip: \"any depth-2 tree that uses X1 has errors\"", html: R`<p>Too strong. \(X_2\) at the root, then \(X_1\) under \(X_2 = 0\) (splits samples 1−, 2+) and \(X_3\) under \(X_2 = 1\) (splits 3+, 4−) has zero error. What's true: \(X_1\) at the <b>root</b> fails, because its child \(\{2+, 3+, 4-\}\) can't be made pure by one more question. And the greedy algorithm does pick \(X_1\) for the root (largest reduction), so it doesn't find a depth-2 tree.</p>` }] },
       ],
       compare: R`Same tree as the official solution (it also allows \(X_3\) at the root). Its remark "any depth-2 tree that uses \(X_1\) has errors" is too strong: only \(X_1\) at the root fails.`,
+      slip: R`Two over-claims here:<ul><li>“Any tree that uses \(X_2\) and \(X_3\) has zero error” is too strong. It must ask \(X_2\) at the root and \(X_3\) in <b>both</b> children (or the other way round). E.g. \(X_2\) root with \(X_1\) under \(X_2 = 1\) fails: samples 3+ and 4− both have \(X_1 = 1\).</li><li>“Any depth-2 tree that uses \(X_1\) has errors” is also too strong: \(X_2\) root, \(X_1\) under \(X_2 = 0\), \(X_3\) under \(X_2 = 1\) is perfect. Only \(X_1\) at the <b>root</b> fails, and that's the split the greedy algorithm picks.</li></ul>`,
     },
 
     "2025A-q3.3": {
@@ -229,6 +237,7 @@ rows 1,4,6,7</code></pre>Done.`,
 <p>The official list ends with \((0,0,0,+)\), but \((0,0,0)\) is training sample 1, which the question forbids. The fourth one is \((0,1,1,+)\).</p>` }] },
       ],
       compare: R`\((1,0,0,+)\) is the first instance in the official list. Its fourth, \((0,0,0,+)\), is a slip (that's sample 1); the correct fourth is \((0,1,1,+)\).`,
+      slip: R`The 4th instance \((0,0,0,+)\) isn't allowed: \((0,0,0)\) is training sample 1. Their own recipe (flip \(X_1\), flip the label) on sample 4 gives \((0,1,1,+)\).`,
     },
 
     "2025A-q3.4": {
@@ -296,6 +305,7 @@ rows 1,4,6,7</code></pre>Done.`,
         { line: R`<b>Remove sample 4</b> — the stump: \(X_1 = 0 \to -\) (sample 1), \(\;X_1 = 1 \to +\) (samples 2, 3, 5). Done.` },
       ],
       compare: R`Same answer as the official solution. It prints "X1=0 → −" twice; the second should be \(X_1 = 1 \to +\) (samples 2, 3, 5).`,
+      slip: R`Typo: the second branch should read \(X_1 = 1 \to +\) (samples 2, 3, 5). Only sample 1 goes to \(X_1 = 0\).`,
     },
 
     "2026A-q2.3": {
@@ -315,6 +325,7 @@ rows 1,4,6,7</code></pre>Done.`,
           why: R`<p>\(\tfrac35\cdot\tfrac49 = \tfrac{12}{45} = 0.2667\) and \(\tfrac25\cdot 0.5 = 0.2\), so \(0.48 - 0.2667 - 0.2 = 0.0133\). Keep \(\tfrac49\) as a fraction: \(0.6\cdot 0.444\) would give 0.0136.</p>` },
       ],
       compare: R`Same numbers as the official solution (0.18 and 0.0133). It writes \(\tfrac35\cdot 0.444\), which strictly gives 0.0136; with \(\tfrac49\) it's 0.0133.`,
+      slip: R`Got 0.0136? That's just rounding: \(\tfrac35 \cdot 0.444\) uses the rounded 0.444. With \(\tfrac49\) you get the official 0.0133.`,
     },
 
     "2026A-q2.4": {
@@ -344,6 +355,7 @@ rows 1,4,6,7</code></pre>Done.`,
           remember: R`<p>The class tree algorithm (part 4's corrected version): split on the attribute with the <b>largest</b> impurity reduction, and <b>push each child into \(Q\)</b>.</p><p>Not on the sheet.</p>` },
       ],
       compare: R`Same result as the official solution: \(X_1\), \(v_1 = \{x^{(1)}\}\), \(v_2 = \{x^{(2)},\dots,x^{(5)}\}\), \(Q = \{v_1, v_2\}\). Its slips: it swaps the children of \(X_2\) and \(X_3\) (\(X_2 = 0\) is 0.5, not 0.444; same final 0.0133), says "computed in (1)" instead of (3), and labels both branches \(v_1\) in the drawing.`,
+      slip: R`<ul><li>Here \(x_1, x_2, \dots\) mean sample 1, sample 2, … (rows of the table), not the \(x_1, x_2\) feature columns. So \(\{x_2, x_3, x_4, x_5\}\) is just samples 2–5.</li><li>The \(X_2\) and \(X_3\) children are swapped: \(X_2 = 0\) and \(X_3 = 1\) are the 0.5 children. Both reductions are still 0.0133.</li><li>\(\Delta\varphi(X_1) = 0.18\) comes from part (3), not (1).</li><li>In the drawing, the \(X_1 = 1\) branch is \(v_2\), not \(v_1\).</li></ul>`,
     },
 
     // ═════════════════════════════════════════════ 2026-B Q2 (your Moed B question)
@@ -393,6 +405,7 @@ rows 1,4,6,7</code></pre>Done.`,
             (2,5,7,8)     (3)</code></pre>Done.` },
       ],
       compare: R`The official tree asks \(X_2 \lt 7\) first and \(2.5\) second: the same band. Its text says red iff \(x_2 \in (2.5, 6.5)\), also true of the data, but the question wants midpoints, so the tree uses 7.`,
+      slip: R`It says R iff \(X_2 \in (2.5, 6.5)\), but the tree splits at 7, the midpoint of 6 and 8. Same red band on this data. Use 7: the question wants midpoint thresholds, and 6.5 isn't one.`,
     },
 
     "2026B-q2.3": {
@@ -431,6 +444,7 @@ rows 1,4,6,7</code></pre>Done.`,
           extra: [{ label: "the official answer puts the coefficients on the wrong feature", html: R`<p>It writes \(\varphi = (x_2^2 - 9x_2, *)\) and sets \(a_1 = -9,\ a_2 = 1\). But the \(a\)'s multiply \(x_1\): that gives \(x_1^2 - 9x_1\). Samples 2 (\(x_1 = 3\), R) and 3 (\(x_1 = 3\), B) both get \(-18\), so no threshold separates them. Its remark "switching \(a_i \leftrightarrow b_i\) can also work" is the correct answer: \(b_2 = 1,\ b_1 = -9\).</p>` }] },
       ],
       compare: R`Moves 1–2 are the official chain. Move 3 differs: the official answer sets \(a_1 = -9,\ a_2 = 1\), which acts on \(x_1\), the wrong feature. The correct coefficients are \(b_2 = 1,\ b_1 = -9\) (its "switch \(a \leftrightarrow b\)" remark).`,
+      slip: R`Wrong feature: the \(a\)'s act on \(x_1\), so \(a_1 = -9,\ a_2 = 1\) sends samples 2 (R) and 3 (B), both \(x_1 = 3\), to the same −18. It has to be \(b_2 = 1,\ b_1 = -9\) (its own “switch \(a \leftrightarrow b\)” remark), \(a\)'s anything, and the split is R iff \(x_2^2 - 9x_2 \lt -16\) on the second mapped feature.`,
     },
   });
 })();

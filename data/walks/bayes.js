@@ -100,6 +100,7 @@
           extra: [{ label: "the official solution says 4/7 ≈ 0.429 — it's a slip", html: R`<p>\(\tfrac47 \approx 0.571\); 0.429 is \(\tfrac37\). The comparison still gives A: \(0.571 \lt 0.857\).</p>` }] },
       ],
       compare: R`Moves 2–3 are the official lines. Its slip: "\(\tfrac47 \approx 0.429\)" should be \(\approx 0.571\); the answer (A for sample 22) is unchanged.`,
+      slip: R`Arithmetic slip: \(\tfrac47 \approx 0.571\), not 0.429 (that's \(\tfrac37\)). A still wins for sample 22, since \(0.571 \lt 0.857\).`,
     },
 
     // ═══════════════════════════════ 2025-C Q4 — the fish (full vs naive Bayes, ML, cost matrix)
@@ -113,6 +114,7 @@
           why: R`<p>[sheet: Class prior]: \(\pi_j = P(Y = j)\), the fraction of all 100 fish that are species \(j\). Check: \(0.6 + 0.24 + 0.16 = 1\).</p>` },
       ],
       compare: R`Same as the official answer. (Its line "Joint probability with class y = A" is a leftover heading; ignore it.)`,
+      slip: R`Ignore the line "Joint probability with class y = A". It's a leftover heading; the three lines are just the priors.`,
     },
 
     "2025C-q4.2": {
@@ -127,6 +129,7 @@
           extra: [{ label: "the official solution prints 0.9/0.4 — a typo", html: R`<p>It's \(\tfrac{0.09}{0.4} = 0.225\). The result 0.225 is right; only the numerator is mistyped.</p>` }] },
       ],
       compare: R`Moves 1–3 are the official lines. Its last line prints \(\tfrac{0.9}{0.4}\); it should be \(\tfrac{0.09}{0.4} = 0.225\).`,
+      slip: R`Typo in the last line: it's \(\tfrac{0.09}{0.4} = 0.225\), not \(\tfrac{0.9}{0.4}\). The 0.225 is right.`,
     },
 
     "2025C-q4.3": {
@@ -146,6 +149,7 @@
           extra: [{ label: "the official solution says 0.194 for C", html: R`<p>\(0.075 / 0.385 = 0.19481\ldots\), which rounds to 0.195 (0.194 is cut off, not rounded). Either is fine for the grader.</p>` }] },
       ],
       compare: R`Moves 1–3 are the official lines. Its C posterior 0.194 is truncated; rounded it's 0.195.`,
+      slip: R`\(0.075 / 0.385 = 0.1948\ldots\), which rounds to 0.195. The key's 0.194 is cut off, not rounded. Either is fine.`,
     },
 
     "2025C-q4.4": {
@@ -168,6 +172,7 @@
           extra: [{ label: "the official solution prints \"0625\"", html: R`<p>It means 0.625.</p>` }] },
       ],
       compare: R`Moves 1–2 are the official lines (it prints "0625" for 0.625). Blofish under both.`,
+      slip: R`"0625" in the naive-Bayes B line is 0.625.`,
     },
 
     "2025C-q4.6": {
@@ -230,6 +235,7 @@
           extra: [{ label: "the official solution writes π̂_R twice", html: R`<p>Its second prior is labelled \(\hat\pi_\mathrm{R} = \tfrac{2}{10}\). It's \(\hat\pi_\mathrm{M} = 0.2\).</p>` }] },
       ],
       compare: R`Same numbers as the official answer. Its second prior is mislabelled \(\hat\pi_\mathrm{R}\); it's \(\hat\pi_\mathrm{M} = 0.2\).`,
+      slip: R`Typo: the second prior is \(\hat\pi_\mathrm{M} = \tfrac{2}{10} = 0.2\), not \(\hat\pi_\mathrm{R}\). \(\hat\pi_\mathrm{R}\) is 0.8.`,
     },
 
     "2026B-q4.3": {
@@ -276,6 +282,7 @@
           why: R`<p>\(C_{\mathrm{R},\mathrm{M}}\) = a missed threat, \(C_{\mathrm{M},\mathrm{R}}\) = a false alarm. So \(x = 4\) is called M only if a missed threat costs more than ≈ 1.85 false alarms.</p>` },
       ],
       compare: R`Moves 2–3 are the official lines (written as a ratio "\(\gt 1\)" first): \(\tfrac{e^2}{4} \approx 1.847\).`,
+      slip: R`The last sentence is garbled. It means: call \(x = 4\) malicious only if a missed threat costs more than about 1.847 times a false alarm, i.e. \(C_{\mathrm{R},\mathrm{M}} / C_{\mathrm{M},\mathrm{R}} \gt \tfrac{e^2}{4} \approx 1.847\).`,
     },
 
     "2026B-q4.6": {

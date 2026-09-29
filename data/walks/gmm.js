@@ -18,6 +18,7 @@
           extra: [{ label: "official slip: \"midpoint at x = 27.5\"", html: R`<p>The midpoint of 20 and 25 is \((20 + 25)/2 = 22.5\), not 27.5. Its "1.25 standard deviations from each mean" is right for 22.5.</p>` }] },
       ],
       compare: R`Official: GMM1 → C, GMM2 → A. It argues with widths (only A has \(\sigma_2 \gt \sigma_3\), move 2), the high valley between 20 and 25 (move 3's why?) and the areas (0.4 vs 0.3). Its "midpoint at x = 27.5" is a slip for 22.5.`,
+      slip: R`"Midpoint at \(x = 27.5\)" is a slip for 22.5, halfway between the peaks at 20 and 25. That's the spot that's 1.25 σ from both means: \((22.5 - 20)/2 = 1.25\).`,
     },
 
     "2025B-q5.2": {
@@ -58,6 +59,7 @@
           why: R`<p>Experiment 1: \(0.015625 / 0.025865 = 0.604\). Experiment 2 is all tails, and the nickel hates tails (0.2), so it's almost surely the quarter: 0.990.</p>` },
       ],
       compare: R`Same numbers as the official solution: \(r(\cdot,Q) = (0.604, 0.990, 0.859, 0.604)\).`,
+      slip: R`\(\pi_N\) is never defined in the question: it's just \(1 - \pi_Q = 0.5\). And "same head and tail counts as toss 1" means experiment 1 (3 heads, 2 tails).`,
     },
 
     "2025B-q5.4": {
@@ -74,6 +76,7 @@
           extra: [{ label: "official slip in E[n_N]", html: R`<p>It writes \(\mathbb E[n_N] = \sum_{i=1}^{5} r(i,Q)\). It means \(\sum_{i=1}^{4} r(i,N)\) — the numbers it adds (0.396 + 0.010 + 0.141 + 0.396) are the right ones.</p>` }] },
       ],
       compare: R`Same as the official solution: \(\pi_Q \leftarrow 0.764\), \(p_{QH} \leftarrow 0.349\). Its label "\(\sum_{i=1}^{5} r(i,Q)\)" for \(\mathbb E[n_N]\) should be \(\sum_{i=1}^{4} r(i,N)\).`,
+      slip: R`<ul><li>"Computed in (b)" means part 3's responsibilities (0.604, 0.990, 0.859, 0.604). There's no part (b).</li><li>The \(\mathbb E[n_N]\) line is labelled \(\sum_{i=1}^{5} r(i,Q)\), but it means \(\sum_{i=1}^{4} r(i,N)\). The numbers it adds (0.396 + 0.010 + 0.141 + 0.396 = 0.943) are the right ones.</li></ul>`,
     },
 
     "2025B-q5.5": {
@@ -89,6 +92,7 @@
           extra: [{ label: "official slip: 4/10 = 0.2", html: R`<p>It computes \(\mathbb E[n_{QH}] = 4\), \(\mathbb E[n_{QT}] = 6\) correctly, then writes \(4/10 = 0.2\). But \(4/10 = 0.4\). Its last paragraph's "we also get \(p_{QH} \leftarrow 0.2\)" means the nickel: \(p_{NH} \leftarrow 0.4\).</p>` }] },
       ],
       compare: R`Same steps as the official solution; its last division is a slip: \(4/10 = 0.4\), not 0.2 (and \(p_{NH} \leftarrow 0.4\) too).`,
+      slip: R`Arithmetic slip: \(4/10 = 0.4\), not 0.2. So \(p_{QH} \leftarrow 0.4\), and the last paragraph's "we also get \(p_{QH} \leftarrow 0.2\)" means the nickel: \(p_{NH} \leftarrow 0.4\). \(\pi_Q \leftarrow 0.5\) is right.`,
     },
 
     // ─────────────────────────────────────────────── 2026-A Q5
@@ -103,6 +107,7 @@
           extra: [{ label: "official slip: σ₁ = σ₂ = 0.2", html: R`<p>For GMM2 it writes \(\sigma_1 = \sigma_2 = 0.2\). The question says \(\sigma_1 = \sigma_2 = 2\).</p>` }] },
       ],
       compare: R`Official: GMM1 → C, GMM2 → A. It argues that only A shows GMM2's two equal first bumps (\(\pi_1 = \pi_2\), \(\sigma_1 = \sigma_2\)), then uses the 2σ rule on the gaps (move 2's why?). Its "\(\sigma_1 = \sigma_2 = 0.2\)" is a slip for 2.`,
+      slip: R`Typo: GMM2 has \(\sigma_1 = \sigma_2 = 2\), not 0.2 (see the question). Same argument: equal weights and equal widths make the first two bumps look alike.`,
     },
 
     "2026A-q5.2": {
@@ -146,6 +151,7 @@
         { line: R`<b>The fractions</b> — count / total, with the soft counts: <div class="formula">\[\begin{aligned}\pi_G &\leftarrow \frac{2.4961}{2.4961 + 1.5039} = \frac{2.4961}{4} = 0.624\\ p_S &\leftarrow \frac{5.3863}{5.3863 + 2.1332} = \frac{5.3863}{7.5195} = 0.716\end{aligned}\]</div>Done.` },
       ],
       compare: R`Same as the official solution: \(\pi_G \leftarrow 0.624\), \(p_S \leftarrow 0.716\). (It writes "\(\pi_G \leftarrow \pi_G \leftarrow\)" and "update \(\pi_S\)" — typos for \(\pi_G\).)`,
+      slip: R`Just typos: it means "update \(\pi_G\) and \(p_S\)" (not \(\pi_S\)), and the doubled "\(\pi_G \leftarrow \pi_G \leftarrow\)" is one arrow. The numbers 0.624 and 0.716 are right.`,
     },
 
     "2026A-q5.5": {
@@ -161,6 +167,7 @@
           extra: [{ label: "the official solution's other options, and a slip", html: R`<p>It also lists \(\pi_G = 1, p_G = 0.5\), \(p_S\) = anything (or the mirror \(\pi_G = 0\), \(p_S = 0.5\)): silver owns no experiment, so its update is \(0/0\) and stays as it was. It says to avoid these.</p><p>Slip: "\(\pi_G \leftarrow 2/4 = 2\)" should be \(2/4 = 0.5\).</p>` }] },
       ],
       compare: R`Same answer and argument as the official solution: \(\pi_G = p_G = p_S = 0.5\). Its "\(2/4 = 2\)" is a slip for 0.5.`,
+      slip: R`Typo: \(2/4 = 0.5\), not 2. So \(\pi_G\) stays 0.5, which is exactly why this start doesn't move.`,
     },
 
     // ─────────────────────────────────────────────── 2026-B Q5 (your Moed B question)
@@ -207,6 +214,7 @@
           why: R`<p>Both means moved outward from ±1: component 1 fully owns −2 and only half-owns 0, so its average is pulled toward −2.</p>` },
       ],
       compare: R`Same as the official solution: \(\pi \leftarrow (0.5, 0.5)\), \(\mu \leftarrow (-1.291, 1.291)\). It writes \(\frac{2}{3}(\dots)\), which is \(\frac{1}{1.5}(\dots)\), and commas where it means "+".`,
+      slip: R`Read every comma inside those sums as "+": \(n_1 = 0.984 + 0.5 + 0.016 = 1.5\). The \(\tfrac23\) in front is just \(1/n_1 = 1/1.5\).`,
     },
 
     "2026B-q5.4": {
@@ -223,6 +231,7 @@
           extra: [{ label: "official slip: x = 0 in the last line", html: R`<p>Its last line says "Because \(f(x=0, Y=A) \gt f(x=0, Y=B)\)". It means \(x = 2\): \(0.100 \gt 0.027\).</p>` }] },
       ],
       compare: R`Same as the official solution: \(x = 0\) → B (0.027 vs 0.200), \(x = 2\) → A (0.100 vs 0.027). Its last line writes \(x = 0\) where it means \(x = 2\).`,
+      slip: R`Typo in the last line: it's about \(x = 2\), not \(x = 0\). \(f(2, A) = 0.100 \gt f(2, B) = 0.027\), so \(x = 2\) → A.`,
     },
 
     "2026B-q5.5": {
@@ -237,6 +246,7 @@
         { line: R`<b>(c) doesn't</b> — each class is a tilted band: \(x_2\) changes with \(x_1\), so the features are dependent. And the classes overlap a lot in \(x_2\). A full Bayes model would do much better. Done.` },
       ],
       compare: R`Same verdicts as the official solution: (a) yes, with those four 2-component GMMs; (b) no — its example is \(f\big((2,-2)\mid A\big)\); (c) no — dependent features and heavy overlap in \(x_2\).`,
+      slip: R`"Figure A/B/C" means panels (a)/(b)/(c), not class A or B. So "Figure B" is panel (b) (the four clean blobs), and its example \(f\big((2,-2)\mid A\big)\) is about class A in that panel.`,
     },
   });
 })();

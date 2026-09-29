@@ -30,6 +30,7 @@
         { line: R`<b>(c) The margin</b> = distance to the closest sample \(= 2\sqrt2 \approx 2.83\). Done.` },
       ],
       compare: R`Move 2 is the official "equal distance to all samples, so it is the max-margin boundary", with the same rule \(\mathrm{sign}(x_1 + x_2)\) / \(w = (0, 1, 1)\). Move 3 is its \(4/\sqrt2 = 2\sqrt2\).`,
+      slip: R`"The line L specified above" is \(x_1 + x_2 = 0\) from part 1's official answer. The real reason it's max-margin: the closest +/− pair, (2,2) and (−2,−2), is \(4\sqrt2\) apart and L cuts that gap exactly in half, so no line can beat a margin of \(2\sqrt2\).`,
     },
 
     "2025C-q3.3": {
@@ -54,6 +55,7 @@
 # array([0.  , 0.25, 0.25])</code></pre><p>Same \(w\), and it's the only one (\(X\) has rank 3).</p>` }] },
       ],
       compare: R`Same as the official answer: \(w = (0, \tfrac14, \tfrac14)\) gives \(w^\top x^{(i)} - y^{(i)} = 0\) for every sample, so the loss is 0, the minimum possible.`,
+      slip: R`The stray commas under the fractions ("4,") are formatting junk. The vector is just \(w = (0, \tfrac14, \tfrac14)\).`,
     },
 
     "2025C-q3.4": {
@@ -76,6 +78,7 @@
                   { label: "another way: the gradient isn't 0", html: R`<p>\(J = \tfrac15\sum_i (w^\top x^{(i)} - y^{(i)})^2\). Each squared bracket → 2 · (…) · (the number in front of \(w_j\), i.e. that sample's \(x_j\)). Stacked over the knobs \(w_0, w_1, w_2\): \(\nabla J = \tfrac25 X^\top(Xw - y)\). (We saw this in 2025-C Q1, part 2.) The errors are \((0, 0, 0, 0, 0.25)\), so only the new row \((1, 2, 3)\) counts:</p>\[\nabla J = \tfrac25\cdot 0.25\cdot(1, 2, 3) = (0.1,\ 0.2,\ 0.3) \ne 0\]` }] },
       ],
       compare: R`Moves 1–2 are the official max-margin sentence ("correctly classified, farther away, the margin cannot increase"). Moves 3–4 are its LMS part, with one slip: the official \(w = (\varepsilon, \tfrac14, \tfrac14)\) must be \((-\varepsilon, \tfrac14, \tfrac14)\).`,
+      slip: R`<ul><li>The shifted classifier should be \(w = (-\varepsilon, \tfrac14, \tfrac14)\), not \((+\varepsilon, \tfrac14, \tfrac14)\). Only \(-\varepsilon\) moves the line toward the positives and gives the loss \(\varepsilon^2 - \tfrac{\varepsilon}{10} + \tfrac1{80}\) they write.</li><li>The stray commas under the fractions ("4,", "5,") are formatting junk: \(w = (0, \tfrac14, \tfrac14)\) and the prefactor is \(\tfrac15\).</li></ul>`,
     },
 
     "2025C-q3.5": {
@@ -108,6 +111,7 @@
                   { label: "the question's premise is false (don't argue it in the exam)", html: R`<p>The extended data <b>is</b> linearly separable: \(7x_1 - 6x_2\) scores \(2, 15, -2, -15, 2\) on the five samples, all the right signs. Answer the question as asked anyway.</p>` }] },
       ],
       compare: R`Same \(\varphi = (1, x_1, x_2, x_1^2, x_2^2)\), centre and general \(w\) as the official answer. Its radius \(r = 0.6\) is a slip (both negatives fall outside); \(r = 1\) gives \(w = (7.5, 5, 3, 1, 1)\).`,
+      slip: R`<ul><li>Radius 0.6 doesn't reach the negatives (they're 0.71 from the centre). Use \(r = 1\), which gives \(w = (7.5, 5, 3, 1, 1)\).</li><li>\((x_2 - a)^2\) should be \((x_2 - b)^2\).</li><li>The extended data actually is linearly separable (e.g. \(\mathrm{sign}(7x_1 - 6x_2)\)), but answer the question as asked.</li></ul>`,
     },
 
     // ───────────────────────── 2025-B Q4 ─────────────────────────
@@ -129,6 +133,7 @@
           extra: [{ label: "the official (c) says the margin \"cannot shrink\" — read it as \"cannot grow\"", html: R`<p>"Cannot shrink" is true only for this sample (it's outside the margin band). The general fact the argument needs: adding a sample can never make the margin <b>grow</b> (a sample inside the band does shrink it). 2025-C Q3.4's solution says it right: "the margin cannot increase by adding samples".</p>` }] },
       ],
       compare: R`Move 1 is the official \(x_1 - x_2 = 0\), \(w = (1, -1)\), \(w_0 = 0\). Move 2 is its \(1/\|w\| = \sqrt2/2\). Move 3 is its (c), with "cannot shrink" read as "cannot grow".`,
+      slip: R`"The margin cannot shrink by adding a sample" is backwards: adding a sample can never make the margin <b>grow</b>. Here \((2,0)\) has \(y\cdot\text{score} = 2 \ge 1\), so the old line stays optimal.`,
     },
 
     "2025B-q4.2": {
@@ -151,14 +156,15 @@
         { line: R`<b>n counts rows; the SVM brings its own bias.</b> <b>Line 1:</b> <code>X.shape[1]</code> → <code>X.shape[0]</code>. <b>Line 2:</b> delete it (no ones column).`,
           size: R`<p><code>X.shape</code> = (n_samples, p_features) = (rows, columns). So <code>shape[0]</code> = n ✓, <code>shape[1]</code> = p ✗.</p><p>Line 2 glues <code>np.ones((n, 1))</code> next to <code>X</code>: it needs n rows like <code>X</code>. With the line 1 bug it's (p, 1) next to (n, p) ✗. Fixed, <code>X</code> becomes (n, p + 1): a 1s column doing <code>w0</code>'s job, so the bias counts twice ✗.</p>`,
           why: R`<p>The docstring says <code>X</code> is n_samples × p_features, so samples are rows: <code>shape[0]</code>. The solver returns its own <code>w0</code> and <code>z_pred</code> adds it, so a ones column would count the bias twice.</p>` },
-        { line: R`<b>Score the held-out rows by mistakes.</b> <b>Line 20:</b> <code>X_train @ w + w0</code> → <code>X_val @ w + w0</code>. <b>Line 22:</b> → <code>risk = np.mean(y_val != y_pred)</code>.`,
+        { line: R`<b>Score the held-out rows by mistakes.</b> <b>Line 17:</b> <code>X_train @ w + w0</code> → <code>X_val @ w + w0</code>. <b>Line 19:</b> → <code>risk = np.mean(y_val != y_pred)</code>.`,
           size: R`<p><code>X_val @ w + w0</code>: (n_val, p) @ (p,) = (n_val,), plus one number = one score per validation row ✓, the same length as <code>y_val</code>.</p><p><code>X_train @ w</code> is (n_train,): with 5 folds about 4× longer than <code>y_val</code> ✗.</p><p><code>y_val != y_pred</code>: (n_val,) vs (n_val,) → <code>np.mean</code> = one number, the fraction wrong ✓</p>`,
           why: R`<p>Validation must predict the rows the model didn't train on. And the hinge objective has \(C\) inside it, so a bigger \(C\) inflates the number by itself: comparing it across \(C\)'s means nothing. What we care about is the fraction of validation rows predicted wrong.</p>` },
-        { line: R`<b>Compare the average over folds.</b> <b>Line 26:</b> <code>if risk &lt; min_cv_risk</code> → <code>if np.mean(lo_risk) &lt; min_cv_risk</code>. Done (5 bugs; 3 are enough).`,
-          why: R`<p><code>risk</code> is only the last fold's number. The CV risk of this \(C\) is the average over all folds, and that's also what line 27 stores.</p>` ,
-          extra: [{ label: "why lines 20, 22, 26 and not 16, 17, 22?", html: R`<p>The official solution calls them 16, 17 and 22, but on the printed page the numbers level with those statements are 20, 22 and 26. The question's "lines 11–17 have no errors" (the fold set-up lines) only fits the printed numbers. Either way, write the statement itself next to the number so the grader can't miss it.</p>` }] },
+        { line: R`<b>Compare the average over folds.</b> <b>Line 22:</b> <code>if risk &lt; min_cv_risk</code> → <code>if np.mean(lo_risk) &lt; min_cv_risk</code>. Done (5 bugs; 3 are enough).`,
+          why: R`<p><code>risk</code> is only the last fold's number. The CV risk of this \(C\) is the average over all folds, and that's also what line 23 stores.</p>` ,
+          extra: [{ label: "the line numbers are messy — write the statement too", html: R`<p>On the exam page the <code>z_pred</code>, <code>risk</code> and <code>if</code> lines are 17, 19 and 22 (as above). The official solution calls them 16, 17 and 22.</p><p>Also, the question says "lines 11–17 do not contain errors", yet line 17 (<code>z_pred</code>) is one of the official bugs — the exam contradicts itself. So always write the statement itself next to the number; the grader can't miss that.</p>` }] },
       ],
       compare: R`The official list has the same 5 bugs (lines 1 and 2, then <code>z_pred</code>, <code>risk</code>, and the <code>if</code>, which it numbers 16, 17, 22).`,
+      slip: R`The official line numbers (16, 17, 22) don't match the exam page: the <code>z_pred</code>, <code>risk</code> and <code>if</code> lines are 17, 19 and 22. And the question says lines 11–17 have no errors, yet the <code>z_pred</code> line (17) is one of the official bugs. Write the statement next to the line number.`,
     },
 
     // ───────────────────────── 2026-A Q3 ─────────────────────────
@@ -218,6 +224,7 @@
           why: R`<p>Same reason as \(\varphi_A\): the middle point's score is the average of the two ends' scores. If \((6, 3)\) and \((-6, -3)\) (both +) score \(\gt 0\), then \((0, 0)\) scores \(\gt 0\) too, so sample 1 (−) is called +.</p>` },
       ],
       compare: R`Same four verdicts as the official answer, with the same \(w_0 = -3\), \(w_1 = w_2 = 1\) for \(\varphi_C\). (Its \(\varphi_B\) line prints sample 4 as "(0,0,−)"; sample 4 is +, which is the whole point.)`,
+      slip: R`Typo in the \(\varphi_B\) line: sample 4 is +, so it's 4:(0,0,+). That's the whole point: it lands on the same spot as sample 1 (−) with the opposite label.`,
     },
 
     "2026A-q3.4": {

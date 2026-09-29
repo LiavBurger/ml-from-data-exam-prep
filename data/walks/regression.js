@@ -61,6 +61,7 @@ np.sign(theta)   # array([ 1, -1,  1])</code></pre>`,
 <p>So \(X^\top(X\theta - y) = (7, 1, 12)\): the three sums, done in one go.</p>` }] },
       ],
       compare: R`The official solution's first line is move 3's first line (the 2 already out of the sum, \(\theta^\top x^{(i)}\) for the prediction), and its last line is move 4.`,
+      slip: R`The stem says \(x^{(i)} \in \mathbb R^p\), but here \(x^{(i)}\) quietly includes a leading 1 (it's row \(i\) of \(X\)), so \(\theta^\top x^{(i)} = \theta_0 + \sum_j \theta_j x^{(i)}_j\).`,
     },
 
     "2025C-q1.3": {
@@ -94,6 +95,7 @@ np.sign(theta)   # array([ 1, -1,  1])</code></pre>`,
           extra: [{ label: "the official solution says (15, 0, 25) — it's a slip", html: R`<p>\(2 + (-1) = 1\), not 0. So the middle gradient entry is 1, and the new middle knob is \(-2 - 0.1 = -2.1\) (the official solution prints \(-2\)). Its first line also says "\(\lambda = 2\)", but it then uses 1.</p>` }] },
       ],
       compare: R`Same steps as the official solution, except its slip: the correct gradient is (15, 1, 25) and the new θ is (−0.5, −2.1, 0.5).`,
+      slip: R`<ul><li>The first line says \(\lambda = 2\), but the question says \(\lambda = 1\), and the working uses 1 anyway.</li><li>The middle gradient entry is \(2 + (-1) = 1\), not 0. So \(\nabla J = (15, 1, 25)\) and the new \(\theta = (-0.5, -2.1, 0.5)\), not \((-0.5, -2, 0.5)\).</li></ul>`,
     },
 
     "2025C-q1.4": {
@@ -124,6 +126,7 @@ np.sign(theta)   # array([ 1, -1,  1])</code></pre>`,
           why: R`<p>A \(\lambda\)'s score is the <b>average</b> error over the folds, and we keep the \(\lambda\) with the lowest score. So compare with <code>&lt;</code>, and store the same mean you compared.</p>` },
       ],
       compare: R`The official list has the same 5 bugs.`,
+      slip: R`Two line numbers are off by one: the <code>y_pred</code> line is 16 and the <code>risk</code> line is 17 in the printed margin, not 15 and 16. Lines 1, 20 and 21 are right.`,
     },
   });
 })();

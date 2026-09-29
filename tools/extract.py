@@ -32,13 +32,39 @@ OVERRIDES = {
     ("2025A", 4, 5): {"q": [(16, 64, 148), (16, 246, 590)], "sol": [(16, 160, 240)]},
     # figures with no text layer on a page of their own, so no line anchors them; optional 4th/5th value = right/left edge (pt)
     ("2025B", 4, 2): {"q_extra": [(13, 145, 262, 445, 12)]},   # the hinge-loss plots A/B/C
-    # sub-parts (b) and (c) are printed between the solution lines of (a) and (b)
-    ("2025B", 4, 1): {"q": [(12, 171, 225), (12, 287, 317), (12, 379, 409)]},
     # the solution is printed right after the question; the code it refers to is on the next page
-    ("2025B", 4, 3): {"q": [(13, 415, 495), (14, 145, 540, 440, 8)], "sol": [(13, 500, 650)]},
+    # q: text + code as printed in the exam (its line gutter numbers differ from the solution PDF's); sol: Error 5 runs past 412
+    ("2025B", 4, 3): {"q": [(16, 638, 739, 562, 36, "exam"), (17, 64, 569, 562, 36, "exam")], "sol": [(13, 500, 650, 418)]},
     ("2026A", 3, 3): {"sol_extra": [(11, 78, 510)]},
-    # the code's line numbers sit in the left margin, outside the normal column
-    ("2025C", 1, 5): {"q_left": 22},       # the solution's figure of the four mappings
+    # the question text ends where the (partly black) solution starts
+    ("2026B", 4, 6): {"q": [(16, 232.1, 300)], "sol": [(16, 310, 625)]},
+    # the MLE bullets' black continuation lines ended up as context of the next item
+    ("2026A", 5, 2): {"sol": [(19, 406.6, 620)]},
+    ("2026A", 5, 3): {"q": [(20, 64.5, 209.5)]},
+    # the official ROC curve is an image alone on the next page
+    ("2025A", 4, 4): {"sol_extra": [(15, 64, 372)]},
+    # the A/B/C plots stick out of the text column on both sides (right edge 443 stays left of the balloons)
+    ("2025B", 5, 1): {"q": [(15, 187.8, 439.5, 412, 12), (15, 439.5, 543, 443, 12)],
+                      "sol": [(15, 543.2, 678.6), (16, 145.2, 229.5)]},
+    ("2026B", 5, 5): {"q": [(19, 565.9, 757.8, 565, 45), (20, 65.5, 334.6, 565, 45)]},
+    # stop before "GOOD LUCK!" and the meme on the last page
+    ("2026A", 5, 5): {"sol": [(22, 165.9, 757.1)]},
+    # code as printed in the exam (with the docstring the solution dropped); 6th value "exam" = cut from the exam PDF
+    ("2026A", 4, 5): {"q": [(16, 64.5, 155), (17, 90, 576, 570, 33.2, "exam")]},
+    # the exam strikes the line numbers 8-13 the text refers to (the solution PDF strikes 9-15)
+    ("2025C", 1, 5): {"q": [(11, 64.5, 701, X1, X0, "exam")]},
+    # first band starts lower to drop a sliver of the previous line (q_top / sol_top = new y0 of the first band)
+    ("2025A", 3, 5): {"sol_top": 595.2},
+    ("2025A", 5, 3): {"q_top": 145},
+    ("2025B", 2, 3): {"sol_top": 209.8},
+    ("2025B", 2, 5): {"sol_top": 536.5},
+    ("2025B", 3, 3): {"q_top": 443.6},
+    # sub-parts (b) and (c) are printed between the solution lines of (a) and (b); the sol starts with the whole "a)" line
+    ("2025B", 4, 1): {"q": [(12, 171, 225), (12, 287, 317), (12, 379, 409)], "sol_top": 211.3},
+    ("2025B", 5, 3): {"sol_top": 423},
+    ("2025B", 5, 4): {"sol_top": 403.8},
+    ("2026A", 4, 1): {"sol_top": 370.6},
+    ("2026B", 5, 1): {"sol_top": 435},
 }   # 2025B has grader comment balloons in the right margin
 
 SOURCES = {
@@ -202,7 +228,8 @@ def cut(pdf, tag, bands, out):
         p, y0, y1 = band[:3]
         right = band[3] if len(band) > 3 else RIGHT_EDGE.get(tag, X1)
         left = band[4] if len(band) > 4 else X0
-        img = render(pdf, tag, p)
+        exam = len(band) > 5 and band[5] == "exam"     # cut from the exam PDF instead of the solution
+        img = render(pdf.replace("-solution", ""), tag + "-exam", p) if exam else render(pdf, tag, p)
         c = vtrim(img.crop((int(left * S), int(max(TOP_Y - 6, y0) * S), int(right * S), int(y1 * S))))
         if c is not None:
             parts.append(c)
@@ -218,6 +245,11 @@ def cut(pdf, tag, bands, out):
     os.makedirs(os.path.dirname(out), exist_ok=True)
     canvas.save(out, optimize=True)
     return os.path.relpath(out, ROOT)
+
+
+def retop(bands, y0):
+    """Start the first band at y0 instead (drops a sliver of the line above)."""
+    return [(bands[0][0], y0) + tuple(bands[0][2:])] + list(bands[1:]) if y0 is not None and bands else bands
 
 
 def main(tags):
@@ -239,9 +271,9 @@ def main(tags):
                 rec["items"].append({
                     "item": it["item"], "pts": it["pts"], "bonus": it["bonus"],
                     "first": lines[[i for i in it["q"] if lines[i]["kind"] == "anchor"][0]]["text"][:140],
-                    "q": cut(pdf, tag, [(b[0], b[1], b[2], RIGHT_EDGE.get(tag, X1), ov["q_left"]) if "q_left" in ov and len(b) == 3 else b
-                                        for b in (ov.get("q") or spans(lines, it["q"]))] + ov.get("q_extra", []), ib + "-q.png"),
-                    "sol": cut(pdf, tag, (ov.get("sol") or spans(lines, it["sol"])) + ov.get("sol_extra", []), ib + "-sol.png"),
+                    "q": cut(pdf, tag, retop([(b[0], b[1], b[2], RIGHT_EDGE.get(tag, X1), ov["q_left"]) if "q_left" in ov and len(b) == 3 else b
+                                              for b in (ov.get("q") or spans(lines, it["q"]))], ov.get("q_top")) + ov.get("q_extra", []), ib + "-q.png"),
+                    "sol": cut(pdf, tag, retop(ov.get("sol") or spans(lines, it["sol"]), ov.get("sol_top")) + ov.get("sol_extra", []), ib + "-sol.png"),
                 })
             entry.append(rec)
         manifest[tag] = entry

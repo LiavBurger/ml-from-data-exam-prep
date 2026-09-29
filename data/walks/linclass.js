@@ -35,6 +35,7 @@
           extra: [{ label: "the official text has three wrong labels", html: R`<p>Its numbers and updates are right, but: at \(i = 2\) it writes \(\mathrm{sign}(w^\top x^{(3)})\) for \(x^{(2)}\); at \(i = 3\) "\(-1 = 1 = y^{(4)}\)" should be "\(-1 \ne 1 = y^{(3)}\)"; at \(i = 4\) "\(-1 \ne 1 = y^{(1)}\)" should be "\(-1 = -1 = y^{(4)}\)".</p>` }] },
       ],
       compare: R`Moves 2–5 are the official \(i = 1, \dots, 4\), same numbers. Its text has three label slips (see the last move's extra); the updates are right.`,
+      slip: R`Label typos only; the updates are right.<ul><li>\(i = 2\): read \(\mathrm{sign}(w^\top x^{(2)})\).</li><li>\(i = 3\): read "\(-1 \ne 1 = y^{(3)}\)", so it updates.</li><li>\(i = 4\): read "\(-1 = -1 = y^{(4)}\)", so no update.</li></ul>`,
     },
 
     "2025A-q4.2": {
@@ -88,6 +89,7 @@
           why: R`<p>The points, from \(\tau = 0.1\) to \(1\): (1, 1), (0.8, 1), (0.6, 1), (0.4, 1), (0.4, 0.6), (0.4, 0.4), (0.2, 0.4), (0.2, 0.2), (0, 0.2), (0, 0). Grid lines are every 0.2.</p>` },
       ],
       compare: R`Same TP / FP / TN / FN / TPR / FPR as the official table. Its "predicted positive" lists have four slips (0.2, 0.3, 0.4, 0.8 — see move 2's extra).`,
+      slip: R`The counts and TPR/FPR are right, but four "Predicted Positive" lists are off (positive = probability ≥ threshold):<ul><li>0.2: missing \(x^{(2)}\) (0.25).</li><li>0.3: missing \(x^{(3)}\) (0.35).</li><li>0.4: missing \(x^{(6)}\) (0.45).</li><li>0.8: should be \(x^{(5)}, x^{(10)}\), not \(x^{(8)}, x^{(10)}\) (0.75 &lt; 0.8).</li></ul>`,
     },
 
     "2025A-q4.5": {
@@ -169,6 +171,7 @@
           why: R`<p>"Necessarily inseparable" is a claim about every line; one failing \(w\) (and its shifts) doesn't prove it — the grader gave only partial credit (≈ 3/5) for "inseparable". "Necessarily separable" would need a line that works, and we have none.</p>` },
       ],
       compare: R`Same as the official answer: not separable by the given classifier or by adjusting \(w_0\) (moves 1–2), but another linear classifier may separate the data (moves 3–4).`,
+      slip: R`The official answer never names an option. The one it means is <b>Insufficient information</b>: this \(w\) (and any shift of \(w_0\)) fails on sample 9, but some other line might still separate the data.`,
     },
 
     "2025B-q3.5": {
@@ -186,6 +189,7 @@
 <tr><td>closest positive, \((0, 0.8)\)</td><td>−0.4 + 0.64 = 0.24</td><td>+  ✓</td></tr></tbody></table></div>` }] },
       ],
       compare: R`Same \(\varphi = (1, x_1^2 + x_2^2)\) as the official answer. It uses \(r \approx \tfrac12\); that is right at the edge of the negatives (they reach ≈ 0.5), so \(r^2 = 0.4\) (\(r \approx 0.63\)) is safer. Only \(\varphi\) is graded, so either \(r\) is fine. It also writes \(\varphi(x_1, x_1)\) for \(\varphi(x_1, x_2)\).`,
+      slip: R`\(\varphi(x_1, x_1)\) is a typo for \(\varphi(x_1, x_2)\). Also, \(r \approx \tfrac12\) sits right on the edge of the negatives; \(r \approx 0.63\) (\(r^2 = 0.4\)) is safer. Only \(\varphi\) is graded, so \((1, x_1^2 + x_2^2)\) stands.`,
     },
 
     "2025B-q3.6": {
@@ -323,6 +327,7 @@
           extra: [{ label: "your Moed B", html: R`<p>You wrote <code>current_loss &lt; self.eps</code> — that tests the loss itself, not its change. Blanks 1–2 were empty and blank 3 stopped at <code>self.BCE_loss(</code>: 1/8.</p>` }] },
       ],
       compare: R`Same four blanks as the official solution. Its blank 2 writes <code>self.w_ = self.w - …</code> (the code creates <code>self.w_</code>, the question lists <code>self.w</code>); it's the same update either way.`,
+      slip: R`It mixes <code>self.w_</code> and <code>self.w</code>. Same weights: the code creates <code>self.w_</code>, the question calls it <code>self.w</code>, so either name is fine.`,
     },
   });
 })();

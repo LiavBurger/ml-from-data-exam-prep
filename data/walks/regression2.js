@@ -16,6 +16,7 @@
         { line: R`<b>y</b> (not asked, but part 3 needs it) — the labels, same order: \(\;y = (3, 1, 4, -1)\). Done.` },
       ],
       compare: R`Same \(X\) (and \(y\)) as the official answer.`,
+      slip: R`The stem's "Items 13- below" is a garbled "Items 1–3": this table is used in parts 1–3 (part 4 is the code).`,
     },
 
     "2025A-q1.2": {
@@ -34,6 +35,7 @@
         { line: R`<b>\(d\) = the number with no \(\theta\)</b> — set every \(\theta = 0\): each bracket becomes (−label)\(^2\), the penalty is 0: <div class="formula">\[d = 3^2 + 1^2 + 4^2 + (-1)^2 = 27\]</div>Done.` },
       ],
       compare: R`The official solution writes the same four brackets (move 1), argues "polynomial of degree 2" (move 2), and gets \(a_1 = 14 + \lambda\), \(d = 27\) (moves 3–4). Its \(d\) line prints \(1^1\) (twice) instead of \(1^2\) and \((-1)^2\) — a typo, 27 is right.`,
+      slip: R`Typo in the \(d\) line: it should read \(3^2 + 1^2 + 4^2 + (-1)^2\). The value \(d = 27\) is right.`,
     },
 
     "2025A-q1.3": {
@@ -122,6 +124,7 @@
           size: R`\[\underbrace{X'}_{\textstyle 6\times 3}\,\underbrace{\theta}_{\textstyle 3\times 1} - \underbrace{y'}_{\textstyle 6\times 1} = 6\times 1\]<p>4 samples + 2 penalty rows = 6 rows · inner 3 = 3 ✓ · \(y'\) needs 6 entries too ✓</p>` },
       ],
       compare: R`Same \(X'\) and \(y'\) as the official answer; its derivation is moves 1 and 4.`,
+      slip: R`"The solution to (1)" means part 1's answer (its \(X\), 4×3, and \(y\)), not an equation numbered (1). \(X'\) and \(y'\) are just those plus two extra rows, one per \(\sqrt\lambda\) penalty term.`,
     },
 
     "2025B-q1.3": {
@@ -139,6 +142,7 @@
           extra: [{ label: "the official formula drops two primes — it's a slip", html: R`<p>It prints \((X'^\top X)^{-1}X'^\top y\): the second \(X\) and the \(y\) are missing their primes. Correct: \((X'^\top X')^{-1}X'^\top y'\).</p>` }] },
       ],
       compare: R`Same argument as the official solution. Its formula \((X'^\top X)^{-1}X'^\top y\) is missing two primes; correct is \((X'^\top X')^{-1}X'^\top y'\).`,
+      slip: R`The formula is missing two primes: it should be \(\theta^* = (X'^\top X')^{-1}X'^\top y'\). As printed, \(X'^\top X\) doesn't even multiply (\(X'^\top\) is 3×6, \(X\) is 4×3: 6 ≠ 4).`,
     },
 
     "2025B-q1.4": {
@@ -191,6 +195,7 @@
 <p>Strictly that's the <i>average</i> of the squared errors, not the sum — the comment is a bit loose. ÷ 4 doesn't change which \(\theta\) is best.</p>` },
       ],
       compare: R`Same five expressions as the official answer.`,
+      slip: R`Two quirks in the exam's code, not blanks: line 17 passes <code>X</code> instead of <code>X_with_bias</code> (θ has 3 entries), and line 24's comment says "sum" while line 25 takes <code>np.mean</code>. Ignore them; blank (5) is still <code>(y_hat - y) ** 2</code>.`,
     },
 
     // ───────────────────────── 2026-A Q1 (weighted least squares) ─────────────────────────
@@ -244,6 +249,7 @@
 <p>×2: \(\nabla J = (-2, -6, -6)\) — the same as nudging each \(w_j\) in numpy and measuring the change in \(J\).</p>` }] },
       ],
       compare: R`The official answer is move 4 \(=\) move 2's sum (\(2\sum_i\gamma_i(\dots)x^{(i)}\)). Its optional expansion ends with \(+\,y^\top y\); it should be \(y^\top\Gamma y\) — no effect on the gradient.`,
+      slip: R`<ul><li>The optional expansion ends with \(+\,y^\top y\) (twice); it should be \(y^\top\Gamma y\). It's a constant, so the gradient \(2X^\top\Gamma(Xw - y)\) is still right.</li><li>The note's "\(p\times 1\)" should be \((p+1)\times 1\) (3×1 here): \(w\) includes the bias \(w_0\).</li></ul>`,
     },
 
     "2026A-q1.3": {
@@ -373,6 +379,7 @@
           extra: [{ label: "Moed B trap", html: R`<p>You wrote <code>grad &lt; epsilon</code> — a list compared with a number; \(\|\cdot\|_2\) is <code>np.linalg.norm</code>.</p>` }] },
       ],
       compare: R`Same three expressions as the official answer (it also accepts <code>np.sum(grad ** 2) &lt;= epsilon**2</code>).`,
+      slip: R`Small bug in the exam's code: the loop passes <code>y_train</code>, but the function's argument is called <code>y</code>. Read it as <code>y</code>; the three blanks don't change.`,
     },
   });
 })();

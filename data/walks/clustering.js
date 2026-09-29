@@ -57,6 +57,7 @@
 <p>The last drop is tiny next to the ones before it: the elbow is at \(k = 3\), like plot A.</p>` }] },
       ],
       compare: R`Same as the official solution: C is out because WCSS goes up; three visible groups, so the drop from 3 to 4 is smaller than from 2 to 3 — A's elbow, not B.`,
+      slip: R`The text says \(k = 2, 3, 4\), but every plot runs from \(k = 1\) to 4. Read the x-axis as \(k\) (so the last segment is 3 → 4). The "(B)" under plot C is a stray label; that plot is C.`,
     },
 
     "2025A-q2.4": {
@@ -88,6 +89,7 @@
           extra: [{ label: "the official iteration-3 table has slips", html: R`<p>Its header says \(D(\{4,5\}, i)\), but it is \(\{8,9\}\)'s row. And it gives 3.5 for sample 6 and 2 for sample 7. Correct: \(d(\{8,9\}, 6) = \min(6, 7) = 6\) and \(d(\{8,9\}, 7) = \min(4, 5) = 4\). The merges themselves are right.</p>` }] },
       ],
       compare: R`Same three merges as the official solution. Its iteration-3 table is \(\{8,9\}\)'s row (not \(\{4,5\}\)'s), and the entries for samples 6 and 7 should be 6 and 4 (it prints 3.5 and 2).`,
+      slip: R`The last table is the new cluster \(\{8,9\}\)'s row, not \(\{4,5\}\)'s. Its distances to samples 6 and 7 should be 6 and 4, not 3.5 and 2 (part 5 uses \(D(7,8) = 4\) itself). The three merges are right.`,
     },
 
     "2025A-q2.5": {
@@ -170,6 +172,7 @@
           extra: [{ label: "the official answer says a > 2 — it misses the upper limit", html: R`<p>It claims "as long as \(a \gt 1\), samples 4–6 go to \(\mu_2\)", which ignores a \(\mu_2\) placed far beyond the data. Example \(a = 12\): sample 4 to \((12,12)\) is \(2 \cdot 6^2 = 72\), more than its 50 to \((1,1)\), so sample 4 switches and the outcome changes. Correct range: \(2 \lt a \lt 11\). Show sample 4's inequality so the grader sees where 11 comes from. (It also writes \(x^{(1)}\) where it means \(x^{(3)}\).)</p>` }] },
       ],
       compare: R`Move 1 matches the official solution (\(a \ne 1\), \((a-1)(a-2) \gt 0\)). Its "\(a \gt 1\)" for samples 4–6 and its conclusion "iff \(a \gt 2\)" miss sample 4's upper limit: the answer is \(2 \lt a \lt 11\).`,
+      slip: R`The answer isn't just \(a \gt 2\). If \(a\) gets too big, sample 4 \((6,6)\) flips to \(\mu_1\): \(2(6-a)^2 \lt 50\) needs \(a \lt 11\). Correct range: \(2 \lt a \lt 11\). (Also, where it writes \(\|x^{(1)}-\mu_2\|^2\) it means \(x^{(3)}\).)`,
     },
 
     "2025C-q5.4": {
@@ -185,6 +188,7 @@
 <p><b>What to write:</b> the key's argument — that's what the graders expect.</p>` }] },
       ],
       compare: R`Moves 1–2 are the official answer. The official identity drops a factor \(|C_j|\) (cluster \(\{1,2,3\}\): pairwise sum 8 = \(2 \cdot 3 \cdot \tfrac43\)), so strictly it's true only for the size-normalised version.`,
+      slip: R`<ul><li>"In HW5, you proved…": you don't need the homework. Just write the identity; that's what the graders expect.</li><li>Strictly, the identity is missing a factor \(|C_j|\): the pairwise sum is \(2|C_j|\) × cluster \(j\)'s WCSS (part 1's cluster \(\{1,2,3\}\): 8, not \(2 \cdot \tfrac43\)). So plain K-means can actually raise \(\widetilde{\text{WCSS}}\). Still write the key's answer in the exam.</li></ul>`,
     },
 
     "2025C-q5.5": {
@@ -204,6 +208,7 @@
           why: R`<p>Same WCSS = nobody switched = converged (part 2). <code>prev_wcss</code> starts at infinity, so the first round never stops.</p>` },
       ],
       compare: R`Same six answers as the official solution.`,
+      slip: R`The exam's WCSS line has one bracket too many (unbalanced). It means <code>np.sum((X - new_centroids[cluster_assignments]) ** 2)</code>.`,
     },
 
     // ─────────────────────────── 2026-A Q4 ───────────────────────────
@@ -264,6 +269,7 @@
           why: R`<p>K-means can actually get here: if the random start picks samples 1, 3 and 4 as centroids (like <code>get_random_centroids</code> in HW6), the first iteration gives exactly these clusters.</p>` },
       ],
       compare: R`Same solution as the official one (\(\{1,2\}, \{3\}, \{4,5,6\}\) with centroids \((0, 0.5)\), \((2, 0)\), \((8\tfrac23, 9\tfrac13)\)). It checks only the samples near the split; move 2's table checks all six.`,
+      slip: R`Here \(x_1, x_2, \dots\) mean sample 1, sample 2, … (rows of the table), not the \(x_1\)/\(x_2\) feature columns. So \(\{x_1, x_2\}\) is just samples 1 and 2.`,
     },
 
     "2026A-q4.4": {
@@ -292,6 +298,7 @@
           remember: R`<p>Dendrogram: the samples along the bottom; each merge is a bar joining the two clusters at the height of their merge distance.</p><p>Not on the sheet.</p>` },
       ],
       compare: R`Same five merges and distances as the official solution (1, 2, 3, 6, 20), and the same tree: \(\{1,2\}\) + 3 on one side, \(\{4,5\}\) + 6 on the other, joined at 20.`,
+      slip: R`Here \(x_1, x_2, \dots\) mean sample 1, sample 2, … (rows of the table), not the \(x_1\)/\(x_2\) feature columns. So \(\{x_1, x_2\}\) is just samples 1 and 2.`,
     },
 
     "2026A-q4.5": {
