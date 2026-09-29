@@ -57,7 +57,7 @@
     // ───────────────────────── 4 · ML05 ─────────────────────────
     { title: "Logistic regression (LoR)",
       what: R`<p>Instead of just + / −, LoR outputs a <b>probability</b> that the label is 1: \(\hat y(x) \approx \Pr[Y = 1 \mid x]\), a number in [0, 1]. Labels are now <b>1 and 0</b>.</p>
-<p>The model's assumption: the log-odds \(\log\frac{\hat y}{1 - \hat y}\) equal the score \(w^\top x\). Solve for \(\hat y\) and you get σ(score), an S-curve: σ(0) = ½, big score → 1, very negative → 0.</p>
+<p><b>σ(\(w^\top x\)) = two steps:</b> compute the score \(w^\top x\) (any number), then put it into σ, which squashes it into a probability: σ(−2) ≈ 0.12, σ(0) = ½, σ(2) ≈ 0.88. Why σ? The model assumes the log-odds \(\log\frac{\hat y}{1 - \hat y}\) equal the score; solve for \(\hat y\) and you get σ.</p>
 <p>Predict 1 iff \(\hat y \ge \frac12\), which is exactly score ≥ 0. So it's still the line \(w^\top x = 0\). The line sets the S-curve's center, \(\|w\|\) its steepness (bigger → sharper jump).</p>`,
       formula: R`\[\hat y(x) = \sigma(w^\top x) = \frac{1}{1 + e^{-w^\top x}}\]<p>[sheet: Sigmoid function] · [sheet: Logistic regression posterior model]</p>`,
       remember: R`\[\sigma(w^\top x) \ge \tfrac12 \iff w^\top x \ge 0\]<p>So the sign of the score decides, no need to compute σ. Not on the sheet.</p>`,
