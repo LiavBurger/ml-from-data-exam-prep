@@ -6,6 +6,7 @@
   const NOTES = window.NOTES || {};
   const notesOf = t => NOTES[t.id] || { intro: t.intro || "", moves: [], hints: {} };
   const WALKS = window.WALKS || {};
+  const PRIMERS = window.PRIMERS || {};
   const TOPIC_NAMES = { "Regression": "regression", "Linear classification": "linclass", "Max-margin, SVM & kernels": "svm",
     "SVM": "svm", "Bayes": "bayes", "Clustering": "clustering", "GMM & EM": "gmm", "GMM": "gmm", "Decision trees": "trees", "Trees": "trees" };
   const KEY = "ml_examc_v1";
@@ -199,9 +200,11 @@
       <header class="page-h"><div class="kicker">Topic ${t.num}</div><h1>${esc(t.title)}</h1>
         <p class="lede">${t.blurb}</p>
         ${t.questions.length ? `<p>Open question 1 and work it part by part. Under each part, <b>Show next move</b> reveals the solution one small step at a time — try it on paper first, and reveal a move only when you need it.</p>` : (t.intro || "")}</header>
+      ${PRIMERS[t.id] ? `<section><h2 class="sec">Learn it first <span class="muted">— short cards from the lectures and homework, no exam questions; one at a time</span></h2><div class="primer" data-t="${t.id}"></div></section>` : ""}
       ${t.questions.length ? `<section><h2 class="sec">Questions <span class="muted">— in this order, each one start to finish</span></h2>${qs}</section>` : ""}
       ${notes ? `<section><details class="refnotes" ${openNoteIdx !== undefined ? "open" : ""}><summary>Reference notes <span class="muted">— optional, ${(N.moves || []).length} long notes; a move's <i>why?</i> links straight to the one you need</span></summary>
         ${N.intro ? `<div class="refintro">${N.intro}</div>` : ""}${notes}</details></section>` : ""}`;
+    const pbox = $("#main .primer"); if (pbox) primerShow(pbox, (state.primer || {})[t.id] || 0);
     math($("#main"));
     $("#main").querySelectorAll(".close-note").forEach(b => b.addEventListener("click", () => {
       const d = b.closest("details");
@@ -209,6 +212,38 @@
       d.scrollIntoView({ block: "start" });   // keep your place: land on the note's title, not further down the page
     }));
     if (openNoteIdx !== undefined) { const el = document.getElementById("note-" + openNoteIdx); if (el) el.scrollIntoView({ block: "start" }); }
+  }
+
+  // ── primer cards: learn the topic before the questions, one card at a time ─
+  function primerCard(c, i, n) {
+    return `<article class="pcard">
+      <div class="pcard-h"><span class="pnum">Card ${i + 1} of ${n}</span><h3>${c.title}</h3></div>
+      <div class="pwhat">${linkNotes(c.what)}</div>
+      ${c.formula ? `<div class="formula">${linkNotes(c.formula)}</div>` : ""}
+      ${c.remember ? `<div class="remember"><span class="rtag">🧠 Remember from class</span>${linkNotes(c.remember)}</div>` : ""}
+      ${c.example ? `<details class="more"><summary>Example <span class="muted">— ${esc(c.example.src)}</span></summary><div class="depth">${linkNotes(c.example.html)}</div></details>` : ""}
+      ${c.try ? `<div class="ptry"><div class="ptry-h">✍ Try it <span class="muted">— ${esc(c.try.src)}</span></div>${linkNotes(c.try.q)}
+        <details class="more"><summary>Show answer</summary><div class="depth">${linkNotes(c.try.a)}</div></details></div>` : ""}
+      ${c.mistakes ? `<details class="more"><summary>Classic mistakes</summary><div class="depth">${linkNotes(c.mistakes)}</div></details>` : ""}
+      ${(c.where || []).length ? `<p class="muted pwhere">Shows up in: ${c.where.map(esc).join(" · ")}</p>` : ""}
+    </article>`;
+  }
+  function primerShow(box, i) {
+    const cards = PRIMERS[box.dataset.t], n = cards.length;
+    i = Math.max(0, Math.min(i, n - 1));
+    state.primer = state.primer || {}; state.primer[box.dataset.t] = i; save();
+    box.innerHTML = `
+      <div class="pdots">${cards.map((c, k) => `<button class="pdot ${k === i ? "on" : ""} ${k < i ? "seen" : ""}" data-k="${k}" title="${esc(c.title.replace(/<[^>]+>|\\[()]/g, ""))}">${k + 1}</button>`).join("")}</div>
+      ${primerCard(cards[i], i, n)}
+      <div class="pnav">
+        <button class="linkbtn pprev" ${i ? "" : "disabled"}>← Previous</button>
+        ${i < n - 1 ? `<button class="primary pnext">Next card →</button>` : `<span class="muted">That's the whole topic — now the questions below, in order.</span>`}
+      </div>`;
+    math(box);
+    box.querySelectorAll(".pdot").forEach(b => b.onclick = () => { primerShow(box, +b.dataset.k); box.scrollIntoView({ block: "start" }); });
+    const pp = $(".pprev", box), pn = $(".pnext", box);
+    if (pp) pp.onclick = () => { primerShow(box, i - 1); box.scrollIntoView({ block: "start" }); };
+    if (pn) pn.onclick = () => { primerShow(box, i + 1); box.scrollIntoView({ block: "start" }); };
   }
 
   // ── question ─────────────────────────────────────────────────────────────

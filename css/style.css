@@ -190,7 +190,7 @@ details.more[open] > summary { margin-bottom: 4px; }
 .depth p { margin: 8px 0; }
 .depth ul, .depth ol { padding-left: 22px; margin: 6px 0; }
 .walk-ctrl { display: flex; flex-wrap: wrap; align-items: center; gap: 10px; margin-top: 12px; }
-.walk-ctrl .primary { font: inherit; font-weight: 700; padding: 7px 18px; border-radius: 20px; border: 1px solid var(--accent); background: var(--accent); color: #fff; cursor: pointer; }
+.walk-ctrl .primary, .pnav .primary { font: inherit; font-weight: 700; padding: 7px 18px; border-radius: 20px; border: 1px solid var(--accent); background: var(--accent); color: #fff; cursor: pointer; }
 .walk-ctrl .primary[hidden] { display: none; }
 .linkbtn { font: inherit; font-size: 13.5px; background: none; border: 1px solid var(--line); border-radius: 16px; color: var(--muted); padding: 3px 12px; cursor: pointer; }
 .linkbtn:hover { color: var(--accent-ink); border-color: var(--accent); }
@@ -238,3 +238,20 @@ a.sheetref { font-weight: 600; text-decoration: underline dotted; }
 .sizecheck p { margin: 4px 0; }
 .sizecheck .katex-display { margin: .4em 0; }
 .tag.sizetag { color: var(--muted); border: 1px solid currentColor; margin: 6px 0 2px; }
+
+/* primer cards (learn the topic first) */
+.primer { margin-bottom: 8px; }
+.pdots { display: flex; flex-wrap: wrap; gap: 6px; margin: 0 0 10px; }
+.pdot { width: 30px; height: 30px; border-radius: 50%; border: 1px solid var(--line); background: var(--panel); color: var(--muted); cursor: pointer; font: inherit; font-size: 13px; }
+.pdot.seen { color: var(--ink); border-color: var(--muted); }
+.pdot.on { background: var(--accent-soft); color: var(--accent-ink); border-color: var(--accent); font-weight: 700; }
+.pcard { background: var(--panel); border: 1px solid var(--accent); border-radius: 12px; padding: 14px 18px; box-shadow: var(--shadow); overflow-x: auto; }
+.pcard-h h3 { margin: 2px 0 8px; font-size: 20px; }
+.pnum { color: var(--muted); font-size: 13px; }
+.pwhat p { margin: 6px 0; font-size: 16.5px; }
+.pcard .formula { margin: 8px 0; overflow-x: auto; overflow-y: hidden; }
+.ptry { margin-top: 10px; border: 1px dashed var(--line); border-radius: 8px; padding: 6px 12px; }
+.ptry-h { font-weight: 700; }
+.pwhere { margin: 10px 0 0; font-size: 14px; }
+.linkbtn[disabled] { opacity: .4; cursor: default; }
+.pnav { display: flex; align-items: center; justify-content: space-between; gap: 12px; margin-top: 10px; }
