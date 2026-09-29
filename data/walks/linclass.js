@@ -131,6 +131,7 @@
         { line: R`<b>Read the signs</b> — 1.4, 0.8, 0.4 are positive: samples 1, 3, 5 → "1". −0.8, −1.6, −0.4 are negative: samples 2, 4, 6 → "0". Done.` },
       ],
       compare: R`Same as the official answer. It writes "samples 2, 4, 6–8 are 0", but 7–8 only appear in part 3: for this part it's 2, 4, 6.`,
+      slip: R`It says "samples 2, 4, 6–8 are 0", but this part has only samples 1–6. Samples 7 and 8 are added later, in part 3 (and sample 7, score 1.1, would be a "1" anyway). The right answer here: 1, 3, 5 → "1"; 2, 4, 6 → "0".`,
     },
 
     "2025B-q3.2": {

@@ -255,3 +255,7 @@ a.sheetref { font-weight: 600; text-decoration: underline dotted; }
 .pwhere { margin: 10px 0 0; font-size: 14px; }
 .linkbtn[disabled] { opacity: .4; cursor: default; }
 .pnav { display: flex; align-items: center; justify-content: space-between; gap: 12px; margin-top: 10px; }
+
+/* official-solution slips: loud, right on the solution */
+.sliptag { margin-left: 8px; font-size: 13px; font-weight: 700; color: var(--shaky-fg); background: var(--shaky-bg); border: 1px solid var(--shaky); border-radius: 12px; padding: 1px 8px; }
+.slipnote { margin: 8px 0; border: 2px solid var(--shaky); background: var(--shaky-bg); color: var(--ink); border-radius: 8px; padding: 6px 12px; }

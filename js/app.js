@@ -285,7 +285,7 @@
         <div class="reveals">
           ${extra.move && !WALKS[pid] ? `<details class="fm"><summary>Stuck? Show the first move</summary><p>${linkNotes(extra.move)}</p></details>` : ""}
           ${mine}
-          <details class="sol"><summary>Official solution</summary><div class="img">${img(m.sol, "official solution")}</div></details>
+          <details class="sol"><summary>Official solution${WALKS[pid] && WALKS[pid].slip ? ` <span class="sliptag">⚠ has a slip</span>` : ""}</summary>${WALKS[pid] && WALKS[pid].slip ? `<div class="slipnote"><b>⚠ Heads-up:</b> ${linkNotes(WALKS[pid].slip)}</div>` : ""}<div class="img">${img(m.sol, "official solution")}</div></details>
         </div>
         <div class="marks" data-id="${pid}">
           <span class="muted">After checking:</span>
