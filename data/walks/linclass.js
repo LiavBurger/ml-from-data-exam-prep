@@ -42,7 +42,7 @@
       start: R`<p>For each sample: \(\;w^\top x^{(i)} = \square\), so \(\;\hat y^{(i)} = \mathrm{sign}(\square) = \square\)</p>`,
       moves: [
         { line: R`<b>Scores with the final \(w = (-0.6, 0.6, 0.4, 0.2)\)</b> — each sample (with its 1) · \(w\): <div class="formula">\[Xw = (0.4,\ -0.8,\ 1.2,\ -0.8)\]</div>`,
-          size: R`\[\underbrace{X}_{\textstyle 4\times 4}\,\underbrace{w}_{\textstyle 4\times 1} = \underbrace{Xw}_{\textstyle 4\times 1}\]<p>4 samples × (1 + 3 features) · inner 4 = 4 ✓ · result 4×1 = one score per sample ✓</p><p>Row \(i\) of \(X\) is \(x^{(i)\top}\) (1×4), so \(X\) computes \(x^{(i)\top}w\) where part 1 wrote \(w^\top x^{(i)}\): (1×4)(4×1) = one number either way — a dot product doesn't care about order.</p><p>Careful: \(X\) is square here (4 samples, 4 knobs), so the sizes can't catch a rows/columns swap. Rows = samples.</p>`,
+          size: R`\[\underbrace{X}_{\textstyle 4\times 4}\,\underbrace{w}_{\textstyle 4\times 1} = \underbrace{Xw}_{\textstyle 4\times 1}\]<p>4 samples × (1 + 3 features) · inner 4 = 4 ✓ · result 4×1 = one score per sample ✓ · rows = samples</p>`,
           why: R`<div class="tw"><table><thead><tr><th>sample</th><th>· \(w = (-0.6, 0.6, 0.4, 0.2)\)</th><th>score</th></tr></thead><tbody>
 <tr><td>(1, 1, 1, 0)</td><td>−0.6 + 0.6 + 0.4 + 0</td><td>0.4</td></tr>
 <tr><td>(1, −1, 0, 2)</td><td>−0.6 − 0.6 + 0 + 0.4</td><td>−0.8</td></tr>
@@ -59,7 +59,7 @@
       point: R`LoR's loss multiplies by \(y\) and \(1 - y\), so the labels must be 0 and 1. Which colour gets the 1 doesn't matter.`,
       moves: [
         { line: R`<b>Labels must be 0 / 1</b> — the BCE loss multiplies by \(y\) and \(1 - y\) [sheet: Binary cross-entropy (BCE) loss]. So (a), −1 / 1, is out.`,
-          why: R`<p>One sample's loss is \(-[\,y\log\hat y + (1-y)\log(1-\hat y)\,]\). \(y = 1\) keeps only \(-\log\hat y\); \(y = 0\) keeps only \(-\log(1-\hat y)\). With \(y = -1\) they become −1 and 2, and the formula no longer means anything.</p>` },
+          why: R`<p>One sample's loss is \(-[\,y\log\hat y + (1-y)\log(1-\hat y)\,]\). \(y = 1\) keeps only \(-\log\hat y\); \(y = 0\) keeps only \(-\log(1-\hat y)\). So \(y\) and \(1 - y\) are on/off switches: exactly one log is on. With \(y = -1\) they become −1 and 2: both logs are on, one with a minus, so the loss drops below 0 (down to −∞ as \(\hat y \to 0\)). And a label −1 can never be matched: \(\sigma\) never outputs −1 (it's always between 0 and 1).</p>` },
         { line: R`<b>Either colour can be the 1</b> — the model then gives the probability of that colour. So (b) and (c) both work: answer <b>(d)</b>. Done.` },
       ],
       compare: R`The official answer is option d.`,
@@ -74,20 +74,9 @@
       moves: [
         { line: R`<b>Red = positive; split the probabilities by true colour</b> — then TP = reds with \(p \ge \tau\), FP = blues with \(p \ge \tau\): <div class="formula">\[\begin{aligned}\text{reds: }&0.4,\ 0.45,\ 0.55,\ 0.75,\ 0.9\\ \text{blues: }&0.15,\ 0.25,\ 0.35,\ 0.65,\ 0.85\end{aligned}\]</div>`,
           why: R`<p>The model gives \(P(\text{red})\), so red is the positive class. TP + FN = every red (caught or missed) = 5, and FP + TN = every blue = 5, at every threshold. So TPR = TP / 5 and FPR = FP / 5.</p>` },
-        { line: R`<b>Count for each \(\tau\)</b>, divide by 5: <div class="formula">\[\begin{array}{c|ccccc}\tau & 0.1&0.2&0.3&0.4&0.5\\ \hline \text{TP} & 5&5&5&5&3\\ \text{FP} & 5&4&3&2&2\\ \hline \text{TPR} & 1&1&1&1&0.6\\ \text{FPR} & 1&0.8&0.6&0.4&0.4\end{array}\]</div><div class="formula">\[\begin{array}{c|ccccc}\tau & 0.6&0.7&0.8&0.9&1\\ \hline \text{TP} & 2&2&1&1&0\\ \text{FP} & 2&1&1&0&0\\ \hline \text{TPR} & 0.4&0.4&0.2&0.2&0\\ \text{FPR} & 0.4&0.2&0.2&0&0\end{array}\]</div>`,
+        { line: R`<b>Count for each \(\tau\)</b>, divide by 5 — the full table (predicted positive = the \(x^{(i)}\) with \(p \ge \tau\), listed by \(i\)): <div class="formula">\[\begin{array}{c|l|cccc|cc}\tau & \text{pred. +} & \text{TP}&\text{FP}&\text{TN}&\text{FN} & \text{TPR}&\text{FPR}\\ \hline 0.1 & \text{all} & 5&5&0&0 & 1&1\\ 0.2 & 2\text{–}10 & 5&4&1&0 & 1&0.8\\ 0.3 & 3\text{–}10 & 5&3&2&0 & 1&0.6\\ 0.4 & 4\text{–}10 & 5&2&3&0 & 1&0.4\\ 0.5 & 4, 5, 7, 8, 10 & 3&2&3&2 & 0.6&0.4\\ 0.6 & 4, 5, 8, 10 & 2&2&3&3 & 0.4&0.4\\ 0.7 & 5, 8, 10 & 2&1&4&3 & 0.4&0.2\\ 0.8 & 5, 10 & 1&1&4&4 & 0.2&0.2\\ 0.9 & 10 & 1&0&5&4 & 0.2&0\\ 1 & \text{none} & 0&0&5&5 & 0&0\end{array}\]</div>`,
           why: R`<p><b>One in full, \(\tau = 0.5\):</b> reds \(\ge 0.5\): 0.55, 0.75, 0.9 → TP = 3, FN = 2. Blues \(\ge 0.5\): 0.65, 0.85 → FP = 2, TN = 3. TPR = 3/5 = 0.6, FPR = 2/5 = 0.4.</p>
-<p>The full table to write (the question wants the computations):</p>
-<div class="tw"><table><thead><tr><th>\(\tau\)</th><th>predicted positive</th><th>TP</th><th>FP</th><th>TN</th><th>FN</th></tr></thead><tbody>
-<tr><td>0.1</td><td>all ten</td><td>5</td><td>5</td><td>0</td><td>0</td></tr>
-<tr><td>0.2</td><td>all but \(x^{(1)}\)</td><td>5</td><td>4</td><td>1</td><td>0</td></tr>
-<tr><td>0.3</td><td>\(x^{(3)}, \dots, x^{(10)}\)</td><td>5</td><td>3</td><td>2</td><td>0</td></tr>
-<tr><td>0.4</td><td>\(x^{(4)}, \dots, x^{(10)}\)</td><td>5</td><td>2</td><td>3</td><td>0</td></tr>
-<tr><td>0.5</td><td>\(x^{(4)}, x^{(5)}, x^{(7)}, x^{(8)}, x^{(10)}\)</td><td>3</td><td>2</td><td>3</td><td>2</td></tr>
-<tr><td>0.6</td><td>\(x^{(4)}, x^{(5)}, x^{(8)}, x^{(10)}\)</td><td>2</td><td>2</td><td>3</td><td>3</td></tr>
-<tr><td>0.7</td><td>\(x^{(5)}, x^{(8)}, x^{(10)}\)</td><td>2</td><td>1</td><td>4</td><td>3</td></tr>
-<tr><td>0.8</td><td>\(x^{(5)}, x^{(10)}\)</td><td>1</td><td>1</td><td>4</td><td>4</td></tr>
-<tr><td>0.9</td><td>\(x^{(10)}\)</td><td>1</td><td>0</td><td>5</td><td>4</td></tr>
-<tr><td>1</td><td>none</td><td>0</td><td>0</td><td>5</td><td>5</td></tr></tbody></table></div>`,
+<p>"2–10" = \(x^{(2)}, \dots, x^{(10)}\). On paper, write the \(x^{(i)}\)'s out.</p>`,
           extra: [{ label: "the official \"predicted positive\" column has four slips", html: R`<p>Its counts and rates are right, but the lists are off at 0.2 (leaves out \(x^{(2)}\), 0.25), 0.3 (leaves out \(x^{(3)}\), 0.35), 0.4 (leaves out \(x^{(6)}\), 0.45) and 0.8 (lists \(x^{(8)}\), 0.75, instead of \(x^{(5)}\), 0.85). It also accepts "&gt;" instead of "≥", or blue as positive.</p>` }] },
         { line: R`<b>Draw it</b> — one point (FPR, TPR) per \(\tau\), joined in order: <div><svg viewBox="0 0 240 230" width="250" style="max-width:100%;height:auto" role="img" aria-label="ROC curve">
 <g fill="none" style="stroke:var(--line)" stroke-width="1"><line x1="76" y1="190" x2="76" y2="10"/><line x1="112" y1="190" x2="112" y2="10"/><line x1="148" y1="190" x2="148" y2="10"/><line x1="184" y1="190" x2="184" y2="10"/><line x1="220" y1="190" x2="220" y2="10"/><line x1="40" y1="154" x2="220" y2="154"/><line x1="40" y1="118" x2="220" y2="118"/><line x1="40" y1="82" x2="220" y2="82"/><line x1="40" y1="46" x2="220" y2="46"/><line x1="40" y1="10" x2="220" y2="10"/></g>
@@ -104,15 +93,22 @@
     "2025A-q4.5": {
       point: R`Every blank is named by the lines around it: the library called np, \(\sigma\) from the formula sheet, the scores that line 15 feeds into <code>sigmoid</code>, and the step that uses line 16's <code>grad</code>.`,
       moves: [
-        { line: R`<b>(1) and (2)</b> — the library imported as np is <code>numpy</code>. \(\sigma(z) = \frac{1}{1 + e^{-z}}\) in numpy: <code>1 / (1 + np.exp(-z))</code>.`,
-          why: R`<p>You don't need to know \(\sigma\) by heart: [sheet: Sigmoid function].</p>` },
-        { line: R`<b>(3) The scores</b> — line 15 puts <code>z</code> into sigmoid, so <code>z</code> = every sample's score \(w^\top x^{(i)}\): <code>X_with_bias @ w</code>.`,
-          size: R`<p><code>X_with_bias.shape</code> = (n, d + 1): one row per sample, the 1 + d features (part 1's table: (4, 4)). <code>w.shape</code> = (d + 1,) (line 11).</p>\[\underbrace{\texttt{X\_with\_bias}}_{\textstyle n\times(d+1)}\,\underbrace{w}_{\textstyle (d+1)\times 1} = \underbrace{z}_{\textstyle n\times 1}\]<p>inner d + 1 = d + 1 ✓ · one score per sample ✓ · <code>sigmoid</code> works entry by entry, so <code>y_hat</code> is (n,) like <code>y</code> ✓ (line 16 subtracts them)</p>`,
-          why: R`<p>Row \(i\) of <code>X_with_bias</code> is \((1, x^{(i)}_1, \dots)\); times \(w\) that's \(w_0 + w_1x^{(i)}_1 + \dots\) = sample \(i\)'s score. So <code>X_with_bias @ w</code> = one score per row (as in Regression, 2025-C Q1.3, move 2). It's <code>X_with_bias</code> because \(w\) includes \(w_0\) (line 11 makes \(w\) as long as a row of <code>X_with_bias</code>).</p>` },
+        { line: R`<b>(1)</b> — the library imported as np: <code>numpy</code>. <b>(2)</b> — \(\sigma(z) = \frac{1}{1 + e^{-z}}\), piece by piece:
+<div class="tw"><table><thead><tr><th>formula</th><th>code</th></tr></thead><tbody>
+<tr><td>\(e^{-z}\)</td><td><code>np.exp(-z)</code></td></tr>
+<tr><td>\(1 + (\dots)\)</td><td><code>1 + …</code></td></tr>
+<tr><td>\(\frac{1}{(\dots)}\)</td><td><code>1 / (…)</code></td></tr></tbody></table></div>
+→ <code>1 / (1 + np.exp(-z))</code>.`,
+          size: R`<p><code>z</code> = line 14's scores, one per sample: shape (n,), n = <code>X.shape[0]</code> = number of samples.</p><p><code>np.exp(-z)</code>, <code>1 + …</code> and <code>1 / …</code> all work entry by entry → (n,) = one probability per sample ✓ · <code>math.exp(-z)</code> takes only one number → error on an array ✗</p>`,
+          why: R`<p>You don't need to know \(\sigma\) by heart: [sheet: Sigmoid function]. numpy does it to every entry: with part 2's four scores, <code>z = np.array([0.4, -0.8, 1.2, -0.8])</code>, <code>1 / (1 + np.exp(-z))</code> = (0.60, 0.31, 0.77, 0.31).</p>` },
+        { line: R`<b>(3) The scores</b> — line 15 puts <code>z</code> into sigmoid, so <code>z</code> = every sample's score \(w^\top x^{(i)}\). \(w\) has one entry per column of <code>X_with_bias</code> (line 11), so: <code>X_with_bias @ w</code>.`,
+          size: R`<p><b>Line 8:</b> <code>np.ones((X.shape[0], 1))</code> = a column of n ones, (n, 1). <code>np.concatenate((ones, X), axis=1)</code> glues it in front of <code>X</code>, side by side → <code>X_with_bias</code>: (n, X.shape[1] + 1).</p><p><b>Line 11:</b> <code>np.zeros(X_with_bias.shape[1])</code> = a flat list of zeros, one per column → <code>w</code>: (X.shape[1] + 1,).</p><p><code>X_with_bias @ w</code>: (n, X.shape[1] + 1) @ (X.shape[1] + 1,) → (n,) = one score per sample ✓ · <code>X @ w</code>: inner X.shape[1] ≠ X.shape[1] + 1 ✗</p><p>With parts 3–4's table (10 samples, 2 features): <code>X_with_bias</code> (10, 3), <code>w</code> (3,), <code>z</code> (10,).</p>`,
+          why: R`<p>Row \(i\) of <code>X_with_bias</code> is \((1, x^{(i)}_1, \dots)\); times \(w\) that's \(w_0 + w_1x^{(i)}_1 + \dots\) = sample \(i\)'s score. So <code>X_with_bias @ w</code> = one score per row (as in Regression, 2025-C Q1.3, move 2).</p>` },
         { line: R`<b>(4) One step downhill</b> — current \(w\) minus step size × gradient: <code>w - eta * grad</code>. Done.`,
           remember: R`\[w \leftarrow w - \eta\,\nabla L(w)\]<p>One gradient-descent step. Not on the sheet. Here \(\eta\) is <code>eta</code>, \(\nabla L\) is <code>grad</code>.</p>`,
-          size: R`\[\underbrace{\texttt{X\_with\_bias.T}}_{\textstyle (d+1)\times n}\,\underbrace{(\hat y - y)}_{\textstyle n\times 1} = \underbrace{\texttt{grad}}_{\textstyle (d+1)\times 1}\]\[\underbrace{w}_{\textstyle (d+1)\times 1} - \eta\cdot\underbrace{\texttt{grad}}_{\textstyle (d+1)\times 1}\]<p>Line 16: inner n = n ✓ · <code>grad</code> has one entry per knob, like <code>w</code>, so the step subtracts entry by entry ✓</p>`,
-          why: R`<p>The gradient points uphill (where the loss grows), so minus a small step of it (<code>eta</code> × <code>grad</code>) lowers the loss (same step as \(\theta - 0.1\cdot\nabla J\) in Regression, 2025-C Q1.3). Line 16's <code>grad</code> is [sheet: BCE loss gradient] without the \(\frac1n\), which only rescales the step.</p>` },
+          size: R`<p>Line 16: <code>X_with_bias.T @ (y_hat - y)</code>: (X.shape[1] + 1, n) @ (n,) → (X.shape[1] + 1,) — inner n = n ✓</p><p><code>w - eta * grad</code>: (X.shape[1] + 1,) − (X.shape[1] + 1,) → same shape: one entry per knob, subtracted entry by entry ✓</p>`,
+          why: R`<p>The gradient points uphill (where the loss grows), so minus a small step of it (<code>eta</code> × <code>grad</code>) lowers the loss (same step as \(\theta - 0.1\cdot\nabla J\) in Regression, 2025-C Q1.3).</p>
+<p>Line 16's <code>grad</code> is [sheet: BCE loss gradient] without the \(\frac1n\) (which only rescales the step): the sheet's sum \(\sum_i(\sigma(w^\top x^{(i)}) - y_i)\,x^{(i)}\) is <code>X_with_bias.T @ (y_hat - y)</code>, because <code>X.T @ list</code> = \(\sum_i\) (entry \(i\) of the list) × (row \(i\) of <code>X</code>).</p>` },
       ],
       compare: R`Same four blanks as the official solution.`,
     },
@@ -122,7 +118,7 @@
       point: R`The table gives scores \(w^\top x\), not probabilities. \(\sigma(\text{score}) \ge \tfrac12\) exactly when the score \(\ge 0\), so the label is just the sign of the score.`,
       moves: [
         { line: R`<b>Predict 1 when \(\sigma \ge \tfrac12\)</b> — \(\sigma(0) = \tfrac12\) and \(\sigma\) only goes up, so \(\sigma(w^\top x) \ge \tfrac12\) exactly when \(w^\top x \ge 0\).`,
-          remember: R`\[\text{predict } 1 \iff P(Y = 1 \mid x) = \sigma(w^\top x) \ge \tfrac12\]<p>The ½ cut is from class. Not on the sheet: [sheet: Logistic regression posterior model] gives only the probability.</p>`,
+          remember: R`\[\text{predict } 1 \iff P(Y = 1 \mid x) = \sigma(w^\top x) \ge \tfrac12\]<p>The ½ cut is from class. Not on the sheet: [sheet: Logistic regression posterior model] gives only the probability.</p><p>The sheet's posterior is \(\sigma(w_0 + w^\top x)\), with \(w_0\) outside; here \(x_0^{(i)} = 1\) puts it inside \(w^\top x\).</p>`,
           size: R`\[\underbrace{w^\top}_{\textstyle 1\times(p+1)}\,\underbrace{x^{(i)}}_{\textstyle (p+1)\times 1} = \text{one number}\]<p>\(w \in \mathbb R^{p+1}\), and \(x^{(i)}\) has its \(x_0 = 1\) too · inner p + 1 = p + 1 ✓ · one score per sample: the table's column, 6 scores for 6 samples ✓</p>`,
           why: R`<p>\(\sigma(0) = \frac{1}{1 + e^0} = \frac12\) [sheet: Sigmoid function]. Bigger score → smaller \(e^{-t}\) → bigger \(\sigma\). So "above ½" = "score above 0". The grader gave 0 points for comparing the scores themselves with ½.</p>` },
         { line: R`<b>Read the signs</b> — 1.4, 0.8, 0.4 are positive: samples 1, 3, 5 → "1". −0.8, −1.6, −0.4 are negative: samples 2, 4, 6 → "0". Done.` },
@@ -134,7 +130,7 @@
       point: R`Separable means <b>some</b> line gets every sample right. The given \(w\) already does (part 1), so we have one.`,
       moves: [
         { line: R`<b>The given \(w\) gets all six right</b> — score \(\ge 0\) → "1" (part 1): the scores 1.4, −0.8, 0.8, −1.6, 0.4, −0.4 give 1, 0, 1, 0, 1, 0; the true labels are 1, 0, 1, 0, 1, 0.`,
-          remember: R`\[\hat y = 1 \iff \sigma(w^\top x) \ge \tfrac12 \iff w^\top x \ge 0\]<p>So LoR's decision boundary is the hyperplane \(w^\top x = 0\). Not on the sheet: [sheet: Logistic regression posterior model] gives only the probability.</p>` },
+          remember: R`\[\hat y = 1 \iff \sigma(w^\top x) \ge \tfrac12 \iff w^\top x \ge 0\]<p>So LoR's decision boundary is the hyperplane \(w^\top x = 0\). Not on the sheet: [sheet: Logistic regression posterior model] gives only the probability.</p><p>The sheet's posterior is \(\sigma(w_0 + w^\top x)\), with \(w_0\) outside; here \(x_0^{(i)} = 1\) puts it inside \(w^\top x\).</p>` },
         { line: R`<b>So its line separates them</b> — the hyperplane \(w^\top x = 0\) has every "1" on the + side and every "0" on the − side: <b>necessarily separable</b>. Done.` },
       ],
       compare: R`Same as the official answer: \(\{x : w^\top x = 0\}\) is a separating hyperplane.`,
@@ -144,24 +140,27 @@
       point: R`TPR = 1 and FPR = 0 just means zero mistakes. Changing \(w_0\) moves every score by the same amount, so if every positive scores above every negative, a shift of \(w_0\) fixes the one mistake.`,
       moves: [
         { line: R`<b>The one mistake</b> — sample 8 is a "0" with score \(0.2 > 0\): a false positive. Everything else is right.`,
-          remember: R`\[\hat y = 1 \iff \sigma(w^\top x) \ge \tfrac12 \iff w^\top x \ge 0\]<p>LoR's cut. Not on the sheet: [sheet: Logistic regression posterior model] gives only the probability.</p>`,
+          remember: R`\[\hat y = 1 \iff \sigma(w^\top x) \ge \tfrac12 \iff w^\top x \ge 0\]<p>LoR's cut. Not on the sheet: [sheet: Logistic regression posterior model] gives only the probability.</p><p>The sheet's posterior is \(\sigma(w_0 + w^\top x)\), with \(w_0\) outside; here \(x_0^{(i)} = 1\) puts it inside \(w^\top x\).</p>`,
           why: R`<p>TPR = TP / (TP + FN) is 1 only if FN = 0. FPR = FP / (FP + TN) is 0 only if FP = 0. So we need no missed "1" and no flagged "0".</p>` },
         { line: R`<b>Lowest "1" vs highest "0"</b> — the "1"s score 1.4, 0.8, 0.4, 1.1 (lowest <b>0.4</b>); the "0"s score −0.8, −1.6, −0.4, 0.2 (highest <b>0.2</b>). \(0.4 > 0.2\), so a cut at 0.3 splits them.` },
-        { line: R`<b>Shift \(w_0\)</b> — \(w_0' = w_0 - 0.3\), other weights the same: every score drops by 0.3. <div class="formula">\[\begin{aligned}\text{"1"s: }&1.1,\ 0.5,\ 0.1,\ 0.8 \;\gt 0\\ \text{"0"s: }&-1.1,\ -1.9,\ -0.7,\ -0.1 \;\lt 0\end{aligned}\]</div>So TPR = 4/4 = 1, FPR = 0/4 = 0: <b>yes</b>. Done.`,
+        { line: R`<b>Shift \(w_0\)</b> — \(w_0\) multiplies the 1 in every sample, so changing it moves every score equally → moves the cut. \(w_0' = w_0 - 0.3\), rest the same: <div class="formula">\[\begin{aligned}\text{"1"s: }&1.1,\ 0.5,\ 0.1,\ 0.8 \;\gt 0\\ \text{"0"s: }&-1.1,\ -1.9,\ -0.7,\ -0.1 \;\lt 0\end{aligned}\]</div>TPR = 4/4 = 1, FPR = 0/4 = 0: <b>yes</b>. Done.`,
           size: R`\[\underbrace{w'^\top}_{\textstyle 1\times(p+1)}\,\underbrace{x^{(i)}}_{\textstyle (p+1)\times 1} = w^\top x^{(i)} - 0.3\cdot\underbrace{x^{(i)}_0}_{\textstyle =1}\]<p>\(w'\) is \(w\) with only entry 0 changed, same size ✓ · still one score per sample, now 0.3 lower ✓</p>`,
-          why: R`<p>\(w_0\) is multiplied by the 1 in every sample, so \(w_0 - 0.3\) takes 0.3 off every score. The grader wants the new classifier named (\(w_0' = w_0 - 0.3\)), not just "yes".</p>` },
+          why: R`<p>\(w^\top x^{(i)} = w_0\cdot 1 + w_1x^{(i)}_1 + \dots\), so \(w_0 - 0.3\) takes 0.3 off every score. The grader wants the new classifier named (\(w_0' = w_0 - 0.3\)), not just "yes". Also accepted: "threshold 0.3 on the original scores" — the same classifier (score \(- 0.3 \ge 0\) ⟺ score \(\ge 0.3\)).</p>` },
       ],
       compare: R`Same classifier as the official answer: \(w_0' = w_0 - 0.3\), \(w_j' = w_j\).`,
     },
 
     "2025B-q3.4": {
-      point: R`Sample 9 (a "0") scores above sample 5 (a "1"), so no shift of this \(w\) can separate them. But we only see this one \(w\)'s scores, not the features, so a line in another direction might still work. We can't tell.`,
+      point: R`Two sides. This \(w\) (and every shift of \(w_0\)) fails: sample 9 (a "0") scores above sample 5 (a "1"). Every other \(w\) can't be checked: we only see this \(w\)'s scores, not the features. No working line, no proof there is none → insufficient information.`,
       moves: [
-        { line: R`<b>This \(w\) and its shifts fail</b> — sample 9 (a "0") scores 0.5, above the lowest "1" (sample 5, 0.4). Any cut below 0.4 keeps sample 9 on the "1" side.` },
-        { line: R`<b>Other lines — we can't check</b> — we only have this \(w\)'s scores, not the samples' features. So: <b>insufficient information</b>. Done.`,
-          why: R`<p>"Necessarily inseparable" is a claim about every line. One failing \(w\) (and its shifts) doesn't prove it — the grader gave only partial credit (≈ 3/5) for "inseparable".</p>` },
+        { line: R`<b>This \(w\) fails</b> — sample 9 is a "0" but scores 0.5 \(\ge 0\) → predicted "1".` },
+        { line: R`<b>Its shifts fail too</b> — shifting \(w_0\) moves every score equally, so sample 9 (0.5) stays above sample 5 (a "1", 0.4). A cut that keeps sample 5 a "1" also makes sample 9 a "1".`,
+          why: R`<p>Separating needs a cut \(c\) with every "1" \(\ge c\) and every "0" \(\lt c\): sample 5 needs \(c \le 0.4\), sample 9 needs \(c \gt 0.5\). Both at once is impossible.</p>` },
+        { line: R`<b>Other \(w\)'s — can't be checked</b> — we only have this \(w\)'s scores, not the samples' features, so we can't compute any other line's scores.` },
+        { line: R`<b>So</b> — no line that works, and no proof that none exists: <b>insufficient information</b>. Done.`,
+          why: R`<p>"Necessarily inseparable" is a claim about every line; one failing \(w\) (and its shifts) doesn't prove it — the grader gave only partial credit (≈ 3/5) for "inseparable". "Necessarily separable" would need a line that works, and we have none.</p>` },
       ],
-      compare: R`Same as the official answer: not separable by the given classifier or by adjusting \(w_0\), but another linear classifier may separate the data.`,
+      compare: R`Same as the official answer: not separable by the given classifier or by adjusting \(w_0\) (moves 1–2), but another linear classifier may separate the data (moves 3–4).`,
     },
 
     "2025B-q3.5": {
@@ -184,16 +183,24 @@
     "2025B-q3.6": {
       point: R`A kernel is just the dot product of mapped features, \(K(u, v) = \varphi(u)^\top\varphi(v)\). Pick the quadratic one: its features include \(x_1^2\) and \(x_2^2\), so the circle "\(x_1^2 + x_2^2 > 0.4\) → positive" is a line there: the data is separable (part 5), and the Perceptron always converges on separable data.`,
       start: R`<p>\(K(u, v) = \square\)</p>
-<p>It equals \(\varphi(u)^\top\varphi(v)\) for \(\;\varphi(x) = \square\)</p>
+<p><b>What I have</b> — \(K\) multiplied out: \(\;\square\)</p>
+<p><b>What it must look like:</b> \(\varphi(u)^\top\varphi(v)\) = (u-part)·(v-part) + (u-part)·(v-part) + …</p>
+<p><b>Answer:</b> \(\varphi(x) = \square\)</p>
 <p>In that space the data is □ (part 5), so the dual Perceptron □</p>`,
       moves: [
-        { line: R`<b>The kernel</b> — the quadratic kernel: <div class="formula">\[K(u, v) = (1 + u^\top v)^2\]</div>`,
+        { line: R`<b>The kernel</b> — part 5's rule needs \(x_1^2\) and \(x_2^2\) as features. Squaring \(u^\top v\) makes \(u_1^2v_1^2\) and \(u_2^2v_2^2\) appear, so take the quadratic kernel: <div class="formula">\[K(u, v) = (1 + u^\top v)^2\]</div>`,
           size: R`\[\underbrace{u^\top}_{\textstyle 1\times 2}\,\underbrace{v}_{\textstyle 2\times 1} = \text{one number}\]<p>\(u, v\) = two samples, 2 features each · inner 2 = 2 ✓ · so \(1 + u^\top v\) and its square are plain numbers: one \(K\) per pair of samples ✓</p>`,
           remember: R`\[K(u, v) = (1 + u^\top v)^2\]<p>The quadratic kernel from class; every kernel is \(K(u, v) = \varphi(u)^\top\varphi(v)\) for some \(\varphi\). Not on the sheet (neither is the dual Perceptron).</p>`,
-          why: R`<p>The dual Perceptron only uses dot products between samples; replacing each by \(K\) = running the Perceptron on \(\varphi(x)\) without building \(\varphi\).</p>` },
-        { line: R`<b>It's a dot product of quadratic features</b> — expand both sides, they match term by term: <div class="formula">\[\begin{aligned}(1 + u_1v_1 + u_2v_2)^2 = \;&1 + 2u_1v_1 + 2u_2v_2\\ &+ u_1^2v_1^2 + u_2^2v_2^2 + 2u_1u_2v_1v_2\end{aligned}\]</div><div class="formula">\[\varphi(x) = (1,\ \sqrt2x_1,\ \sqrt2x_2,\ x_1^2,\ x_2^2,\ \sqrt2x_1x_2)\]</div>`,
+          why: R`<p>Part 5: positive \(\iff -0.4 + x_1^2 + x_2^2 > 0\), so the features must include \(x_1^2, x_2^2\). \((u_1v_1 + u_2v_2)^2\) has \(u_1^2v_1^2 + u_2^2v_2^2\) in it: exactly those features, one from \(u\), one from \(v\). The dual Perceptron only uses dot products between samples; replacing each by \(K\) = running the Perceptron on \(\varphi(x)\) without building \(\varphi\).</p>`,
+          extra: [{ label: "can't remember a kernel? build one from part 5's φ", html: R`<p>A kernel is just \(\varphi(u)^\top\varphi(v)\). Part 5's \(\varphi(x) = (1,\ x_1^2 + x_2^2)\) gives:</p>
+\[K(u, v) = 1 + (u_1^2 + u_2^2)(v_1^2 + v_2^2)\]
+<p>It's a dot product of mapped features by construction, and part 5 showed the data is separable in that space → the dual Perceptron converges. With \(u = (0, 0.8)\), \(v = (0.2, 0.3)\): \(1 + 0.64\cdot 0.13 = 1.0832\) = \((1, 0.64)\cdot(1, 0.13)\) ✓.</p>
+<p>The official answer (and its grading) is built around \((1 + u^\top v)^2\), so use that when you remember it.</p>` }] },
+        { line: R`<b>Multiply it out</b> — what I have: <div class="formula">\[\begin{aligned}(1 + u_1v_1 + u_2v_2)^2 = \;&1 + 2u_1v_1 + 2u_2v_2\\ &+ u_1^2v_1^2 + u_2^2v_2^2 + 2u_1u_2v_1v_2\end{aligned}\]</div>`,
+          why: R`<p>\((a + b + c)^2 = a^2 + b^2 + c^2 + 2ab + 2ac + 2bc\) with \(a = 1\), \(b = u_1v_1\), \(c = u_2v_2\).</p>` },
+        { line: R`<b>Split each term into (u-part)·(v-part)</b> — \(\varphi(u)^\top\varphi(v)\) = entry × entry, added up, so each term must be (something of \(u\))·(the same thing of \(v\)): <div class="formula">\[\begin{array}{c|c|c}\text{term} & u\text{-part} & v\text{-part}\\ \hline 1 & 1 & 1\\ 2u_1v_1 & \sqrt2u_1 & \sqrt2v_1\\ 2u_2v_2 & \sqrt2u_2 & \sqrt2v_2\\ u_1^2v_1^2 & u_1^2 & v_1^2\\ u_2^2v_2^2 & u_2^2 & v_2^2\\ 2u_1u_2v_1v_2 & \sqrt2u_1u_2 & \sqrt2v_1v_2\end{array}\]</div>The u-parts listed = \(\varphi(u)\): <div class="formula">\[\varphi(x) = (1,\ \sqrt2x_1,\ \sqrt2x_2,\ x_1^2,\ x_2^2,\ \sqrt2x_1x_2)\]</div>`,
           size: R`\[\underbrace{\varphi(u)^\top}_{\textstyle 1\times 6}\,\underbrace{\varphi(v)}_{\textstyle 6\times 1} = (1 + u^\top v)^2\]<p>\(\varphi\) turns 2 features into 6 · inner 6 = 6 ✓ · one number, like the kernel ✓</p>`,
-          why: R`<p>\(\varphi(u)^\top\varphi(v)\), entry by entry: \(1\cdot 1\), \(\sqrt2u_1\cdot\sqrt2v_1 = 2u_1v_1\), \(\sqrt2u_2\cdot\sqrt2v_2 = 2u_2v_2\), \(u_1^2v_1^2\), \(u_2^2v_2^2\), \(\sqrt2u_1u_2\cdot\sqrt2v_1v_2 = 2u_1u_2v_1v_2\). The \(\sqrt2\)'s are only there to make the 2's.</p>`,
+          why: R`<p>The \(\sqrt2\)'s: \(2u_1v_1\) has to split into the same thing twice (once with \(u\), once with \(v\)), and \(\sqrt2\cdot\sqrt2 = 2\). The v-parts are the same list with \(v\): \(\varphi(v)\).</p>`,
           extra: [{ label: "check it with numbers (two points from the figure)", html: R`<p>\(u = (0, 0.8)\), \(v = (0.2, 0.3)\). Kernel: \(u^\top v = 0 + 0.24\), so \(K = 1.24^2 = 1.5376\).</p>
 <p>Expanded: \(1 + 0 + 2\cdot 0.24 + 0 + 0.64\cdot 0.09 + 0 = 1 + 0.48 + 0.0576 = 1.5376\). ✓</p>` }] },
         { line: R`<b>Separable there, so it converges</b> — this \(\varphi\) contains \(1, x_1^2, x_2^2\), so the circle rule \(-0.4 + x_1^2 + x_2^2 > 0\) (part 5) is a line in it: \(w = (-0.4, 0, 0, 1, 1, 0)\). The Perceptron converges on separable data. Done.`,
@@ -201,18 +208,21 @@
           size: R`\[\underbrace{w^\top}_{\textstyle 1\times 6}\,\underbrace{\varphi(x)}_{\textstyle 6\times 1} = -0.4 + x_1^2 + x_2^2\]<p>\(w\) needs one entry per entry of \(\varphi\): 6 here, not part 5's 2 · inner 6 = 6 ✓ · one number per sample ✓</p>`,
           why: R`<p>\(w^\top\varphi(x) = -0.4 + x_1^2 + x_2^2\): exactly part 5's rule. The grader: no full proof needed — the kernel plus "it's the dot product of the quadratic features" is enough.</p>` },
       ],
-      compare: R`Same kernel, expansion and argument as the official answer.`,
+      compare: R`Same kernel (move 1), expansion (move 2), \(\varphi\) (move 3) and convergence argument (move 4) as the official answer.`,
     },
 
     // ─────────────────────────────── 2026-B Q3 ───────────────────────────────
     "2026B-q3.1": {
       point: R`\(\Phi(0) = \tfrac12\) and \(\Phi\) only goes up, so \(\Phi(w^\top x) \ge \tfrac12\) exactly when \(w^\top x \ge 0\). The sign of the score is the whole answer — no integral.`,
+      start: R`<p>\(w = (w_0, w_1, w_2) = (\square, \square, \square)\)</p>
+<p>Sample 1: \(\;w^\top x = \square \lt 0 \;\Rightarrow\; \Phi(\square) \lt \Phi(0) = \tfrac12 \;\Rightarrow\;\) negative</p>
+<p>Sample 2: \(\;w^\top x = \square \gt 0 \;\Rightarrow\; \Phi(\square) \gt \Phi(0) = \tfrac12 \;\Rightarrow\;\) positive</p>`,
       moves: [
-        { line: R`<b>Scores with the bias</b> — \(w = (w_0, w_1, w_2) = (1, -1, 2)\): <div class="formula">\[\begin{aligned}\text{sample 1: }&1 - 1\cdot 2 + 2\cdot 0 = -1\\ \text{sample 2: }&1 - 1\cdot 0 + 2\cdot 1 = 3\end{aligned}\]</div>`,
+        { line: R`<b>Scores with the bias</b> — \(w\) has 3 numbers for 2 features, so the first is \(w_0\): \(w = (w_0, w_1, w_2) = (1, -1, 2)\): <div class="formula">\[\begin{aligned}\text{sample 1: }&1 - 1\cdot 2 + 2\cdot 0 = -1\\ \text{sample 2: }&1 - 1\cdot 0 + 2\cdot 1 = 3\end{aligned}\]</div>`,
           size: R`\[\underbrace{\begin{bmatrix}1&2&0\\1&0&1\end{bmatrix}}_{\textstyle 2\times 3}\underbrace{\begin{bmatrix}1\\-1\\2\end{bmatrix}}_{\textstyle 3\times 1} = \underbrace{\begin{bmatrix}-1\\3\end{bmatrix}}_{\textstyle 2\times 1}\]<p>2 samples × (1 + 2 features) · inner 3 = 3 ✓ · one score per sample ✓ · one row alone: \(w^\top x^{(i)}\) = (1×3)(3×1) = one number</p>` },
-        { line: R`<b>The sign decides</b> — \(\Phi\) is increasing with \(\Phi(0) = \tfrac12\), like \(\sigma\) in 2025-B Q3.1. So \(-1 \lt 0\): sample 1 <b>negative</b>; \(3 > 0\): sample 2 <b>positive</b>. Done.`,
-          remember: R`\[\text{positive} \iff \hat y_w(x) \ge \tfrac12\]<p>The ½ cut from class (in LoR: \(\sigma(w^\top x) \ge \tfrac12 \iff w^\top x \ge 0\)). Not on the sheet: [sheet: Logistic regression posterior model] gives only the probability. Here \(\Phi\) plays \(\sigma\)'s role.</p>`,
-          why: R`<p>\(\Phi(t)\) = area under the bell left of \(t\). The bell is symmetric, so half the area is left of 0: \(\Phi(0) = \tfrac12\). Moving \(t\) right adds area, so \(\Phi\) goes up.</p>`,
+        { line: R`<b>The sign decides</b> — the question: \(\hat y_w(x)\) is the probability of positive, so positive when \(\hat y \ge \tfrac12\). \(\Phi\) goes up and \(\Phi(0) = \tfrac12\): you never need a value like \(\Phi(-1)\), only which side of ½. <div class="formula">\[\begin{aligned}-1 \lt 0 &\Rightarrow \text{sample 1 negative}\\ 3 \gt 0 &\Rightarrow \text{sample 2 positive}\end{aligned}\]</div>Done.`,
+          remember: R`\[\text{positive} \iff \hat y_w(x) \ge \tfrac12\]<p>The ½ cut from class (in LoR: \(\sigma(w^\top x) \ge \tfrac12 \iff w^\top x \ge 0\)). Not on the sheet: [sheet: Logistic regression posterior model] gives only the probability. Here \(\Phi\) plays \(\sigma\)'s role.</p><p>The sheet's posterior is \(\sigma(w_0 + w^\top x)\), with \(w_0\) outside; here the question's \(w^\top x = w_0 + \sum_i w_ix_i\) already has it inside (a 1 in front of \(x\)).</p>`,
+          why: R`<p>\(\Phi(t)\) = area under the bell left of \(t\). The bell is symmetric, so half the area is left of 0: \(\Phi(0) = \tfrac12\). Moving \(t\) right adds area, so \(\Phi\) goes up. So \(\Phi(-1) \lt \Phi(0) = \tfrac12\) and \(\Phi(3) \gt \tfrac12\), whatever their exact values.</p>`,
           extra: [{ label: "your Moed B", html: R`<p>You had −1 and 3 right, then tried to integrate \(\Phi(-1)\) by hand and crossed it all out (0/4). The sign plus the sentence above was all four points.</p>` }] },
       ],
       compare: R`Same as the official solution: classification by \(\mathrm{sign}(w^\top x)\), scores −1 and 3.`,
@@ -223,10 +233,10 @@
       start: R`<p>With \(t_i = w^\top x^{(i)}\): \(\;\hat y_w(x^{(i)}) = \square\)</p>
 \[L(w) = -\frac1n\sum_{i=1}^n\Big[\;\square\;\Big]\]`,
       moves: [
-        { line: R`<b>What \(\hat y\) is here</b> — the model: \(\hat y_w(x^{(i)}) = \Phi(w^\top x^{(i)}) = \Phi(t_i)\).`,
+        { line: R`<b>What \(\hat y\) is here</b> — the model: \(\hat y_w(x^{(i)}) = \Phi(w^\top x^{(i)}) = \Phi(t_i)\). "Simplify with \(t_i\)" just means: write \(t_i\) instead of \(w^\top x^{(i)}\).`,
           size: R`\[\underbrace{w^\top}_{\textstyle 1\times(p+1)}\,\underbrace{x^{(i)}}_{\textstyle (p+1)\times 1} = \underbrace{t_i}_{\textstyle \text{number}}\]<p>\(w_0, \dots, w_p\) and \(x^{(i)}\) with its \(x_0 = 1\) · inner p + 1 = p + 1 ✓ · so \(\Phi(t_i)\) is one number per sample, and so is each log in \(L\) ✓</p>` },
         { line: R`<b>Put it in</b> — copy the printed BCE (the sheet's, with \(\Phi\) for \(\sigma\): [sheet: Binary cross-entropy (BCE) loss]) and replace every \(\hat y_w(x^{(i)})\) by \(\Phi(t_i)\): <div class="formula">\[\begin{aligned}L(w) = -\frac1n\sum_{i=1}^n\Big[\,&y_i\log\Phi(t_i)\\ &+ (1 - y_i)\log\big(1 - \Phi(t_i)\big)\Big]\end{aligned}\]</div>Done.`,
-          why: R`<p>Nothing simplifies further for \(\Phi\) (in your HW3, CLL's \(\log(1 - \gamma) = -e^{t}\) did).</p>` },
+          why: R`<p>Nothing else simplifies for \(\Phi\): this is the whole answer.</p>` },
       ],
       compare: R`Identical to the official solution.`,
     },
@@ -241,7 +251,7 @@
       moves: [
         { line: R`<b>The function</b> — part 2's answer: <div class="formula">\[\begin{aligned}L(w) = -\frac1n\sum_{i}\Big[\,&y_i\log\Phi(t_i)\\ &+ (1 - y_i)\log\big(1 - \Phi(t_i)\big)\Big]\end{aligned}\]</div>`,
           why: R`<p>One bracket per sample, each with two logs. \(y_i\) and \(1 - y_i\) are just numbers (0 or 1) in front; only the logs contain \(w\), through \(t_i = w_0 + w_1x^{(i)}_1 + \dots + w_px^{(i)}_p\).</p>` },
-        { line: R`<b>Derivative by one weight \(w_j\)</b> — each log: 1/(…) · (±\(\varphi(t_i)\)) · (the number in front of \(w_j\)), like \(\ln(x^2+3) \to \frac{1}{x^2+3}\cdot 2x\). Both share \(\varphi(t_i)\,x^{(i)}_j\), so pull it out: <div class="formula">\[\begin{aligned}\frac{\partial L}{\partial w_j} = -\frac1n\sum_{i}\,&\Big[\frac{y_i}{\Phi(t_i)} - \frac{1 - y_i}{1 - \Phi(t_i)}\Big]\\ &\cdot\varphi(t_i)\,x^{(i)}_j\end{aligned}\]</div>`,
+        { line: R`<b>Derivative by one weight \(w_j\)</b> — each log: 1/(…) · (±\(\varphi(t_i)\)) · (the number in front of \(w_j\)), like \(\ln(x^2+3) \to \frac{1}{x^2+3}\cdot 2x\). Before pulling out: <div class="formula">\[\begin{aligned}\frac{\partial L}{\partial w_j} = -\frac1n\sum_{i}\Big[&y_i\,\frac{\varphi(t_i)}{\Phi(t_i)}\,x^{(i)}_j\\ &- (1 - y_i)\,\frac{\varphi(t_i)}{1 - \Phi(t_i)}\,x^{(i)}_j\Big]\end{aligned}\]</div>Both share \(\varphi(t_i)\,x^{(i)}_j\) — pull it out: <div class="formula">\[\begin{aligned}\frac{\partial L}{\partial w_j} = -\frac1n\sum_{i}\,&\Big[\frac{y_i}{\Phi(t_i)} - \frac{1 - y_i}{1 - \Phi(t_i)}\Big]\\ &\cdot\varphi(t_i)\,x^{(i)}_j\end{aligned}\]</div>`,
           why: R`<p><b>Each log, by \(w_j\):</b></p>
 \[\frac{\partial}{\partial w_j}\log\Phi(t_i) = \frac{1}{\Phi(t_i)}\cdot\varphi(t_i)\cdot x^{(i)}_j\]
 \[\begin{aligned}&\frac{\partial}{\partial w_j}\log\big(1 - \Phi(t_i)\big)\\ &= \frac{1}{1 - \Phi(t_i)}\cdot\big(-\varphi(t_i)\big)\cdot x^{(i)}_j\end{aligned}\]
@@ -249,40 +259,59 @@
 <ul><li>\(\log(\dots) \to \frac{1}{(\dots)}\) — the derivative of \(\ln u\) is \(1/u\).</li>
 <li>\(\Phi(t_i) \to \varphi(t_i)\) — observation (1), given in the question. For the second log the inside is \(1 - \Phi(t_i)\), so its derivative is \(-\varphi(t_i)\).</li>
 <li>\(t_i \to x^{(i)}_j\) — \(t_i\) is a plain sum, so its derivative by \(w_j\) is the number in front of \(w_j\), as in Regression (2025-C Q1.2, move 2).</li></ul>
-<p><b>Put them in the sum</b> (\(y_i\) and \(1 - y_i\) ride along), before pulling out:</p>
-\[\begin{aligned}\frac{\partial L}{\partial w_j} = -\frac1n\sum_{i}\Big[&y_i\,\frac{\varphi(t_i)}{\Phi(t_i)}\,x^{(i)}_j\\ &- (1 - y_i)\,\frac{\varphi(t_i)}{1 - \Phi(t_i)}\,x^{(i)}_j\Big]\end{aligned}\]
+<p>\(y_i\) and \(1 - y_i\) are plain numbers in front: they ride along.</p>
 <p>Optional, extension sheet only: [sheet: Chain rule], [sheet: Derivative of loga (x)].</p>` },
-        { line: R`<b>Write it with matrices</b> — \(-\frac1n\) is a constant: out of the sum. The rest (entry × entry, added up) is a dot product; \([\dots]_i\) = move 2's bracket: <div class="formula">\[\begin{aligned}\frac{\partial L}{\partial w_j} &= \underbrace{\color{#e8912d}-\frac1n}_{\textstyle\color{#e8912d}\text{constant}}\sum_i x^{(i)}_j\cdot[\dots]_i\,\varphi(t_i)\\ &= -\frac1n\,X_j^\top\begin{bmatrix}[\dots]_1\,\varphi(t_1)\\ \vdots\\ [\dots]_n\,\varphi(t_n)\end{bmatrix}\end{aligned}\]</div>\(X_j\) = column \(j\) of \(X\).`,
-          size: R`\[\underbrace{X_j^\top}_{\textstyle 1\times n}\,\underbrace{\begin{bmatrix}[\dots]_1\,\varphi(t_1)\\ \vdots\\ [\dots]_n\,\varphi(t_n)\end{bmatrix}}_{\textstyle n\times 1} = \text{one number}\]<p>inner n = n ✓ · one number, like \(\frac{\partial L}{\partial w_j}\) ✓ · without the \(^\top\): (n×1)(n×1) — inner 1 ≠ n ✗</p>`,
-          why: R`<p>\(X_j\) = (sample 1's \(x_j\), sample 2's \(x_j\), …) — reading down column \(j\) of \(X\) (one row per sample, with the column of 1s in front). The list = (sample 1's \([\dots]_1\varphi(t_1)\), sample 2's, …). The sum multiplies them entry by entry and adds up: that's exactly a dot product, \(X_j^\top\cdot\) the list. For \(w_0\), \(X_0\) is the column of 1s.</p>
-<p><b>Why only the \(-\frac1n\) comes out:</b> only things without an \(i\) (the same for every sample) can go in front of \(\sum_i\). \(x^{(i)}_j\), the bracket \([\dots]_i\) and \(\varphi(t_i)\) change from sample to sample, so they can't; they get packed into lists instead (\(X_j\) and the list above), and the sum becomes the dot product of the two lists.</p>` },
-        { line: R`<b>From one weight to \(\nabla L\)</b> — stack move 3 for \(w_0, \dots, w_p\) (list = move 3's); only \(X_j\) changes, the rest is constant → out. \(X^\top\)(a list) = the hint's \(\sum_i z_i x^{(i)}\); \(z_i\) = what multiplies \(x^{(i)}\): <div class="formula">\[\begin{aligned}\nabla L &= \begin{bmatrix}-\frac1n X_0^\top(\text{list})\\ \vdots\\ -\frac1n X_p^\top(\text{list})\end{bmatrix}\\ &= \underbrace{\color{#e8912d}-\frac1n}_{\textstyle\color{#e8912d}\text{constant}}\;\underbrace{\begin{bmatrix}X_0^\top\\ \vdots\\ X_p^\top\end{bmatrix}}_{\textstyle X^\top}\;\underbrace{\color{#e8912d}\begin{bmatrix}[\dots]_1\,\varphi(t_1)\\ \vdots\\ [\dots]_n\,\varphi(t_n)\end{bmatrix}}_{\textstyle\color{#e8912d}\text{constant}}\\ &= \sum_i z_i\,x^{(i)}\end{aligned}\]</div><div class="formula">\[z_i = -\frac1n\Big[\frac{y_i}{\Phi(t_i)} - \frac{1 - y_i}{1 - \Phi(t_i)}\Big]\varphi(t_i)\]</div>`,
+        { line: R`<b>Write it with matrices</b> — \(-\frac1n\) is a constant: out of the sum. The rest (entry × entry, added up) is a dot product; \(t_i\) = entry \(i\) of \(Xw\): <div class="formula">\[\begin{aligned}\frac{\partial L}{\partial w_j} &= \underbrace{\color{#e8912d}-\frac1n}_{\textstyle\color{#e8912d}\text{constant}}\sum_i x^{(i)}_j\cdot(\dots)\,\varphi(t_i)\\ &= -\frac1n\,X_j^\top\,(\text{list})\end{aligned}\]</div><div class="formula">\[\text{list} = \begin{bmatrix}\vdots\\ \Big[\frac{y_i}{\Phi(t_i)} - \frac{1 - y_i}{1 - \Phi(t_i)}\Big]\varphi(t_i)\\ \vdots\end{bmatrix}\leftarrow\text{entry } i\]</div>\(X_j\) = column \(j\) of \(X\).`,
+          size: R`\[\underbrace{X_j^\top}_{\textstyle 1\times n}\,\underbrace{(\text{list})}_{\textstyle n\times 1} = \text{one number}\]<p>inner n = n ✓ · one number, like \(\frac{\partial L}{\partial w_j}\) ✓ · without the \(^\top\): (n×1)(n×1) — inner 1 ≠ n ✗</p>`,
+          why: R`<p>\(X_j\) = (sample 1's \(x_j\), sample 2's \(x_j\), …) — reading down column \(j\) of \(X\) (one row per sample, with the column of 1s in front). The list = (sample 1's \((\dots)\varphi(t_1)\), sample 2's, …). The sum multiplies them entry by entry and adds up: that's exactly a dot product, \(X_j^\top\cdot\) the list. For \(w_0\), \(X_0\) is the column of 1s.</p>
+<p><b>Why only the \(-\frac1n\) comes out:</b> only things without an \(i\) (the same for every sample) can go in front of \(\sum_i\). \(x^{(i)}_j\), the bracket and \(\varphi(t_i)\) change from sample to sample, so they can't; they get packed into lists instead (\(X_j\) and the list above), and the sum becomes the dot product of the two lists.</p>` },
+        { line: R`<b>From one weight to \(\nabla L\)</b> — stack move 3 for \(w_0, \dots, w_p\); only \(X_j\) changes, the rest is constant → out. \(X^\top\)(a list) = the hint's \(\sum_i z_i x^{(i)}\); \(z_i\) = what multiplies \(x^{(i)}\): <div class="formula">\[\begin{aligned}\nabla L &= \begin{bmatrix}-\frac1n X_0^\top(\text{list})\\ \vdots\\ -\frac1n X_p^\top(\text{list})\end{bmatrix}\\ &= \underbrace{\color{#e8912d}-\frac1n}_{\textstyle\color{#e8912d}\text{constant}}\;\underbrace{\begin{bmatrix}X_0^\top\\ \vdots\\ X_p^\top\end{bmatrix}}_{\textstyle X^\top}\;\underbrace{\color{#e8912d}(\text{list})}_{\textstyle\color{#e8912d}\text{constant}}\\ &= \sum_i z_i\,x^{(i)}\end{aligned}\]</div><div class="formula">\[z_i = -\frac1n\Big[\frac{y_i}{\Phi(t_i)} - \frac{1 - y_i}{1 - \Phi(t_i)}\Big]\varphi(t_i)\]</div>`,
           size: R`\[\underbrace{X^\top}_{\textstyle (p+1)\times n}\,\underbrace{z}_{\textstyle n\times 1} = \underbrace{\nabla L}_{\textstyle (p+1)\times 1} \qquad \underbrace{z_i}_{\text{number}}\,\underbrace{x^{(i)}}_{\textstyle (p+1)\times 1}\]<p>The \(p + 1\) rows \(X_j^\top\) (each 1×n) stacked = (p+1)×n = \(X^\top\) ✓ · inner n = n ✓ · one entry per knob, like \(w\) ✓ · the hint's way: a number × a sample, added over n samples → (p+1)×1 too ✓ · as code (part 4, blank 1): <code>X_b.T @ z</code></p><p>Wrong order: \(Xz\) = (n×(p+1))(n×1) — inner p + 1 ≠ n ✗</p>`,
           why: R`<p>The rows of \(X^\top\) are the columns of \(X\): row 0 = \(X_0^\top\), …, row \(p\) = \(X_p^\top\). The \(-\frac1n\) can go back inside the list: that's why it ends up in \(z_i\).</p>
-<p>Why \(X^\top z = \sum_i z_i x^{(i)}\): the <b>columns</b> of \(X^\top\) are the samples \(x^{(i)}\) (with their 1), and a matrix times a list = column 1 × entry 1 + column 2 × entry 2 + … = \(z_1x^{(1)} + z_2x^{(2)} + \dots\) That's the hint's form.</p>` },
+<p>Why \(X^\top z = \sum_i z_i x^{(i)}\): the <b>columns</b> of \(X^\top\) are the samples \(x^{(i)}\) (with their 1), and a matrix times a list = column 1 × entry 1 + column 2 × entry 2 + … = \(z_1x^{(1)} + z_2x^{(2)} + \dots\) That's the hint's form.</p>`,
+          extra: [{ label: "without matrices: match the sums", html: R`<p>Entry \(j\) of the hint's \(\sum_i z_i\,x^{(i)}\) is \(\sum_i z_i\,x^{(i)}_j\) (entry \(j\) of sample \(i\) is \(x^{(i)}_j\)).</p>
+<p>Move 2, with the \(-\frac1n\) moved inside the sum: \(\;\frac{\partial L}{\partial w_j} = \sum_i (\dots)\cdot x^{(i)}_j\), where \((\dots) = -\frac1n\Big[\frac{y_i}{\Phi(t_i)} - \frac{1 - y_i}{1 - \Phi(t_i)}\Big]\varphi(t_i)\).</p>
+<p>Both are "\(\sum_i\) (a number for sample \(i\)) \(\cdot\,x^{(i)}_j\)", for every \(j\). Match term by term: \(z_i\) = that \((\dots)\). Same \(z_i\) as above — moves 3–4 aren't needed for the points.</p>` }] },
         { line: R`<b>Group common terms</b> — one denominator; the minus flips \(y_i - \Phi\) into \(\Phi - y_i\): <div class="formula">\[z_i = \frac{\big(\Phi(t_i) - y_i\big)\,\varphi(t_i)}{n\,\Phi(t_i)\,\big(1 - \Phi(t_i)\big)}\]</div>That's the answer.`,
           why: R`<p>Write \(\Phi\) for \(\Phi(t_i)\):</p>
 \[\begin{aligned}\frac{y_i}{\Phi} - \frac{1 - y_i}{1 - \Phi} &= \frac{y_i(1 - \Phi) - (1 - y_i)\Phi}{\Phi(1 - \Phi)}\\ &= \frac{y_i - y_i\Phi - \Phi + y_i\Phi}{\Phi(1 - \Phi)}\\ &= \frac{y_i - \Phi}{\Phi(1 - \Phi)}\end{aligned}\]
 <p>With \(\sigma\) instead: \(\sigma' = \sigma(1 - \sigma)\) cancels the denominator and leaves \(z_i = \frac{\sigma(t_i) - y_i}{n}\) — that's [sheet: BCE loss gradient]. With \(\Phi\), nothing cancels.</p>`,
           extra: [{ label: "you've done this before (HW3 Q6)", html: R`<p>Your HW3 Q6 is the same derivation with \(\gamma\) for \(\Phi\) and \(\gamma' = e^t(1 - \gamma)\) for \(\varphi\): same common denominator, then only \(1 - \gamma\) cancelled, giving \(\frac{e^{t_i}(\gamma(t_i) - y_i)}{n\,\gamma(t_i)}\).</p>` }] },
       ],
-      compare: R`The official solution's lines match moves 2, 4 and 5: the two log derivatives and the combined sum (move 2 and its why?), \(z_i = -\frac1n[\dots]\varphi(t_i)\), and the grouped \(z_i\). It goes from the sum straight to \(\sum_i z_i x^{(i)}\) (move 3 is the step in between), and writes both forms of \(z_i\), one after the other.`,
+      compare: R`The official solution's lines match moves 2, 4 and 5: the two log derivatives (move 2's why?) and the combined sum (move 2), \(z_i = -\frac1n[\dots]\varphi(t_i)\), and the grouped \(z_i\). It goes from the sum straight to \(\sum_i z_i x^{(i)}\) (move 3 is the step in between), and writes both forms of \(z_i\), one after the other.`,
     },
 
     "2026B-q3.4": {
       point: R`Every blank is spelled out around it: the hint \(\sum_i z_i x^{(i)}\), <code>self.learning_rate</code>, <code>BCE_loss(X, y)</code> on this batch, and the comment "loss <b>change</b>".`,
       moves: [
-        { line: R`<b>(1) The hint's sum</b> — \(\sum_i z_i\,x^{(i)}\) over this batch's rows is \(X_b^\top z\): <code>X_b.T @ z</code>.`,
-          size: R`<p><code>X_b.shape</code> = (b, d): the batch's b rows (b = <code>batch_size</code>), d = <code>X.shape[1]</code> = one column per knob (<code>self.w_</code> has <code>X.shape[1]</code> entries). <code>z.shape</code> = (b,): one \(z_i\) per row.</p>\[\underbrace{\texttt{X\_b.T}}_{\textstyle d\times b}\,\underbrace{z}_{\textstyle b\times 1} = \underbrace{\texttt{grad}}_{\textstyle d\times 1}\]<p>inner b = b ✓ · one entry per knob, like <code>self.w</code> ✓</p><p>Wrong order: <code>X_b @ z</code> = (b, d) @ (b,) — inner d ≠ b ✗</p>`,
-          why: R`<p>\(\sum_i z_i\,x^{(i)} = z_1x^{(1)} + z_2x^{(2)} + \dots\): each row of \(X_b\) times its number \(z_i\), added up. The columns of \(X_b^\top\) are those rows, so \(X_b^\top z\) does exactly that (as in Regression, 2025-C Q1.2, move 4). You don't need part 3 for this.</p>` },
+        { line: R`<b>(1) The hint, piece by piece</b> — \(\sum_i z_i\,x^{(i)}\) in numpy:
+<div class="tw"><table><thead><tr><th>hint</th><th>code</th></tr></thead><tbody>
+<tr><td>\(z_i\)</td><td>entry \(i\) of <code>z</code></td></tr>
+<tr><td>\(x^{(i)}\)</td><td>row \(i\) of <code>X_b</code></td></tr>
+<tr><td>\(\sum_i\)</td><td>added over the batch's rows</td></tr></tbody></table></div>
+→ <code>X_b.T @ z</code>.`,
+          size: R`<p><code>X_b.shape</code> = (batch_size, X.shape[1]): one row per sample in the batch, one column per weight (<code>self.w_</code> has <code>X.shape[1]</code> entries).</p><p><code>z</code> = <code>probit_grad_coeffs(…)</code> = "the vector of \(z_i\)": flat, (batch_size,).</p><p><code>X_b.T @ z</code>: (X.shape[1], batch_size) @ (batch_size,) → (X.shape[1],) · inner batch_size = batch_size ✓ · one entry per weight, like <code>self.w</code> ✓</p><p>Wrong order: <code>X_b @ z</code> = (batch_size, X.shape[1]) @ (batch_size,) — inner X.shape[1] ≠ batch_size ✗</p>`,
+          why: R`<p><b>What the numpy pieces do:</b> <code>X_b.T</code> flips rows and columns, so the samples become columns. <code>@</code> with a flat list = column 1 × entry 1 + column 2 × entry 2 + … — exactly \(z_1x^{(1)} + z_2x^{(2)} + \dots\)</p>
+<p><b>With part 1's two samples</b> as the batch (with their 1 in front):</p>
+\[X_b = \begin{bmatrix}1&2&0\\1&0&1\end{bmatrix} \qquad X_b^\top = \begin{bmatrix}1&1\\2&0\\0&1\end{bmatrix}\]
+\[\begin{aligned}X_b^\top z &= (z_1 + z_2,\ 2z_1,\ z_2)\\ &= z_1\,(1, 2, 0) + z_2\,(1, 0, 1)\end{aligned}\]
+<p>= \(z_1\) × row 1 + \(z_2\) × row 2: the hint's sum ✓. You don't need part 3 for this.</p>` },
         { line: R`<b>(2) One step downhill</b> — weights minus learning rate × gradient: <code>self.w - self.learning_rate * grad</code>.`,
           remember: R`\[w \leftarrow w - \eta\,\nabla L(w)\]<p>One gradient-descent step. Not on the sheet. Here \(\eta\) is <code>self.learning_rate</code>, \(\nabla L\) is <code>grad</code>.</p>`,
-          size: R`\[\underbrace{\texttt{self.w}}_{\textstyle d\times 1} - \eta\cdot\underbrace{\texttt{grad}}_{\textstyle d\times 1}\]<p>\(\eta\) = <code>self.learning_rate</code>, a number · both (d,) — one entry per knob, so the step subtracts entry by entry ✓</p>`,
+          size: R`<p><code>self.learning_rate</code> is a number · <code>self.w</code> and <code>grad</code> are both (X.shape[1],) — one entry per weight, so the step subtracts entry by entry → (X.shape[1],) ✓</p>`,
           why: R`<p>The gradient points uphill (where the loss grows), so minus a small step of it lowers the loss; <code>self.learning_rate</code> sets the step size (same step as 2025-A Q4.5, blank 4).</p>` },
-        { line: R`<b>(3) The loss on this batch</b> — <code>BCE_loss(X, y)</code> evaluates \(L(w)\) on a dataset; give it the batch: <code>self.BCE_loss(X_b, y_b)</code>.`,
-          size: R`<p><code>X_b</code> (b, d) and <code>y_b</code> (b,): same b rows ✓ — the loss pairs row \(i\) with label \(i\). <code>BCE_loss(X, y_b)</code> would pair n rows with b labels ✗.</p>`,
-          why: R`<p>It takes the original labels <code>y_b</code> (like your HW3 <code>BCE_loss</code>, it converts to 0/1 inside).</p>` },
-        { line: R`<b>(4) Stop when the loss stops changing</b> — the comment says loss <b>change</b>: <code>abs(previous_loss - current_loss) &lt; self.eps</code>. Done.`,
+        { line: R`<b>(3) The loss on this batch</b> — we're inside the batch loop, so <code>X_b</code>. <code>BCE_loss(X, y)</code> names its labels <code>y</code>, like fit's original <code>y</code>; only <code>probit_grad_coeffs(y_prob, y01)</code> asks for <code>y01</code>. So: <code>self.BCE_loss(X_b, y_b)</code>.`,
+          size: R`<p><code>X_b</code> (batch_size, X.shape[1]) and <code>y_b</code> (batch_size,): same rows ✓ — the loss pairs row \(i\) with label \(i\). <code>BCE_loss(X, y_b)</code> would pair all <code>X.shape[0]</code> rows with batch_size labels ✗.</p>`,
+          why: R`<p>It sits right after this batch's step, next to <code>X_b</code>, <code>y_b</code>, <code>y01_b</code>. <code>y_b</code> = the batch's original labels, <code>y01_b</code> = the same labels as 0/1. <code>fit</code> builds <code>y_01</code> itself from <code>y</code> (<code>np.where(y == self.class_names[0], 0, 1)</code>), so a method that takes <code>y</code> gets the original labels and converts inside — like your HW3 <code>BCE_loss</code>.</p>` },
+        { line: R`<b>(4) Stop when the loss stops changing</b> — the comment, piece by piece:
+<div class="tw"><table><thead><tr><th>comment</th><th>code</th></tr></thead><tbody>
+<tr><td>early halting</td><td><code>if …: return</code> (given)</td></tr>
+<tr><td>loss change</td><td><code>previous_loss - current_loss</code></td></tr>
+<tr><td>small</td><td><code>&lt; self.eps</code></td></tr></tbody></table></div>
+→ <code>abs(previous_loss - current_loss) &lt; self.eps</code>. Done.`,
+          size: R`<p><code>previous_loss</code>, <code>current_loss</code>: one number each (<code>BCE_loss</code> returns one number) → <code>abs(…)</code> one number, compared with the number <code>self.eps</code> ✓</p>`,
+          why: R`<p><b>Why <code>abs</code>:</b> each batch is different samples, so the loss can go <b>up</b> from one batch to the next. Then the change is negative, and a negative number is always <code>&lt; self.eps</code> → it would stop wrongly. <code>abs</code> makes "small" mean small in either direction.</p>
+<p><b>Why <code>previous_loss = np.inf</code>:</b> on the first batch the change is <code>inf</code>, never <code>&lt; self.eps</code>, so it can't stop there.</p>`,
           extra: [{ label: "your Moed B", html: R`<p>You wrote <code>current_loss &lt; self.eps</code> — that tests the loss itself, not its change. Blanks 1–2 were empty and blank 3 stopped at <code>self.BCE_loss(</code>: 1/8.</p>` }] },
       ],
       compare: R`Same four blanks as the official solution. Its blank 2 writes <code>self.w_ = self.w - …</code> (the code creates <code>self.w_</code>, the question lists <code>self.w</code>); it's the same update either way.`,
