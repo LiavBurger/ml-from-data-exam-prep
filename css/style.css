@@ -259,3 +259,6 @@ a.sheetref { font-weight: 600; text-decoration: underline dotted; }
 /* official-solution slips: loud, right on the solution */
 .sliptag { margin-left: 8px; font-size: 13px; font-weight: 700; color: var(--shaky-fg); background: var(--shaky-bg); border: 1px solid var(--shaky); border-radius: 12px; padding: 1px 8px; }
 .slipnote { margin: 8px 0; border: 2px solid var(--shaky); background: var(--shaky-bg); color: var(--ink); border-radius: 8px; padding: 6px 12px; }
+
+.fig { margin: 10px 0; overflow-x: auto; }
+.fig svg { display: block; max-width: 100%; height: auto; }
