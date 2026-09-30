@@ -225,7 +225,7 @@
     },
 
     "2025B-q3.6": {
-      point: R`A kernel is just the dot product of mapped features, \(K(u, v) = \varphi(u)^\top\varphi(v)\). Pick the quadratic one: its features include \(x_1^2\) and \(x_2^2\), so the circle "\(x_1^2 + x_2^2 > 0.4\) → positive" is a line there: the data is separable (part 5), and the Perceptron always converges on separable data.`,
+      point: R`A kernel \(K(u, v)\) takes two samples, turns both into feature lists with \(\varphi\), and dots the two lists → one number: \(K(u, v) = \varphi(u)^\top\varphi(v)\) (step by step with numbers: move 1's first extra). Pick the quadratic one: its features include \(x_1^2\) and \(x_2^2\), so the circle "\(x_1^2 + x_2^2 > 0.4\) → positive" is a line there: the data is separable (part 5), and the Perceptron always converges on separable data.`,
       start: R`<p>\(K(u, v) = \square\)</p>
 <p><b>What I have</b> — \(K\) multiplied out: \(\;\square\)</p>
 <p><b>What it must look like:</b> \(\varphi(u)^\top\varphi(v)\) = (u-part)·(v-part) + (u-part)·(v-part) + …</p>
@@ -236,7 +236,15 @@
           size: R`\[\underbrace{u^\top}_{\textstyle 1\times 2}\,\underbrace{v}_{\textstyle 2\times 1} = \text{one number}\]<p>\(u, v\) = two samples, 2 features each · inner 2 = 2 ✓ · so \(1 + u^\top v\) and its square are plain numbers: one \(K\) per pair of samples ✓</p>`,
           remember: R`\[K(u, v) = (1 + u^\top v)^2\]<p>The quadratic kernel from class; every kernel is \(K(u, v) = \varphi(u)^\top\varphi(v)\) for some \(\varphi\). Not on the sheet (neither is the dual Perceptron).</p>`,
           why: R`<p>Part 5: positive \(\iff -0.4 + x_1^2 + x_2^2 > 0\), so the features must include \(x_1^2, x_2^2\). \((u_1v_1 + u_2v_2)^2\) has \(u_1^2v_1^2 + u_2^2v_2^2\) in it: exactly those features, one from \(u\), one from \(v\). The dual Perceptron only uses dot products between samples; replacing each by \(K\) = running the Perceptron on \(\varphi(x)\) without building \(\varphi\).</p>`,
-          extra: [{ label: "can't remember a kernel? build one from part 5's φ", html: R`<p>A kernel is just \(\varphi(u)^\top\varphi(v)\). Part 5's \(\varphi(x) = (1,\ x_1^2 + x_2^2)\) gives:</p>
+          extra: [{ label: "what's a kernel? step by step, with numbers", html: R`<p>Take two samples from the figure: \(u = (0, 0.8)\) and \(v = (0.2, 0.3)\), and part 5's map \(\varphi(x) = (1,\ x_1^2 + x_2^2)\).</p>
+<p><b>Step 1 — map both samples</b> (each becomes a list of features):</p>
+\[\varphi(u) = (1,\ 0 + 0.64) = (1,\ 0.64) \qquad \varphi(v) = (1,\ 0.04 + 0.09) = (1,\ 0.13)\]
+<p><b>Step 2 — dot the two lists</b> (entry × entry, add):</p>
+\[\varphi(u)^\top\varphi(v) = 1\cdot 1 + 0.64\cdot 0.13 = 1.0832\]
+<p>That one number is \(K(u, v)\). "Kernel = dot product of mapped features" means exactly these two steps.</p>
+<p><b>The shortcut:</b> a kernel is a formula that gives the same number <i>straight from \(u, v\)</i>, without building the lists. Here \(K(u, v) = 1 + (u_1^2 + u_2^2)(v_1^2 + v_2^2) = 1 + 0.64 \cdot 0.13 = 1.0832\) ✓ same.</p>
+<p><b>Why we want it:</b> the dual Perceptron never looks at a sample alone — it only ever computes dot products between two samples, \(x^{(i)\top}x^{(j)}\). Swap every one of them for \(K(x^{(i)}, x^{(j)})\) and it's the Perceptron running on the mapped data \(\varphi(x)\), without ever building \(\varphi(x)\). For big maps (like all quadratic terms) that's the whole point: \((1 + u^\top v)^2\) costs one dot product and one square.</p>` },
+                  { label: "can't remember a kernel? build one from part 5's φ", html: R`<p>A kernel is just \(\varphi(u)^\top\varphi(v)\). Part 5's \(\varphi(x) = (1,\ x_1^2 + x_2^2)\) gives:</p>
 \[K(u, v) = 1 + (u_1^2 + u_2^2)(v_1^2 + v_2^2)\]
 <p>It's a dot product of mapped features by construction, and part 5 showed the data is separable in that space → the dual Perceptron converges. With \(u = (0, 0.8)\), \(v = (0.2, 0.3)\): \(1 + 0.64\cdot 0.13 = 1.0832\) = \((1, 0.64)\cdot(1, 0.13)\) ✓.</p>
 <p>The official answer (and its grading) is built around \((1 + u^\top v)^2\), so use that when you remember it.</p>` }] },
