@@ -18,6 +18,8 @@
     catch (e) { return { marks: {}, code: {}, walk: {} }; }
   }
   let state = load();
+  state.walk = {}; // revealed steps are per visit: every question opens fully closed (learner: "Nothing should be open by default")
+  let lastQ = null;
   function save() { try { localStorage.setItem(KEY, JSON.stringify(state)); } catch (e) { /* private mode */ } }
 
   // ── helpers ──────────────────────────────────────────────────────────────
@@ -437,6 +439,7 @@
       const i = parts[2] === "note" ? noteIndex(parts[1], +parts[3]) : -1;
       renderSide(parts[1]); renderTopic(TOPICS.find(x => x.id === parts[1]), i >= 0 ? i : undefined);
     } else if (parts[0] === "q" && findQ(parts[1])) {
+      if (parts[1] !== lastQ) { state.walk = {}; lastQ = parts[1]; }
       renderSide(findQ(parts[1]).t.id); renderQuestion(parts[1], parts[2]);
     } else { renderSide(null); renderHome(); }
     if (!parts[2]) window.scrollTo(0, 0);
