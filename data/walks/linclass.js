@@ -187,6 +187,26 @@
           extra: [{ label: "check it with numbers", html: R`<div class="tw"><table><thead><tr><th>point (from the figure)</th><th>\(-0.4 + x_1^2 + x_2^2\)</th><th>side</th></tr></thead><tbody>
 <tr><td>farthest negative, \(r \approx 0.5\)</td><td>−0.4 + 0.25 = −0.15</td><td>−  ✓</td></tr>
 <tr><td>closest positive, \((0, 0.8)\)</td><td>−0.4 + 0.64 = 0.24</td><td>+  ✓</td></tr></tbody></table></div>` },
+                  { label: "the full-mapping solution, written out (r ≈ ½)", html: R`<p><b>1. What I see.</b> The negatives sit inside a circle around (0, 0) of radius about ½; the positives are outside it. So: positive \(\iff x_1^2 + x_2^2 > r^2\) with \(r \approx \tfrac12\), i.e. \(r^2 = 0.25\).</p>
+<p><b>2. The mapping</b> (this is what's graded):</p>
+\[\varphi(x_1, x_2) = (1,\ x_1,\ x_2,\ x_1^2,\ x_2^2,\ x_1x_2)\]
+<p><b>3. The weights</b> — one per entry of \(\varphi\): the number in front of each feature in "\(x_1^2 + x_2^2 - 0.25\)":</p>
+\[w = (-0.25,\ 0,\ 0,\ 1,\ 1,\ 0)\]
+<p><b>4. What the classifier computes</b> — \(w^\top\varphi(x)\) = multiply entry by entry, then add:</p>
+<div class="tw"><table><thead><tr><th>entry</th><th>\(w\)</th><th>\(\varphi(x)\)</th><th>\(w \times \varphi\)</th></tr></thead><tbody>
+<tr><td>1</td><td>−0.25</td><td>1</td><td>−0.25</td></tr>
+<tr><td>2</td><td>0</td><td>\(x_1\)</td><td>0</td></tr>
+<tr><td>3</td><td>0</td><td>\(x_2\)</td><td>0</td></tr>
+<tr><td>4</td><td>1</td><td>\(x_1^2\)</td><td>\(x_1^2\)</td></tr>
+<tr><td>5</td><td>1</td><td>\(x_2^2\)</td><td>\(x_2^2\)</td></tr>
+<tr><td>6</td><td>0</td><td>\(x_1x_2\)</td><td>0</td></tr>
+<tr><td colspan="3"><b>add them up</b></td><td>\(x_1^2 + x_2^2 - 0.25\)</td></tr></tbody></table></div>
+<p>So the classifier "predict positive iff \(w^\top\varphi(x) > 0\)" is exactly</p>
+\[x_1^2 + x_2^2 - 0.25 > 0 \iff x_1^2 + x_2^2 > 0.25 \iff \text{distance from } (0,0) > 0.5\]
+<p>= outside the circle → positive; inside → negative. That's the circle from step 1.</p>
+<p><b>5. Check with two points from the figure:</b> the centre (0, 0): \(0 + 0 - 0.25 = -0.25 < 0\) → negative ✓. The closest positive, about (0, 0.8): \(0 + 0.64 - 0.25 = 0.39 > 0\) → positive ✓.</p>
+<p><b>Conclusion to write:</b> "A single \(w\) on the features \(\varphi(x)\) separates the data, so the data is linearly separable in the transformed feature space."</p>
+<p class="muted">Size check: \(w\) and \(\varphi(x)\) have 6 entries each → \(w^\top\varphi(x)\) = (1×6)(6×1) = one number per sample ✓. (The negatives reach about 0.5, so a hair more, e.g. 0.55, is safer — ½ is what the official answer uses and is accepted.)</p>` },
                   { label: "why \"the more general quadratic variety\"? (pictures)", html: R`<p><b>1. The features decide which boundaries are possible.</b> A linear classifier on \(\varphi\) draws its boundary where \(w^\top\varphi(x) = 0\). With your map \(\varphi = (1,\ x_1^2 + x_2^2)\) that's</p>
 \[w_0 + w_1(x_1^2 + x_2^2) = 0 \;\Rightarrow\; x_1^2 + x_2^2 = -\tfrac{w_0}{w_1}\]
 <p>— always a circle <b>around (0, 0)</b>. The two weights can only change its radius. Nothing else.</p>
