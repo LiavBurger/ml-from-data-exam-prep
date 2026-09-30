@@ -505,7 +505,18 @@
 <ul><li>\(\frac{1}{\Phi(t_i)}\): the sheet's \(\frac1x\), with \(\Phi(t_i)\) in the place of \(x\).</li>
 <li>\(\varphi(t_i)\): the derivative of \(\Phi\), observation (1) in the question.</li>
 <li>\(x^{(i)}_j\): the derivative of the inside \(t_i = w_0 + w_1x^{(i)}_1 + \dots\) by \(w_j\) (the number in front of \(w_j\)).</li></ul>
-<p>Same as \(\ln(x^2 + 3) \to \frac{1}{x^2 + 3}\cdot 2x\): the \(\frac1x\) rule with \(x^2 + 3\) in the place of \(x\), times the inside's derivative \(2x\).</p>` }] },
+<p>Same as \(\ln(x^2 + 3) \to \frac{1}{x^2 + 3}\cdot 2x\): the \(\frac1x\) rule with \(x^2 + 3\) in the place of \(x\), times the inside's derivative \(2x\).</p>` },
+            { label: "where does the \\(x^{(i)}_j\\) come from? (with numbers)", html: R`<p><b>We derive by \(w_j\), not by \(t\).</b> Observation (1), \(\Phi' = \varphi\), is the derivative by \(t\). But \(\Phi\) never sees \(w_j\) directly: \(w_j\) only reaches it through the score \(t_i\). A chain:</p>
+\[w_j \;\to\; t_i \;\to\; \Phi(t_i) \;\to\; \log\Phi(t_i)\]
+<p>Each arrow gives one factor. \(x^{(i)}_j\) is the first arrow: how much \(t_i\) moves when \(w_j\) moves.</p>
+<p><b>With numbers</b> (part 1's sample 1, \(x_1 = 2,\ x_2 = 0\)):</p>
+\[t = w_0 + w_1\cdot 2 + w_2\cdot 0\]
+<p>· nudge \(w_1\) up by 0.01 → \(t\) goes up by \(2 \cdot 0.01\). So \(\partial t/\partial w_1 = 2 = x_1\).</p>
+<p>· nudge \(w_2\) → \(t\) doesn't move (it's multiplied by 0). So \(\partial t/\partial w_2 = 0 = x_2\).</p>
+<p>· nudge \(w_0\) → \(t\) goes up by 0.01. So \(\partial t/\partial w_0 = 1\) (the 1 in front).</p>
+<p>Always the number \(w_j\) is multiplied by in \(t_i\): that's \(x^{(i)}_j\).</p>
+<p><b>Then \(\Phi\):</b> when \(t\) moves by a little, \(\Phi(t)\) moves by \(\varphi(t)\) × that little. So nudging \(w_1\) by 0.01 moves \(\Phi(t)\) by \(\varphi(t)\cdot 2\cdot 0.01\): per unit of \(w_1\), \(\varphi(t)\cdot x_1\).</p>
+<p><b>And \(\varphi\)'s formula?</b> You never open it. \(\varphi(t_i)\) stays as it is in the answer; you're never asked to differentiate it. That's the question's "if you differentiate carefully, you won't need the 2nd observation".</p>` }] },
         { line: R`<b>Write it with matrices</b> — \(-\frac1n\) is a constant: out of the sum. The rest (entry × entry, added up) is a dot product; \(t_i\) = entry \(i\) of \(Xw\): <div class="formula">\[\begin{aligned}\frac{\partial L}{\partial w_j} &= \underbrace{\color{#e8912d}-\frac1n}_{\textstyle\color{#e8912d}\text{constant}}\sum_i x^{(i)}_j\cdot(\dots)\,\varphi(t_i)\\ &= -\frac1n\,X_j^\top\,(\text{list})\end{aligned}\]</div><div class="formula">\[\text{list} = \begin{bmatrix}\vdots\\ \Big[\frac{y_i}{\Phi(t_i)} - \frac{1 - y_i}{1 - \Phi(t_i)}\Big]\varphi(t_i)\\ \vdots\end{bmatrix}\leftarrow\text{entry } i\]</div>\(X_j\) = column \(j\) of \(X\).`,
           size: R`\[\underbrace{X_j^\top}_{\textstyle 1\times n}\,\underbrace{(\text{list})}_{\textstyle n\times 1} = \text{one number}\]<p>inner n = n ✓ · one number, like \(\frac{\partial L}{\partial w_j}\) ✓ · without the \(^\top\): (n×1)(n×1) — inner 1 ≠ n ✗</p>`,
           why: R`<p>\(X_j\) = (sample 1's \(x_j\), sample 2's \(x_j\), …) — reading down column \(j\) of \(X\) (one row per sample, with the column of 1s in front). The list = (sample 1's \((\dots)\varphi(t_1)\), sample 2's, …). The sum multiplies them entry by entry and adds up: that's exactly a dot product, \(X_j^\top\cdot\) the list. For \(w_0\), \(X_0\) is the column of 1s.</p>
