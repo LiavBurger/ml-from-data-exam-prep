@@ -349,6 +349,7 @@
 <p><b>"\(\Phi\) is the CDF of the standard normal, \(\Phi(t) = \int_{-\infty}^t \varphi(u)\,du\)"</b> → the integral is just the <i>definition</i>. You never compute it. In words: \(\varphi\) is the bell curve centred at 0, and \(\Phi(t)\) = the area under the bell to the left of \(t\). All you need is its shape:</p>
 <p>· far left (\(t\) very negative): almost no area → close to 0</p>
 <p>· at \(t = 0\): the bell is symmetric, so exactly half the area → \(\Phi(0) = \tfrac12\)</p>
+<p style="margin-left:1.2em"><i>Why symmetric? Read it off \(\varphi\)'s formula in the question: \(t\) only appears as \(t^2\), and \((-2)^2 = 2^2\), so \(\varphi(-2) = \varphi(2)\): same height at \(-t\) and \(t\). The left half mirrors the right half, so they have equal area. All the area together is 1 (it's a probability), so each half is ½. (Or from class: "standard normal" = mean 0, and the bell is centred on its mean.)</i></p>
 <p>· moving right always adds area → \(\Phi\) only goes up, towards 1</p>
 <p>That's the same shape as \(\sigma\) (\(\sigma(0) = \tfrac12\), goes up from 0 to 1).</p>
 <p><b>"\(\varphi\)", "probit function", "BCE loss"</b> → not used in part 1. \(\varphi\) is for part 3 (the derivative of \(\Phi\) is \(\varphi\)), BCE for parts 2–4.</p>
