@@ -107,7 +107,21 @@
 <tr><td>(1, 3, 1)</td><td>3 + 1 = 4</td><td>1</td><td>+1</td></tr>
 <tr><td>(1, −2, −2)</td><td>−2 − 2 = −4</td><td>−1</td><td>−1</td></tr>
 <tr><td>(1, −3, −1)</td><td>−3 − 1 = −4</td><td>−1</td><td>−1</td></tr></tbody></table></div>
-<p>Dividing by 4 doesn't move the line (same signs), it only makes the scores the right size.</p>` },
+<p>Dividing by 4 doesn't move the line (same signs), it only makes the scores the right size.</p>`,
+          extra: [{ label: "another way, no part 2 needed: solve score = label for every sample", html: R`<p>\(J = 0\) means every score equals its label. So just <b>write that down</b> for each sample, score \(= w_0 + w_1x_1 + w_2x_2\):</p>
+\[\begin{aligned}w_0 + 2w_1 + 2w_2 &= 1 &&\text{(sample 1)}\\ w_0 + 3w_1 + w_2 &= 1 &&\text{(sample 2)}\\ w_0 - 2w_1 - 2w_2 &= -1 &&\text{(sample 3)}\\ w_0 - 3w_1 - w_2 &= -1 &&\text{(sample 4)}\end{aligned}\]
+<p><b>Add samples 1 and 3:</b> the \(w_1, w_2\) parts cancel, \(2w_0 = 0\), so \(w_0 = 0\).</p>
+<p><b>Samples 1 and 2 with \(w_0 = 0\):</b> \(2w_1 + 2w_2 = 1\) and \(3w_1 + w_2 = 1\). The second gives \(w_2 = 1 - 3w_1\); put it in the first: \(2w_1 + 2 - 6w_1 = 1\), so \(w_1 = \tfrac14\) and \(w_2 = \tfrac14\).</p>
+<p><b>Check sample 4:</b> \(0 - \tfrac34 - \tfrac14 = -1\) ✓.</p>
+<p>All four hold, so every \((\dots) = 0\) and \(J = 0\), the lowest possible. If the equations had <b>no</b> solution, \(J = 0\) would be impossible and you'd use the normal equations (next box).</p>` },
+            { label: "the always-works way: the normal equations, like regression", html: R`<p>LMS = least squares with labels ±1, exactly the regression you already did. The minimum of \(\tfrac1n\|Xw - y\|^2\) is where the gradient is 0: \(X^\top X\,w = X^\top y\) (the \(\tfrac1n\) doesn't change where the minimum is).</p>
+<p>\(X\) = rows \((1, x_1, x_2)\), \(y = (1, 1, -1, -1)\):</p>
+\[X^\top X = \begin{bmatrix}4&0&0\\0&26&14\\0&14&10\end{bmatrix} \qquad X^\top y = \begin{bmatrix}0\\10\\6\end{bmatrix}\]
+<p>(entry by entry: count of samples 4, \(\sum x_1 = 0\), \(\sum x_1^2 = 26\), \(\sum x_1x_2 = 14\), \(\sum x_2^2 = 10\); \(\sum y = 0\), \(\sum x_1y = 10\), \(\sum x_2y = 6\).)</p>
+<p>First row: \(4w_0 = 0\), so \(w_0 = 0\). The rest is a 2×2 system:</p>
+\[\begin{aligned}26w_1 + 14w_2 &= 10\\ 14w_1 + 10w_2 &= 6\end{aligned} \;\Rightarrow\; w_1 = w_2 = \tfrac14\]
+<p>(Inverse of \(\begin{bmatrix}26&14\\14&10\end{bmatrix}\): determinant \(260 - 196 = 64\), so \(w_1 = \frac{10\cdot10 - 14\cdot6}{64} = \frac{16}{64}\), \(w_2 = \frac{-14\cdot10 + 26\cdot6}{64} = \frac{16}{64}\).)</p>
+<p>Same answer, more arithmetic, but no idea needed: it works even when \(J\) can't reach 0.</p>` }] },
         { line: R`<b>Every (…) is 0</b> — \(w^\top x^{(i)} - y^{(i)} = 0\) for all four samples, so \(J = 0\), the minimum. The LMS classifier is \(w = (0, \tfrac14, \tfrac14)\). Done.`,
           size: R`\[\underbrace{X}_{\textstyle 4\times 3}\,\underbrace{w}_{\textstyle 3\times 1} - \underbrace{y}_{\textstyle 4\times 1} = \underbrace{(0, 0, 0, 0)}_{\textstyle 4\times 1}\]<p>inner 3 = 3 ✓ · four scores minus four labels = four brackets, all 0 ✓</p><p>numpy: <code>X.shape</code> = (4, 3), <code>y.shape</code> = (4,), so <code>lstsq</code> returns shape (3,), one weight per knob ✓</p>`,
           extra: [{ label: "check it with numpy", html: R`<pre><code>np.linalg.lstsq(X, y, rcond=None)[0]
