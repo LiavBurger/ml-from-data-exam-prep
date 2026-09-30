@@ -215,7 +215,18 @@
 <tr><td>(−4, −5)</td><td>+</td><td>\(\sqrt{1.5^2 + 3.5^2} \approx 3.81\)</td></tr>
 <tr><td>(2, 2)</td><td>+</td><td>\(\sqrt{4.5^2 + 3.5^2} \approx 5.70\)</td></tr>
 <tr><td>(3, 1)</td><td>+</td><td>\(\sqrt{5.5^2 + 2.5^2} \approx 6.04\)</td></tr></tbody></table></div>
-<p>Anything between 0.71 and 3.81 works.</p>` },
+<p>Anything between 0.71 and 3.81 works.</p>`,
+          extra: [{ label: "the circle formula, and why −r²", html: R`<p><b>A circle</b> = all points at distance exactly \(r\) from the centre \((a, b)\).</p>
+<p><b>Distance from a point \((x_1, x_2)\) to the centre</b> (Pythagoras: across \(x_1 - a\), up \(x_2 - b\)):</p>
+\[\text{distance}^2 = (x_1 - a)^2 + (x_2 - b)^2\]
+<p><b>On the circle:</b> distance \(= r\), so distance² \(= r^2\), so</p>
+\[(x_1 - a)^2 + (x_2 - b)^2 - r^2 = 0\]
+<p><b>The − r² turns it into a score whose sign says inside or outside</b>, just like \(w^\top x\) for a line:</p>
+<p>· inside: distance² smaller than \(r^2\) → negative</p>
+<p>· outside: distance² bigger than \(r^2\) → positive</p>
+<p>· on the circle: 0 (the boundary)</p>
+<p><b>With numbers</b> (centre \((-2.5, -1.5)\), \(r = 1\)): \((-2, -2)\): \(0.5^2 + 0.5^2 - 1 = -0.5\) → inside, negative ✓. \((2, 2)\): \(4.5^2 + 3.5^2 - 1 = 31.5\) → outside, positive ✓.</p>
+<p><b>Why squared and not "distance − r"?</b> Same sign (both sides are positive, so squaring keeps the order), but no square root. That matters: squares expand into the features \(1, x_1, x_2, x_1^2, x_2^2\), a square root doesn't.</p>` }] },
         { line: R`<b>Expand the circle, select the pieces</b> — orange = numbers, blue = features: <div class="formula">\[\begin{aligned}&(x_1 + 2.5)^2 + (x_2 + 1.5)^2 - 1^2\\ &= \textcolor{#e8912d}{7.5}\cdot\textcolor{#4c8dff}{1} + \textcolor{#e8912d}{5}\,\textcolor{#4c8dff}{x_1} + \textcolor{#e8912d}{3}\,\textcolor{#4c8dff}{x_2} + \textcolor{#e8912d}{1}\,\textcolor{#4c8dff}{x_1^2} + \textcolor{#e8912d}{1}\,\textcolor{#4c8dff}{x_2^2}\end{aligned}\]</div><div class="formula">\[\textcolor{#4c8dff}{\varphi(x) = (1, x_1, x_2, x_1^2, x_2^2)}\]</div><div class="formula">\[\textcolor{#e8912d}{w = (7.5, 5, 3, 1, 1)}\]</div>`,
           size: R`\[\underbrace{w^\top}_{\textstyle 1\times 5}\,\underbrace{\varphi(x)}_{\textstyle 5\times 1} = \text{one score}\]<p>\(\varphi\) has 5 entries, so \(w\) needs 5 weights: inner 5 = 5 ✓ · one number ✓. The 2-long \(x\) only goes in through \(\varphi\): \(w^\top x\) = (1×5)(2×1) ✗</p>`,
           extra: [{ label: "why no \\(x_1x_2\\) here, when 2025-B Q3.6's φ had one?", html: R`<p><b>You only need the features your curve's formula actually uses.</b> Expand the circle: \((x_1 - a)^2\) gives \(x_1^2, x_1, 1\), and \((x_2 - b)^2\) gives \(x_2^2, x_2, 1\). Each square has only <b>one</b> of the two variables inside, so nothing ever multiplies \(x_1\) by \(x_2\). No \(x_1x_2\) term → no \(x_1x_2\) feature needed.</p>
