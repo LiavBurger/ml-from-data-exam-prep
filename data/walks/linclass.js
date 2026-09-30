@@ -225,45 +225,27 @@
     },
 
     "2025B-q3.6": {
-      point: R`You don't need to know a kernel in advance. Start from the features you need (part 5's full quadratic \(\varphi\)). A kernel is \(\varphi(u)^\top\varphi(v)\), so <b>write that dot product out — that's already a valid \(K\)</b>. Then (optional) spot that it's almost \((1 + u^\top v)^2\). It converges because the data is separable after \(\varphi\) (part 5).`,
-      start: R`<p><b>Features I need</b> (part 5): \(\varphi(x) = \square\)</p>
-<p><b>Kernel = dot product of the two lists:</b> \(K(u, v) = \varphi(u)^\top\varphi(v) = \square\)</p>
-<p><b>Why it converges:</b> in \(\varphi\)-space the data is □ (part 5), so the dual Perceptron □</p>`,
+      point: R`Take part 5's full quadratic features. The kernel is just their dot product, \(K(u, v) = \varphi(u)^\top\varphi(v)\). The data is separable in those features (part 5), so the Perceptron converges.`,
+      start: R`<p><b>Features:</b> \(\varphi(x) = \square\)</p>
+<p><b>Kernel:</b> \(K(u, v) = \varphi(u)^\top\varphi(v) = \square\)</p>
+<p><b>Converges because:</b> □</p>`,
       moves: [
-        { line: R`<b>Pick the features</b> — part 5: the full quadratic map separates the data (\(w = (-0.25, 0, 0, 1, 1, 0)\), the circle \(r \approx \tfrac12\)): <div class="formula">\[\varphi(x) = (1,\ x_1,\ x_2,\ x_1^2,\ x_2^2,\ x_1x_2)\]</div>`,
-          remember: R`\[K(u, v) = \varphi(u)^\top\varphi(v)\]<p>A kernel = map both samples, dot the two lists. Not on the sheet (neither is the dual Perceptron).</p>`,
-          size: R`\[\underbrace{w^\top}_{\textstyle 1\times 6}\,\underbrace{\varphi(x)}_{\textstyle 6\times 1} = x_1^2 + x_2^2 - 0.25\]<p>2 features in, 6 out · one weight per feature ✓</p>`,
-          extra: [{ label: "what's a kernel? step by step, with numbers", html: R`<p>Take two samples from the figure: \(u = (0, 0.8)\) and \(v = (0.2, 0.3)\), and part 5's map \(\varphi(x) = (1,\ x_1^2 + x_2^2)\).</p>
-<p><b>Step 1 — map both samples</b> (each becomes a list of features):</p>
-\[\varphi(u) = (1,\ 0 + 0.64) = (1,\ 0.64) \qquad \varphi(v) = (1,\ 0.04 + 0.09) = (1,\ 0.13)\]
-<p><b>Step 2 — dot the two lists</b> (entry × entry, add):</p>
-\[\varphi(u)^\top\varphi(v) = 1\cdot 1 + 0.64\cdot 0.13 = 1.0832\]
-<p>That one number is \(K(u, v)\). "Kernel = dot product of mapped features" means exactly these two steps.</p>
-<p><b>The shortcut:</b> a kernel is a formula that gives the same number <i>straight from \(u, v\)</i>, without building the lists. Here \(K(u, v) = 1 + (u_1^2 + u_2^2)(v_1^2 + v_2^2) = 1 + 0.64 \cdot 0.13 = 1.0832\) ✓ same.</p>
-<p><b>Why we want it:</b> the dual Perceptron never looks at a sample alone — it only ever computes dot products between two samples, \(x^{(i)\top}x^{(j)}\). Swap every one of them for \(K(x^{(i)}, x^{(j)})\) and it's the Perceptron running on the mapped data \(\varphi(x)\), without ever building \(\varphi(x)\). For big maps (like all quadratic terms) that's the whole point: \((1 + u^\top v)^2\) costs one dot product and one square.</p>` }] },
-        { line: R`<b>Kernel = dot the two lists</b> — entry × entry, added up:
-<div class="tw"><table><thead><tr><th>\(\varphi(u)\)</th><th>\(\varphi(v)\)</th><th>product</th></tr></thead><tbody>
+        { line: R`<b>Features</b> — part 5's full quadratic map (it separates the data): <div class="formula">\[\varphi(x) = (1,\ x_1,\ x_2,\ x_1^2,\ x_2^2,\ x_1x_2)\]</div>` },
+        { line: R`<b>Kernel</b> — dot the two lists, entry × entry, added up: <div class="formula">\[\begin{aligned}K(u, v) = \;&1 + u_1v_1 + u_2v_2\\ &+ u_1^2v_1^2 + u_2^2v_2^2 + u_1u_2v_1v_2\end{aligned}\]</div>`,
+          remember: R`\[K(u, v) = \varphi(u)^\top\varphi(v)\]<p>A kernel = map both samples, dot the lists. From class: \((1 + u^\top v)^2\) gives these same six features (with \(\sqrt2\)'s) — writing that also gets full points. Not on the sheet.</p>`,
+          size: R`\[\underbrace{\varphi(u)^\top}_{\textstyle 1\times 6}\,\underbrace{\varphi(v)}_{\textstyle 6\times 1} = \text{one number}\]<p>one number per pair of samples ✓</p>`,
+          extra: [{ label: "the dot product, entry by entry", html: R`<div class="tw"><table><thead><tr><th>\(\varphi(u)\)</th><th>\(\varphi(v)\)</th><th>product</th></tr></thead><tbody>
 <tr><td>\(1\)</td><td>\(1\)</td><td>\(1\)</td></tr>
 <tr><td>\(u_1\)</td><td>\(v_1\)</td><td>\(u_1v_1\)</td></tr>
 <tr><td>\(u_2\)</td><td>\(v_2\)</td><td>\(u_2v_2\)</td></tr>
 <tr><td>\(u_1^2\)</td><td>\(v_1^2\)</td><td>\(u_1^2v_1^2\)</td></tr>
 <tr><td>\(u_2^2\)</td><td>\(v_2^2\)</td><td>\(u_2^2v_2^2\)</td></tr>
-<tr><td>\(u_1u_2\)</td><td>\(v_1v_2\)</td><td>\(u_1u_2v_1v_2\)</td></tr></tbody></table></div>
-<div class="formula">\[\begin{aligned}K(u, v) = \;&1 + u_1v_1 + u_2v_2\\ &+ u_1^2v_1^2 + u_2^2v_2^2 + u_1u_2v_1v_2\end{aligned}\]</div>Already a correct kernel.`,
-          size: R`\[\underbrace{\varphi(u)^\top}_{\textstyle 1\times 6}\,\underbrace{\varphi(v)}_{\textstyle 6\times 1} = \text{one number}\]<p>6 = 6 ✓ · one number per pair of samples, like every kernel ✓</p>`,
-          why: R`<p>It's a function of \(u, v\) only (clearly defined ✓), and it is the dot product of the quadratic features by construction — exactly what the question asks for.</p>`,
-          extra: [{ label: "check it with numbers (two points from the figure)", html: R`<p>\(u = (0, 0.8)\), \(v = (0.2, 0.3)\): \(\varphi(u) = (1, 0, 0.8, 0, 0.64, 0)\), \(\varphi(v) = (1, 0.2, 0.3, 0.04, 0.09, 0.06)\).</p><p>Dot: \(1 + 0 + 0.24 + 0 + 0.0576 + 0 = 1.2976\). Formula: \(1 + 0 + 0.24 + 0 + 0.64\cdot 0.09 + 0 = 1.2976\) ✓</p>` }] },
-        { line: R`<b>(Optional) make it short</b> — it looks like a squared sum. \((1 + u^\top v)^2\) multiplied out has the <b>same six terms</b>, three with a 2: <div class="formula">\[\begin{aligned}(1 + u_1v_1 + u_2v_2)^2 = \;&1 + 2u_1v_1 + 2u_2v_2\\ &+ u_1^2v_1^2 + u_2^2v_2^2 + 2u_1u_2v_1v_2\end{aligned}\]</div>Put \(\sqrt2\) on those three features: \(\varphi'(x) = (1, \sqrt2x_1, \sqrt2x_2, x_1^2, x_2^2, \sqrt2x_1x_2)\) gives exactly \((1 + u^\top v)^2\).`,
-          remember: R`\[K(u, v) = (1 + u^\top v)^2\]<p>The quadratic kernel from class (lecture ML08a, "Polynomial Kernels") = the dot product of <b>all quadratic features</b> (with \(\sqrt2\)'s). Degree \(r\): \((1 + u^\top v)^r\). The official answer expects this one — writing it + "it's the dot product of the quadratic features" gets full points. Not on the sheet.</p>`,
-          why: R`<p><b>How you'd spot it:</b> your sum is "1 + every \(u_iv_i\) + every square + every cross term" — that's the pattern of a squared sum: \((a + b + c)^2 = a^2 + b^2 + c^2 + 2ab + 2ac + 2bc\), here with \(a = 1\), \(b = u_1v_1\), \(c = u_2v_2\).</p>
-<p><b>Where the \(\sqrt2\)'s come from:</b> a term \(2u_1v_1\) must be (something of \(u\))·(the same thing of \(v\)): \((\sqrt2u_1)(\sqrt2v_1)\), since \(\sqrt2\cdot\sqrt2 = 2\).</p>
-<p><b>Why that's allowed:</b> multiplying a feature by \(\sqrt2\) doesn't change what's separable — the weight on it just gets divided by \(\sqrt2\). Same six features, same shapes. (The official answer uses \((1 + u^\top v)^2\); either kernel gets the points.)</p>`,
-          extra: [{ label: "check it with numbers", html: R`<p>\(u = (0, 0.8)\), \(v = (0.2, 0.3)\): \(u^\top v = 0.24\), so \((1 + 0.24)^2 = 1.5376\).</p><p>With \(\varphi'\): \(1 + 2\cdot 0 + 2\cdot 0.24 + 0 + 0.64\cdot 0.09 + 2\cdot 0 = 1 + 0.48 + 0.0576 = 1.5376\) ✓ — different from move 2's 1.2976 only because of the 2's.</p>` }] },
-        { line: R`<b>Why it converges</b> — the dual Perceptron with \(K\) = the Perceptron on \(\varphi(x)\). Part 5: in \(\varphi\)-space the data is linearly separable (\(w = (-0.25, 0, 0, 1, 1, 0)\)). The Perceptron converges on separable data. Done.`,
-          remember: R`<p><b>The Perceptron converges (with a small enough learning rate) iff the data is linearly separable</b> — here: separable after \(\varphi\).</p><p>Not on the sheet.</p>`,
-          why: R`<p>\(w^\top\varphi(x) = -0.25 + x_1^2 + x_2^2\) = part 5's circle, so it separates. With \(\varphi'\) the same \(w\) works (the \(\sqrt2\)'s sit on features whose weight is 0). The grader: no full proof needed — the kernel plus "it's the dot product of the quadratic features" is enough.</p>` },
+<tr><td>\(u_1u_2\)</td><td>\(v_1v_2\)</td><td>\(u_1u_2v_1v_2\)</td></tr></tbody></table></div><p>Add the last column → \(K(u, v)\).</p>` },
+                  { label: "where (1 + uᵀv)² comes from", html: R`<p>Multiply it out: \((1 + u_1v_1 + u_2v_2)^2 = 1 + 2u_1v_1 + 2u_2v_2 + u_1^2v_1^2 + u_2^2v_2^2 + 2u_1u_2v_1v_2\) — the same six terms, three with a 2.</p><p>A 2 = \(\sqrt2\cdot\sqrt2\), so it's the features \((1, \sqrt2x_1, \sqrt2x_2, x_1^2, x_2^2, \sqrt2x_1x_2)\). A \(\sqrt2\) on a feature doesn't change what's separable.</p>` }] },
+        { line: R`<b>Converges</b> — the dual Perceptron with \(K\) = the Perceptron on \(\varphi(x)\). Part 5: the data is linearly separable there (\(w = (-0.25, 0, 0, 1, 1, 0)\)), and the Perceptron converges on separable data. Done.`,
+          remember: R`<p>The Perceptron converges iff the data is linearly separable (here: after \(\varphi\)). Not on the sheet.</p>` },
       ],
-      compare: R`The official answer starts from \((1 + u^\top v)^2\) and multiplies it out to show it equals \(\varphi'(u)^\top\varphi'(v)\) (move 3, read backwards), then argues convergence from part 5 (move 4). Move 2's kernel (no \(\sqrt2\)'s) is equally valid.`,
+      compare: R`The official answer uses \((1 + u^\top v)^2\) — the same features with \(\sqrt2\)'s (move 2's second extra) — and the same convergence argument (move 3).`,
     },
 
     // ─────────────────────────────── 2026-B Q3 ───────────────────────────────
