@@ -27,6 +27,21 @@ different loss, both are scored on J_λ, so θ* wins"). The moves are that sente
 **Argument / compare parts** use exactly the learner's chain: "A = … found using …" → "B = … found using …" →
 "both are plugged into …, so …". (Model: 2025-C Q1.4.)
 
+## 0.4 THE PAGE STRUCTURE (learner, 2026-09-30 — binding)
+*"I need it structured like this: 'The point' / 'Begin your answer like this' (press here for 'Full exam answer') /
+'The steps, explained'. Then, the steps really do have to explain the full exam answer, especially when things aren't
+trivial — how I'd reverse engineer the solution and figure it out myself! If there's something I should remember, it
+should clearly be 'remember this for the exam!'"*
+1. 💡 **The point** (`point`).
+2. ✍ **Begin your answer like this** (`start`), with the collapsed **📝 Full exam answer** (`answer`) under it: the
+   same template line for line, filled in.
+3. **The steps, explained** (`moves`): they build exactly the full exam answer, line by line, and for every
+   non-trivial line they show how you'd **figure it out yourself** — start from what the question really asks
+   ("'converges' → Perceptron converges only on separable data → I need features where it's separable"), work
+   backwards from the goal, never pull a result out of nowhere. The last step usually states the final line(s).
+4. Anything to memorise → a `remember` box, shown as **"🧠 Remember this for the exam!"**.
+Model: 2025-B Q3.6.
+
 ## 0.5 THE POINT — every part starts with it
 The learner, after understanding 2025-C Q1.4: *"The point is to simplify. Basically now that I understand it, it
 literally doesn't matter what θ̃ was obtained with. [θ* is the best for J_λ, so anything else scores worse.] That's the

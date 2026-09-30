@@ -220,7 +220,7 @@
       <div class="pcard-h"><span class="pnum">Card ${i + 1} of ${n}</span><h3>${c.title}</h3></div>
       <div class="pwhat">${linkNotes(c.what)}</div>
       ${c.formula ? `<div class="formula">${linkNotes(c.formula)}</div>` : ""}
-      ${c.remember ? `<div class="remember"><span class="rtag">🧠 Remember from class</span>${linkNotes(c.remember)}</div>` : ""}
+      ${c.remember ? `<div class="remember"><span class="rtag">🧠 Remember this for the exam!</span>${linkNotes(c.remember)}</div>` : ""}
       ${c.example ? `<details class="more"><summary>Example <span class="muted">— ${esc(c.example.src)}</span></summary><div class="depth">${linkNotes(c.example.html)}</div></details>` : ""}
       ${c.try ? `<div class="ptry"><div class="ptry-h">✍ Try it <span class="muted">— ${esc(c.try.src)}</span></div>${linkNotes(c.try.q)}
         <details class="more"><summary>Show answer</summary><div class="depth">${linkNotes(c.try.a)}</div></details></div>` : ""}
@@ -298,10 +298,10 @@
   function walkHtml(pid) {
     const w = WALKS[pid];
     // the start template with every blank filled in — collapsed until pressed
-    const fa = w.answer ? `<details class="fullans"><summary>📝 Show the full answer <span class="muted">— the same template, filled in</span></summary><div class="paper">${linkNotes(w.answer)}</div></details>` : "";
+    const fa = w.answer ? `<details class="fullans"><summary>📝 Full exam answer <span class="muted">— press to see it filled in</span></summary><div class="paper">${linkNotes(w.answer)}</div></details>` : "";
     const shown = Math.min((state.walk || {})[pid] || 0, w.moves.length + (w.start ? 1 : 0) + (w.point ? 1 : 0));
     return `<div class="walk" data-pid="${pid}">
-      <div class="walk-h">Solve it step by step <span class="muted">— try it on paper first; reveal a move only when you need it (key <kbd>N</kbd>)</span></div>
+      <div class="walk-h">Solve it step by step <span class="muted">— try it on paper first; reveal a step only when you need it (key <kbd>N</kbd>)</span></div>
       <ol class="mvs">${w.point ? `
         <li class="mv point" ${shown > 0 ? "" : "hidden"}>
           <div class="n">💡</div>
@@ -310,12 +310,13 @@
         <li class="mv start" ${shown > (w.point ? 1 : 0) ? "" : "hidden"}>
           <div class="n">✍</div>
           <div class="body"><div class="line">Begin your answer like this:</div><div class="paper">${linkNotes(w.start)}</div>${fa}</div>
-        </li>` : ""}${w.moves.map((mv, i) => `
+        </li>` : ""}
+        <li class="stepsh" hidden>The steps, explained</li>${w.moves.map((mv, i) => `
         <li class="mv" ${i + (w.start ? 1 : 0) + (w.point ? 1 : 0) < shown ? "" : "hidden"}>
           <div class="n">${i + 1}</div>
           <div class="body">
             <div class="line">${linkNotes(mv.line)}</div>
-            ${mv.remember ? `<div class="remember"><span class="rtag">🧠 Remember from class</span>${linkNotes(mv.remember)}</div>` : ""}
+            ${mv.remember ? `<div class="remember"><span class="rtag">🧠 Remember this for the exam!</span>${linkNotes(mv.remember)}</div>` : ""}
             ${mv.size ? `<div class="sizecheck"><span class="tag sizetag">Size check</span>${linkNotes(mv.size)}</div>` : ""}
             ${mv.why ? `<details class="more"><summary>why?</summary><div class="depth">${linkNotes(mv.why)}</div></details>` : ""}
             ${(mv.extra || []).map(x => `<details class="more"><summary>${esc(x.label)}</summary><div class="depth">${linkNotes(x.html)}</div></details>`).join("")}
@@ -334,12 +335,14 @@
     const pid = box.dataset.pid, mvs = [...box.querySelectorAll(".mv")];
     const shown = Math.min((state.walk || {})[pid] || 0, mvs.length), end = shown >= mvs.length;
     mvs.forEach((m, k) => { m.hidden = k >= shown; m.classList.toggle("latest", k === shown - 1); });
+    const sh = $(".stepsh", box);
     const next = $(".next", box), hasPoint = !!box.querySelector(".mv.point"), hasStart = !!box.querySelector(".mv.start");
     const pre = (hasPoint ? 1 : 0) + (hasStart ? 1 : 0), nMoves = mvs.length - pre;
     const movesShown = Math.max(0, shown - pre);
+    if (sh) sh.hidden = movesShown === 0;
     next.hidden = end;
-    next.textContent = shown === 0 && hasPoint ? "Show the point" : shown < pre ? "Show how to start" : movesShown === 0 ? "Show first move" : "Show next move";
-    $(".cnt", box).textContent = movesShown ? `move ${movesShown} of ${nMoves}` : `${nMoves} moves`;
+    next.textContent = shown === 0 && hasPoint ? "Show the point" : shown < pre ? "Show how to start" : movesShown === 0 ? "Show the first step" : "Show the next step";
+    $(".cnt", box).textContent = movesShown ? `step ${movesShown} of ${nMoves}` : `${nMoves} steps`;
     $(".all", box).hidden = end; $(".reset", box).hidden = !shown;
     $(".walk-done", box).hidden = !end;
     if (end) { const sol = $(".sol", box.closest(".item")); if (sol) sol.open = true; }

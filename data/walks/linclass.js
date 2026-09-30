@@ -225,15 +225,22 @@
     },
 
     "2025B-q3.6": {
-      point: R`Take part 5's full quadratic features. The kernel is just their dot product, \(K(u, v) = \varphi(u)^\top\varphi(v)\). The data is separable in those features (part 5), so the Perceptron converges.`,
+      point: R`"Converges" is the key word: the dual Perceptron converges exactly when the data is separable in the kernel's features. So take features where it <b>is</b> separable (part 5's full quadratic), and make the kernel their dot product, \(K(u, v) = \varphi(u)^\top\varphi(v)\).`,
       start: R`<p><b>Features:</b> \(\varphi(x) = \square\)</p>
 <p><b>Kernel:</b></p>
 \[K(u, v) = \varphi(u)^\top\varphi(v) = \;\square\]
 <p><b>Converges because:</b> □</p>`,
+      answer: R`<p><b>Features:</b> \(\varphi(x) = (1,\ x_1,\ x_2,\ x_1^2,\ x_2^2,\ x_1x_2)\)</p>
+<p><b>Kernel:</b></p>
+\[\begin{aligned}K(u, v) = \varphi(u)^\top\varphi(v) = \;&1 + u_1v_1 + u_2v_2\\ &+ u_1^2v_1^2 + u_2^2v_2^2 + u_1u_2v_1v_2\end{aligned}\]
+<p><b>Converges because:</b> the dual Perceptron with this \(K\) is the Perceptron run on \(\varphi(x)\). In \(\varphi\)-space the data is linearly separable (part 5: \(w = (-0.25, 0, 0, 1, 1, 0)\), i.e. positive iff \(x_1^2 + x_2^2 > 0.25\)). The Perceptron converges on linearly separable data, so the dual Perceptron with this kernel converges.</p>`,
       moves: [
-        { line: R`<b>Features</b> — part 5's full quadratic map (it separates the data): <div class="formula">\[\varphi(x) = (1,\ x_1,\ x_2,\ x_1^2,\ x_2^2,\ x_1x_2)\]</div>` },
-        { line: R`<b>Kernel</b> — dot the two lists, entry × entry, added up: <div class="formula">\[\begin{aligned}K(u, v) = \;&1 + u_1v_1 + u_2v_2\\ &+ u_1^2v_1^2 + u_2^2v_2^2 + u_1u_2v_1v_2\end{aligned}\]</div>`,
-          remember: R`\[K(u, v) = \varphi(u)^\top\varphi(v)\]<p>A kernel = map both samples, dot the lists. From class: \((1 + u^\top v)^2\) gives these same six features (with \(\sqrt2\)'s) — writing that also gets full points. Not on the sheet.</p>`,
+        { line: R`<b>What does the question really want?</b> "Guarantee convergence" → the Perceptron converges only on separable data, and with \(K\) it runs on \(\varphi(x)\). So: find <b>features where the data is separable</b>, then turn them into a kernel.`,
+          remember: R`<p>The Perceptron converges iff the data is linearly separable. The dual Perceptron with a kernel \(K\) = the Perceptron run on \(\varphi(x)\). Not on the sheet.</p>` },
+        { line: R`<b>Features where it's separable</b> — part 5 already found them: the full quadratic map, with the circle \(x_1^2 + x_2^2 > 0.25\) as a line, \(w = (-0.25, 0, 0, 1, 1, 0)\): <div class="formula">\[\varphi(x) = (1,\ x_1,\ x_2,\ x_1^2,\ x_2^2,\ x_1x_2)\]</div>`,
+          size: R`\[\underbrace{w^\top}_{\textstyle 1\times 6}\,\underbrace{\varphi(x)}_{\textstyle 6\times 1} = x_1^2 + x_2^2 - 0.25\]<p>one weight per feature ✓ · positive outside the circle ✓</p>` },
+        { line: R`<b>Turn the features into a kernel</b> — a kernel is the dot product of the two feature lists. So dot \(\varphi(u)\) and \(\varphi(v)\), entry × entry, added up: <div class="formula">\[\begin{aligned}K(u, v) = \;&1 + u_1v_1 + u_2v_2\\ &+ u_1^2v_1^2 + u_2^2v_2^2 + u_1u_2v_1v_2\end{aligned}\]</div>`,
+          remember: R`\[K(u, v) = \varphi(u)^\top\varphi(v)\]<p>A kernel = map both samples, dot the lists. From class: \((1 + u^\top v)^2\) = these same six features (with \(\sqrt2\)'s) — writing that also gets full points. Not on the sheet.</p>`,
           size: R`\[\underbrace{\varphi(u)^\top}_{\textstyle 1\times 6}\,\underbrace{\varphi(v)}_{\textstyle 6\times 1} = \text{one number}\]<p>one number per pair of samples ✓</p>`,
           extra: [{ label: "the dot product, entry by entry", html: R`<div class="tw"><table><thead><tr><th>\(\varphi(u)\)</th><th>\(\varphi(v)\)</th><th>product</th></tr></thead><tbody>
 <tr><td>\(1\)</td><td>\(1\)</td><td>\(1\)</td></tr>
@@ -243,14 +250,9 @@
 <tr><td>\(u_2^2\)</td><td>\(v_2^2\)</td><td>\(u_2^2v_2^2\)</td></tr>
 <tr><td>\(u_1u_2\)</td><td>\(v_1v_2\)</td><td>\(u_1u_2v_1v_2\)</td></tr></tbody></table></div><p>Add the last column → \(K(u, v)\).</p>` },
                   { label: "where (1 + uᵀv)² comes from", html: R`<p>Multiply it out: \((1 + u_1v_1 + u_2v_2)^2 = 1 + 2u_1v_1 + 2u_2v_2 + u_1^2v_1^2 + u_2^2v_2^2 + 2u_1u_2v_1v_2\) — the same six terms, three with a 2.</p><p>A 2 = \(\sqrt2\cdot\sqrt2\), so it's the features \((1, \sqrt2x_1, \sqrt2x_2, x_1^2, x_2^2, \sqrt2x_1x_2)\). A \(\sqrt2\) on a feature doesn't change what's separable.</p>` }] },
-        { line: R`<b>Converges</b> — the dual Perceptron with \(K\) = the Perceptron on \(\varphi(x)\). Part 5: the data is linearly separable there (\(w = (-0.25, 0, 0, 1, 1, 0)\)), and the Perceptron converges on separable data. Done.`,
-          remember: R`<p>The Perceptron converges iff the data is linearly separable (here: after \(\varphi\)). Not on the sheet.</p>` },
+        { line: R`<b>Why it converges</b> — write step 1's chain with step 2's result: the dual Perceptron with this \(K\) = the Perceptron on \(\varphi(x)\); there the data is separable; the Perceptron converges on separable data. Done.` },
       ],
-      answer: R`<p><b>Features:</b> \(\varphi(x) = (1,\ x_1,\ x_2,\ x_1^2,\ x_2^2,\ x_1x_2)\)</p>
-<p><b>Kernel:</b></p>
-\[\begin{aligned}K(u, v) = \varphi(u)^\top\varphi(v) = \;&1 + u_1v_1 + u_2v_2\\ &+ u_1^2v_1^2 + u_2^2v_2^2 + u_1u_2v_1v_2\end{aligned}\]
-<p><b>Converges because:</b> the dual Perceptron with this \(K\) is the Perceptron run on \(\varphi(x)\). In \(\varphi\)-space the data is linearly separable (part 5: \(w = (-0.25, 0, 0, 1, 1, 0)\), i.e. positive iff \(x_1^2 + x_2^2 > 0.25\)). The Perceptron converges on linearly separable data, so the dual Perceptron with this kernel converges.</p>`,
-      compare: R`The official answer uses \((1 + u^\top v)^2\) — the same features with \(\sqrt2\)'s (move 2's second extra) — and the same convergence argument (move 3).`,
+      compare: R`The official answer uses \((1 + u^\top v)^2\) — the same features with \(\sqrt2\)'s (step 3's second extra) — and the same convergence argument (step 4).`,
     },
 
     // ─────────────────────────────── 2026-B Q3 ───────────────────────────────
