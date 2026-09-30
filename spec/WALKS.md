@@ -51,8 +51,16 @@ The learner, after understanding 2025-C Q1.4: *"The point is to simplify. Basica
 literally doesn't matter what θ̃ was obtained with. [θ* is the best for J_λ, so anything else scores worse.] That's the
 point of the question. That's what I need to understand, in every question!"*
 
-- Every part has a **`point`**: the ONE realization the part tests, in 1–2 plain sentences, in the learner's style.
-  It is revealed first ("💡 The point"), before anything else. Everything after it just executes the point.
+- Every part has a **`point`**: the ONE realization the part tests. It is revealed first ("💡 The point"), before
+  anything else. Everything after it just executes the point.
+- **The point EXPLAINS the aha, it doesn't just state it** (learner, 2026-09-30, rejecting one-line points as "lazy
+  ideas": *"I need 'the point' explained as you did here with the squaring and the mental image of a bell"*). Short
+  numbered paragraphs (bold lead-in each): what the question is really asking → the mental image (a figure when a
+  picture helps) → WHY the key fact is true, read off what the question gives you (e.g. "t only appears as t², so
+  φ(−t) = φ(t) → mirror image → Φ(0) = ½") → "So: …" what that means for this part. No step-by-step solving (the
+  steps do that). Model: 2026-B Q3.1.
+- The **`start`'s first line** is the short exam statement of that aha, as the learner would write it in the exam
+  (§0.4).
 - Find it by asking: "what does the grader want me to notice?" Strip everything that doesn't matter (e.g. how θ̃
   was obtained). Examples (2025-C Q1):
   - 1.4: "It doesn't matter how θ̃ was found: θ* is the best θ for J_λ, so every other θ gives a larger J_λ."
