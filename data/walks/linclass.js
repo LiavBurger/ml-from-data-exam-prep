@@ -227,7 +227,8 @@
     "2025B-q3.6": {
       point: R`Take part 5's full quadratic features. The kernel is just their dot product, \(K(u, v) = \varphi(u)^\top\varphi(v)\). The data is separable in those features (part 5), so the Perceptron converges.`,
       start: R`<p><b>Features:</b> \(\varphi(x) = \square\)</p>
-<p><b>Kernel:</b> \(K(u, v) = \varphi(u)^\top\varphi(v) = \square\)</p>
+<p><b>Kernel:</b></p>
+\[K(u, v) = \varphi(u)^\top\varphi(v) = \;\square\]
 <p><b>Converges because:</b> □</p>`,
       moves: [
         { line: R`<b>Features</b> — part 5's full quadratic map (it separates the data): <div class="formula">\[\varphi(x) = (1,\ x_1,\ x_2,\ x_1^2,\ x_2^2,\ x_1x_2)\]</div>` },

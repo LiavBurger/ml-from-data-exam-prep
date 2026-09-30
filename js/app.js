@@ -296,17 +296,20 @@
 
   // ── walkthrough: the solution in small moves, revealed one at a time ─────
   function walkHtml(pid) {
-    const w = WALKS[pid], shown = Math.min((state.walk || {})[pid] || 0, w.moves.length + (w.start ? 1 : 0) + (w.point ? 1 : 0));
+    const w = WALKS[pid];
+    // the start template with every blank filled in — collapsed until pressed
+    const fa = w.answer ? `<details class="fullans"><summary>📝 Show the full answer <span class="muted">— the same template, filled in</span></summary><div class="paper">${linkNotes(w.answer)}</div></details>` : "";
+    const shown = Math.min((state.walk || {})[pid] || 0, w.moves.length + (w.start ? 1 : 0) + (w.point ? 1 : 0));
     return `<div class="walk" data-pid="${pid}">
       <div class="walk-h">Solve it step by step <span class="muted">— try it on paper first; reveal a move only when you need it (key <kbd>N</kbd>)</span></div>
       <ol class="mvs">${w.point ? `
         <li class="mv point" ${shown > 0 ? "" : "hidden"}>
           <div class="n">💡</div>
-          <div class="body"><div class="line">The point</div><div class="pointtext">${linkNotes(w.point)}</div></div>
+          <div class="body"><div class="line">The point</div><div class="pointtext">${linkNotes(w.point)}</div>${w.start ? "" : fa}</div>
         </li>` : ""}${w.start ? `
         <li class="mv start" ${shown > (w.point ? 1 : 0) ? "" : "hidden"}>
           <div class="n">✍</div>
-          <div class="body"><div class="line">Begin your answer like this:</div><div class="paper">${linkNotes(w.start)}</div></div>
+          <div class="body"><div class="line">Begin your answer like this:</div><div class="paper">${linkNotes(w.start)}</div>${fa}</div>
         </li>` : ""}${w.moves.map((mv, i) => `
         <li class="mv" ${i + (w.start ? 1 : 0) + (w.point ? 1 : 0) < shown ? "" : "hidden"}>
           <div class="n">${i + 1}</div>
@@ -324,7 +327,7 @@
         <button class="linkbtn all">show all</button>
         <button class="linkbtn reset">hide moves</button>
       </div>
-      <div class="walk-done" hidden>${w.answer ? `<div class="fullans"><div class="fullans-h">📝 Full answer — what you'd write on the page</div><div class="paper">${linkNotes(w.answer)}</div></div>` : ""}${w.compare ? `<p><b>Now compare with the official solution below.</b> ${linkNotes(w.compare)}</p>` : `<p><b>Now compare with the official solution below.</b></p>`}</div>
+      <div class="walk-done" hidden>${w.compare ? `<p><b>Now compare with the official solution below.</b> ${linkNotes(w.compare)}</p>` : `<p><b>Now compare with the official solution below.</b></p>`}</div>
     </div>`;
   }
   function walkUpdate(box, scroll) {

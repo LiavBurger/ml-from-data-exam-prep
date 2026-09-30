@@ -263,7 +263,7 @@ a.sheetref { font-weight: 600; text-decoration: underline dotted; }
 .fig { margin: 10px 0; overflow-x: auto; }
 .fig svg { display: block; max-width: 100%; height: auto; }
 
-/* the complete written answer (the start template, filled in) */
-.fullans { margin: 0 0 12px; border: 2px solid var(--got); border-radius: 10px; padding: 8px 12px 10px; background: var(--got-bg); }
-.fullans-h { font-weight: 700; color: var(--got-fg); margin-bottom: 2px; }
-.fullans .paper p { margin: 6px 0; }
+/* the complete written answer (the start template, filled in) — collapsed under the template */
+details.fullans { margin-top: 8px; }
+details.fullans > summary { cursor: pointer; font-weight: 700; color: var(--got-fg); }
+details.fullans[open] > .paper { border: 2px solid var(--got); }
