@@ -83,7 +83,7 @@
 <p><b>1. What "LMS classifier" asks.</b> The \(w\) with the smallest \(J\). \(J\) is printed in the question: the average of (score − label)².</p>
 <p><b>2. The floor.</b> Every \((\dots)^2\) is \(\ge 0\), so \(J \ge 0\). If some \(w\) gets \(J = 0\), nothing can beat it: that's the minimum, found without solving anything.</p>
 <p><b>3. When is \(J = 0\)?</b> Only when every \((\dots)\) is 0: each score \(w^\top x^{(i)}\) is exactly its label, \(+1\) or \(-1\). The right sign isn't enough, the size has to match too.</p>
-<p><b>4. Why you can fix the size.</b> Part 2's \(w = (0, 1, 1)\) already has the right signs, but it scores \(\pm 4\). A score is \(w_0 + w_1x_1 + w_2x_2\), so dividing all of \(w\) by 4 divides every score by 4, and the line \(x_1 + x_2 = 0\) doesn't move.</p>
+<p><b>4. Why you can fix the size.</b> Part 2's line is \(x_1 + x_2 = 0\). As weights \((w_0, w_1, w_2)\) that's \((0, 1, 1)\): no bias, 1 × \(x_1\), 1 × \(x_2\). So its score is just \(x_1 + x_2\), which is \(4, 4, -4, -4\) on the four samples. Right signs, but ±4 instead of ±1. Divide all the weights by 4 and every score is divided by 4, while the line \(\tfrac14x_1 + \tfrac14x_2 = 0\) is still the same line.</p>
 <p><b>So:</b> look for the \(w\) that scores exactly \(1, 1, -1, -1\), and say "\(J = 0\), the lowest possible".</p>`,
       start: R`<p><b>Key idea:</b> \(J\) is an average of squares, so \(J \ge 0\). A \(w\) whose score equals the label (±1) on every sample gives \(J = 0\), so it is the minimum.</p>
 <p><b>Lowest possible \(J\):</b> \(J(w) \ge \square\), because □</p>
@@ -99,14 +99,14 @@
         { line: R`<b>What does the question really want?</b> The \(w\) with the smallest \(J\). Work backwards: \(J\) is \(\tfrac1n\) · a sum of squares, so \(J \ge 0\). A \(w\) with \(J = 0\) is the minimum, no derivative needed.`,
           size: R`\[\underbrace{w^\top}_{\textstyle 1\times 3}\,\underbrace{x^{(i)}}_{\textstyle 3\times 1} - \underbrace{y^{(i)}}_{\textstyle 1\times 1} = \text{one number}\]<p>\(x^{(i)} = (1, x_1, x_2)\), with a 1 for the bias. inner 3 = 3 ✓ · each bracket is one number, so its square is one number too ✓</p>`,
           why: R`<p>You don't need to know LMS by heart: the question prints \(J\). The extension sheet (if you get it) has it too:</p><p>[sheet: Least mean squares classification]</p><p>It writes the same loss (with a ½) split by class, \((1 - w^\top x)^2\) for positives and \((1 + w^\top x)^2\) for negatives. Both are 0 when the score equals the label.</p>` },
-        { line: R`<b>\(J = 0\) needs every score = its label (±1).</b> Part 2's line \(w = (0, 1, 1)\) has the right signs but scores \((4, 4, -4, -4)\). Divide by 4: <div class="formula">\[w = (0, \tfrac14, \tfrac14) \;\text{ scores }\; (1, 1, -1, -1) = y\]</div>`,
+        { line: R`<b>\(J = 0\) needs every score = its label (±1).</b> Start from part 2's line \(x_1 + x_2 = 0\): weights \((w_0, w_1, w_2) = (0, 1, 1)\), so the score is \(x_1 + x_2\). On the samples: 4, 4, −4, −4. Right signs, too big. Divide by 4: <div class="formula">\[w = (0, \tfrac14, \tfrac14) \;\text{ scores }\; (1, 1, -1, -1) = y\]</div>`,
           size: R`\[\underbrace{X}_{\textstyle 4\times 3}\,\underbrace{w}_{\textstyle 3\times 1} = \underbrace{(1, 1, -1, -1)}_{\textstyle 4\times 1}\]<p>4 samples × (1 + 2 features); inner 3 = 3 ✓ · result 4×1 = one score per sample ✓ (each row of the why? table is one row of \(X\) · \(w\))</p><p>Wrong order: \(wX\) = (3×1)(4×3), inner 1 ≠ 4 ✗</p>`,
-          why: R`<p>Each score = row \((1, x_1, x_2)\) · \(w\):</p>
-<div class="tw"><table><thead><tr><th>row</th><th>· \((0, \tfrac14, \tfrac14)\)</th><th>score</th><th>label</th></tr></thead><tbody>
-<tr><td>(1, 2, 2)</td><td>0 + 0.5 + 0.5</td><td>1</td><td>+1</td></tr>
-<tr><td>(1, 3, 1)</td><td>0 + 0.75 + 0.25</td><td>1</td><td>+1</td></tr>
-<tr><td>(1, −2, −2)</td><td>0 − 0.5 − 0.5</td><td>−1</td><td>−1</td></tr>
-<tr><td>(1, −3, −1)</td><td>0 − 0.75 − 0.25</td><td>−1</td><td>−1</td></tr></tbody></table></div>
+          why: R`<p>Each score = row \((1, x_1, x_2)\) · \(w\). The 1 in front is for \(w_0\) (the bias):</p>
+<div class="tw"><table><thead><tr><th>row</th><th>\(w = (0, 1, 1)\): score \(x_1 + x_2\)</th><th>\(w = (0, \tfrac14, \tfrac14)\): score ÷ 4</th><th>label</th></tr></thead><tbody>
+<tr><td>(1, 2, 2)</td><td>2 + 2 = 4</td><td>1</td><td>+1</td></tr>
+<tr><td>(1, 3, 1)</td><td>3 + 1 = 4</td><td>1</td><td>+1</td></tr>
+<tr><td>(1, −2, −2)</td><td>−2 − 2 = −4</td><td>−1</td><td>−1</td></tr>
+<tr><td>(1, −3, −1)</td><td>−3 − 1 = −4</td><td>−1</td><td>−1</td></tr></tbody></table></div>
 <p>Dividing by 4 doesn't move the line (same signs), it only makes the scores the right size.</p>` },
         { line: R`<b>Every (…) is 0</b> — \(w^\top x^{(i)} - y^{(i)} = 0\) for all four samples, so \(J = 0\), the minimum. The LMS classifier is \(w = (0, \tfrac14, \tfrac14)\). Done.`,
           size: R`\[\underbrace{X}_{\textstyle 4\times 3}\,\underbrace{w}_{\textstyle 3\times 1} - \underbrace{y}_{\textstyle 4\times 1} = \underbrace{(0, 0, 0, 0)}_{\textstyle 4\times 1}\]<p>inner 3 = 3 ✓ · four scores minus four labels = four brackets, all 0 ✓</p><p>numpy: <code>X.shape</code> = (4, 3), <code>y.shape</code> = (4,), so <code>lstsq</code> returns shape (3,), one weight per knob ✓</p>`,
