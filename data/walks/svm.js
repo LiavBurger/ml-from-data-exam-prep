@@ -25,7 +25,12 @@
           remember: R`<p><b>Linearly separable</b> = some line \(w^\top x + w_0 = 0\) gives every sample the sign of its label. "Yes" → give one line and check every sample. "No" → show why no line can work.</p><p>Not on the sheet.</p>` },
         { line: R`<b>Which line?</b> Plot them: positives top-right, negatives bottom-left, each negative = minus a positive (\((-2, -2) = -(2, 2)\), \((-3, -1) = -(3, 1)\)). So the diagonal through \((0, 0)\), \(x_1 + x_2 = 0\), sits between. Add the coordinates to check: <div class="formula">\[\begin{aligned}\text{positives: }& 2+2 = 4,\;\; 3+1 = 4\\ \text{negatives: }& -2-2 = -4,\;\; -3-1 = -4\end{aligned}\]</div>`,
           why: R`<p>Minus a sample = its mirror through \((0, 0)\). So a line through \((0, 0)\) that puts the positives on the + side automatically puts their mirrors on the − side. \(x_1 + x_2\) is the simplest score that is positive for both positives.</p>` },
-        { line: R`<b>The line</b> \(x_1 + x_2 = 0\): the positives score \(4 \gt 0\), the negatives \(-4 \lt 0\). Every sample is on its own side, so the data is linearly separable. Done.` },
+        { line: R`<b>The line</b> \(x_1 + x_2 = 0\): the positives score \(4 \gt 0\), the negatives \(-4 \lt 0\). Every sample is on its own side, so the data is linearly separable. Done.`,
+          extra: [{ label: "can I use a different line? (e.g. the horizontal axis)", html: R`<p>Yes: <b>any</b> line that puts every + on one side and every − on the other earns the points, as long as you check every sample.</p>
+<p><b>The horizontal axis, \(X_2 = 0\):</b> positives have \(X_2 = 2\) and \(1\) (above 0), negatives \(-2\) and \(-1\) (below 0) ✓. Rule: \(X_2 \gt 0\) → +.</p>
+<p><b>The vertical axis, \(X_1 = 0\):</b> positives \(2, 3\) (right), negatives \(-2, -3\) (left) ✓.</p>
+<p><b>Careful with the name:</b> in this question \(y\) is the <b>label</b> column (+1/−1), not the vertical axis. Writing "\(y = 0\)" reads as "label 0", which doesn't exist. Use the question's names: \(X_2 = 0\).</p>
+<p>The diagonal \(x_1 + x_2 = 0\) is the one the answer key uses; it also comes back in part 2 (the max-margin line), which is why the steps pick it.</p>` }] },
       ],
       compare: R`Same as the official answer: positives on \(x_1 + x_2 = 4\), negatives on \(x_1 + x_2 = -4\) (step 2), so \(x_1 + x_2 = 0\) separates them (step 3).`,
     },
