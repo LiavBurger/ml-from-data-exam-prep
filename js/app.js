@@ -324,7 +324,7 @@
         <button class="linkbtn all">show all</button>
         <button class="linkbtn reset">hide moves</button>
       </div>
-      <div class="walk-done" hidden>${w.compare ? `<p><b>Now compare with the official solution below.</b> ${linkNotes(w.compare)}</p>` : `<p><b>Now compare with the official solution below.</b></p>`}</div>
+      <div class="walk-done" hidden>${w.answer ? `<div class="fullans"><div class="fullans-h">📝 Full answer — what you'd write on the page</div><div class="paper">${linkNotes(w.answer)}</div></div>` : ""}${w.compare ? `<p><b>Now compare with the official solution below.</b> ${linkNotes(w.compare)}</p>` : `<p><b>Now compare with the official solution below.</b></p>`}</div>
     </div>`;
   }
   function walkUpdate(box, scroll) {

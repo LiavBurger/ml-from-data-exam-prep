@@ -245,6 +245,10 @@
         { line: R`<b>Converges</b> — the dual Perceptron with \(K\) = the Perceptron on \(\varphi(x)\). Part 5: the data is linearly separable there (\(w = (-0.25, 0, 0, 1, 1, 0)\)), and the Perceptron converges on separable data. Done.`,
           remember: R`<p>The Perceptron converges iff the data is linearly separable (here: after \(\varphi\)). Not on the sheet.</p>` },
       ],
+      answer: R`<p><b>Features:</b> \(\varphi(x) = (1,\ x_1,\ x_2,\ x_1^2,\ x_2^2,\ x_1x_2)\)</p>
+<p><b>Kernel:</b></p>
+\[\begin{aligned}K(u, v) = \varphi(u)^\top\varphi(v) = \;&1 + u_1v_1 + u_2v_2\\ &+ u_1^2v_1^2 + u_2^2v_2^2 + u_1u_2v_1v_2\end{aligned}\]
+<p><b>Converges because:</b> the dual Perceptron with this \(K\) is the Perceptron run on \(\varphi(x)\). In \(\varphi\)-space the data is linearly separable (part 5: \(w = (-0.25, 0, 0, 1, 1, 0)\), i.e. positive iff \(x_1^2 + x_2^2 > 0.25\)). The Perceptron converges on linearly separable data, so the dual Perceptron with this kernel converges.</p>`,
       compare: R`The official answer uses \((1 + u^\top v)^2\) — the same features with \(\sqrt2\)'s (move 2's second extra) — and the same convergence argument (move 3).`,
     },
 

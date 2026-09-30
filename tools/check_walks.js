@@ -41,6 +41,7 @@ for (const [pid, wk] of Object.entries(window.WALKS)) {
   check(`${pid}.start`, wk.start);
   check(`${pid}.compare`, wk.compare);
   check(`${pid}.slip`, wk.slip);
+  check(`${pid}.answer`, wk.answer);
 }
 const parts = Object.keys(window.WALKS).length;
 console.log(errors ? `${errors} problem(s)` : `✓ ${parts} parts, ${moves} moves — all math renders, tags balanced, lines short`);

@@ -50,6 +50,11 @@ point of the question. That's what I need to understand, in every question!"*
 - **`start` — "Begin your answer like this".** Revealed before move 1. The **shape of the written answer** in exam
   notation with □ blanks, e.g. "The function: J(θ) = □ / Its derivative by θⱼ: dJ/dθⱼ = □ / The gradient: ∇J(θ) = □".
   It shows form, not content. ("I don't even know how to actually write the notations.")
+- **`answer` — "📝 Full answer — what you'd write on the page".** Shown (green, paper style) once all moves are revealed,
+  right above `compare`. It is the `start` template with every □ filled in: the complete written answer in exam form,
+  short, nothing the grader doesn't need, in the learner's chosen method. Learner: *"I'm really missing the actual 'full
+  answer', that's fitting with the 'begin your answer like this' template."* Every part has one (parts without a
+  `start` still get the full written answer). Model: 2025-B Q3.6.
 - **`compare`** — 1–2 sentences under the last move: which move matches which line of the official solution, plus
   any official slip with the corrected value.
 
