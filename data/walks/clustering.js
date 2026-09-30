@@ -9,19 +9,28 @@
     // ─────────────────────────── 2025-A Q2 ───────────────────────────
     "2025A-q2.1": {
       point: R`<p>K-means stops at a local minimum, and which one depends on the random starting centroids. Two runs = two random starts, so they can end in two different solutions. Anna is right.</p>`,
+      start: R`<p><b>Because:</b> K-means starts from □</p>
+<p><b>and it stops at</b> □</p>
+<p><b>So:</b> □ <b>is right.</b></p>`,
+      answer: R`<p><b>Because:</b> K-means starts from centroids picked at random, so two runs start from different centroids (same data, same \(k\)).</p>
+<p><b>and it stops at</b> a local minimum of WCSS, and which one depends on that start (not necessarily the best solution).</p>
+<p><b>So:</b> different starts can converge to different solutions. <b>Anna is right.</b></p>`,
       moves: [
-        { line: R`<b>The only difference between the two runs is the start</b> — same data, same \(k\); the starting centroids are picked at random.`,
+        { line: R`<b>What does the question really want?</b> Same data, same \(k\), different results — so what differs between the two runs? Only the start: the starting centroids are picked at random.`,
           remember: R`<p>K-means starts from random centroids and stops at a <b>local</b> minimum of WCSS, which depends on that start.</p><p>Not on the sheet.</p>` },
         { line: R`<b>K-means stops at a local minimum that depends on the start</b> (not necessarily the best solution). So different starts can end in different solutions. Anna is right. Done.`,
           why: R`<p>Each iteration can only lower WCSS: assigning moves each sample to its nearest centroid, and the mean is the best centre for its cluster. It stops when nobody switches. So it stops at the first point where no step helps — that depends on where it started.</p>` },
       ],
-      compare: R`The official answer is one sentence: "K-means can converge to different solutions from different initializations of the centroids" — moves 1 + 2.`,
+      compare: R`The official answer is one sentence: "Anna is right. K-means can converge to different solutions from different initializations of the centroids" — steps 1 + 2.`,
     },
 
     "2025A-q2.2": {
       point: R`<p>Compute each solution's WCSS — the score K-means itself minimises — and the smaller one is better.</p>`,
-      start: R`<p><b>1. For each cluster, its centroid:</b></p>\[\mu_j = \;\square\]<p><b>2. The WCSS:</b></p>\[\text{WCSS} = \;\square\]<p>The solution with the \(\square\) WCSS is better, because \(\square\)</p>`,
+      start: R`<p><b>1. For each cluster, its centroid:</b></p>\[\mu_j = \;\square\]<p><b>2. The WCSS:</b></p>\[\text{WCSS} = \;\square\]<p>The solution with the □ WCSS is better, because □</p>`,
+      answer: R`<p><b>1. For each cluster, its centroid:</b></p>\[\mu_j = \frac{1}{|C_j|}\sum_{i \in C_j} x_i\]<p><b>2. The WCSS:</b></p>\[\text{WCSS} = \sum_{j=1}^{k}\ \sum_{i \in C_j} \|x_i - \mu_j\|^2\]<p>The solution with the <b>smaller</b> WCSS is better, because WCSS is exactly what K-means minimises: smaller = samples closer to their centroids = tighter clusters. Both have \(k = 2\), so it's a fair comparison.</p>`,
       moves: [
+        { line: R`<b>What does the question really want?</b> A number that says which solution is better. The natural one: the score K-means itself tries to make small — WCSS. So compute each solution's WCSS.`,
+          remember: R`<p>K-means minimises WCSS, so for the same \(k\): smaller WCSS = better solution.</p><p>The sheet has the formula, [sheet: Within-cluster sum of squares (WCSS)], but not that it's what K-means minimises.</p>` },
         { line: R`<b>Centroids</b> — each cluster's mean (add its samples, divide by how many): <div class="formula">\[\mu_j = \frac{1}{|C_j|}\sum_{i \in C_j} x_i\]</div>[sheet: Within-cluster sum of squares (WCSS)]`,
           why: R`<p>Averaging points = averaging each coordinate. Cluster \(\{8, 9, 10\}\):</p>
 \[\mu = \left(\tfrac{9.5 + 10 + 11}{3},\ \tfrac{7.5 + 8 + 9}{3}\right) \approx (10.17,\ 8.17)\]
@@ -31,19 +40,27 @@
 \[\text{WCSS} = \sum_{i \in C_1}\|x_i - \mu_1\|^2 + \sum_{i \in C_2}\|x_i - \mu_2\|^2\]
 <p>Every sample appears once, measured against its own cluster's centroid.</p>` },
         { line: R`<b>Smaller wins</b> — smaller WCSS = samples closer to their centroids = tighter clusters. It's exactly what K-means minimises, and both solutions have \(k = 2\), so it's a fair comparison. Done.` ,
-          remember: R`<p>K-means minimises WCSS, so for the same \(k\): smaller WCSS = better solution.</p><p>The sheet has the formula, [sheet: Within-cluster sum of squares (WCSS)], but not that it's what K-means minimises.</p>`,
           extra: [{ label: "check it with numbers (two real k = 2 solutions)", html: R`<p>Running K-means on this data from two different starts gives two different converged solutions (start on samples 7 and 8, or on samples 1 and 10):</p>
 <div class="tw"><table><thead><tr><th>solution</th><th>clusters</th><th>WCSS</th></tr></thead><tbody>
 <tr><td>S1</td><td>{1,…,7} and {8, 9, 10}</td><td>50.26</td></tr>
 <tr><td>S2</td><td>{1,…,6} and {7,…,10}</td><td>46.29</td></tr></tbody></table></div>
 <p>46.29 &lt; 50.26, so S2 is the better one. (The exam didn't ask for these numbers.)</p>` }] },
       ],
-      compare: R`The official steps 1 and 2 are moves 1 and 2; its "the solution with smaller WCSS is the better one" is move 3. The question also asks <i>why</i> — move 3's reason covers it.`,
+      compare: R`The official steps 1 and 2 are steps 2 and 3; its "the solution with smaller WCSS is the better one" is step 4. The question also asks <i>why</i> — step 4's reason covers it.`,
     },
 
     "2025A-q2.3": {
       point: R`<p>The best WCSS never goes up as \(k\) grows, so C is out. The data has 3 visible groups, so WCSS drops a lot up to \(k = 3\) and only a little after: an elbow at 3 = plot A.</p>`,
+      start: R`<p><b>Not C, because:</b> □</p>
+<p><b>The data has</b> □ <b>visible groups</b> (□), <b>so</b> □</p>
+<p><b>Not B, because:</b> □</p>
+<p><b>So:</b> plot □.</p>`,
+      answer: R`<p><b>Not C, because:</b> it goes up from \(k = 3\) to \(k = 4\), but the best WCSS can never go up when \(k\) grows (an extra centroid can only help).</p>
+<p><b>The data has</b> 3 <b>visible groups</b> (\(\{1,2\}\), \(\{3,\dots,7\}\), \(\{8,9,10\}\)), <b>so</b> WCSS drops a lot from 2 to 3 (two real groups split apart) and only a little from 3 to 4 (a tight group cut in two): an elbow at \(k = 3\).</p>
+<p><b>Not B, because:</b> it drops about the same from 2 to 3 as from 3 to 4 — no elbow.</p>
+<p><b>So:</b> plot <b>A</b>.</p>`,
       moves: [
+        { line: R`<b>What does the question really want?</b> Which curve can be "best WCSS against \(k\)" for this data. Two things to check: can the curve ever go up? And where should it bend?` },
         { line: R`<b>C is impossible</b> — it goes <b>up</b> from \(k = 3\) to \(k = 4\), but the best WCSS can never go up when \(k\) grows.`,
           why: R`<p>Take the best 3-cluster solution and put a 4th centroid exactly on one sample. That sample's term becomes 0, nobody else changes. So some 4-cluster solution is already at least as good, and the best one is at least that good. This holds because the question says "an optimal solution per \(k\)" — quote it.</p>`,
           remember: R`<p>The best WCSS never goes up as \(k\) grows (an extra centroid can only help).</p><p>Not on the sheet.</p>` },
@@ -56,7 +73,7 @@
 <tr><td>drop</td><td></td><td>119.71</td><td>34.83</td><td>6.83</td></tr></tbody></table></div>
 <p>The last drop is tiny next to the ones before it: the elbow is at \(k = 3\), like plot A.</p>` }] },
       ],
-      compare: R`Same as the official solution: C is out because WCSS goes up; three visible groups, so the drop from 3 to 4 is smaller than from 2 to 3 — A's elbow, not B.`,
+      compare: R`Same as the official solution: C is out because WCSS goes up (step 2); three visible groups, so the drop from 3 to 4 is smaller than from 2 to 3 (step 3) — A's elbow, not B (step 4).`,
       slip: R`The text says \(k = 2, 3, 4\), but every plot runs from \(k = 1\) to 4. Read the x-axis as \(k\) (so the last segment is 3 → 4). The "(B)" under plot C is a stray label; that plot is C.`,
     },
 
@@ -64,18 +81,26 @@
       point: R`<p>Merge the two closest clusters. The merged cluster's distance to anyone = the <b>smaller</b> of its two parts' distances (single linkage = closest pair). Distances are Manhattan: \(|\Delta x_1| + |\Delta x_2|\).</p>`,
       start: R`<p><b>Iteration 1:</b> merge \(\square\) and \(\square\) (distance \(\square\)). The new cluster's distances:</p>
 \[\begin{array}{c|ccc}\text{to} & \square & \square & \cdots\\ \hline d(\text{new}, \cdot) & \square & \square & \cdots\end{array}\]
-<p><b>Iteration 2:</b> … <b>Iteration 3:</b> … (the same two lines each)</p>`,
+<p><b>Iteration 2:</b> merge \(\square\) and \(\square\) (distance \(\square\)). The new cluster's distances: (a table like above)</p>
+<p><b>Iteration 3:</b> merge \(\square\) and \(\square\) (distance \(\square\)). The new cluster's distances: (a table like above)</p>`,
+      answer: R`<p><b>Iteration 1:</b> merge 4 and 5 (distance \(|4.5 - 4.5| + |4.5 - 5| = 0.5\); no other pair is this close). The new cluster's distances:</p>
+\[\begin{array}{c|cccccccc}\text{to} & 1 & 2 & 3 & 6 & 7 & 8 & 9 & 10\\ \hline d(\{4,5\}, \cdot) & 7 & 5.5 & 1 & 1.5 & 3.5 & 7.5 & 8.5 & 10.5\end{array}\]
+<p><b>Iteration 2:</b> merge \(\{4,5\}\) and 3 (distance 1; 8–9 ties at 1, nothing is closer). The new cluster's distances:</p>
+\[\begin{array}{c|ccccccc}\text{to} & 1 & 2 & 6 & 7 & 8 & 9 & 10\\ \hline d(\{3,4,5\}, \cdot) & 6 & 4.5 & 1.5 & 3.5 & 7.5 & 8.5 & 10.5\end{array}\]
+<p><b>Iteration 3:</b> merge 8 and 9 (distance \(|9.5 - 10| + |7.5 - 8| = 1\); nothing is closer). The new cluster's distances:</p>
+\[\begin{array}{c|cccccc}\text{to} & 1 & 2 & \{3,4,5\} & 6 & 7 & 10\\ \hline d(\{8,9\}, \cdot) & 15 & 13.5 & 7.5 & 6 & 4 & 2\end{array}\]`,
       moves: [
-        { line: R`<b>Iteration 1: merge 4 and 5</b> — the closest pair: \(|4.5 - 4.5| + |4.5 - 5| = 0.5\). \(\{4,5\}\)'s distance to each sample = the smaller of sample 4's and sample 5's: <div class="formula">\[\begin{array}{c|cccccccc}\text{to} & 1 & 2 & 3 & 6 & 7 & 8 & 9 & 10\\ \hline d(\{4,5\}, \cdot) & 7 & 5.5 & 1 & 1.5 & 3.5 & 7.5 & 8.5 & 10.5\end{array}\]</div>`,
+        { line: R`<b>What does the question really want?</b> Each iteration: find the two closest clusters, merge them, write the merged cluster's distance to everyone else. Single linkage → that distance = the <b>smaller</b> of its two parts' distances.`,
+          why: R`<p>Single linkage = the closest pair between the two clusters. The closest pair from \(\{4,5\}\) to sample 1 uses whichever of 4 or 5 is closer to 1 — so take the smaller of the two numbers. No new distances to compute: every merged row = "smaller of" two rows you already have.</p>`,
+          remember: R`<p>Agglomerative clustering: start with every sample as its own cluster; each iteration merges the <b>two closest clusters</b> (distance = the linkage).</p><p>Not on the sheet; the question gives only the single-linkage distance.</p>` },
+        { line: R`<b>Iteration 1: merge 4 and 5</b> — on the plot they almost touch: \(|4.5 - 4.5| + |4.5 - 5| = 0.5\). \(\{4,5\}\)'s distance to each = the smaller of 4's and 5's: <div class="formula">\[\begin{array}{c|cccccccc}\text{to} & 1 & 2 & 3 & 6 & 7 & 8 & 9 & 10\\ \hline d(\{4,5\}, \cdot) & 7 & 5.5 & 1 & 1.5 & 3.5 & 7.5 & 8.5 & 10.5\end{array}\]</div>`,
           why: R`<p>Manhattan distance = the [sheet: L1 norm] of the difference: absolute differences added, no squares. Example: \(d(4, 1) = |4.5 - 1| + |4.5 - 1| = 3.5 + 3.5 = 7\).</p>
 <p>Nothing else is at 0.5 or less: the next-closest pairs are 3–4 and 8–9, at 1.</p>
 <div class="tw"><table><thead><tr><th>to</th><th>1</th><th>2</th><th>3</th><th>6</th><th>7</th><th>8</th><th>9</th><th>10</th></tr></thead><tbody>
 <tr><td>\(d(4, \cdot)\)</td><td>7</td><td>5.5</td><td>1</td><td>2</td><td>4</td><td>8</td><td>9</td><td>11</td></tr>
 <tr><td>\(d(5, \cdot)\)</td><td>7.5</td><td>6</td><td>1.5</td><td>1.5</td><td>3.5</td><td>7.5</td><td>8.5</td><td>10.5</td></tr>
-<tr><td><b>min</b></td><td>7</td><td>5.5</td><td>1</td><td>1.5</td><td>3.5</td><td>7.5</td><td>8.5</td><td>10.5</td></tr></tbody></table></div>
-<p>Why the smaller: single linkage = the closest pair between the two clusters, and the closest pair from \(\{4,5\}\) uses whichever of 4 or 5 is closer.</p>`,
-          remember: R`<p>Agglomerative clustering: start with every sample as its own cluster; each iteration merges the <b>two closest clusters</b> (distance = the linkage).</p><p>Not on the sheet; the question gives only the single-linkage distance.</p>` },
-        { line: R`<b>Iteration 2: merge \(\{4,5\}\) and 3</b> — distance 1 (row above; 8–9 ties at 1, see why?). New row = the smaller of \(\{4,5\}\)'s row and sample 3's: <div class="formula">\[\begin{array}{c|ccccccc}\text{to} & 1 & 2 & 6 & 7 & 8 & 9 & 10\\ \hline d(\{3,4,5\}, \cdot) & 6 & 4.5 & 1.5 & 3.5 & 7.5 & 8.5 & 10.5\end{array}\]</div>`,
+<tr><td><b>min</b></td><td>7</td><td>5.5</td><td>1</td><td>1.5</td><td>3.5</td><td>7.5</td><td>8.5</td><td>10.5</td></tr></tbody></table></div>` },
+        { line: R`<b>Iteration 2: merge \(\{4,5\}\) and 3</b> — distance 1 (step 2's row; 8–9 ties at 1, see why?). New row = the smaller of \(\{4,5\}\)'s row and sample 3's: <div class="formula">\[\begin{array}{c|ccccccc}\text{to} & 1 & 2 & 6 & 7 & 8 & 9 & 10\\ \hline d(\{3,4,5\}, \cdot) & 6 & 4.5 & 1.5 & 3.5 & 7.5 & 8.5 & 10.5\end{array}\]</div>`,
           why: R`<p>8–9 is also at 1: a tie, either may go first. The official takes \(\{4,5\}\) + 3; 8–9 then goes in iteration 3.</p><div class="tw"><table><thead><tr><th>to</th><th>1</th><th>2</th><th>6</th><th>7</th><th>8</th><th>9</th><th>10</th></tr></thead><tbody>
 <tr><td>\(d(\{4,5\}, \cdot)\)</td><td>7</td><td>5.5</td><td>1.5</td><td>3.5</td><td>7.5</td><td>8.5</td><td>10.5</td></tr>
 <tr><td>\(d(3, \cdot)\)</td><td>6</td><td>4.5</td><td>3</td><td>5</td><td>9</td><td>10</td><td>12</td></tr>
@@ -88,30 +113,47 @@
 <p>The \(\{3,4,5\}\) column comes from iteration 2's row (7.5 to sample 8, 8.5 to sample 9).</p>`,
           extra: [{ label: "the official iteration-3 table has slips", html: R`<p>Its header says \(D(\{4,5\}, i)\), but it is \(\{8,9\}\)'s row. And it gives 3.5 for sample 6 and 2 for sample 7. Correct: \(d(\{8,9\}, 6) = \min(6, 7) = 6\) and \(d(\{8,9\}, 7) = \min(4, 5) = 4\). The merges themselves are right.</p>` }] },
       ],
-      compare: R`Same three merges as the official solution. Its iteration-3 table is \(\{8,9\}\)'s row (not \(\{4,5\}\)'s), and the entries for samples 6 and 7 should be 6 and 4 (it prints 3.5 and 2).`,
+      compare: R`Same three merges as the official solution (steps 2–4). Its iteration-3 table is \(\{8,9\}\)'s row (not \(\{4,5\}\)'s), and the entries for samples 6 and 7 should be 6 and 4 (it prints 3.5 and 2).`,
       slip: R`The last table is the new cluster \(\{8,9\}\)'s row, not \(\{4,5\}\)'s. Its distances to samples 6 and 7 should be 6 and 4, not 3.5 and 2 (part 5 uses \(D(7,8) = 4\) itself). The three merges are right.`,
     },
 
     "2025A-q2.5": {
       point: R`<p>Single linkage merges the smallest gaps first. Inside each visible group the steps are \(\le 2\); between groups every gap is \(\ge 4\). So the 3 groups form first (\(k = 3\)), then the two closest groups join (\(k = 2\)).</p>`,
+      start: R`<p><b>\(k = 3\):</b> □</p>
+<p><b>because:</b> inside each group □; between groups □</p>
+<p><b>\(k = 2\):</b> □</p>
+<p><b>because:</b> □</p>`,
+      answer: R`<p><b>\(k = 3\):</b> \(\{1,2\}\), \(\{3,\dots,7\}\), \(\{8,9,10\}\) — the three visible groups.</p>
+<p><b>because:</b> inside each group every sample has a neighbour in its group at distance \(\le 2\); between groups the closest pair is at 4 (samples 7, 8). Single linkage merges the smallest distances first, so these groups are complete before any two of them join.</p>
+<p><b>\(k = 2\):</b> \(\{1,2\}\), \(\{3,\dots,10\}\)</p>
+<p><b>because:</b> the next merge joins the two closest groups: \(D(\{3..7\}, \{8..10\}) = D(7,8) = 4 \lt D(\{1,2\}, \{3..7\}) = D(2,3) = 4.5\).</p>`,
       moves: [
+        { line: R`<b>What does the question really want?</b> No need to run it: single linkage always merges the smallest gap first. So the small gaps inside the visible groups go first; the \(k\)-cluster solution = what's left at \(k\) clusters.`,
+          remember: R`<p>Agglomerative clustering: start with every sample as its own cluster; each iteration merges the <b>two closest clusters</b>. The \(k\)-cluster solution = the clusters left when only \(k\) remain.</p><p>Not on the sheet; the question gives only the single-linkage distance.</p>` },
         { line: R`<b>\(k = 3\): the three visible groups</b> \(\{1,2\}\), \(\{3,\dots,7\}\), \(\{8,9,10\}\) — inside each, every sample has a neighbour in its group at distance \(\le 2\); between groups the closest pair is 4 (samples 7, 8).`,
           why: R`<p>The chains inside the groups: 1–2 (1.5); 4–5 (0.5), 3–4 (1), 5–6 (1.5), 6–7 (2); 8–9 (1), 9–10 (2). All \(\le 2\).</p>
-<p>Single linkage always merges the smallest distance, so every merge at \(\le 2\) happens before any merge at 4. The groups are complete before any two of them touch.</p>`,
-          remember: R`<p>Agglomerative clustering: start with every sample as its own cluster; each iteration merges the <b>two closest clusters</b>. The \(k\)-cluster solution = the clusters left when only \(k\) remain.</p><p>Not on the sheet; the question gives only the single-linkage distance.</p>` },
+<p>Single linkage always merges the smallest distance, so every merge at \(\le 2\) happens before any merge at 4. The groups are complete before any two of them touch.</p>` },
         { line: R`<b>The gaps between the groups</b> (closest pair, Manhattan): <div class="formula">\[\begin{array}{c|c|c}\text{groups} & \text{closest pair} & \text{gap}\\ \hline \{1,2\},\ \{3..7\} & 2,\ 3 & 2.5 + 2 = 4.5\\ \{3..7\},\ \{8,9,10\} & 7,\ 8 & 2.5 + 1.5 = 4\\ \{1,2\},\ \{8,9,10\} & 2,\ 8 & 8 + 5.5 = 13.5\end{array}\]</div>` },
         { line: R`<b>\(k = 2\): the smallest gap merges</b> — \(4 \lt 4.5\), so \(\{3,\dots,7\}\) and \(\{8,9,10\}\) join: \(\{1,2\}\) and \(\{3,\dots,10\}\). Done.` },
       ],
-      compare: R`Same answer and reasons as the official solution: \(k = 3\) is \(\{1,2\}, \{3\text{–}7\}, \{8\text{–}10\}\) (closest cross-group pair 4, every sample has a closer partner in its group); \(k = 2\) merges at \(D(7, 8) = 4 \lt D(2, 3) = 4.5\).`,
+      compare: R`Same answer and reasons as the official solution: \(k = 3\) is \(\{1,2\}, \{3\text{–}7\}, \{8\text{–}10\}\) (step 2: closest cross-group pair 4, every sample has a closer partner in its group); \(k = 2\) merges at \(D(7, 8) = 4 \lt D(2, 3) = 4.5\) (steps 3–4).`,
     },
 
     // ─────────────────────────── 2025-C Q5 ───────────────────────────
     "2025C-q5.1": {
       point: R`<p>One iteration = assign each sample to its nearest centroid, then move each centroid to its cluster's mean. WCSS before = squared distances to the old centroids; after = to the new ones.</p>`,
-      start: R`<p><b>Squared distances</b> (table: each sample to \(\mu_1\) and to \(\mu_2\)) → \(C_1 = \square\), \(C_2 = \square\)</p>
+      start: R`<p><b>Assign</b> — squared distances, the smaller wins:</p>
+\[\begin{array}{c|ccc}\text{sample} & 1 & \cdots & 6\\ \hline \text{to }\mu_1 & \square & \cdots & \square\\ \text{to }\mu_2 & \square & \cdots & \square\end{array}\]
+<p>So \(C_1 = \square\), \(C_2 = \square\).</p>
 \[\text{WCSS}_{\text{before}} = \square\]
 \[\mu_1 = \square,\qquad \mu_2 = \square\]
 \[\text{WCSS}_{\text{after}} = \square\]`,
+      answer: R`<p><b>Assign</b> — squared distances, the smaller wins:</p>
+\[\begin{array}{c|cccccc}\text{sample} & 1 & 2 & 3 & 4 & 5 & 6\\ \hline \text{to }(1,1) & \mathbf{0} & \mathbf{1} & \mathbf{1} & 50 & 66.25 & 66.25\\ \text{to }(6,6) & 50 & 41 & 41 & \mathbf{0} & \mathbf{1.25} & \mathbf{1.25}\end{array}\]
+<p>So \(C_1 = \{1,2,3\}\), \(C_2 = \{4,5,6\}\).</p>
+\[\text{WCSS}_{\text{before}} = 0 + 1 + 1 + 0 + 1.25 + 1.25 = 4.5\]
+\[\mu_1 = \left(\tfrac43,\ \tfrac43\right),\qquad \mu_2 = (6.5,\ 6.5)\]
+\[\begin{aligned}\text{WCSS}_{\text{after}} &= \tfrac29 + \tfrac59 + \tfrac59 + \tfrac12 + \tfrac14 + \tfrac14\\ &= \tfrac73 = 2\tfrac13\end{aligned}\]`,
       moves: [
         { line: R`<b>Assign</b> — squared distance of each sample to \((1,1)\) and to \((6,6)\); the smaller wins: <div class="formula">\[\begin{array}{c|cccccc}\text{sample} & 1 & 2 & 3 & 4 & 5 & 6\\ \hline \text{to }(1,1) & \mathbf{0} & \mathbf{1} & \mathbf{1} & 50 & 66.25 & 66.25\\ \text{to }(6,6) & 50 & 41 & 41 & \mathbf{0} & \mathbf{1.25} & \mathbf{1.25}\end{array}\]</div>So \(C_1 = \{1,2,3\}\), \(C_2 = \{4,5,6\}\).`,
           why: R`<p>Squared distance = \((\Delta x_1)^2 + (\Delta x_2)^2\) — the [sheet: L2 norm] without the root. The nearest centroid is the same with or without the root.</p>
@@ -123,8 +165,8 @@
 <tr><td>5 (6.5, 7)</td><td>5.5² + 6² = 66.25</td><td>0.5² + 1² = 1.25</td></tr>
 <tr><td>6 (7, 6.5)</td><td>6² + 5.5² = 66.25</td><td>1² + 0.5² = 1.25</td></tr></tbody></table></div>`,
           remember: R`<p>One K-means iteration: <b>assign</b> each sample to its nearest centroid, then <b>update</b> each centroid to the mean of its cluster.</p><p>The sheet only has the mean, \(\mu_j = \frac{1}{|C_j|}\sum_{i \in C_j} x_i\), next to [sheet: Within-cluster sum of squares (WCSS)]; the assign step is not on the sheet.</p>` },
-        { line: R`<b>WCSS before</b> — the new clusters with the old centroids = just the winning numbers of move 1, added: <div class="formula">\[\text{WCSS} = \underbrace{\color{#e8912d}0 + 1 + 1}_{\textstyle\color{#e8912d}C_1\text{ to }(1,1)} + \underbrace{\color{#4c8dff}0 + 1.25 + 1.25}_{\textstyle\color{#4c8dff}C_2\text{ to }(6,6)} = 4.5\]</div>`,
-          why: R`<p>WCSS = each sample's squared distance to its own cluster's centroid, all added ([sheet: Within-cluster sum of squares (WCSS)]). "Before the update" = the centroids are still \((1,1)\) and \((6,6)\), so those distances are exactly move 1's winners.</p>` },
+        { line: R`<b>WCSS before</b> — the new clusters with the old centroids = just the winning numbers of step 1, added: <div class="formula">\[\text{WCSS} = \underbrace{\color{#e8912d}0 + 1 + 1}_{\textstyle\color{#e8912d}C_1\text{ to }(1,1)} + \underbrace{\color{#4c8dff}0 + 1.25 + 1.25}_{\textstyle\color{#4c8dff}C_2\text{ to }(6,6)} = 4.5\]</div>`,
+          why: R`<p>WCSS = each sample's squared distance to its own cluster's centroid, all added ([sheet: Within-cluster sum of squares (WCSS)]). "Before the update" = the centroids are still \((1,1)\) and \((6,6)\), so those distances are exactly step 1's winners.</p>` },
         { line: R`<b>Update</b> — each centroid = the mean of its cluster: <div class="formula">\[\begin{aligned}\mu_1 &= \left(\tfrac{1+1+2}{3},\ \tfrac{1+2+1}{3}\right) = \left(\tfrac43,\ \tfrac43\right)\\ \mu_2 &= \left(\tfrac{6+6.5+7}{3},\ \tfrac{6+7+6.5}{3}\right) = (6.5,\ 6.5)\end{aligned}\]</div>`,
           why: R`<p>\(\mu_j = \frac{1}{|C_j|}\sum_{i \in C_j} x^{(i)}\): add the cluster's samples, divide by how many — one coordinate at a time. [sheet: Within-cluster sum of squares (WCSS)]</p>` },
         { line: R`<b>WCSS after</b> — same clusters, new centroids: <div class="formula">\[\begin{array}{c|cccccc}\text{sample} & 1 & 2 & 3 & 4 & 5 & 6\\ \hline \text{to own new }\mu & \tfrac29 & \tfrac59 & \tfrac59 & \tfrac12 & \tfrac14 & \tfrac14\end{array}\]</div><div class="formula">\[\text{WCSS} = \tfrac{12}{9} + 1 = \tfrac73 = 2\tfrac13\]</div>Done.`,
@@ -137,33 +179,43 @@
 <tr><td>6 (7, 6.5)</td><td>\((0.5, 0)\)</td><td>\(0.25 + 0 = 0.25\)</td></tr></tbody></table></div>
 <p>\(C_1\): \(\tfrac{2+5+5}{9} = \tfrac{12}{9}\). \(C_2\): \(0.5 + 0.25 + 0.25 = 1\). It went down from 4.5, as it must: the mean is the best centre.</p>` },
       ],
-      compare: R`Same numbers as the official solution (it writes 1.25 as \(\tfrac54\)): assignment 1–3 / 4–6, WCSS 4.5, centroids \((\tfrac43, \tfrac43)\) and \((6.5, 6.5)\), WCSS \(2\tfrac13\).`,
+      compare: R`Same numbers as the official solution (it writes 1.25 as \(\tfrac54\)): assignment 1–3 / 4–6 (step 1), WCSS 4.5 (step 2), centroids \((\tfrac43, \tfrac43)\) and \((6.5, 6.5)\) (step 3), WCSS \(2\tfrac13\) (step 4).`,
     },
 
     "2025C-q5.2": {
       point: R`<p>WCSS only changes if some sample switches cluster. With the new centroids nobody switches, so the means stay the same, so the WCSS stays the same.</p>`,
+      start: R`<p><b>Assign again</b> with \(\mu_1 = \square\), \(\mu_2 = \square\): □</p>
+<p><b>So:</b> □</p>
+<p><b>Answer:</b> the WCSS □</p>`,
+      answer: R`<p><b>Assign again</b> with \(\mu_1 = (\tfrac43, \tfrac43)\), \(\mu_2 = (6.5, 6.5)\): samples 1–3 are still nearest \(\mu_1\) and 4–6 nearest \(\mu_2\) (squared distance to own \(\le 0.56\), to the other \(\ge 43.6\)). No sample switches cluster.</p>
+<p><b>So:</b> the clusters are the same, so their means (the centroids) don't move.</p>
+<p><b>Answer:</b> the WCSS <b>stays the same</b> (\(2\tfrac13\)).</p>`,
       moves: [
+        { line: R`<b>What does the question really want?</b> WCSS changes only if the centroids move, and they move only if some sample switches cluster. So: assign again and check if anyone switches.`,
+          remember: R`<p>One K-means iteration: <b>assign</b> each sample to its nearest centroid, then <b>update</b> each centroid to the mean of its cluster. If no sample switches, the centroids don't move and WCSS stays the same: converged.</p><p>Not on the sheet (only the mean is, next to [sheet: Within-cluster sum of squares (WCSS)]).</p>` },
         { line: R`<b>Assign again with the new centroids</b> \((\tfrac43, \tfrac43)\), \((6.5, 6.5)\) — every sample is still much closer to its own: <div class="formula">\[\begin{array}{c|cccccc}\text{sample} & 1 & 2 & 3 & 4 & 5 & 6\\ \hline \text{to own} & 0.22 & 0.56 & 0.56 & 0.5 & 0.25 & 0.25\\ \text{to other} & 60.5 & 50.5 & 50.5 & 43.6 & 58.8 & 58.8\end{array}\]</div>`,
-          why: R`<p>"To own" = squared distance to its own new centroid, e.g. sample 1 \((1,1)\) to \((\tfrac43, \tfrac43)\): \((\tfrac13)^2 + (\tfrac13)^2 = \tfrac29 \approx 0.22\) (the same numbers as part 1, move 4). "To other", e.g. sample 1 to \((6.5, 6.5)\): \(5.5^2 + 5.5^2 = 60.5\); sample 4 to \((\tfrac43, \tfrac43)\): \((\tfrac{14}{3})^2 \cdot 2 = \tfrac{392}{9} \approx 43.6\).</p>`,
-          remember: R`<p>One K-means iteration: <b>assign</b> each sample to its nearest centroid, then <b>update</b> each centroid to the mean of its cluster.</p><p>The sheet only has the mean, \(\mu_j = \frac{1}{|C_j|}\sum_{i \in C_j} x_i\), next to [sheet: Within-cluster sum of squares (WCSS)]; the assign step is not on the sheet.</p>` },
+          why: R`<p>"To own" = squared distance to its own new centroid, e.g. sample 1 \((1,1)\) to \((\tfrac43, \tfrac43)\): \((\tfrac13)^2 + (\tfrac13)^2 = \tfrac29 \approx 0.22\) (the same numbers as part 1, step 4). "To other", e.g. sample 1 to \((6.5, 6.5)\): \(5.5^2 + 5.5^2 = 60.5\); sample 4 to \((\tfrac43, \tfrac43)\): \((\tfrac{14}{3})^2 \cdot 2 = \tfrac{392}{9} \approx 43.6\).</p>` },
         { line: R`<b>Nobody switches, so the means don't change, so the WCSS stays the same</b> (\(2\tfrac13\)). Done.`,
-          why: R`<p>WCSS can never go up in an iteration; it only goes down if some sample switches. K-means has converged.</p>`,
-          remember: R`<p>A K-means iteration never raises WCSS. If no sample switches cluster, the centroids don't move and K-means has converged.</p><p>Not on the sheet.</p>` },
+          why: R`<p>WCSS can never go up in an iteration; it only goes down if some sample switches. K-means has converged.</p>` },
       ],
-      compare: R`Same as the official solution: no change in the assignments, so the centroids and the WCSS stay the same.`,
+      compare: R`Same as the official solution: no change in the assignments (step 2), so the centroids and the WCSS stay the same (step 3).`,
     },
 
     "2025C-q5.3": {
       point: R`<p>Same outcome = every sample picks the same centroid as in part 1: samples 1–3 → \((1,1)\), samples 4–6 → \(\mu_2\). So write one inequality per sample with \(\mu_2 = (a, a)\), and keep the \(a\)'s that satisfy all six.</p>`,
-      start: R`<p>For each sample: squared distance to the centroid it must pick \(\lt\) squared distance to the other.</p>
-\[\begin{aligned}\text{Sample 1:}\;& \square \lt \square\\ &\text{so } \square\\ &\vdots\end{aligned}\]
+      start: R`<p>Same outcome = samples 1–3 → \(\mu_1\), samples 4–6 → \(\mu_2\). For each sample: squared distance to the centroid it must pick \(\lt\) squared distance to the other.</p>
+\[\begin{aligned}\text{Sample 1:}\;& \square \lt \square,\ \text{so } \square\\ \text{Samples 2, 3:}\;& \square \lt \square,\ \text{so } \square\\ \text{Sample 4:}\;& \square \lt \square,\ \text{so } \square\\ \text{Samples 5, 6:}\;& \square \lt \square,\ \text{so } \square\end{aligned}\]
 <p>All together: \(\;\square \lt a \lt \square\)</p>`,
+      answer: R`<p>Same outcome = samples 1–3 → \(\mu_1\), samples 4–6 → \(\mu_2\). For each sample: squared distance to the centroid it must pick \(\lt\) squared distance to the other.</p>
+\[\begin{aligned}\text{Sample 1:}\;& 0 \lt 2(1-a)^2\\ &\text{so } a \ne 1\\[4pt] \text{Samples 2, 3:}\;& 1 \lt 2a^2 - 6a + 5\\ &\text{so } (a-1)(a-2) \gt 0\\ &\text{so } a \lt 1 \text{ or } a \gt 2\\[4pt] \text{Sample 4:}\;& 2(6-a)^2 \lt 50\\ &\text{so } 1 \lt a \lt 11\\[4pt] \text{Samples 5, 6:}\;& 2a^2 - 27a + 91.25 \lt 66.25\\ &\text{so } 1 \lt a \lt 12.5\end{aligned}\]
+<p>All together: \(\;2 \lt a \lt 11\)</p>`,
       moves: [
-        { line: R`<b>Samples 1–3 must pick \((1,1)\)</b>, so distance to \((1,1)\) \(\lt\) distance to \((a,a)\): <div class="formula">\[\begin{aligned}\text{Sample 1:}\;& 0 \lt 2(1-a)^2\\ &\text{so } a \ne 1\\[4pt] \text{Samples 2, 3:}\;& 1 \lt 2a^2 - 6a + 5\\ &\text{so } a \lt 1 \text{ or } a \gt 2\end{aligned}\]</div>`,
+        { line: R`<b>What does the question really want?</b> "Same outcome" = same clusters: 1–3 pick \((1,1)\), 4–6 pick \((a,a)\). Same clusters → same means, so the update is automatically the same. So: one inequality per sample.`,
+          remember: R`<p>K-means' assign step: each sample goes to its <b>nearest</b> centroid (then each centroid moves to its cluster's mean).</p><p>Not on the sheet (only the mean is, next to [sheet: Within-cluster sum of squares (WCSS)]).</p>` },
+        { line: R`<b>Samples 1–3 must pick \((1,1)\)</b>, so distance to \((1,1)\) \(\lt\) distance to \((a,a)\): <div class="formula">\[\begin{aligned}\text{Sample 1:}\;& 0 \lt 2(1-a)^2\\ &\text{so } a \ne 1\\[4pt] \text{Samples 2, 3:}\;& 1 \lt 2a^2 - 6a + 5\\ &\text{so } (a-1)(a-2) \gt 0\\ &\text{so } a \lt 1 \text{ or } a \gt 2\end{aligned}\]</div>`,
           why: R`<p>Sample 2 \((1,2)\): \((1-a)^2 + (2-a)^2 = 2a^2 - 6a + 5\). Need it \(\gt 1\):</p>
 \[\begin{aligned}2a^2 - 6a + 4 &\gt 0\\ a^2 - 3a + 2 = (a-1)(a-2) &\gt 0\end{aligned}\]
-<p>A product is positive when both brackets have the same sign: \(a \lt 1\) or \(a \gt 2\). Sample 3 \((2,1)\) is sample 2 with the coordinates swapped — same numbers.</p>`,
-          remember: R`<p>K-means' assign step: each sample goes to its <b>nearest</b> centroid (then each centroid moves to its cluster's mean).</p><p>Not on the sheet (only the mean is, next to [sheet: Within-cluster sum of squares (WCSS)]).</p>` },
+<p>A product is positive when both brackets have the same sign: \(a \lt 1\) or \(a \gt 2\). Sample 3 \((2,1)\) is sample 2 with the coordinates swapped — same numbers.</p>` },
         { line: R`<b>Samples 4–6 must pick \((a,a)\)</b>, so distance to \((a,a)\) \(\lt\) distance to \((1,1)\): <div class="formula">\[\begin{aligned}\text{Sample 4:}\;& 2(6-a)^2 \lt 50\\ &\text{so } 1 \lt a \lt 11\\[4pt] \text{Samples 5, 6:}\;& 2a^2 - 27a + 91.25 \lt 66.25\\ &\text{so } 1 \lt a \lt 12.5\end{aligned}\]</div>`,
           why: R`<p>Sample 4: \(2(6-a)^2 \lt 50\), so \((6-a)^2 \lt 25\), so \(-5 \lt 6 - a \lt 5\), so \(1 \lt a \lt 11\).</p>
 <p>Sample 5 \((6.5, 7)\): \((6.5-a)^2 + (7-a)^2 = 2a^2 - 27a + 91.25 \lt 66.25\), so \(2a^2 - 27a + 25 \lt 0\). Roots ([sheet: Quadratic roots]) \(a = \frac{27 \pm \sqrt{729 - 200}}{4} = \frac{27 \pm 23}{4}\): 1 and 12.5. Negative between the roots: \(1 \lt a \lt 12.5\). Sample 6 is sample 5 swapped.</p>` },
@@ -171,53 +223,70 @@
           why: R`<p>At exactly \(a = 2\) or \(a = 11\) some sample is equally far from both centroids — a tie, so leave them out.</p>`,
           extra: [{ label: "the official answer says a > 2 — it misses the upper limit", html: R`<p>It claims "as long as \(a \gt 1\), samples 4–6 go to \(\mu_2\)", which ignores a \(\mu_2\) placed far beyond the data. Example \(a = 12\): sample 4 to \((12,12)\) is \(2 \cdot 6^2 = 72\), more than its 50 to \((1,1)\), so sample 4 switches and the outcome changes. Correct range: \(2 \lt a \lt 11\). Show sample 4's inequality so the grader sees where 11 comes from. (It also writes \(x^{(1)}\) where it means \(x^{(3)}\).)</p>` }] },
       ],
-      compare: R`Move 1 matches the official solution (\(a \ne 1\), \((a-1)(a-2) \gt 0\)). Its "\(a \gt 1\)" for samples 4–6 and its conclusion "iff \(a \gt 2\)" miss sample 4's upper limit: the answer is \(2 \lt a \lt 11\).`,
+      compare: R`Step 2 matches the official solution (\(a \ne 1\), \((a-1)(a-2) \gt 0\)). Its "\(a \gt 1\)" for samples 4–6 and its conclusion "iff \(a \gt 2\)" miss sample 4's upper limit: the answer is \(2 \lt a \lt 11\).`,
       slip: R`The answer isn't just \(a \gt 2\). If \(a\) gets too big, sample 4 \((6,6)\) flips to \(\mu_1\): \(2(6-a)^2 \lt 50\) needs \(a \lt 11\). Correct range: \(2 \lt a \lt 11\). (Also, where it writes \(\|x^{(1)}-\mu_2\|^2\) it means \(x^{(3)}\).)`,
     },
 
     "2025C-q5.4": {
       point: R`<p>\(\widetilde{\text{WCSS}}\) is just \(2\,\text{WCSS}\) (a homework identity). K-means already lowers WCSS every iteration, so it lowers \(\widetilde{\text{WCSS}}\) too: no modification needed.</p>`,
+      start: R`<p><b>Link it to WCSS:</b></p>\[\sum_{i,i' \in C_j}\|x^{(i)} - x^{(i')}\|^2 = \;\square\quad\text{so}\quad \widetilde{\text{WCSS}} = \;\square\]
+<p><b>K-means:</b> □</p>
+<p><b>So:</b> □ modification, because □</p>`,
+      answer: R`<p><b>Link it to WCSS:</b></p>\[\begin{aligned}\sum_{i,i' \in C_j}\|x^{(i)} - x^{(i')}\|^2 &= 2\sum_{i \in C_j}\|x^{(i)} - \mu_j\|^2\\ \text{so}\quad \widetilde{\text{WCSS}} &= 2\,\text{WCSS}\end{aligned}\]
+<p><b>K-means:</b> every iteration lowers (never raises) WCSS: assigning to the nearest centroid and moving each centroid to its cluster's mean can each only lower it.</p>
+<p><b>So:</b> no modification, because lowering WCSS lowers \(2\,\text{WCSS} = \widetilde{\text{WCSS}}\) too.</p>`,
       moves: [
+        { line: R`<b>What does the question really want?</b> K-means already guarantees WCSS never goes up. So check how \(\widetilde{\text{WCSS}}\) is tied to WCSS: if it's a fixed multiple of it, nothing needs to change.`,
+          remember: R`<p>A K-means iteration never raises WCSS (both the assign step and the mean update can only lower it).</p><p>Not on the sheet.</p>` },
         { line: R`<b>Link it to WCSS</b> — the answer key uses an identity from homework: each cluster's pairwise sum = 2 × its part of WCSS: <div class="formula">\[\begin{aligned}\sum_{i,i' \in C_j}\|x^{(i)} - x^{(i')}\|^2 &= 2\sum_{i \in C_j}\|x^{(i)} - \mu_j\|^2\\ \text{so}\quad \widetilde{\text{WCSS}} &= 2\,\text{WCSS}\end{aligned}\]</div>`,
-          remember: R`<p>The homework identity the key expects (not on the sheet): a cluster's pairwise sum = 2 × its part of WCSS, so \(\widetilde{\text{WCSS}} = 2\,\text{WCSS}\). Write that.</p><p class="muted">Strictly it's 2 × \(|C_j|\) × its part — see move 2's extra. Not needed for the points.</p>` },
+          remember: R`<p>The homework identity the key expects (not on the sheet): a cluster's pairwise sum = 2 × its part of WCSS, so \(\widetilde{\text{WCSS}} = 2\,\text{WCSS}\). Write that.</p><p class="muted">Strictly it's 2 × \(|C_j|\) × its part — see step 3's extra. Not needed for the points.</p>` },
         { line: R`<b>K-means lowers WCSS every iteration, so it lowers \(2\,\text{WCSS}\) too.</b> No modification needed. Done.`,
           why: R`<p>Assigning to the nearest centroid can only lower each sample's term; moving each centroid to the mean can only lower each cluster's part. So WCSS never goes up — and neither does 2 × WCSS.</p>`,
-          remember: R`<p>A K-means iteration never raises WCSS (both the assign step and the mean update can only lower it).</p><p>Not on the sheet.</p>`,
           extra: [{ label: "the key's identity is missing a factor |Cⱼ|", html: R`<p>Check on part 1's cluster \(C_1 = \{1,2,3\}\) = \((1,1), (1,2), (2,1)\), mean \((\tfrac43, \tfrac43)\): the pairs 1–2, 1–3, 2–3 are at 1, 1, 2, each counted twice: pairwise sum \(= 8\). Its WCSS part is \(\tfrac43\), and \(2 \cdot \tfrac43 \ne 8\), but \(2 \cdot |C_1| \cdot \tfrac43 = 2 \cdot 3 \cdot \tfrac43 = 8\).</p>
 <p>So truly \(\widetilde{\text{WCSS}} = \sum_j 2|C_j| \cdot (\text{cluster } j\text{'s part})\): not a fixed multiple of WCSS, and plain K-means can raise it.</p>
 <p><b>What to write:</b> the key's argument — that's what the graders expect.</p>` }] },
       ],
-      compare: R`Moves 1–2 are the official answer. The official identity drops a factor \(|C_j|\) (cluster \(\{1,2,3\}\): pairwise sum 8 = \(2 \cdot 3 \cdot \tfrac43\)), so strictly it's true only for the size-normalised version.`,
+      compare: R`Steps 2–3 are the official answer. The official identity drops a factor \(|C_j|\) (cluster \(\{1,2,3\}\): pairwise sum 8 = \(2 \cdot 3 \cdot \tfrac43\)), so strictly it's true only for the size-normalised version.`,
       slip: R`<ul><li>"In HW5, you proved…": you don't need the homework. Just write the identity; that's what the graders expect.</li><li>Strictly, the identity is missing a factor \(|C_j|\): the pairwise sum is \(2|C_j|\) × cluster \(j\)'s WCSS (part 1's cluster \(\{1,2,3\}\): 8, not \(2 \cdot \tfrac43\)). So plain K-means can actually raise \(\widetilde{\text{WCSS}}\). Still write the key's answer in the exam.</li></ul>`,
     },
 
     "2025C-q5.5": {
       point: R`<p>The code is part 1 in numpy: squared distances → nearest centroid → mean of each cluster → WCSS → stop when WCSS stops changing. Each blank is one piece of that.</p>`,
+      start: R`<p><b>(1)</b> □</p><p><b>(2)</b> □</p><p><b>(3)</b> □</p><p><b>(4)</b> □</p><p><b>(5)</b> □</p><p><b>(6)</b> □</p>`,
+      answer: R`<p><b>(1)</b> <code>X.shape</code></p><p><b>(2)</b> <code>(X[i] - centroids[j]) ** 2</code></p><p><b>(3)</b> <code>idx.any()</code></p><p><b>(4)</b> <code>new_centroids[cluster_assignments]</code></p><p><b>(5)</b> <code>wcss == prev_wcss</code></p><p><b>(6)</b> <code>prev_wcss = wcss</code></p>`,
       moves: [
         { line: R`<b>(1), (2): the distances</b> — <b>(1)</b> <code>X.shape</code> = (rows, columns) = (n samples, d features). <b>(2)</b> <code>(X[i] - centroids[j]) ** 2</code>; the <code>np.sum</code> around it adds the coordinates = squared distance.`,
           size: R`<p><code>X.shape</code> = (6, 2) = (n samples, d features) → <code>n, d = 6, 2</code> ✓ (rows are samples, so not (d, n)).</p><p><code>X[i] - centroids[j]</code> = (2,) − (2,) = (2,) → <code>np.sum</code> → one number ✓</p><p><code>distances</code> = (n, k) = (6, 2): row = sample, column = centroid → <code>argmin(axis=1)</code> = one centroid per sample, (6,) ✓</p>`,
           why: R`<p>Sample 5 to \((6,6)\): <code>(np.array([6.5, 7]) - [6, 6]) ** 2</code> → <code>[0.25, 1]</code>, summed 1.25 — part 1's table. Then <code>argmin(distances, axis=1)</code> picks, in each row (sample), the column (centroid) with the smallest.</p>` },
-        { line: R`<b>(3): does the cluster have any samples?</b> <code>idx.any()</code> — <code>idx</code> is True/False per sample; <code>any()</code> = at least one True (True counts as 1, so <code>&gt; 0</code> holds).`,
+        { line: R`<b>(3): the comment says it — "if any points are assigned".</b> <code>idx.any()</code> — <code>idx</code> is True/False per sample; <code>any()</code> = at least one True (True counts as 1, so <code>&gt; 0</code> holds).`,
           size: R`<p><code>idx</code> = (6,) True/False — always 6 long, whatever the cluster → <code>len(idx)</code> = 6 ✗</p><p><code>X[idx]</code> = only the True rows: (3, 2) here → <code>.mean(axis=0)</code> = (2,) = one centroid ✓</p>`,
           why: R`<p><code>len(idx)</code> won't work: a True/False list always has length \(n\). (Your HW6 wrote <code>len(cluster_pixels) == 0</code> — that works because <code>cluster_pixels</code> holds the selected rows, not the True/False list.)</p>` },
-        { line: R`<b>(4): each sample's own centroid</b> — <div class="formula">\[\text{X} - \underbrace{\color{#e8912d}\texttt{new\_centroids[cluster\_assignments]}}_{\textstyle\color{#e8912d}\text{this part = row } i \text{ is sample } i\text{'s centroid}}\]</div>`,
+        { line: R`<b>(4): each sample's own centroid</b> — WCSS = each sample minus <i>its own</i> centroid, so we need one centroid row per sample: <div class="formula">\[\text{X} - \underbrace{\color{#e8912d}\texttt{new\_centroids[cluster\_assignments]}}_{\textstyle\color{#e8912d}\text{this part = row } i \text{ is sample } i\text{'s centroid}}\]</div>`,
           size: R`<p><code>new_centroids</code> (2, 2) = one row per centroid; indexed by <code>cluster_assignments</code> (6,) → (6, 2) = one row per sample ✓</p><p><code>X</code> (6, 2) − that (6, 2): same shape, row by row ✓ · without the indexing: (6, 2) − (2, 2) ✗ (numpy can't line them up)</p><p><code>** 2</code> keeps (6, 2); <code>np.sum</code> adds all 12 → one number = WCSS ✓</p>`,
           why: R`<p>Using the cluster numbers as row indices. With part 1: <code>cluster_assignments = [0,0,0,1,1,1]</code>, so it's three copies of \((\tfrac43, \tfrac43)\), then three copies of \((6.5, 6.5)\). <code>X</code> minus that, squared, all added = \(\tfrac73\) — part 1's WCSS after.</p>
 <p>(The printed line has one bracket too many; it means <code>np.sum((X - …) ** 2)</code>.)</p>` },
-        { line: R`<b>(5), (6): stop when WCSS stops changing</b> — <b>(5)</b> <code>wcss == prev_wcss</code>, <b>(6)</b> <code>prev_wcss = wcss</code>. Done.`,
+        { line: R`<b>(5), (6): stop when WCSS stops changing</b> — <b>(5)</b> compare this round's WCSS with last round's: <code>wcss == prev_wcss</code>. <b>(6)</b> then save this round's as "last round" for the next compare: <code>prev_wcss = wcss</code>. Done.`,
           why: R`<p>Same WCSS = nobody switched = converged (part 2). <code>prev_wcss</code> starts at infinity, so the first round never stops.</p>` },
       ],
-      compare: R`Same six answers as the official solution.`,
+      compare: R`Same six answers as the official solution (steps 1–4).`,
       slip: R`The exam's WCSS line has one bracket too many (unbalanced). It means <code>np.sum((X - new_centroids[cluster_assignments]) ** 2)</code>.`,
     },
 
     // ─────────────────────────── 2026-A Q4 ───────────────────────────
     "2026A-q4.1": {
       point: R`<p>Assign each sample to its nearest centroid, WCSS with the old centroids, move each centroid to its cluster's mean, WCSS with the new ones. (The same routine as 2025-C Q5.1.)</p>`,
-      start: R`<p><b>Squared distances</b> (table: each sample to \(\mu_1\) and to \(\mu_2\)) → \(C_1 = \square\), \(C_2 = \square\)</p>
+      start: R`<p><b>Assign</b> — squared distances, the smaller wins:</p>
+\[\begin{array}{c|ccc}\text{sample} & 1 & \cdots & 6\\ \hline \text{to }\mu_1 & \square & \cdots & \square\\ \text{to }\mu_2 & \square & \cdots & \square\end{array}\]
+<p>So \(C_1 = \square\), \(C_2 = \square\).</p>
 \[\text{WCSS}_{\text{before}} = \square\]
 \[\mu_1 = \square,\qquad \mu_2 = \square\]
 \[\text{WCSS}_{\text{after}} = \square\]`,
+      answer: R`<p><b>Assign</b> — squared distances, the smaller wins:</p>
+\[\begin{array}{c|cccccc}\text{sample} & 1 & 2 & 3 & 4 & 5 & 6\\ \hline \text{to }(0,0) & \mathbf{0} & \mathbf{1} & \mathbf{4} & 128 & 164 & 208\\ \text{to }(8,8) & 128 & 113 & 100 & \mathbf{0} & \mathbf{4} & \mathbf{16}\end{array}\]
+<p>So \(C_1 = \{1,2,3\}\), \(C_2 = \{4,5,6\}\).</p>
+\[\text{WCSS}_{\text{before}} = (0 + 1 + 4) + (0 + 4 + 16) = 25\]
+\[\mu_1 = \left(\tfrac23,\ \tfrac13\right),\qquad \mu_2 = \left(8\tfrac23,\ 9\tfrac13\right)\]
+\[\begin{aligned}\text{WCSS}_{\text{after}} &= \tfrac59 + \tfrac89 + \tfrac{17}9 + \tfrac{20}9 + \tfrac{32}9 + \tfrac{68}9\\ &= \tfrac{30}{9} + \tfrac{120}{9} = 16\tfrac23\end{aligned}\]`,
       moves: [
         { line: R`<b>Assign</b> — squared distance of each sample to \((0,0)\) and to \((8,8)\); the smaller wins: <div class="formula">\[\begin{array}{c|cccccc}\text{sample} & 1 & 2 & 3 & 4 & 5 & 6\\ \hline \text{to }(0,0) & \mathbf{0} & \mathbf{1} & \mathbf{4} & 128 & 164 & 208\\ \text{to }(8,8) & 128 & 113 & 100 & \mathbf{0} & \mathbf{4} & \mathbf{16}\end{array}\]</div>So \(C_1 = \{1,2,3\}\), \(C_2 = \{4,5,6\}\).`,
           why: R`<p>Squared distance = \((\Delta x_1)^2 + (\Delta x_2)^2\) — the [sheet: L2 norm] without the root; the nearest centroid is the same.</p>
@@ -229,8 +298,8 @@
 <tr><td>5 (10, 8)</td><td>10² + 8² = 164</td><td>2² + 0² = 4</td></tr>
 <tr><td>6 (8, 12)</td><td>8² + 12² = 208</td><td>0² + 4² = 16</td></tr></tbody></table></div>`,
           remember: R`<p>One K-means iteration: <b>assign</b> each sample to its nearest centroid, then <b>update</b> each centroid to the mean of its cluster.</p><p>The sheet only has the mean, \(\mu_j = \frac{1}{|C_j|}\sum_{i \in C_j} x_i\), next to [sheet: Within-cluster sum of squares (WCSS)]; the assign step is not on the sheet.</p>` },
-        { line: R`<b>WCSS before</b> — the winning numbers of move 1, added: <div class="formula">\[\text{WCSS} = \underbrace{\color{#e8912d}0 + 1 + 4}_{\textstyle\color{#e8912d}C_1\text{ to }(0,0)} + \underbrace{\color{#4c8dff}0 + 4 + 16}_{\textstyle\color{#4c8dff}C_2\text{ to }(8,8)} = 25\]</div>`,
-          why: R`<p>"Before the update" = the new clusters, the old centroids \((0,0)\), \((8,8)\) — exactly move 1's winners. [sheet: Within-cluster sum of squares (WCSS)]</p>` },
+        { line: R`<b>WCSS before</b> — the winning numbers of step 1, added: <div class="formula">\[\text{WCSS} = \underbrace{\color{#e8912d}0 + 1 + 4}_{\textstyle\color{#e8912d}C_1\text{ to }(0,0)} + \underbrace{\color{#4c8dff}0 + 4 + 16}_{\textstyle\color{#4c8dff}C_2\text{ to }(8,8)} = 25\]</div>`,
+          why: R`<p>"Before the update" = the new clusters, the old centroids \((0,0)\), \((8,8)\) — exactly step 1's winners. [sheet: Within-cluster sum of squares (WCSS)]</p>` },
         { line: R`<b>Update</b> — each centroid = the mean of its cluster: <div class="formula">\[\begin{aligned}\mu_1 &= \left(\tfrac{0+0+2}{3},\ \tfrac{0+1+0}{3}\right) = \left(\tfrac23,\ \tfrac13\right)\\ \mu_2 &= \left(\tfrac{8+10+8}{3},\ \tfrac{8+8+12}{3}\right) = \left(8\tfrac23,\ 9\tfrac13\right)\end{aligned}\]</div>` },
         { line: R`<b>WCSS after</b> — same clusters, new centroids: <div class="formula">\[\begin{array}{c|cccccc}\text{sample} & 1 & 2 & 3 & 4 & 5 & 6\\ \hline \text{to own new }\mu & \tfrac59 & \tfrac89 & \tfrac{17}9 & \tfrac{20}9 & \tfrac{32}9 & \tfrac{68}9\end{array}\]</div><div class="formula">\[\text{WCSS} = \tfrac{30}{9} + \tfrac{120}{9} = \tfrac{150}{9} = 16\tfrac23\]</div>Done.`,
           why: R`<div class="tw"><table><thead><tr><th>sample</th><th>minus its new \(\mu\)</th><th>squared, added</th></tr></thead><tbody>
@@ -242,33 +311,46 @@
 <tr><td>6 (8, 12)</td><td>\((-\tfrac23, \tfrac83)\)</td><td>\(\tfrac49 + \tfrac{64}9 = \tfrac{68}9\)</td></tr></tbody></table></div>
 <p>\(C_1\): \(\tfrac{5+8+17}{9} = \tfrac{30}{9}\). \(C_2\): \(\tfrac{20+32+68}{9} = \tfrac{120}{9}\).</p>` },
       ],
-      compare: R`Same numbers as the official solution. It writes the distances with roots (\(8\sqrt2 = \sqrt{128}\), \(\sqrt{113}\), \(2\sqrt{41} = \sqrt{164}\), \(4\sqrt{13} = \sqrt{208}\)) and squares them for WCSS: \((0^2+1^2+2^2) + (0^2+2^2+4^2) = 25\) — move 2.`,
+      compare: R`Same numbers as the official solution. It writes the distances with roots (\(8\sqrt2 = \sqrt{128}\), \(\sqrt{113}\), \(2\sqrt{41} = \sqrt{164}\), \(4\sqrt{13} = \sqrt{208}\)) and squares them for WCSS: \((0^2+1^2+2^2) + (0^2+2^2+4^2) = 25\) — step 2. Its update and WCSS after are steps 3 and 4.`,
     },
 
     "2026A-q4.2": {
       point: R`<p>WCSS only changes if some sample switches cluster. With the new centroids nobody switches, so the means stay the same, so the WCSS stays the same.</p>`,
+      start: R`<p><b>Assign again</b> with \(\mu_1 = \square\), \(\mu_2 = \square\): □</p>
+<p><b>So:</b> □</p>
+<p><b>Answer:</b> the WCSS □</p>`,
+      answer: R`<p><b>Assign again</b> with \(\mu_1 = (\tfrac23, \tfrac13)\), \(\mu_2 = (8\tfrac23, 9\tfrac13)\): samples 1–3 are still nearest \(\mu_1\) and 4–6 nearest \(\mu_2\) (squared distance to own \(\le 7.56\), to the other \(\gt 112\)). No sample switches cluster.</p>
+<p><b>So:</b> the clusters are the same, so their means (the centroids) don't move.</p>
+<p><b>Answer:</b> the WCSS <b>stays the same</b> (\(16\tfrac23\)).</p>`,
       moves: [
+        { line: R`<b>What does the question really want?</b> WCSS changes only if the centroids move, and they move only if some sample switches cluster. So: assign again and check if anyone switches.`,
+          remember: R`<p>One K-means iteration: <b>assign</b> each sample to its nearest centroid, then <b>update</b> each centroid to the mean of its cluster. If no sample switches, the centroids don't move and WCSS stays the same: converged.</p><p>Not on the sheet (only the mean is, next to [sheet: Within-cluster sum of squares (WCSS)]).</p>` },
         { line: R`<b>Assign again with the new centroids</b> \((\tfrac23, \tfrac13)\), \((8\tfrac23, 9\tfrac13)\) — every sample is still much closer to its own: <div class="formula">\[\begin{array}{c|cccccc}\text{sample} & 1 & 2 & 3 & 4 & 5 & 6\\ \hline \text{own} & 0.56 & 0.89 & 1.89 & 2.22 & 3.56 & 7.56\\ \text{other} & 162 & 145 & 132 & 113 & 146 & 190\end{array}\]</div>(rounded)`,
-          why: R`<p>"To own" = squared distance to its own new centroid, e.g. sample 1 \((0,0)\) to \((\tfrac23, \tfrac13)\): \((\tfrac23)^2 + (\tfrac13)^2 = \tfrac59 \approx 0.56\) (the same numbers as part 1, move 4). "To other", e.g. sample 4 \((8,8)\) to \((\tfrac23, \tfrac13)\): \((\tfrac{22}{3})^2 + (\tfrac{23}{3})^2 = \tfrac{1013}{9} \approx 113\).</p>`,
-          remember: R`<p>One K-means iteration: <b>assign</b> each sample to its nearest centroid, then <b>update</b> each centroid to the mean of its cluster.</p><p>The sheet only has the mean, \(\mu_j = \frac{1}{|C_j|}\sum_{i \in C_j} x_i\), next to [sheet: Within-cluster sum of squares (WCSS)]; the assign step is not on the sheet.</p>` },
+          why: R`<p>"To own" = squared distance to its own new centroid, e.g. sample 1 \((0,0)\) to \((\tfrac23, \tfrac13)\): \((\tfrac23)^2 + (\tfrac13)^2 = \tfrac59 \approx 0.56\) (the same numbers as part 1, step 4). "To other", e.g. sample 4 \((8,8)\) to \((\tfrac23, \tfrac13)\): \((\tfrac{22}{3})^2 + (\tfrac{23}{3})^2 = \tfrac{1013}{9} \approx 113\).</p>` },
         { line: R`<b>Nobody switches, so the means don't change, so the WCSS stays the same</b> (\(16\tfrac23\)). Done.`,
-          why: R`<p>WCSS can never go up in an iteration; it only goes down if some sample switches. K-means has converged.</p>`,
-          remember: R`<p>A K-means iteration never raises WCSS. If no sample switches cluster, the centroids don't move and K-means has converged.</p><p>Not on the sheet.</p>` },
+          why: R`<p>WCSS can never go up in an iteration; it only goes down if some sample switches. K-means has converged.</p>` },
       ],
-      compare: R`Same as the official solution: samples 1–3 stay with \(\mu_1\), 4–6 with \(\mu_2\), so the centroids and the WCSS don't change.`,
+      compare: R`Same as the official solution: samples 1–3 stay with \(\mu_1\), 4–6 with \(\mu_2\) (step 2), so the centroids and the WCSS don't change (step 3).`,
     },
 
     "2026A-q4.3": {
       point: R`<p>A converged solution = every sample is already nearest to its own cluster's mean, so nothing changes. Pick 3 groups, compute their means, check that nobody switches.</p>`,
+      start: R`<p><b>Clusters:</b> □</p>
+<p><b>Centroids:</b> □</p>
+<p><b>Why it's a possible converged solution:</b> □</p>`,
+      answer: R`<p><b>Clusters:</b> \(\{1,2\}\), \(\{3\}\), \(\{4,5,6\}\)</p>
+<p><b>Centroids:</b> \(\mu_1 = (0,\ 0.5)\), \(\mu_2 = (2,\ 0)\), \(\mu_3 = \left(8\tfrac23,\ 9\tfrac13\right)\)</p>
+<p><b>Why it's a possible converged solution:</b> every sample is nearest to its own cluster's centroid (squared distances: samples 1, 2 are at 0.25 from \(\mu_1\) vs \(\ge 4\) from \(\mu_2\); sample 3 is at 0 from \(\mu_2\) vs 4.25 from \(\mu_1\); samples 4–6 are at \(\le 7.56\) from \(\mu_3\) vs \(\ge 100\) from the others). So another iteration changes no assignment, the means stay where they are, and K-means stops here.</p>`,
       moves: [
-        { line: R`<b>Pick 3 groups</b> — split the bottom-left group: \(\{1,2\}\), \(\{3\}\), \(\{4,5,6\}\). Their means: <div class="formula">\[\mu_1 = (0,\ 0.5),\qquad \mu_2 = (2,\ 0),\qquad \mu_3 = \left(8\tfrac23,\ 9\tfrac13\right)\]</div>`,
-          why: R`<p>\(\mu_1 = \tfrac12\big((0,0) + (0,1)\big) = (0, 0.5)\). \(\mu_2\) is sample 3 itself. \(\mu_3 = \tfrac13\big((8,8) + (10,8) + (8,12)\big) = (\tfrac{26}{3}, \tfrac{28}{3})\) (part 1's \(\mu_2\)).</p>`,
+        { line: R`<b>What does the question really want?</b> "Returned after convergence" = nothing changes any more: each centroid is its cluster's mean, and every sample is nearest its own centroid. So: pick 3 groups, take their means, check nobody switches.`,
           remember: R`<p>K-means has converged when every centroid is its cluster's mean and every sample is already nearest to its own centroid: nothing switches, nothing moves.</p><p>Not on the sheet (only the mean is, next to [sheet: Within-cluster sum of squares (WCSS)]).</p>` },
+        { line: R`<b>Pick 3 groups</b> — the data has 2 far-apart groups, so one must split. Either works; split the bottom-left one (like the official), sample 3 alone:\(\{1,2\}\), \(\{3\}\), \(\{4,5,6\}\). Their means: <div class="formula">\[\mu_1 = (0,\ 0.5),\qquad \mu_2 = (2,\ 0),\qquad \mu_3 = \left(8\tfrac23,\ 9\tfrac13\right)\]</div>`,
+          why: R`<p>Why 3 alone: in the bottom-left group, 1 and 2 are closest to each other (squared distance 1); sample 3 is farther from both (4 and 5). \(\mu_1 = \tfrac12\big((0,0) + (0,1)\big) = (0, 0.5)\). \(\mu_2\) is sample 3 itself. \(\mu_3 = \tfrac13\big((8,8) + (10,8) + (8,12)\big) = (\tfrac{26}{3}, \tfrac{28}{3})\) (part 1's \(\mu_2\)).</p>` },
         { line: R`<b>Check nobody switches</b> — squared distances; each sample's own centroid (bold) is the smallest: <div class="formula">\[\begin{array}{c|ccc}\text{sample} & \text{to }\mu_1 & \text{to }\mu_2 & \text{to }\mu_3\\ \hline 1 & \mathbf{0.25} & 4 & 162.2\\ 2 & \mathbf{0.25} & 5 & 144.6\\ 3 & 4.25 & \mathbf{0} & 131.6\\ 4 & 120.25 & 100 & \mathbf{2.22}\\ 5 & 156.25 & 128 & \mathbf{3.56}\\ 6 & 196.25 & 180 & \mathbf{7.56}\end{array}\]</div>` },
         { line: R`<b>So it's converged</b> — nobody switches, so the means don't move, so K-means stays here. Done.`,
           why: R`<p>K-means can actually get here: if the random start picks samples 1, 3 and 4 as centroids (like <code>get_random_centroids</code> in HW6), the first iteration gives exactly these clusters.</p>` },
       ],
-      compare: R`Same solution as the official one (\(\{1,2\}, \{3\}, \{4,5,6\}\) with centroids \((0, 0.5)\), \((2, 0)\), \((8\tfrac23, 9\tfrac13)\)). It checks only the samples near the split; move 2's table checks all six.`,
+      compare: R`Same solution as the official one (\(\{1,2\}, \{3\}, \{4,5,6\}\) with centroids \((0, 0.5)\), \((2, 0)\), \((8\tfrac23, 9\tfrac13)\)). It checks only the samples near the split; step 3's table checks all six.`,
       slip: R`Here \(x_1, x_2, \dots\) mean sample 1, sample 2, … (rows of the table), not the \(x_1\)/\(x_2\) feature columns. So \(\{x_1, x_2\}\) is just samples 1 and 2.`,
     },
 
@@ -276,13 +358,35 @@
       point: R`<p>Complete linkage: always merge the two closest clusters, but a cluster's distance = its <b>farthest</b> pair. So after a merge, the new row = the <b>larger</b> of the two old rows. Manhattan distance = \(|\Delta x_1| + |\Delta x_2|\).</p>`,
       start: R`<p><b>Iteration 1:</b> merge \(\square\) and \(\square\) at distance \(\square\). The new cluster's distances:</p>
 \[\begin{array}{c|ccc}\text{to} & \square & \square & \cdots\\ \hline d(\text{new}, \cdot) & \square & \square & \cdots\end{array}\]
-<p><b>Iterations 2–5:</b> the same two lines each. Then the dendrogram.</p>`,
+<p><b>Iteration 2:</b> merge \(\square\) and \(\square\) at distance \(\square\). The new cluster's distances: □</p>
+<p><b>Iteration 3:</b> merge \(\square\) and \(\square\) at distance \(\square\). The new cluster's distances: □</p>
+<p><b>Iteration 4:</b> merge \(\square\) and \(\square\) at distance \(\square\). The new cluster's distances: □</p>
+<p><b>Iteration 5:</b> merge \(\square\) and \(\square\) at distance \(\square\).</p>
+<p><b>Dendrogram:</b> □</p>`,
+      answer: R`<p><b>Iteration 1:</b> merge 1 and 2 at distance 1. The new cluster's distances:</p>
+\[\begin{array}{c|cccc}\text{to} & 3 & 4 & 5 & 6\\ \hline d(\{1,2\}, \cdot) & 3 & 16 & 18 & 20\end{array}\]
+<p><b>Iteration 2:</b> merge 4 and 5 at distance 2. The new cluster's distances:</p>
+\[\begin{array}{c|ccc}\text{to} & \{1,2\} & 3 & 6\\ \hline d(\{4,5\}, \cdot) & 18 & 16 & 6\end{array}\]
+<p><b>Iteration 3:</b> merge \(\{1,2\}\) and 3 at distance 3. The new cluster's distances:</p>
+\[\begin{array}{c|cc}\text{to} & \{4,5\} & 6\\ \hline d(\{1,2,3\}, \cdot) & 18 & 20\end{array}\]
+<p><b>Iteration 4:</b> merge \(\{4,5\}\) and 6 at distance 6. The new cluster's distances: \(d(\{4,5,6\}, \{1,2,3\}) = 20\).</p>
+<p><b>Iteration 5:</b> merge \(\{1,2,3\}\) and \(\{4,5,6\}\) at distance 20.</p>
+<p><b>Dendrogram:</b></p>
+<pre><code>dist
+ 20             ┌─────────┴─────────┐
+  6             │               ┌───┴────┐
+  3         ┌───┴────┐          │        │
+  2         │        │       ┌──┴──┐     │
+  1      ┌──┴──┐     │       │     │     │
+         1     2     3       4     5     6</code></pre>`,
       moves: [
+        { line: R`<b>What does the question really want?</b> Each iteration: merge the two closest clusters, write the merge distance and the new cluster's distances. Complete linkage → new distance = the <b>larger</b> of its two parts' distances. Until one cluster is left.`,
+          why: R`<p>Complete linkage = the farthest pair between the two clusters. The farthest pair from \(\{1,2\}\) to sample 3 uses whichever of 1 or 2 is farther from 3 — so take the larger of the two numbers. No new distances to compute: every merged row = "larger of" two rows you already have.</p>`,
+          remember: R`<p>Agglomerative clustering: start with every sample as its own cluster; each iteration merges the <b>two closest clusters</b> (distance = the linkage), until one is left.</p><p>Not on the sheet; the question gives only the complete-linkage distance.</p>` },
         { line: R`<b>Iteration 1: merge 1 and 2 at 1</b> — the closest pair: \(|0 - 0| + |0 - 1| = 1\). \(\{1,2\}\)'s distance to each = the larger of 1's and 2's: <div class="formula">\[\begin{array}{c|cccc}\text{to} & 3 & 4 & 5 & 6\\ \hline d(\{1,2\}, \cdot) & 3 & 16 & 18 & 20\end{array}\]</div>`,
           why: R`<p>Manhattan distance = the [sheet: L1 norm] of the difference. All 15 pairs (you don't have to write this, but every later "larger of" is a lookup here):</p>
 \[\begin{array}{c|cccccc} & 1 & 2 & 3 & 4 & 5 & 6\\ \hline 1 & 0 & 1 & 2 & 16 & 18 & 20\\ 2 & 1 & 0 & 3 & 15 & 17 & 19\\ 3 & 2 & 3 & 0 & 14 & 16 & 18\\ 4 & 16 & 15 & 14 & 0 & 2 & 4\\ 5 & 18 & 17 & 16 & 2 & 0 & 6\\ 6 & 20 & 19 & 18 & 4 & 6 & 0\end{array}\]
-<p>Example: \(\{1,2\}\) to 3 = the larger of \(d(1,3) = 2\) and \(d(2,3) = 3\) = 3.</p>`,
-          remember: R`<p>Agglomerative clustering: start with every sample as its own cluster; each iteration merges the <b>two closest clusters</b> (distance = the linkage), until one is left.</p><p>Not on the sheet; the question gives only the complete-linkage distance.</p>` },
+<p>Example: \(\{1,2\}\) to 3 = the larger of \(d(1,3) = 2\) and \(d(2,3) = 3\) = 3.</p>` },
         { line: R`<b>Iteration 2: merge 4 and 5 at 2</b> — now the smallest (next is \(\{1,2\}\)–3 at 3). \(\{4,5\}\)'s row: <div class="formula">\[\begin{array}{c|ccc}\text{to} & \{1,2\} & 3 & 6\\ \hline d(\{4,5\}, \cdot) & 18 & 16 & 6\end{array}\]</div>`,
           why: R`<p>To \(\{1,2\}\): larger of \(d(\{1,2\}, 4) = 16\) and \(d(\{1,2\}, 5) = 18\) → 18. To 3: larger of 14 and 16 → 16. To 6: larger of 4 and 6 → 6.</p>` },
         { line: R`<b>Iteration 3: merge \(\{1,2\}\) and 3 at 3</b> (next is \(\{4,5\}\)–6 at 6). \(\{1,2,3\}\)'s row: <div class="formula">\[\begin{array}{c|cc}\text{to} & \{4,5\} & 6\\ \hline d(\{1,2,3\}, \cdot) & 18 & 20\end{array}\]</div>`,
@@ -297,12 +401,14 @@
          1     2     3       4     5     6</code></pre>Done.`,
           remember: R`<p>Dendrogram: the samples along the bottom; each merge is a bar joining the two clusters at the height of their merge distance.</p><p>Not on the sheet.</p>` },
       ],
-      compare: R`Same five merges and distances as the official solution (1, 2, 3, 6, 20), and the same tree: \(\{1,2\}\) + 3 on one side, \(\{4,5\}\) + 6 on the other, joined at 20.`,
+      compare: R`Same five merges and distances as the official solution (1, 2, 3, 6, 20; steps 2–5), and the same tree (step 6): \(\{1,2\}\) + 3 on one side, \(\{4,5\}\) + 6 on the other, joined at 20.`,
       slip: R`Here \(x_1, x_2, \dots\) mean sample 1, sample 2, … (rows of the table), not the \(x_1\)/\(x_2\) feature columns. So \(\{x_1, x_2\}\) is just samples 1 and 2.`,
     },
 
     "2026A-q4.5": {
       point: R`<p>It's K-means with one twist: an empty cluster gets a random sample. Each blank is one piece — the distance (the root), the empty test, the mean, the stop rule.</p>`,
+      start: R`<p><b>(1)</b> □</p><p><b>(2)</b> □</p><p><b>(3)</b> □</p><p><b>(4)</b> □</p>`,
+      answer: R`<p><b>(1)</b> <code>0.5</code></p><p><b>(2)</b> <code>len(members) == 0</code></p><p><b>(3)</b> <code>np.mean(members, axis=0)</code></p><p><b>(4)</b> <code>abs(prev_WCSS - WCSS) &lt; epsilon</code></p>`,
       moves: [
         { line: R`<b>(1): the root</b> — the line already squares and adds; Euclidean distance is the square root of that: <code>0.5</code>.`,
           size: R`<p><code>X - centroids[j]</code> = (6, 2) − (2,) → numpy repeats the centroid for every row → (6, 2) ✓</p><p><code>np.sum(…, axis=1)</code> adds across each row (the 2 coordinates) → (6,) = one distance per sample; <code>** 0.5</code> keeps (6,) ✓</p><p><code>np.array(distances)</code> = k rows of 6 = (k, n) = (2, 6) with part 1's k = 2. Row = centroid, so <code>argmin(axis=0)</code> goes down each column → one centroid per sample, (6,) ✓ (2025-C had (n, k) and <code>axis=1</code>.)</p>`,
@@ -310,10 +416,10 @@
         { line: R`<b>(2), (3): the update</b> — <b>(2)</b> <code>len(members) == 0</code> (no rows → random sample); <b>(3)</b> <code>np.mean(members, axis=0)</code> (the cluster's mean).`,
           size: R`<p><code>members</code> = only cluster j's rows: (3, 2) for \(C_1 = \{1,2,3\}\) → <code>len(members)</code> = 3 = cluster size ✓</p><p><code>np.mean(members, axis=0)</code> averages down the rows → (2,) = one point, fits <code>new_centroids[j]</code> (2,) ✓ · <code>axis=1</code> would give (3,) ✗</p>`,
           why: R`<p><code>members</code> = the actual rows of cluster \(j\), so its length is the cluster size. <code>axis=0</code> averages down the rows = the mean point, \(\mu_j\) from [sheet: Within-cluster sum of squares (WCSS)]. Your HW6 <code>kmeans</code> has exactly these two lines.</p>` },
-        { line: R`<b>(4): stop when WCSS stops changing</b> — <code>abs(prev_WCSS - WCSS) &lt; epsilon</code>. Done.`,
+        { line: R`<b>(4): stop when WCSS stops changing</b> — "changing" = last round's WCSS minus this round's; the signature's <code>epsilon=1e-8</code> is "small enough": <code>abs(prev_WCSS - WCSS) &lt; epsilon</code>. Done.`,
           why: R`<p>WCSS never goes up; once it stops changing, nobody switches any more = converged. <code>prev_WCSS</code> starts at infinity, so the first round never stops.</p>` },
       ],
-      compare: R`Same four answers as the official solution.`,
+      compare: R`Same four answers as the official solution (steps 1–3).`,
     },
   });
 })();

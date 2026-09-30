@@ -37,6 +37,8 @@ for (const [pid, wk] of Object.entries(window.WALKS)) {
     if (words > 40) err(`${pid} move ${i + 1}`, `line has ${words} words (keep it to one short line)`);
   });
   if (!wk.point) err(pid, "no point (\"💡 The point\")");
+  if (!wk.start) err(pid, "no start (\"Begin your answer like this\")");
+  if (!wk.answer) err(pid, "no answer (\"📝 Full exam answer\")");
   check(`${pid}.point`, wk.point);
   check(`${pid}.start`, wk.start);
   check(`${pid}.compare`, wk.compare);

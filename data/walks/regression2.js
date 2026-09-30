@@ -8,9 +8,10 @@
     // ───────────────────────── 2025-A Q1 (ridge) ─────────────────────────
     "2025A-q1.1": {
       point: R`<p>\(X\) is just the table with a column of 1s in front (the 1 is for \(\theta_0\)).</p>`,
-      start: R`\[X = \begin{bmatrix}1 & \square & \square\\ 1 & \square & \square\\ 1 & \square & \square\\ 1 & \square & \square\end{bmatrix}\]`,
+      start: R`\[X = \begin{bmatrix}1 & \square & \square\\ 1 & \square & \square\\ 1 & \square & \square\\ 1 & \square & \square\end{bmatrix}\]<p>(\(y = \square\) — not asked, but part 3 uses it)</p>`,
+      answer: R`\[X = \begin{bmatrix}1&1&2\\1&2&0\\1&3&1\\1&0&-1\end{bmatrix}\]<p>(\(y = (3, 1, 4, -1)\) — not asked, but part 3 uses it)</p>`,
       moves: [
-        { line: R`<b>X</b> — one row per sample: a 1, then \(x_1\), then \(x_2\): <div class="formula">\[X = \begin{bmatrix}1&1&2\\1&2&0\\1&3&1\\1&0&-1\end{bmatrix}\]</div>`,
+        { line: R`<b>X</b> — \(X\theta\) must give one prediction \(\theta_0 + \theta_1x_1 + \theta_2x_2\) per sample, so one row per sample: a 1, then \(x_1\), then \(x_2\): <div class="formula">\[X = \begin{bmatrix}1&1&2\\1&2&0\\1&3&1\\1&0&-1\end{bmatrix}\]</div>`,
           size: R`\[\underbrace{X}_{\textstyle 4\times 3}\,\underbrace{\theta}_{\textstyle 3\times 1} = \underbrace{X\theta}_{\textstyle 4\times 1}\]<p>4 samples × (1 + 2 features); inner 3 = 3 ✓ · result 4×1 = one prediction per sample ✓</p>`,
           why: R`<p>Row 1 times \(\theta\) is \(\theta_0\cdot 1 + \theta_1\cdot 1 + \theta_2\cdot 2\) — sample 1's prediction. The 1 is what \(\theta_0\) multiplies. (Same as 2025-C Q1, part 1.)</p>` },
         { line: R`<b>y</b> (not asked, but part 3 needs it) — the labels, same order: \(\;y = (3, 1, 4, -1)\). Done.` },
@@ -22,6 +23,7 @@
     "2025A-q1.2": {
       point: R`<p>\(J\) is squared brackets plus \(\theta^2\)'s, and squaring a bracket only makes \(\theta\cdot\theta\) terms, single \(\theta\)'s and numbers — that's the form. \(a_1\) = everything in front of \(\theta_1^2\); \(d\) = what's left when every \(\theta = 0\).</p>`,
       start: R`<p><b>The function, one bracket per sample:</b></p>\[J_\lambda(\theta) = (\;\square\;)^2 + (\;\square\;)^2 + \dots + \lambda(\;\square\;)\]<p><b>It has that form because</b> \(\square\)</p>\[a_1 = \;\square \qquad d = \;\square\]`,
+      answer: R`<p><b>The function, one bracket per sample:</b></p>\[\begin{aligned}J_\lambda(\theta) = \;&(\theta_0 + \theta_1 + 2\theta_2 - 3)^2 + (\theta_0 + 2\theta_1 - 1)^2\\ &+ (\theta_0 + 3\theta_1 + \theta_2 - 4)^2 + (\theta_0 - \theta_2 + 1)^2\\ &+ \lambda(\theta_1^2 + \theta_2^2)\end{aligned}\]<p><b>It has that form because</b> squaring a bracket of plain \(\theta\)'s gives only \(\theta\cdot\theta\) terms, single \(\theta\) terms and numbers, and the penalty adds \(\theta_1^2, \theta_2^2\): \(J_\lambda\) is a polynomial of degree 2 in \((\theta_0, \theta_1, \theta_2)\) — exactly those ten kinds of terms.</p>\[\begin{aligned}a_1 &= 1^2 + 2^2 + 3^2 + 0^2 + \lambda = 14 + \lambda\\ d &= 3^2 + 1^2 + 4^2 + (-1)^2 = 27\end{aligned}\]`,
       moves: [
         { line: R`<b>The function</b> — one squared bracket per row of \(X\) (row · \(\theta\) − label), plus the penalty: <div class="formula">\[\begin{aligned}J_\lambda = \;&(\theta_0 + 1\theta_1 + 2\theta_2 - 3)^2\\ +\;&(\theta_0 + 2\theta_1 + 0\theta_2 - 1)^2\\ +\;&(\theta_0 + 3\theta_1 + 1\theta_2 - 4)^2\\ +\;&(\theta_0 + 0\theta_1 - 1\theta_2 + 1)^2\\ +\;&\lambda(\theta_1^2 + \theta_2^2)\end{aligned}\]</div>Penalty: \(\|\theta\|^2\) = all weights squared, so \(\theta_0^2\) cancels: <div class="formula">\[\begin{aligned}\|\theta\|^2 - \theta_0^2 &= \color{#e8912d}\theta_0^2 + \theta_1^2 + \theta_2^2 \color{#e8912d}- \theta_0^2\\ &= \theta_1^2 + \theta_2^2\end{aligned}\]</div>(bias not penalized)`,
           size: R`\[\underbrace{\text{row } i\text{ of }X}_{\textstyle 1\times 3}\,\underbrace{\theta}_{\textstyle 3\times 1} = \text{one number}\]<p>One bracket per row: 4 rows → 4 brackets = the 4×1 list \(X\theta - y\) ✓ · penalty \(\underbrace{\theta^\top}_{\textstyle 1\times 3}\underbrace{\theta}_{\textstyle 3\times 1}\) = one number ✓</p>`,
@@ -41,6 +43,7 @@
     "2025A-q1.3": {
       point: R`<p>Derivative by one weight \(\theta_j\) → write it with matrix pieces: \(2X_j^\top(X\theta - y) + 2\lambda\theta_j\) (\(X_j\) = column \(j\) of \(X\); \(\theta_0\) isn't penalized, so no \(2\lambda\theta_0\)) → stack it for every weight: the \(X_j^\top\)'s are \(X^\top\), the penalty rows are \(2\lambda(0, \theta_1, \theta_2)\). At \(\theta = 0\) everything except \(-2X^\top y\) is 0.</p>`,
       start: R`<p><b>(a) The function:</b></p>\[J_\lambda(\theta) = \;\square\]<p><b>Derivative by one weight \(\theta_j\):</b></p>\[\frac{dJ_\lambda}{d\theta_j} = \;\square\; = \;\square\]<p><b>All weights (the gradient):</b></p>\[\nabla J_\lambda(\theta) = \;\square\]<p><b>(b)</b></p>\[\nabla J_\lambda(0,0,0) = \;\square\]\[\theta_{\text{new}} = \theta - 0.1\cdot\nabla J_\lambda = \;\square\]`,
+      answer: R`<p><b>(a) The function:</b></p>\[\begin{aligned}J_\lambda(\theta) = \;&\sum_i\big(\theta_0 + \theta_1 x^{(i)}_1 + \theta_2 x^{(i)}_2 - y^{(i)}\big)^2\\ &+ \lambda(\theta_1^2 + \theta_2^2)\end{aligned}\]<p><b>Derivative by one weight \(\theta_j\):</b></p>\[\begin{aligned}\frac{dJ_\lambda}{d\theta_j} &= \sum_i 2\big(\theta_0 + \theta_1 x^{(i)}_1 + \theta_2 x^{(i)}_2 - y^{(i)}\big)\,x^{(i)}_j\\ &\quad+ 2\lambda\theta_j\\ &= 2\,X_j^\top(X\theta - y) + 2\lambda\theta_j\end{aligned}\]<p>(\(X_j\) = column \(j\) of \(X\); for \(\theta_0\) there is no \(2\lambda\theta_0\) — the bias isn't penalized.)</p><p><b>All weights (the gradient):</b></p>\[\nabla J_\lambda(\theta) = 2X^\top(X\theta - y) + 2\lambda(0, \theta_1, \theta_2)\]<p><b>(b)</b></p>\[\begin{aligned}\nabla J_\lambda(0,0,0) &= -2X^\top y = -2\cdot(7, 17, 11)\\ &= (-14, -34, -22)\end{aligned}\]\[\begin{aligned}\theta_{\text{new}} &= \theta - 0.1\cdot\nabla J_\lambda = (0,0,0) - 0.1\cdot(-14, -34, -22)\\ &= (1.4,\ 3.4,\ 2.2)\end{aligned}\]`,
       moves: [
         { line: R`<b>The function</b> — copy it from the question; \(\|X\theta - y\|^2\) = one squared bracket per sample, and \(\theta_0^2\) cancels in the penalty: <div class="formula">\[\begin{aligned}J_\lambda(\theta) &= \|X\theta - y\|^2 + \lambda(\|\theta\|^2 - \theta_0^2)\\ &= \sum_i\big(\theta_0 + \theta_1 x^{(i)}_1 + \theta_2 x^{(i)}_2 - y^{(i)}\big)^2\\ &\quad+ \lambda(\theta_1^2 + \theta_2^2)\end{aligned}\]</div>`,
           size: R`\[\underbrace{\text{row } i\text{ of }X}_{\textstyle 1\times 3}\,\underbrace{\theta}_{\textstyle 3\times 1} - y^{(i)} = \text{one bracket}\]<p>4 rows → 4 brackets = the 4×1 list \(X\theta - y\) ✓ · \(\|X\theta - y\|^2\) = those 4 brackets squared and added = one number ✓</p>`,
@@ -80,6 +83,10 @@
     "2025A-q1.4": {
       point: R`<p>Cross-validation = train on the other folds, score plain squared error on the held-out fold, average over the folds, keep the smallest. Each bug breaks one of these.</p>`,
       start: R`<p>One line per bug (write at least three):</p><p><b>Line \(\square\):</b> <code>wrong</code> → should be <code>fix</code>, because \(\square\)</p>`,
+      answer: R`<p><b>Line 1:</b> <code>n = X.shape[1]</code> → should be <code>n = X.shape[0]</code>, because n = number of samples = rows.</p>
+<p><b>Line 16:</b> <code>y_pred = X_train @ w_star</code> → should be <code>y_pred = X_val @ w_star</code>, because we score the held-out fold, so we predict its rows.</p>
+<p><b>Line 17:</b> <code>risk = np.sum((y_val - y_pred) ** 2) + lmd * np.sum(w_star[1:] ** 2)</code> → should be <code>risk = np.sum((y_val - y_pred) ** 2)</code>, because validation scores the plain squared error; the penalty belongs to training only.</p>
+<p><b>Line 20:</b> <code>if risk &lt; min_cv_risk</code> → should be <code>if np.mean(lo_risk) &lt; min_cv_risk</code>, because the CV risk is the average over all folds; <code>risk</code> is only the last fold.</p>`,
       moves: [
         { line: R`<b>n counts samples = rows.</b> <b>Line 1:</b> <code>X.shape[1]</code> → <code>X.shape[0]</code>`,
           remember: R`<p><code>X.shape</code> = (rows, columns) = (samples, features) → <code>X.shape[0]</code> = number of samples.</p><p>numpy — not on the sheet.</p>`,
@@ -99,8 +106,9 @@
     "2025B-q1.1": {
       point: R`<p>\(X\) is the table with a column of 1s in front (the 1 is for \(\theta_0\)); \(y\) is the label column.</p>`,
       start: R`\[X = \begin{bmatrix}1 & \square & \square\\ 1 & \square & \square\\ 1 & \square & \square\\ 1 & \square & \square\end{bmatrix} \qquad y = \begin{bmatrix}\square\\ \square\\ \square\\ \square\end{bmatrix}\]`,
+      answer: R`\[X = \begin{bmatrix}1&1&2\\1&2&0\\1&3&1\\1&0&-1\end{bmatrix} \qquad y = \begin{bmatrix}2\\ 0\\ 4\\ -1\end{bmatrix}\]`,
       moves: [
-        { line: R`<b>X</b> — one row per sample: a 1, then \(x_1\), then \(x_2\) (same \(X\) as 2025-A): <div class="formula">\[X = \begin{bmatrix}1&1&2\\1&2&0\\1&3&1\\1&0&-1\end{bmatrix}\]</div>`,
+        { line: R`<b>X</b> — \(\|X\theta - y\|^2\) needs row · \(\theta\) = sample's prediction \(\theta_0 + \theta_1x_1 + \theta_2x_2\), so one row per sample: a 1, then \(x_1\), then \(x_2\): <div class="formula">\[X = \begin{bmatrix}1&1&2\\1&2&0\\1&3&1\\1&0&-1\end{bmatrix}\]</div>`,
           size: R`\[\underbrace{X}_{\textstyle 4\times 3}\,\underbrace{\theta}_{\textstyle 3\times 1} = \underbrace{X\theta}_{\textstyle 4\times 1}\]<p>4 samples × (1 + 2 features); inner 3 = 3 ✓ · result 4×1 = one prediction per sample ✓</p>` },
         { line: R`<b>y</b> — the labels, same order: \(\;y = (2, 0, 4, -1)\). Done.` },
       ],
@@ -110,6 +118,7 @@
     "2025B-q1.2": {
       point: R`<p>\(\|X'\theta - y'\|^2\) is one squared bracket per row: (row · \(\theta\) − label)². So write \(J_\lambda\) out and make <b>every</b> term look like that. The 4 samples already do; each penalty term becomes one extra row with label 0.</p>`,
       start: R`<p><b>What I have</b> — \(J_\lambda\) written out:</p>\[J_\lambda = \;\square\]<p><b>What every term must look like:</b></p>\[(\theta_0\cdot\square + \theta_1\cdot\square + \theta_2\cdot\square - \square)^2\]<p><b>Answer:</b> \(X' = \square \quad y' = \square\)</p>`,
+      answer: R`<p><b>What I have</b> — \(J_\lambda\) written out:</p>\[\begin{aligned}J_\lambda = \;&(\theta_0 + \theta_1 + 2\theta_2 - 2)^2 + (\theta_0 + 2\theta_1 - 0)^2\\ &+ (\theta_0 + 3\theta_1 + \theta_2 - 4)^2 + (\theta_0 - \theta_2 + 1)^2\\ &+ \lambda\theta_1^2 + \lambda\theta_2^2\end{aligned}\]<p><b>What every term must look like:</b> one bracket per row of \(X'\):</p>\[(\text{row of }X'\cdot\theta - \text{its label in }y')^2\]<p>The 4 sample brackets already are (rows of \(X\), labels \(y\)). The penalty terms become:</p>\[\begin{aligned}\lambda\theta_1^2 &= (\theta_0\cdot 0 + \theta_1\cdot\sqrt\lambda + \theta_2\cdot 0 - 0)^2\\ \lambda\theta_2^2 &= (\theta_0\cdot 0 + \theta_1\cdot 0 + \theta_2\cdot\sqrt\lambda - 0)^2\end{aligned}\]<p><b>Answer:</b></p>\[X' = \begin{bmatrix}1&1&2\\1&2&0\\1&3&1\\1&0&-1\\0&\sqrt\lambda&0\\0&0&\sqrt\lambda\end{bmatrix} \qquad y' = \begin{bmatrix}2\\0\\4\\-1\\0\\0\end{bmatrix}\]`,
       moves: [
         { line: R`<b>Write it out</b> — one bracket per sample (numbers from the table), then the penalty (\(\theta_0\) is not in it): <div class="formula">\[\begin{aligned}J_\lambda = \;&(\theta_0 + 1\theta_1 + 2\theta_2 - 2)^2 &&\leftarrow\text{sample 1}\\ +\;&(\theta_0 + 2\theta_1 + 0\theta_2 - 0)^2 &&\leftarrow\text{sample 2}\\ +\;&(\theta_0 + 3\theta_1 + 1\theta_2 - 4)^2 &&\leftarrow\text{sample 3}\\ +\;&(\theta_0 + 0\theta_1 - 1\theta_2 + 1)^2 &&\leftarrow\text{sample 4}\\ +\;&\lambda\theta_1^2 + \lambda\theta_2^2\end{aligned}\]</div>`,
           why: R`<p>Sample 1: \(x_1 = 1\), \(x_2 = 2\), label 2 → \((\theta_0 + 1\theta_1 + 2\theta_2 - 2)^2\). The penalty \(\lambda(\|\theta\|^2 - \theta_0^2) = \lambda(\theta_1^2 + \theta_2^2)\): \(\theta_0^2\) cancels.</p>` },
@@ -129,10 +138,20 @@
 
     "2025B-q1.3": {
       point: R`<p>Part 2 turned \(J_\lambda\) into plain least squares: \(J_\lambda = \|X'\theta - y'\|^2\). Plain least squares has a formula on the sheet. So yes.</p>`,
+      start: R`<p><b>Answer:</b> □</p>
+<p><b>Because:</b> \(J_\lambda(\theta) = \;\square\)</p>
+<p><b>So:</b> □</p>
+\[\theta^* = \;\square\]`,
+      answer: R`<p><b>Answer:</b> Yes.</p>
+<p><b>Because:</b> \(J_\lambda(\theta) = \|X'\theta - y'\|^2\) with part 2's \(X'\), \(y'\) — that is the plain least-squares loss of standard linear regression, on the data \(X'\), \(y'\).</p>
+<p><b>So:</b> the least-squares (pseudo-inverse) formula on \(X'\), \(y'\) gives the minimizer:</p>
+\[\theta^* = (X'^\top X')^{-1}X'^\top y'\]`,
       moves: [
-        { line: R`<b>\(J_\lambda\) is plain least squares</b> — the penalty \(\lambda\theta_1^2 + \lambda\theta_2^2\) is two extra squared brackets, rows \((0, \sqrt\lambda, 0)\), \((0, 0, \sqrt\lambda)\) with label 0. Add them under \(X\) and \(y\) (that's part 2's \(X'\), \(y'\)): \(J_\lambda(\theta) = \|X'\theta - y'\|^2\), the usual squared error.`,
+        { line: R`<b>What does the question really want?</b> "Analytically" = a formula for \(\theta^*\), no gradient descent. The formula I have is for <b>plain</b> least squares \(\|X\theta - y\|^2\). So: can \(J_\lambda\) be written as plain least squares?`,
+          why: R`<p>[sheet: Least squares solution] \(w = (X^\top X)^{-1}X^\top y\) minimizes \(\|Xw - y\|^2\) — and only that loss. With the penalty in it, \(J_\lambda\) doesn't look like it yet.</p>` },
+        { line: R`<b>Yes — part 2 did it</b>: the penalty \(\lambda\theta_1^2 + \lambda\theta_2^2\) is two extra squared brackets, rows \((0, \sqrt\lambda, 0)\), \((0, 0, \sqrt\lambda)\), label 0. So \(J_\lambda(\theta) = \|X'\theta - y'\|^2\).`,
           size: R`\[\|\underbrace{X'}_{\textstyle 6\times 3}\,\underbrace{\theta}_{\textstyle 3\times 1} - \underbrace{y'}_{\textstyle 6\times 1}\|^2 = \text{one number}\]<p>inner 3 = 3 ✓ · 6 brackets (4 samples + 2 penalty rows), squared and added ✓</p>` },
-        { line: R`<b>Plain least squares has a formula</b> — use it with \(X'\), \(y'\): <div class="formula">\[\theta^* = (X'^\top X')^{-1}X'^\top y'\]</div>So yes, it's possible. Done.`,
+        { line: R`<b>So use the least-squares formula</b> with \(X'\), \(y'\): <div class="formula">\[\theta^* = (X'^\top X')^{-1}X'^\top y'\]</div>Answer: yes, it's possible. Done.`,
           size: R`\[\underbrace{(X'^\top X')^{-1}}_{\textstyle 3\times 3}\,\underbrace{X'^\top}_{\textstyle 3\times 6}\,\underbrace{y'}_{\textstyle 6\times 1} = \underbrace{\theta^*}_{\textstyle 3\times 1}\]<p>\(X'^\top X'\) = (3×6)(6×3) = 3×3 · then (3×3)(3×6)(6×1) = 3×1, one weight per knob ✓</p><p>The official slip \(X'^\top X\) = (3×6)(4×3): inner 6 ≠ 4 ✗ — the sizes catch it.</p>`,
           why: R`<p>You don't need to know this by heart: [sheet: Least squares solution] \(w = (X^\top X)^{-1}X^\top y\). Where it comes from:</p>
 <ul><li>The function: \(\|X'\theta - y'\|^2\).</li>
@@ -141,13 +160,14 @@
 <li>Solve: multiply both sides by \((X'^\top X')^{-1}\) — the matrix version of dividing.</li></ul>`,
           extra: [{ label: "the official formula drops two primes — it's a slip", html: R`<p>It prints \((X'^\top X)^{-1}X'^\top y\): the second \(X\) and the \(y\) are missing their primes. Correct: \((X'^\top X')^{-1}X'^\top y'\).</p>` }] },
       ],
-      compare: R`Same argument as the official solution. Its formula \((X'^\top X)^{-1}X'^\top y\) is missing two primes; correct is \((X'^\top X')^{-1}X'^\top y'\).`,
+      compare: R`Same argument as the official solution (moves 2–3). Its formula \((X'^\top X)^{-1}X'^\top y\) is missing two primes; correct is \((X'^\top X')^{-1}X'^\top y'\).`,
       slip: R`The formula is missing two primes: it should be \(\theta^* = (X'^\top X')^{-1}X'^\top y'\). As printed, \(X'^\top X\) doesn't even multiply (\(X'^\top\) is 3×6, \(X\) is 4×3: 6 ≠ 4).`,
     },
 
     "2025B-q1.4": {
       point: R`<p>It's plain least squares \(\|X'\theta - y'\|^2\) (part 2: \(X\) plus rows \((0, \sqrt\lambda, 0)\), \((0, 0, \sqrt\lambda)\); \(y\) plus two 0s), so \(\nabla J = 2X'^\top(X'\theta - y')\). At \(\theta = 0\) that's \(-2X'^\top y'\), and the two extra labels are 0, so \(\lambda\) drops out.</p>`,
-      start: R`\[\nabla J_\lambda(\theta) = \;\square\]\[\nabla J_\lambda(0,0,0) = \;\square\]\[\theta_{\text{new}} = \theta - 0.1\cdot\nabla J_\lambda = \;\square\]`,
+      start: R`\[\nabla J_\lambda(\theta) = \;\square\]<p>(because \(J_\lambda = \square\))</p>\[\nabla J_\lambda(0,0,0) = \;\square\]\[\theta_{\text{new}} = \theta - 0.1\cdot\nabla J_\lambda = \;\square\]`,
+      answer: R`\[\nabla J_\lambda(\theta) = 2X'^\top(X'\theta - y')\]<p>(because \(J_\lambda = \|X'\theta - y'\|^2\), part 2 — a standard squared error)</p>\[\begin{aligned}\nabla J_\lambda(0,0,0) &= -2X'^\top y' = -2\cdot(5, 14, 9)\\ &= (-10, -28, -18)\end{aligned}\]\[\begin{aligned}\theta_{\text{new}} &= \theta - 0.1\cdot\nabla J_\lambda = (0,0,0) - 0.1\cdot(-10, -28, -18)\\ &= (1,\ 2.8,\ 1.8)\end{aligned}\]`,
       moves: [
         { line: R`<b>The formula</b> — \(J_\lambda = \|X'\theta - y'\|^2\) (part 2). Each (…)² by \(\theta_j\) gives 2 · (…) · (the number in front of \(\theta_j\)); stacked over the knobs: <div class="formula">\[\nabla J_\lambda(\theta) = 2X'^\top(X'\theta - y')\]</div>(the plain squared-error gradient, as in 2025-C Q1.2)`,
           remember: R`\[\nabla\,\|Xw - y\|^2 = 2X^\top(Xw - y)\]<p>Not on the sheet in this form: [sheet: Square error loss gradient] only has <b>one sample with a ½</b>, \((w^\top x - y)\,x\). Here \(X\) is \(X'\), \(y\) is \(y'\).</p>`,
@@ -169,6 +189,8 @@
 
     "2025B-q1.5": {
       point: R`<p>Each blank is the comment above it, in numpy: one 1 per row, prediction = \(X\theta\), step against the gradient, stop when the gradient is tiny, squared errors.</p>`,
+      start: R`<p><b>(1)</b> □</p><p><b>(2)</b> □</p><p><b>(3)</b> □</p><p><b>(4)</b> □</p><p><b>(5)</b> □</p>`,
+      answer: R`<p><b>(1)</b> <code>X.shape[0]</code></p><p><b>(2)</b> <code>X_with_bias @ theta</code></p><p><b>(3)</b> <code>theta - eta * grad</code></p><p><b>(4)</b> <code>np.linalg.norm(grad) &lt; eps</code></p><p><b>(5)</b> <code>(y_hat - y) ** 2</code></p>`,
       moves: [
         { line: R`<b>(1) one 1 per sample = per row:</b> <code>X.shape[0]</code>. <b>(2) prediction = X · θ:</b> <code>X_with_bias @ theta</code>`,
           remember: R`<p><code>X.shape</code> = (rows, columns) = (samples, features) → <code>X.shape[0]</code> = number of samples.</p><p>numpy — not on the sheet.</p>`,
@@ -202,6 +224,7 @@
     "2026A-q1.1": {
       point: R`<p>They give you \(J\) as a sum and want it as a matrix product. Work backwards: write the sum out, fill in the pieces you already know (\(X\), \(y\)). What's left is \(\Gamma\): it must turn each bracket into (its \(\gamma\) × the bracket).</p>`,
       start: R`<p><b>What I have</b> — the sum, written out for the 4 samples:</p>\[J = \;\square\]<p><b>What it must equal:</b></p>\[(Xw - y)^\top\,\Gamma\,(Xw - y)\]<p><b>Known pieces:</b> \(X = \square \quad y = \square\)</p><p><b>Unknown:</b> \(\Gamma = \square\) (size □ × □)</p>`,
+      answer: R`<p><b>What I have</b> — the sum, written out for the 4 samples:</p>\[\begin{aligned}J = \;&2(w_0 + w_1 - 1)^2 + 1(w_0 + w_2 - 2)^2\\ &+ 1(w_0 + w_1 + w_2 - 4)^2 + 2(w_0 + 2w_1 + w_2 - 5)^2\end{aligned}\]<p><b>What it must equal:</b></p>\[(Xw - y)^\top\,\Gamma\,(Xw - y)\]<p><b>Known pieces:</b></p>\[X = \begin{bmatrix}1&1&0\\1&0&1\\1&1&1\\1&2&1\end{bmatrix} \qquad y = \begin{bmatrix}1\\2\\4\\5\end{bmatrix}\]<p><b>Unknown:</b> \(\Gamma\) (size 4 × 4) — row \(i\) turns the brackets into (\(\gamma_i\) × bracket \(i\)):</p>\[\Gamma = \begin{bmatrix}2&0&0&0\\0&1&0&0\\0&0&1&0\\0&0&0&2\end{bmatrix} = \mathrm{diag}(2, 1, 1, 2)\]`,
       moves: [
         { line: R`<b>Write the sum out</b> — one term per sample: its \(\gamma\) · (prediction − label)², numbers from the table: <div class="formula">\[\begin{aligned}J = \;&2\cdot(w_0 + w_1 - 1)^2 &&\leftarrow\text{sample 1}\\ +\;&1\cdot(w_0 + w_2 - 2)^2 &&\leftarrow\text{sample 2}\\ +\;&1\cdot(w_0 + w_1 + w_2 - 4)^2 &&\leftarrow\text{sample 3}\\ +\;&2\cdot(w_0 + 2w_1 + w_2 - 5)^2 &&\leftarrow\text{sample 4}\end{aligned}\]</div>`,
           why: R`<p>Sample 1: \(x_1 = 1\), \(x_2 = 0\), so the prediction is \(w_0 + w_1\cdot 1 + w_2\cdot 0 = w_0 + w_1\); label \(y = 1\); weight \(\gamma = 2\). Same for the other rows.</p>` },
@@ -227,6 +250,7 @@
     "2026A-q1.2": {
       point: R`<p>Derivative by one weight \(w_j\) → write it with matrix pieces: \(2X_j^\top\Gamma(Xw - y)\) (\(X_j\) = column \(j\) of \(X\)) → stack it for every weight: the \(X_j^\top\)'s stacked are \(X^\top\). So \(\nabla J = 2X^\top\Gamma(Xw - y)\).</p>`,
       start: R`<p><b>The function:</b></p>\[J(w) = \;\square\]<p><b>Derivative by one weight \(w_j\):</b></p>\[\frac{dJ}{dw_j} = \;\square\; = \;\square\]<p><b>All weights (the gradient):</b></p>\[\nabla J(w) = \;\square\]`,
+      answer: R`<p><b>The function:</b></p>\[J(w) = \sum_{i}\gamma_i\big(w_0 + w_1 x^{(i)}_1 + w_2 x^{(i)}_2 - y_i\big)^2\]<p><b>Derivative by one weight \(w_j\):</b></p>\[\begin{aligned}\frac{dJ}{dw_j} &= \sum_i \gamma_i\cdot 2\big(w_0 + w_1 x^{(i)}_1 + w_2 x^{(i)}_2 - y_i\big)\,x^{(i)}_j\\ &= 2\,X_j^\top\,\Gamma(Xw - y)\end{aligned}\]<p>(\(X_j\) = column \(j\) of \(X\).)</p><p><b>All weights (the gradient):</b></p>\[\begin{aligned}\nabla J(w) &= 2X^\top\Gamma(Xw - y)\\ &= 2\sum_i\gamma_i\big(w_0 + w_1 x^{(i)}_1 + w_2 x^{(i)}_2 - y_i\big)\,x^{(i)}\end{aligned}\]`,
       moves: [
         { line: R`<b>The function</b> — copy it from the question: <div class="formula">\[J(w) = \sum_{i}\gamma_i\big(w_0 + w_1 x^{(i)}_1 + w_2 x^{(i)}_2 - y_i\big)^2\]</div>`,
           why: R`<p>With the real table it literally is:</p>
@@ -255,6 +279,7 @@
     "2026A-q1.3": {
       point: R`<p>The best \(w\) is where part 2's gradient \(2X^\top\Gamma(Xw - y)\) is 0 — like solving \(f'(x) = 0\). Solving gives \((X^\top\Gamma X)^{-1}X^\top\Gamma y\), and "only numerical matrices" just means: \(X\), \(\Gamma\), \(y\) are part 1's numbers.</p>`,
       start: R`<p><b>Set the gradient to 0:</b></p>\[\square = 0\]<p><b>Solve for \(w\):</b></p>\[w^* = \;\square\]<p><b>With the numbers:</b> \(\;X = \square,\ \Gamma = \square,\ y = \square\)</p>`,
+      answer: R`<p><b>Set the gradient to 0:</b></p>\[\begin{aligned}2X^\top\Gamma(Xw - y) &= 0\\ X^\top\Gamma X\,w &= X^\top\Gamma y\end{aligned}\]<p><b>Solve for \(w\):</b> (\(X^\top\Gamma X\) is invertible — its determinant is 22)</p>\[w^* = (X^\top\Gamma X)^{-1}X^\top\Gamma y\]<p><b>With the numbers:</b></p>\[X = \begin{bmatrix}1&1&0\\1&0&1\\1&1&1\\1&2&1\end{bmatrix} \quad \Gamma = \mathrm{diag}(2,1,1,2) \quad y = \begin{bmatrix}1\\2\\4\\5\end{bmatrix}\]`,
       moves: [
         { line: R`<b>Set part 2's gradient to 0</b> and open the bracket (the 2 goes away): <div class="formula">\[\begin{aligned}2X^\top\Gamma(Xw - y) &= 0\\ X^\top\Gamma X\,w &= X^\top\Gamma y\end{aligned}\]</div>`,
           size: R`\[\begin{aligned}\underbrace{X^\top}_{\textstyle 3\times 4}\underbrace{\Gamma}_{\textstyle 4\times 4}\underbrace{X}_{\textstyle 4\times 3} &= 3\times 3\\ \underbrace{X^\top\Gamma X}_{\textstyle 3\times 3}\,\underbrace{w}_{\textstyle 3\times 1} &= \underbrace{X^\top\Gamma y}_{\textstyle 3\times 1}\end{aligned}\]<p>Right side: (3×4)(4×4)(4×1) = 3×1. Both sides 3×1 — one row per weight ✓</p>`,
@@ -278,6 +303,12 @@
     "2026A-q1.4": {
       point: R`<p>The correct loop: run all <code>num_iters</code> times, error = prediction − label, gradient \(2X^\top\Gamma\)(error), step \(w - \eta\cdot\)grad, loss \(\sum\gamma\cdot\)error², stop when the gradient is small. Six lines break one of these each — those are the six bugs.</p>`,
       start: R`<p>One line per bug (write at least four):</p><p><b>Line \(\square\):</b> <code>wrong</code> → should be <code>fix</code>, because \(\square\)</p>`,
+      answer: R`<p><b>Line 4:</b> <code>range(1, num_iters)</code> → should be <code>range(num_iters)</code>, because <code>range(1, N)</code> runs only N − 1 iterations.</p>
+<p><b>Line 6:</b> <code>error = y - y_pred</code> → should be <code>error = y_pred - y</code>, because the gradient uses \(Xw - y\) = prediction − label.</p>
+<p><b>Line 7:</b> <code>grad = 2*X.T @ error</code> → should be <code>grad = 2*X.T @ (gamma * error)</code>, because the gradient is \(2X^\top\Gamma(Xw - y)\): each error times its \(\gamma_i\).</p>
+<p><b>Line 8:</b> <code>w = w + eta * grad</code> → should be <code>w = w - eta * grad</code>, because gradient descent steps against the gradient.</p>
+<p><b>Line 9:</b> <code>np.sum((gamma * error) ** 2)</code> → should be <code>np.sum(gamma * error**2)</code>, because \(J = \sum_i\gamma_i(\dots)^2\) — only the error is squared, not \(\gamma\).</p>
+<p><b>Line 11:</b> <code>np.linalg.norm(grad) &gt; 1e-6</code> → should be <code>np.linalg.norm(grad) &lt; 1e-6</code>, because we stop when the gradient is tiny.</p>`,
       moves: [
         { line: R`<b>Run all the iterations.</b> <b>Line 4:</b> <code>range(1, num_iters)</code> → <code>range(num_iters)</code>`,
           why: R`<p><code>range(1, N)</code> runs only \(N - 1\) times.</p>` },
@@ -307,11 +338,20 @@
     // ───────────────────────── 2026-B Q1 (your Moed B) ─────────────────────────
     "2026B-q1.1": {
       point: R`<p>Linear: plug the test \(x\)'s in. k-NN: copy (or average) the labels of the nearest <b>training</b> samples. Then MSE over the 2 test samples; smallest wins.</p>`,
-      start: R`<p><b>(a)</b> \(\hat y^{(6)} = \square,\ \hat y^{(7)} = \square,\ \mathrm{MSE} = \tfrac12(\square + \square) = \square\)</p><p><b>(b)</b> nearest to 6: \(\square\), to 7: \(\square\) → \(\hat y = \square\), MSE \(= \square\)</p><p><b>(c)</b> two nearest … → \(\hat y = \square\), MSE \(= \square\)</p><p><b>Best:</b> \(\square\) (lowest MSE)</p>`,
+      start: R`<p><b>(a)</b> \(\hat y^{(6)} = \square,\ \hat y^{(7)} = \square\) → \(\mathrm{MSE} = \tfrac12(\square + \square) = \square\)</p>
+<p><b>Distances</b> (squared) to training samples 1–5: from 6: □ · from 7: □</p>
+<p><b>(b)</b> \(\hat y^{(6)} = y_\square = \square,\ \hat y^{(7)} = y_\square = \square\) → \(\mathrm{MSE} = \square\)</p>
+<p><b>(c)</b> \(\hat y^{(6)} = \tfrac12(y_\square + y_\square) = \square,\ \hat y^{(7)} = \tfrac12(y_\square + y_\square) = \square\) → \(\mathrm{MSE} = \square\)</p>
+<p><b>Best:</b> □ (lowest test MSE)</p>`,
+      answer: R`<p><b>(a)</b> \(\hat y^{(6)} = 2 + 0.1\cdot 30 + 1\cdot 1 = 6,\ \hat y^{(7)} = 2 + 0.1\cdot 50 + 1\cdot 2 = 9\) → \(\mathrm{MSE} = \tfrac12\big((6-7)^2 + (9-7)^2\big) = 2.5\)</p>
+<p><b>Distances</b> (squared) to training samples 1–5: from 6: 101, <b>1</b>, 101, 101, <b>100</b> · from 7: 904, 400, <b>104</b>, 900, <b>101</b></p>
+<p><b>(b)</b> \(\hat y^{(6)} = y_2 = 6,\ \hat y^{(7)} = y_5 = 9\) → \(\mathrm{MSE} = \tfrac12(1 + 4) = 2.5\)</p>
+<p><b>(c)</b> \(\hat y^{(6)} = \tfrac12(y_2 + y_5) = 7.5,\ \hat y^{(7)} = \tfrac12(y_5 + y_3) = 8\) → \(\mathrm{MSE} = \tfrac12(0.25 + 1) = 0.625\)</p>
+<p><b>Best:</b> 2-NN (c) (lowest test MSE, 0.625)</p>`,
       moves: [
         { line: R`<b>(a) Linear</b> — \(\hat y = 2 + 0.1x_1 + 1x_2\): <div class="formula">\[\begin{aligned}\hat y^{(6)} &= 2 + 3 + 1 = 6, \quad \hat y^{(7)} = 2 + 5 + 2 = 9\\ \mathrm{MSE} &= \tfrac12\big((6-7)^2 + (9-7)^2\big) = \tfrac12(1 + 4) = 2.5\end{aligned}\]</div>`,
           size: R`\[\underbrace{(1, 30, 1)}_{\textstyle 1\times 3}\,\underbrace{(2, 0.1, 1)^\top}_{\textstyle 3\times 1} = 6\]<p>Test row (1, \(x_1\), \(x_2\)) · the 3 weights = one prediction ✓. Both test samples at once: (2×3)(3×1) = 2×1 = (6, 9) ✓</p>` },
-        { line: R`<b>Distances</b> — squared, from each test sample to training samples 1–5: <div class="tw"><table><thead><tr><th>from</th><th>1</th><th>2</th><th>3</th><th>4</th><th>5</th></tr></thead><tbody><tr><td>6 (30, 1)</td><td>101</td><td><b>1</b></td><td>101</td><td>101</td><td><b>100</b></td></tr><tr><td>7 (50, 2)</td><td>904</td><td>400</td><td><b>104</b></td><td>900</td><td><b>101</b></td></tr></tbody></table></div>`,
+        { line: R`<b>Distances</b> — (b), (c) need the nearest <b>training</b> samples: squared distance from each test sample to 1–5: <div class="tw"><table><thead><tr><th>from</th><th>1</th><th>2</th><th>3</th><th>4</th><th>5</th></tr></thead><tbody><tr><td>6 (30, 1)</td><td>101</td><td><b>1</b></td><td>101</td><td>101</td><td><b>100</b></td></tr><tr><td>7 (50, 2)</td><td>904</td><td>400</td><td><b>104</b></td><td>900</td><td><b>101</b></td></tr></tbody></table></div>`,
           remember: R`<p>k-NN regression: find the \(k\) <b>training</b> samples nearest to \(x\), predict the <b>average</b> of their labels (1-NN = the nearest one's label).</p><p>Not on the sheet. The distance is: [sheet: Normed distance] with the [sheet: L2 norm].</p>`,
           size: R`\[\|\underbrace{x^{(6)} - x^{(2)}}_{\textstyle 2\times 1}\|^2 = \underbrace{(0, -1)}_{\textstyle 1\times 2}\underbrace{(0, -1)^\top}_{\textstyle 2\times 1} = 1\]<p>2 features (no 1 in front here) → one number per pair · 2 test × 5 training = the 2×5 table ✓</p>`,
           why: R`<p>Squared distance = \((\Delta x_1)^2 + (\Delta x_2)^2\). 6 to 2: \((30-30)^2 + (1-2)^2 = 1\). Skipping the \(\sqrt{}\) keeps the same order. [sheet: Normed distance] with [sheet: L2 norm].</p>` },
@@ -323,7 +363,8 @@
 
     "2026B-q1.2": {
       point: R`<p>Dividing each feature by its norm makes \(x_2\) count as much as \(x_1\), so the nearest neighbours change. Then 1-NN: copy the label of the nearest training sample (as in part 1).</p>`,
-      start: R`\[\|X_1\| = \square, \qquad \|X_2\| = \square\]<p>nearest to 6: \(\square\) → \(\hat y^{(6)} = \square\); nearest to 7: \(\square\) → \(\hat y^{(7)} = \square\)</p>\[\mathrm{MSE} = \tfrac12(\square + \square) = \square\]`,
+      start: R`<p><b>Norms</b> (training rows 1–5 only):</p>\[\|X_1\| = \square, \qquad \|X_2\| = \square\]<p><b>Normalized data</b> (every \(x_1\) ÷ □, every \(x_2\) ÷ □, test samples too): □</p><p><b>Nearest to 6:</b> □ → \(\hat y^{(6)} = \square\)</p><p><b>Nearest to 7:</b> □ → \(\hat y^{(7)} = \square\)</p>\[\mathrm{MSE} = \tfrac12(\square + \square) = \square\]`,
+      answer: R`<p><b>Norms</b> (training rows 1–5 only):</p>\[\begin{aligned}\|X_1\| &= \sqrt{20^2 + 30^2 + 40^2 + 20^2 + 40^2} = \sqrt{4900} = 70\\ \|X_2\| &= \sqrt{0 + 4 + 0 + 4 + 1} = 3\end{aligned}\]<p><b>Normalized data</b> (every \(x_1\) ÷ 70, every \(x_2\) ÷ 3, test samples too):</p><div class="tw"><table><thead><tr><th>sample</th><th>1</th><th>2</th><th>3</th><th>4</th><th>5</th><th>6</th><th>7</th></tr></thead><tbody><tr><td>\(x_1\)</td><td>\(\tfrac27\)</td><td>\(\tfrac37\)</td><td>\(\tfrac47\)</td><td>\(\tfrac27\)</td><td>\(\tfrac47\)</td><td>\(\tfrac37\)</td><td>\(\tfrac57\)</td></tr><tr><td>\(x_2\)</td><td>0</td><td>\(\tfrac23\)</td><td>0</td><td>\(\tfrac23\)</td><td>\(\tfrac13\)</td><td>\(\tfrac13\)</td><td>\(\tfrac23\)</td></tr></tbody></table></div><p><b>Nearest to 6:</b> sample 5, at distance \(\tfrac17\) (all others \(\ge\tfrac13\)) → \(\hat y^{(6)} = y_5 = 9\)</p><p><b>Nearest to 7:</b> sample 2, at distance \(\tfrac27\) (all others \(\gt\tfrac13\)) → \(\hat y^{(7)} = y_2 = 6\)</p>\[\mathrm{MSE} = \tfrac12\big((9-7)^2 + (6-7)^2\big) = \tfrac12(4 + 1) = 2.5\]`,
       moves: [
         { line: R`<b>Norm of each feature, training rows 1–5 only</b> — \(\sqrt{\text{sum of squares}}\): <div class="formula">\[\begin{aligned}\|X_1\| &= \sqrt{20^2 + 30^2 + 40^2 + 20^2 + 40^2} = \sqrt{4900} = 70\\ \|X_2\| &= \sqrt{0 + 4 + 0 + 4 + 1} = 3\end{aligned}\]</div>`,
           size: R`\[\|X_1\|^2 = \underbrace{X_1^\top}_{\textstyle 1\times 5}\,\underbrace{X_1}_{\textstyle 5\times 1} = 4900\]<p>\(X_1\) = the \(x_1\) column over the 5 training rows (5×1) → one number per feature ✓</p>`,
@@ -341,6 +382,7 @@
     "2026B-q1.3": {
       point: R`<p>Derivative by one weight \(w_j\), sample by sample: \(|\dots|^3 \to 3|\dots|^2\cdot\mathrm{sign}(\dots)\cdot x^{(i)}_j\) → with matrix pieces: \(3X_j^\top\)(list) (\(X_j\) = column \(j\) of \(X\)) → stack: the \(X_j^\top\)'s are \(X^\top\), and \(X^\top\)(a list) is exactly the hint's \(\sum_i z_i x^{(i)}\). The brackets are the entries of \(Xw - y\), so \(\nabla J = 3X^\top\big[(Xw - y)^2\,\mathrm{sign}(Xw - y)\big]\) (entry by entry) and \(z_i = 3(w^\top x^{(i)} - y_i)^2\,\mathrm{sign}(w^\top x^{(i)} - y_i)\).</p>`,
       start: R`<p><b>The function:</b></p>\[J(w) = \;\square\]<p><b>Derivative by one weight \(w_j\):</b></p>\[\frac{dJ}{dw_j} = \;\square\; = \;\square\]<p><b>All weights (the gradient):</b></p>\[\nabla J(w) = \;\square\; = \sum_i z_i\,x^{(i)}, \qquad z_i = \;\square\]`,
+      answer: R`<p><b>The function:</b></p>\[J(w) = \sum_i \big|w_0 + w_1x^{(i)}_1 + w_2x^{(i)}_2 - y_i\big|^3\]<p><b>Derivative by one weight \(w_j\):</b></p>\[\begin{aligned}\frac{dJ}{dw_j} = \sum_i\; &3\,\big|w_0 + w_1x^{(i)}_1 + w_2x^{(i)}_2 - y_i\big|^2\\ &\cdot\,\mathrm{sign}\big(w_0 + w_1x^{(i)}_1 + w_2x^{(i)}_2 - y_i\big)\cdot x^{(i)}_j\\ = \;&3\,X_j^\top\big[(Xw - y)^2\,\mathrm{sign}(Xw - y)\big]\end{aligned}\]<p>(\(X_j\) = column \(j\) of \(X\); square and sign entry by entry.)</p><p><b>All weights (the gradient):</b></p>\[\begin{aligned}\nabla J(w) &= 3X^\top\big[(Xw - y)^2\,\mathrm{sign}(Xw - y)\big] = \sum_i z_i\,x^{(i)}\\ z_i &= 3\,(w^\top x^{(i)} - y_i)^2\,\mathrm{sign}(w^\top x^{(i)} - y_i)\end{aligned}\]`,
       moves: [
         { line: R`<b>The function</b> — copy it from the question: <div class="formula">\[J(w) = \sum_i \big|w_0 + w_1x^{(i)}_1 + w_2x^{(i)}_2 - y_i\big|^3\]</div>`,
           size: R`<p>The bracket \(= w_0\cdot 1 + w_1 x^{(i)}_1 + w_2 x^{(i)}_2 - y_i\) = sample \(i\)'s prediction − label = one number per sample ✓</p>`,
@@ -363,14 +405,16 @@
     },
 
     "2026B-q1.4": {
-      point: R`<p>(1) is part 3's \(z_i = 3r_i^2\,\mathrm{sign}(r_i)\) in numpy, (2) is the question's own \(\sum_i z_i x^{(i)}\), written with <code>X.T</code>, (3) is the docstring's stopping rule.</p>`,
+      point: R`<p>(1) is part 3's \(z_i = 3\,(\text{bracket})^2\,\mathrm{sign}(\text{bracket})\) in numpy — the code's <code>r</code> is the list of brackets, (2) is the question's own \(\sum_i z_i x^{(i)}\), written with <code>X.T</code>, (3) is the docstring's stopping rule.</p>`,
+      start: R`<p><b>(1)</b> <code>z = </code>□</p><p><b>(2)</b> <code>grad = </code>□</p><p><b>(3)</b> <code>if </code>□<code>:</code></p>`,
+      answer: R`<p><b>(1)</b> <code>z = 3 * r**2 * np.sign(r)</code></p><p><b>(2)</b> <code>grad = X.T @ z</code></p><p><b>(3)</b> <code>if np.linalg.norm(grad) &lt;= epsilon:</code></p>`,
       moves: [
-        { line: R`<b>(1) part 3's \(z_i = 3r_i^2\,\mathrm{sign}(r_i)\), for all samples at once:</b> <code>3 * r**2 * np.sign(r)</code>`,
+        { line: R`<b>(1) What does the question really want?</b> The code's <code>r = X @ w - y</code> = the list of all brackets \(w^\top x^{(i)} - y_i\). Part 3: \(z_i = 3\,(\text{bracket})^2\,\mathrm{sign}(\text{bracket})\). Entry by entry: <code>3 * r**2 * np.sign(r)</code>`,
           remember: R`<p><code>np.sign(r)</code> = the sign of each entry (+1, −1, or 0), as an array.</p><p>numpy — not on the sheet.</p>`,
           size: R`<p>Docstring: <code>X</code> (n, 3) with the constant column, <code>w</code> (3,), <code>y</code> (n,) — n = 5 for part 1's table.</p><p><code>r = X @ w - y</code>: (n, 3) @ (3,) − (n,) → (n,) · <code>3 * r**2 * np.sign(r)</code> is entry by entry → <code>z</code>: (n,), one \(z_i\) per sample ✓</p>`,
-          why: R`<p><code>r</code> is the list of all \(r_i = w^\top x^{(i)} - y_i\); numpy does the formula entry by entry. \(z_i\) is the derivative of \(|r_i|^3\): \(3|r_i|^2\cdot\mathrm{sign}(r_i)\), and \(|r|^2 = r^2\).</p>`,
+          why: R`<p>Entry \(i\) of <code>r</code> is sample \(i\)'s bracket \(w^\top x^{(i)} - y_i\); numpy does the formula entry by entry. \(z_i\) is the derivative of \(|\text{bracket}|^3\): \(3|\dots|^2\cdot\mathrm{sign}(\dots)\), and \(|\dots|^2 = (\dots)^2\).</p>`,
           extra: [{ label: "Moed B trap", html: R`<p>You wrote <code>np.abs(r)**3</code> — that's the loss; \(z\) is its derivative.</p>` }] },
-        { line: R`<b>(2) \(\sum_i z_i x^{(i)}\):</b> <code>X.T @ z</code>`,
+        { line: R`<b>(2) \(\sum_i z_i x^{(i)}\)</b> — each sample \(x^{(i)}\) times its number \(z_i\), added up. The samples are the rows of <code>X</code> = the columns of <code>X.T</code>, and matrix @ list does exactly that: <code>X.T @ z</code>`,
           size: R`<p><code>X.T @ z</code>: (3, n) @ (n,) → (3,) — exactly the docstring's "Returns: shape (3,)" ✓</p><p><code>X @ z</code>: (n, 3) @ (n,) — inner 3 ≠ n ✗</p>`,
           why: R`<p>Row \(j\) of \(\sum_i z_i x^{(i)}\) = column \(j\) of \(X\) dotted with \(z\). The rows of \(X^\top\) are the columns of \(X\), so all rows at once \(= X^\top z\) (as in 2025-C Q1, part 2, move 4). You get this one from the hint alone, even without part 3.</p>` },
         { line: R`<b>(3) the docstring's rule \(\|\nabla J\|_2 \le \varepsilon\):</b> <code>np.linalg.norm(grad) &lt;= epsilon</code>. Done.`,

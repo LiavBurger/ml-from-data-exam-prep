@@ -8,6 +8,7 @@
     "2025C-q1.1": {
       point: R`<p>\(X\) is just the table with a column of 1s in front (the 1 is for \(\theta_0\)); \(y\) is the label column.</p>`,
       start: R`\[X = \begin{bmatrix}1 & \square & \square\\ 1 & \square & \square\\ 1 & \square & \square\\ 1 & \square & \square\end{bmatrix} \qquad y = \begin{bmatrix}\square\\ \square\\ \square\\ \square\end{bmatrix}\]`,
+      answer: R`\[X = \begin{bmatrix}1 & -1 & 1\\ 1 & -2 & 0\\ 1 & 1 & 3\\ 1 & 0 & 1\end{bmatrix} \qquad y = \begin{bmatrix}6\\ 4\\ 5\\ 1\end{bmatrix}\]`,
       moves: [
         { line: R`<b>X</b> — one row per sample: a 1, then \(x_1\), then \(x_2\): <div class="formula">\[X = \begin{bmatrix}1&-1&1\\1&-2&0\\1&1&3\\1&0&1\end{bmatrix}\]</div>`,
           size: R`\[\underbrace{X}_{\textstyle 4\times 3}\,\underbrace{\theta}_{\textstyle 3\times 1} = \underbrace{X\theta}_{\textstyle 4\times 1}\]<p>4 samples × (1 + 2 features); inner 3 = 3 ✓ · result 4×1 = one prediction per sample ✓</p>`,
@@ -21,6 +22,7 @@
     "2025C-q1.2": {
       point: R`<p>Derivative by one weight \(\theta_j\) → write it with matrix pieces: \(2X_j^\top(X\theta - y) + \lambda\,\mathrm{sign}(\theta_j)\) (\(X_j\) = column \(j\) of \(X\)) → stack it for every weight: the \(X_j^\top\)'s stacked are \(X^\top\), the signs stacked are \(\mathrm{sign}(\theta)\). So \(\nabla J = 2X^\top(X\theta - y) + \lambda\,\mathrm{sign}(\theta)\).</p>`,
       start: R`<p><b>The function:</b></p>\[J(\theta) = \;\square\]<p><b>Derivative by one weight \(\theta_j\):</b></p>\[\frac{dJ}{d\theta_j} = \;\square\; = \;\square\]<p><b>All weights (the gradient):</b></p>\[\nabla J(\theta) = \;\square\]`,
+      answer: R`<p><b>The function:</b></p>\[\begin{aligned}J(\theta) = \;&\sum_{i}\big(\theta_0 + \theta_1 x^{(i)}_1 + \theta_2 x^{(i)}_2 - y^{(i)}\big)^2\\ &+ \lambda\big(|\theta_0| + |\theta_1| + |\theta_2|\big)\end{aligned}\]<p><b>Derivative by one weight \(\theta_j\):</b></p>\[\begin{aligned}\frac{dJ}{d\theta_j} &= \sum_{i} 2\big(\theta_0 + \theta_1 x^{(i)}_1 + \theta_2 x^{(i)}_2 - y^{(i)}\big)\,x^{(i)}_j\\ &\quad+ \lambda\,\mathrm{sign}(\theta_j)\\ &= 2\,X_j^\top(X\theta - y) + \lambda\,\mathrm{sign}(\theta_j)\end{aligned}\]<p>(\(X_j\) = column \(j\) of \(X\).)</p><p><b>All weights (the gradient):</b></p>\[\nabla J(\theta) = 2X^\top(X\theta - y) + \lambda\,\mathrm{sign}(\theta)\]<p>(\(\mathrm{sign}(\theta)\) = the vector of the signs \(\mathrm{sign}(\theta_j)\).)</p>`,
       moves: [
         { line: R`<b>The function</b> — copy it from the question (it's our \(f\)): <div class="formula">\[\begin{aligned}J(\theta) = \;&\sum_{i}\big(\theta_0 + \theta_1 x^{(i)}_1 + \theta_2 x^{(i)}_2 - y^{(i)}\big)^2\\ &+ \lambda\big(|\theta_0| + |\theta_1| + |\theta_2|\big)\end{aligned}\]</div>`,
           why: R`<p>The \(\sum_i\) only means: one squared bracket <b>per sample</b>, all added up. With 2025-C's 4 samples it literally is:</p>
@@ -67,6 +69,7 @@ np.sign(theta)   # array([ 1, -1,  1])</code></pre>`,
     "2025C-q1.3": {
       point: R`<p>One gradient-descent step = plug the numbers into the gradient \(2X^\top(X\theta - y) + \lambda\,\mathrm{sign}(\theta)\) (part 2's answer), then \(\theta_{\text{new}} = \theta - 0.1\cdot\)gradient.</p>`,
       start: R`<p><b>The formula (from part 2), with the numbers plugged in:</b></p>\[\nabla J = 2X^\top(X\theta - y) + \lambda\,\mathrm{sign}(\theta) = \;\square\]<p><b>The step:</b></p>\[\theta_{\text{new}} = \theta - 0.1\cdot\nabla J = \;\square\]`,
+      answer: R`<p><b>The formula (from part 2), with the numbers plugged in:</b></p>\[\begin{aligned}\nabla J &= 2X^\top(X\theta - y) + \lambda\,\mathrm{sign}(\theta)\\ &= 2X^\top\big((6, 5, 8, 4) - (6, 4, 5, 1)\big) + 1\cdot(1, -1, 1)\\ &= 2X^\top(0, 1, 3, 3) + (1, -1, 1)\\ &= 2\cdot(7, 1, 12) + (1, -1, 1)\\ &= (14, 2, 24) + (1, -1, 1) = (15, 1, 25)\end{aligned}\]<p><b>The step:</b></p>\[\begin{aligned}\theta_{\text{new}} &= \theta - 0.1\cdot\nabla J\\ &= (1, -2, 3) - 0.1\cdot(15, 1, 25)\\ &= (-0.5,\ -2.1,\ 0.5)\end{aligned}\]`,
       moves: [
         { line: R`<b>The formula</b> — part 2's answer, and the step rule: <div class="formula">\[\nabla J = \underbrace{\color{#e8912d}2X^\top(X\theta - y)}_{\textstyle\color{#e8912d}\text{from the squared brackets}} + \underbrace{\color{#4c8dff}\lambda\,\mathrm{sign}(\theta)}_{\textstyle\color{#4c8dff}\text{from }\lambda|\theta_j|}\]</div><div class="formula">\[\theta_{\text{new}} = \theta - 0.1\cdot\nabla J\]</div>We know \(\theta = (1, -2, 3)\), \(\lambda = 1\), and the step size 0.1 (the question's \(\eta\)).`,
           remember: R`\[w \leftarrow w - \eta\,\nabla J(w)\]<p>One gradient-descent step. Not on the sheet. Here \(w\) is \(\theta\), \(\eta = 0.1\).</p>`,
@@ -100,9 +103,17 @@ np.sign(theta)   # array([ 1, -1,  1])</code></pre>`,
 
     "2025C-q1.4": {
       point: R`<p>It doesn't matter how \(\tilde\theta\) was found: \(\theta^*\) is the best \(\theta\) for \(J_\lambda\), so every other \(\theta\) gives a larger \(J_\lambda\). So \(J_\lambda(\theta^*) \lt J_\lambda(\tilde\theta)\).</p>`,
+      start: R`<p><b>Answer:</b> \(J_\lambda(\theta^*)\;\square\;J_\lambda(\tilde\theta)\)</p>
+<p><b>Because:</b> \(\theta^*\) = □</p>
+<p>\(\tilde\theta\) = □</p>
+<p><b>So:</b> □</p>`,
+      answer: R`<p><b>Answer:</b> \(J_\lambda(\theta^*) \lt J_\lambda(\tilde\theta)\)</p>
+<p><b>Because:</b> \(\theta^*\) = the weights gradient descent found by minimizing \(J_\lambda\) itself, so it is the best \(\theta\) for \(J_\lambda\).</p>
+<p>\(\tilde\theta\) = the least-squares weights: they minimize the plain squared error (no penalty), so they are a different \(\theta\).</p>
+<p><b>So:</b> both are plugged into the same \(J_\lambda\), and any \(\theta\) other than its minimizer scores higher: \(J_\lambda(\theta^*) \lt J_\lambda(\tilde\theta)\).</p>`,
       moves: [
         { line: R`<b>\(\theta^*\) is the best \(\theta\) for \(J_\lambda\)</b> — gradient descent on \(J_\lambda\) ran until it converged.` },
-        { line: R`<b>So any other \(\theta\) — like \(\tilde\theta\) — gives a larger \(J_\lambda\):</b> <div class="formula">\[J_\lambda(\theta^*) \lt J_\lambda(\tilde\theta)\]</div>Done.`,
+        { line: R`<b>So any other \(\theta\) — like \(\tilde\theta\), the least-squares weights (no penalty) — gives a larger \(J_\lambda\):</b> <div class="formula">\[J_\lambda(\theta^*) \lt J_\lambda(\tilde\theta)\]</div>Done.`,
           size: R`\[\underbrace{(X^\top X)^{-1}}_{\textstyle 3\times 3}\,\underbrace{X^\top}_{\textstyle 3\times 4}\,\underbrace{y}_{\textstyle 4\times 1} = \underbrace{\tilde\theta}_{\textstyle 3\times 1}\]<p>\(X^\top X\) = (3×4)(4×3) = 3×3, so its inverse is 3×3 · then (3×3)(3×4)(4×1) = 3×1 — one weight per knob, like \(\theta\) ✓</p>`,
           why: R`<p>Strictly "\(\lt\)" because \(\tilde\theta\) is a different \(\theta\): it was found without the penalty ([sheet: Least squares solution]), so it isn't \(J_\lambda\)'s best point.</p>` },
       ],
@@ -112,6 +123,11 @@ np.sign(theta)   # array([ 1, -1,  1])</code></pre>`,
     "2025C-q1.5": {
       point: R`<p>Cross-validation = train on the other folds, score plain squared error on the held-out fold, average over the folds, keep the \(\lambda\) with the smallest average. Each bug breaks one of these.</p>`,
       start: R`<p>One line per bug (write at least three):</p><p><b>Line \(\square\):</b> <code>wrong</code> → should be <code>fix</code>, because \(\square\)</p>`,
+      answer: R`<p><b>Line 1:</b> <code>n = X.shape[1]</code> → should be <code>n = X.shape[0]</code>, because n = number of samples = rows.</p>
+<p><b>Line 16:</b> <code>y_pred = X_val @ w_star + lmd * np.sum(np.abs(w_star))</code> → should be <code>y_pred = X_val @ w_star</code>, because a prediction is just \(X\theta\); the penalty belongs to training only.</p>
+<p><b>Line 17:</b> <code>risk = np.sum((y_train - y_pred) ** 2)</code> → should be <code>risk = np.sum((y_val - y_pred) ** 2)</code>, because we score the held-out fold against its own labels.</p>
+<p><b>Line 20:</b> <code>if np.mean(lo_risk) &gt; min_cv_risk:</code> → should be <code>if np.mean(lo_risk) &lt; min_cv_risk:</code>, because we keep the \(\lambda\) with the smallest average error.</p>
+<p><b>Line 21:</b> <code>min_cv_risk = np.sum(lo_risk)</code> → should be <code>min_cv_risk = np.mean(lo_risk)</code>, because the stored best must be the same average we compare against.</p>`,
       moves: [
         { line: R`<b>n counts samples = rows.</b> <b>Line 1:</b> <code>X.shape[1]</code> → <code>X.shape[0]</code>`,
           remember: R`<p><code>X.shape</code> = (rows, columns) = (samples, features) → <code>X.shape[0]</code> = number of samples.</p><p>numpy — not on the sheet.</p>`,

@@ -56,8 +56,8 @@ point of the question. That's what I need to understand, in every question!"*
   - 1.5: "Cross-validation = train on the other folds, score plain squared error on the held-out fold, average,
     keep the smallest. Each bug breaks one of these."
 - After the point, keep the moves to what's needed to write the answer (often 2–3).
-- **`start` ("Begin your answer like this") is OPTIONAL** — only where *writing the notation* is the hurdle
-  (derivations, calculations, matrices). Never for argument / compare parts.
+- **`start` ("Begin your answer like this") is REQUIRED for every part** (§0.4): calculations get their lines with □,
+  argument / compare parts get the sentence openers of the learner's chain, code parts one line per blank.
 
 ## 1. The format (chosen by the learner)
 - **Question first.** The real exam part is on screen; under it, the solution is revealed one **move** at a time
