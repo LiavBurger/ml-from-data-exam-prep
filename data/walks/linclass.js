@@ -332,10 +332,12 @@
     // ─────────────────────────────── 2026-B Q3 ───────────────────────────────
     "2026B-q3.1": {
       point: R`\(\Phi(0) = \tfrac12\) and \(\Phi\) only goes up, so \(\Phi(w^\top x) \ge \tfrac12\) exactly when \(w^\top x \ge 0\). The sign of the score is the whole answer — no integral.`,
-      start: R`<p>\(w = (w_0, w_1, w_2) = (\square, \square, \square)\)</p>
+      start: R`<p><b>Key idea:</b> \(\Phi(0) = \tfrac12\) and \(\Phi\) only goes up, so \(\hat y = \Phi(w^\top x) \ge \tfrac12 \iff w^\top x \ge 0\): the sign of the score decides.</p>
+<p>\(w = (w_0, w_1, w_2) = (\square, \square, \square)\)</p>
 <p>Sample 1: \(\;w^\top x = \square \lt 0 \;\Rightarrow\; \Phi(\square) \lt \Phi(0) = \tfrac12 \;\Rightarrow\;\) negative</p>
 <p>Sample 2: \(\;w^\top x = \square \gt 0 \;\Rightarrow\; \Phi(\square) \gt \Phi(0) = \tfrac12 \;\Rightarrow\;\) positive</p>`,
-      answer: R`<p>\(w = (w_0, w_1, w_2) = (1, -1, 2)\)</p>
+      answer: R`<p><b>Key idea:</b> \(\Phi(0) = \tfrac12\) and \(\Phi\) only goes up, so \(\hat y = \Phi(w^\top x) \ge \tfrac12 \iff w^\top x \ge 0\): the sign of the score decides.</p>
+<p>\(w = (w_0, w_1, w_2) = (1, -1, 2)\)</p>
 <p>Sample 1: \(\;w^\top x = 1 - 1\cdot 2 + 2\cdot 0 = -1 \lt 0\) \(\;\Rightarrow\; \Phi(-1) \lt \Phi(0) = \tfrac12 \;\Rightarrow\;\) negative</p>
 <p>Sample 2: \(\;w^\top x = 1 - 1\cdot 0 + 2\cdot 1 = 3 \gt 0\) \(\;\Rightarrow\; \Phi(3) \gt \Phi(0) = \tfrac12 \;\Rightarrow\;\) positive</p>`,
       moves: [

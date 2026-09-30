@@ -34,7 +34,11 @@ trivial — how I'd reverse engineer the solution and figure it out myself! If t
 should clearly be 'remember this for the exam!'"*
 1. 💡 **The point** (`point`).
 2. ✍ **Begin your answer like this** (`start`), with the collapsed **📝 Full exam answer** (`answer`) under it: the
-   same template line for line, filled in.
+   same template line for line, filled in. **Its first line is the aha idea that solves the part** (learner,
+   2026-09-30: *"in the 'begin your answer', it's important to note the 'aha idea' that solves the questions"*),
+   written out in full, not as □ — e.g. 2026-B Q3.1: "**Key idea:** Φ(0) = ½ and Φ only goes up, so Φ(wᵀx) ≥ ½ ⟺
+   wᵀx ≥ 0: the sign of the score decides." It is also what the grader's "briefly explain" wants. The same line opens
+   the full answer. (Purely mechanical parts may skip it.)
 3. **The steps, explained** (`moves`): they build exactly the full exam answer, line by line, and for every
    non-trivial line they show how you'd **figure it out yourself** — start from what the question really asks
    ("'converges' → Perceptron converges only on separable data → I need features where it's separable"), work
