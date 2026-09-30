@@ -1,0 +1,60 @@
+/* Shared styles for the three format prototypes. Colours come from ../css/style.css (same variables as the site). */
+body { font-size: 17px; line-height: 1.6; }
+.wrap { max-width: 720px; margin: 0 auto; padding: 16px 16px 120px; }
+.topbar { display: flex; justify-content: space-between; align-items: center; gap: 12px; font-size: 14px; color: var(--muted); margin-bottom: 14px; flex-wrap: wrap; }
+.topbar a { text-decoration: none; }
+.topbar .right { display: flex; gap: 8px; align-items: center; }
+.linkbtn { font: inherit; font-size: 14px; background: none; border: 1px solid var(--line); border-radius: 16px; color: var(--muted); padding: 3px 12px; cursor: pointer; }
+.linkbtn:hover { color: var(--accent); border-color: var(--accent); }
+
+h1 { font-size: 24px; line-height: 1.25; margin: 4px 0 8px; }
+h2 { font-size: 21px; line-height: 1.3; margin: 2px 0 12px; }
+.kicker { display: block; margin-bottom: 4px; }
+p { margin: 10px 0; }
+
+.btn { font: inherit; font-size: 16px; font-weight: 600; min-height: 44px; padding: 8px 20px; border-radius: 22px;
+  border: 1px solid var(--line); background: var(--panel2); color: var(--ink); cursor: pointer; }
+.btn:hover { border-color: var(--accent); }
+.btn.primary { background: var(--accent); border-color: var(--accent); color: #fff; }
+.btn.soft { background: var(--accent-soft); border-color: var(--accent); color: var(--accent-ink); }
+.btn:disabled { opacity: .35; cursor: default; }
+
+/* one display formula / calculation, set apart */
+.formula { background: var(--code-bg); border-radius: 10px; padding: 2px 14px; margin: 14px 0; overflow-x: auto; }
+.formula .katex-display { margin: .7em 0; }
+.small { font-size: 14.5px; color: var(--muted); }
+
+/* predict-then-reveal */
+.check { border: 2px dashed var(--shaky); border-radius: 12px; padding: 14px 18px; margin: 14px 0; }
+.check .tagline { font-size: 12px; font-weight: 700; text-transform: uppercase; letter-spacing: .06em; color: var(--shaky-fg); }
+.answer { background: var(--got-bg); border-radius: 10px; padding: 6px 14px; margin-top: 12px; overflow-x: auto; }
+.answer .katex-display { margin: .6em 0; }
+
+/* exam images: always on a light background, like the site */
+.qimg { margin: 10px 0; }
+.qimg img { display: block; width: 100%; max-width: 640px; height: auto; background: var(--img-bg); border-radius: 8px; border: 1px solid var(--line); }
+.qimg .cap { font-size: 13px; color: var(--muted); margin-top: 4px; }
+
+details.more { margin: 8px 0 0; }
+details.more > summary { font-size: 14.5px; font-weight: 600; color: var(--accent-ink); display: inline-block; padding: 4px 0; }
+details.more[open] > summary { margin-bottom: 4px; }
+.depth { border-left: 3px solid var(--accent); background: var(--panel2); border-radius: 0 8px 8px 0; padding: 4px 14px 6px; margin-top: 4px; font-size: 16px; }
+.depth ul, .depth ol { padding-left: 22px; margin: 6px 0; }
+.depth li { margin: 4px 0; }
+.trapline { background: var(--trap-bg); border-left: 3px solid var(--trap); padding: 8px 12px; border-radius: 8px; margin: 10px 0; }
+
+@media (max-width: 520px) {
+  body { font-size: 16px; }
+  h1 { font-size: 21px; } h2 { font-size: 19px; }
+  .formula { padding: 2px 8px; }
+}
+kbd { font: 12px ui-monospace, Consolas, monospace; border: 1px solid var(--line); border-radius: 4px; padding: 0 5px; background: var(--panel2); }
+@media (max-width: 520px) {
+  .katex-display > .katex { font-size: 1.05em; }
+  .theformula .katex-display { font-size: 1em !important; }
+  .theformula { padding: 2px 8px; }
+}
+@media (max-width: 520px) {
+  .check { padding: 12px 12px; }
+  .answer { padding: 6px 10px; }
+}

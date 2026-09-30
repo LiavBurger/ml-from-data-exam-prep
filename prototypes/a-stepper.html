@@ -1,0 +1,343 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Gradient Stepper</title>
+<link rel="icon" href="data:,">
+<link rel="stylesheet" href="../vendor/katex.min.css">
+<link rel="stylesheet" href="../css/style.css">
+<link rel="stylesheet" href="proto.css">
+<script src="../vendor/katex.min.js"></script>
+<script src="../vendor/auto-render.min.js"></script>
+<script src="proto.js"></script>
+<style>
+  .dots { display: flex; flex-wrap: wrap; gap: 6px; margin: 0 0 16px; }
+  .dot { width: 14px; height: 14px; border-radius: 50%; border: 2px solid var(--line); background: none; padding: 0; cursor: pointer; }
+  .dot.done { background: var(--accent); border-color: var(--accent); }
+  .dot.cur { border-color: var(--accent); box-shadow: 0 0 0 3px var(--accent-soft); background: var(--panel); }
+  .dot.chk { border-radius: 3px; transform: rotate(45deg) scale(.85); border-color: var(--shaky); }
+  .dot.chk.done { background: var(--shaky); }
+  .step { display: none; }
+  .step.on { display: block; animation: fade .18s ease-out; }
+  @keyframes fade { from { opacity: 0; transform: translateY(4px); } to { opacity: 1; transform: none; } }
+  .step .card { margin-top: 0; padding: 20px 22px; min-height: 240px; }
+  .step.is-check .card { border: 2px dashed var(--shaky); }
+  .navbar { position: fixed; left: 0; right: 0; bottom: 0; background: var(--panel); border-top: 1px solid var(--line); z-index: 5; }
+  .navbar .in { max-width: 720px; margin: 0 auto; padding: 10px 16px; display: flex; justify-content: space-between; align-items: center; gap: 10px; }
+  .navbar .pos { color: var(--muted); font-size: 14px; font-variant-numeric: tabular-nums; text-align: center; }
+  .keys { font-size: 13px; color: var(--muted); margin-top: 6px; }
+  svg.land { display: block; width: 100%; max-width: 360px; height: auto; margin: 6px auto 0; }
+  @media (max-width: 520px) { .step .card { padding: 16px 14px; } .keys { display: none; } }
+</style>
+</head>
+<body>
+<div class="wrap">
+  <div class="topbar">
+    <a href="index.html">&larr; Formats</a>
+    <span class="right"><button class="linkbtn" id="restart">Start over</button><button class="linkbtn" id="theme">Light mode</button></span>
+  </div>
+  <div class="dots" id="dots" aria-label="Progress"></div>
+
+  <main id="deck">
+
+  <!-- 1 -->
+  <section class="step" data-title="Goal">
+    <div class="card">
+      <span class="kicker">Where this is going</span>
+      <h2>One idea per screen</h2>
+      <p>On the last screen you will answer a real exam part: <b>2025-C Q1.2</b>, "Express the gradient of \(J_\lambda(\theta)\)".</p>
+      <p>To get there: 3 short recap screens, then the gradient, one small step at a time. Every few screens there is a quick check.</p>
+      <p class="keys">Keys: <kbd>&rarr;</kbd> next, <kbd>&larr;</kbd> back, <kbd>Space</kbd> reveal.</p>
+    </div>
+  </section>
+
+  <!-- 2 -->
+  <section class="step" data-title="Recap 1">
+    <div class="card">
+      <span class="kicker">Recap 1 of 3 &middot; note 0</span>
+      <h2>Knobs and residuals</h2>
+      <p>A linear model predicts a label from the features using three knobs (weights) \(\theta_0, \theta_1, \theta_2\). The <b>residual</b> of sample \(i\) is its prediction minus its true label:</p>
+      <div class="formula">\[r_i = \theta_0\cdot 1 + \theta_1 x^{(i)}_1 + \theta_2 x^{(i)}_2 - y_i\]</div>
+      <p class="small">\(x^{(i)}_1\) = feature 1 of sample \(i\). The \((i)\) up top is the row number, not a power.</p>
+    </div>
+  </section>
+
+  <!-- 3 -->
+  <section class="step" data-title="Recap 2">
+    <div class="card">
+      <span class="kicker">Recap 2 of 3 &middot; note 1</span>
+      <h2>All residuals at once</h2>
+      <p>Each sample becomes a row \((1, x_1, x_2)\) of the matrix \(X\). The first column of ones is the 1 that multiplies \(\theta_0\). Then \(X\theta\) is all predictions and \(r = X\theta - y\) is all residuals. 2025-C's table, with \(\theta = (1, -2, 3)\):</p>
+      <div class="formula">\[X = \begin{bmatrix}1&-1&1\\1&-2&0\\1&1&3\\1&0&1\end{bmatrix}\]
+        \[r = X\theta - y = \begin{bmatrix}6\\5\\8\\4\end{bmatrix} - \begin{bmatrix}6\\4\\5\\1\end{bmatrix} = \begin{bmatrix}0\\1\\3\\3\end{bmatrix}\]</div>
+    </div>
+  </section>
+
+  <!-- 4 -->
+  <section class="step" data-title="Recap 3">
+    <div class="card">
+      <span class="kicker">Recap 3 of 3 &middot; notes 2&ndash;3</span>
+      <h2>The loss: one number</h2>
+      <p>Square each residual and add them up, so errors can't cancel. 2025-C's loss (LASSO) also adds a penalty: \(\lambda\) times the size of every knob, <b>including</b> \(\theta_0\).</p>
+      <div class="formula">\[J_\lambda(\theta) = \sum_{i=1}^{n} r_i^2 \;+\; \lambda\big(|\theta_0| + |\theta_1| + |\theta_2|\big)\]</div>
+      <p class="small">For our residuals the first part is \(0^2 + 1^2 + 3^2 + 3^2 = 0 + 1 + 9 + 9 = 19\).</p>
+    </div>
+  </section>
+
+  <!-- C1 -->
+  <section class="step is-check" data-title="Check">
+    <div class="card">
+      <span class="kicker" style="color:var(--shaky-fg)">Check &middot; predict, then reveal</span>
+      <h2>Prediction and residual of sample 3</h2>
+      <p>Row 3 of \(X\) is \((1, 1, 3)\), \(\theta = (1, -2, 3)\) and \(y_3 = 5\). What is prediction 3, and what is \(r_3\)?</p>
+      <p class="small">Say it or write it first. (This is a sub-step of 2025-C Q1.3.)</p>
+      <button class="btn soft" data-reveal="a-c1">Reveal</button>
+      <div class="answer" id="a-c1" hidden>
+        \[\begin{aligned}&(1, 1, 3)\cdot(1, -2, 3)\\ &= 1\cdot 1 + 1\cdot(-2) + 3\cdot 3\\ &= 1 - 2 + 9 = 8\end{aligned}\]
+        \[r_3 = 8 - 5 = 3\]
+        <p>That's entry 3 of \(r = (0, 1, 3, 3)\).</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- 5 -->
+  <section class="step" data-title="Landscape">
+    <div class="card">
+      <span class="kicker">The gradient &middot; note 5</span>
+      <h2>The picture: a landscape</h2>
+      <p>Think of \(J\) as a landscape. Your position is the knob setting \(\theta\); the height there is the loss \(J(\theta)\). Training = finding the lowest point. You can't see the whole landscape, but where you stand you can feel which way the ground slopes. The <b>gradient</b> is that slope.</p>
+      <svg class="land" viewBox="0 0 300 150" role="img" aria-label="A valley-shaped curve; a point on the right slope with an arrow pointing uphill labelled gradient and an arrow pointing downhill labelled minus gradient">
+        <path d="M20,20 Q150,240 280,20" style="fill:none;stroke:var(--muted);stroke-width:2.5"/>
+        <circle cx="150" cy="130" r="4" style="fill:var(--got)"/>
+        <text x="150" y="147" text-anchor="middle" font-size="12" style="fill:var(--got-fg)">lowest loss</text>
+        <line x1="215" y1="102" x2="245" y2="76" style="stroke:var(--fail);stroke-width:3"/>
+        <polygon points="253,70 249,81 242,71" style="fill:var(--fail)"/>
+        <text x="168" y="60" font-size="12" style="fill:var(--fail-fg)">&#8711;J (uphill)</text>
+        <line x1="215" y1="102" x2="187" y2="126" style="stroke:var(--accent);stroke-width:3"/>
+        <polygon points="179,132 191,130 183,121" style="fill:var(--accent)"/>
+        <text x="128" y="104" font-size="12" style="fill:var(--accent-ink)">&#8722;&#8711;J</text>
+        <circle cx="215" cy="102" r="7" style="fill:var(--ink)"/>
+        <text x="224" y="120" font-size="12" style="fill:var(--muted)">you (&#952;)</text>
+      </svg>
+    </div>
+  </section>
+
+  <!-- 6 -->
+  <section class="step" data-title="Partial">
+    <div class="card">
+      <span class="kicker">The gradient &middot; note 5, step 1</span>
+      <h2>One knob: the partial derivative</h2>
+      <p>Turn <i>only</i> knob \(\theta_1\) up a tiny bit and hold the others still: how fast does \(J\) change? That is the <b>partial derivative</b> \(\partial J / \partial\theta_1\). Compute it like an ordinary derivative, treating the other knobs as constants.</p>
+      <p><b>Positive</b>: turning \(\theta_1\) up makes the loss worse. <b>Negative</b>: turning \(\theta_1\) up makes it better.</p>
+    </div>
+  </section>
+
+  <!-- 7 -->
+  <section class="step" data-title="Gradient">
+    <div class="card">
+      <span class="kicker">The gradient &middot; note 5, step 2</span>
+      <h2>All knobs: the gradient vector</h2>
+      <p>Stack the partial derivatives into one vector, one entry per knob. It points uphill (where the loss grows fastest), so \(-\nabla J\) points downhill.</p>
+      <div class="formula">\[\nabla J = \left(\frac{\partial J}{\partial\theta_0},\ \frac{\partial J}{\partial\theta_1},\ \frac{\partial J}{\partial\theta_2}\right)\]</div>
+      <p>So we need \(\partial J/\partial\theta_j\) for one general knob \(j\). The next screens build it.</p>
+    </div>
+  </section>
+
+  <!-- C2 -->
+  <section class="step is-check" data-title="Check">
+    <div class="card">
+      <span class="kicker" style="color:var(--shaky-fg)">Check &middot; recall</span>
+      <h2>What does a positive entry mean?</h2>
+      <p>Suppose \(\partial J/\partial\theta_2\) is positive. What happens to the loss if you turn \(\theta_2\) up? So which way should you turn \(\theta_2\)?</p>
+      <button class="btn soft" data-reveal="a-c2">Reveal</button>
+      <div class="answer" id="a-c2" hidden>
+        <p>Turning \(\theta_2\) up makes the loss <b>bigger</b> (worse). So turn \(\theta_2\) <b>down</b>. That is what "\(-\nabla J\) points downhill" means.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- 8 -->
+  <section class="step" data-title="Step 1">
+    <div class="card">
+      <span class="kicker">Building it &middot; 1 of 4</span>
+      <h2>Derivative of one residual</h2>
+      <p>In \(r_i = \theta_0\cdot 1 + \theta_1 x^{(i)}_1 + \theta_2 x^{(i)}_2 - y_i\), only the term \(\theta_j x^{(i)}_j\) contains \(\theta_j\). Everything else is a constant, with derivative 0. Call the 1 in front of \(\theta_0\) "feature 0": \(x^{(i)}_0 = 1\).</p>
+      <div class="formula">\[\frac{\partial r_i}{\partial\theta_j} = x^{(i)}_j\]</div>
+      <p class="small">Official solutions quote this as "seen in class". You may too.</p>
+    </div>
+  </section>
+
+  <!-- 9 -->
+  <section class="step" data-title="Step 2">
+    <div class="card">
+      <span class="kicker">Building it &middot; 2 of 4</span>
+      <h2>One sample's loss: chain rule</h2>
+      <p>Sample \(i\) contributes \(r_i^2\). Chain rule: the outer derivative \(2r_i\) times the inner derivative \(\partial r_i/\partial\theta_j\), which the last screen gave.</p>
+      <div class="formula">\[\frac{\partial}{\partial\theta_j}\, r_i^2 = 2r_i\cdot\frac{\partial r_i}{\partial\theta_j} = 2r_i\, x^{(i)}_j\]</div>
+    </div>
+  </section>
+
+  <!-- 10 -->
+  <section class="step" data-title="Step 3">
+    <div class="card">
+      <span class="kicker">Building it &middot; 3 of 4</span>
+      <h2>Add over the samples</h2>
+      <p>The derivative of a sum is the sum of the derivatives. Then pull the constant 2 out in front.</p>
+      <div class="formula">\[\frac{\partial}{\partial\theta_j}\sum_{i=1}^{n} r_i^2 = \sum_{i=1}^{n} 2r_i\, x^{(i)}_j = 2\sum_{i=1}^{n} x^{(i)}_j\, r_i\]</div>
+    </div>
+  </section>
+
+  <!-- 11 -->
+  <section class="step" data-title="Step 4">
+    <div class="card">
+      <span class="kicker">Building it &middot; 4 of 4</span>
+      <h2>All knobs at once: \(X^\top\)</h2>
+      <p>\(x^{(1)}_j, \dots, x^{(n)}_j\) is feature \(j\) of every sample: <b>column \(j\) of \(X\)</b>. So \(\sum_i x^{(i)}_j r_i\) = (column \(j\) of \(X\)) \(\cdot\, r\). \(X^\top\) turns columns into rows, so \(X^\top r\) does all these dot products at once:</p>
+      <div class="formula">\[\nabla \sum_{i} r_i^2 = 2X^\top r = 2X^\top(X\theta - y)\]</div>
+      <p class="small">Size check: \(X^\top\) is \(3\times 4\), \(r\) is \(4\times 1\), so 3 entries, one per knob. Not \(X(X\theta - y)\).</p>
+    </div>
+  </section>
+
+  <!-- C3 -->
+  <section class="step is-check" data-title="Check">
+    <div class="card">
+      <span class="kicker" style="color:var(--shaky-fg)">Check &middot; a sub-step of 2025-C Q1.3</span>
+      <h2>Column 1 &middot; r</h2>
+      <p>Column 1 of \(X\) is \((-1, -2, 1, 0)\) and \(r = (0, 1, 3, 3)\). What is (column 1) \(\cdot\, r\)?</p>
+      <button class="btn soft" data-reveal="a-c3">Reveal</button>
+      <div class="answer" id="a-c3" hidden>
+        \[\begin{aligned}&(-1)\cdot 0 + (-2)\cdot 1 + 1\cdot 3 + 0\cdot 3\\ &= 0 - 2 + 3 + 0 = 1\end{aligned}\]
+        <p>The other two columns give 7 and 12, so \(X^\top r = (7, 1, 12)\) and \(2X^\top r = (14, 2, 24)\).</p>
+        <details class="more"><summary>Show the other two columns</summary>
+          \[\begin{aligned}&(1, 1, 1, 1)\cdot(0, 1, 3, 3)\\ &= 1\cdot 0 + 1\cdot 1 + 1\cdot 3 + 1\cdot 3\\ &= 0 + 1 + 3 + 3 = 7\end{aligned}\]
+          \[\begin{aligned}&(1, 0, 3, 1)\cdot(0, 1, 3, 3)\\ &= 1\cdot 0 + 0\cdot 1 + 3\cdot 3 + 1\cdot 3\\ &= 0 + 0 + 9 + 3 = 12\end{aligned}\]
+        </details>
+      </div>
+    </div>
+  </section>
+
+  <!-- 12 -->
+  <section class="step" data-title="LASSO">
+    <div class="card">
+      <span class="kicker">The penalty &middot; note 6</span>
+      <h2>Derivative of \(|\theta_j|\): its sign</h2>
+      <p>\(|a|\) has slope \(+1\) when \(a > 0\) and \(-1\) when \(a \lt 0\), so its derivative is \(\mathrm{sign}(a)\). At 0 there is a corner and no derivative. That's why Q1.2 says "assume all entries of \(\theta\) are non-zero". Only \(|\theta_j|\) contains \(\theta_j\):</p>
+      <div class="formula">\[\frac{\partial}{\partial\theta_j}\,\lambda\big(|\theta_0| + |\theta_1| + |\theta_2|\big) = \lambda\,\mathrm{sign}(\theta_j)\]</div>
+    </div>
+  </section>
+
+  <!-- C4 -->
+  <section class="step is-check" data-title="Check">
+    <div class="card">
+      <span class="kicker" style="color:var(--shaky-fg)">Check &middot; a sub-step of 2025-C Q1.3</span>
+      <h2>The penalty's push</h2>
+      <p>\(\theta = (1, -2, 3)\) and \(\lambda = 1\). What is \(\lambda\,\mathrm{sign}(\theta)\)?</p>
+      <button class="btn soft" data-reveal="a-c4">Reveal</button>
+      <div class="answer" id="a-c4" hidden>
+        <p>The signs: \(\mathrm{sign}(1) = +1\), \(\mathrm{sign}(-2) = -1\), \(\mathrm{sign}(3) = +1\). So:</p>
+        \[\lambda\,\mathrm{sign}(\theta) = 1\cdot(1, -1, 1) = (1, -1, 1)\]
+        <p>Added to \(2X^\top r = (14, 2, 24)\): \((14 + 1,\ 2 + (-1),\ 24 + 1) = (15, 1, 25)\).</p>
+        <p class="small">The official Q1.3 solution prints the middle entry as 0. That is a slip: \(2 + (-1) = 1\).</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- 13 -->
+  <section class="step" data-title="Together">
+    <div class="card">
+      <span class="kicker">Put together</span>
+      <h2>The whole gradient</h2>
+      <p>The gradient of a sum is the sum of the gradients: the squared-error part (screen "4 of 4") plus the penalty part (the sign screen). \(\mathrm{sign}(\theta)\) is the vector of the signs of the entries.</p>
+      <div class="formula">\[\nabla J_\lambda(\theta) = 2X^\top(X\theta - y) + \lambda\,\mathrm{sign}(\theta)\]</div>
+      <p>Next screen: the real exam part.</p>
+    </div>
+  </section>
+
+  <!-- 14 -->
+  <section class="step" data-title="Exam">
+    <div class="card">
+      <span class="kicker">The real exam part &middot; 2025-C Q1.2 (5 pts)</span>
+      <h2>Now on paper</h2>
+      <details class="more"><summary>The question's setup (stem)</summary>
+        <div class="qimg"><img src="../images/2025C/q1-stem.png" alt="2025-C Question 1 stem: the LASSO loss and the training table"></div>
+      </details>
+      <div class="qimg"><img src="../images/2025C/q1.2-q.png" alt="2025-C Q1.2: express the gradient of J lambda of theta as a function of X, y, theta, lambda"></div>
+      <p>Write the \(j\)-th partial derivative first, then the full gradient. Use symbols only, no numbers. When you have it (or you're stuck), reveal.</p>
+      <button class="btn soft" data-reveal="a-sol">Reveal official solution</button>
+      <div id="a-sol" hidden>
+        <div class="qimg"><img src="../images/2025C/q1.2-sol.png" alt="Official solution of 2025-C Q1.2"><div class="cap">Official solution</div></div>
+        <p class="small">Its first line is "Building it" 1&ndash;3 plus the sign screen, for one knob \(j\) (it writes \(r_i\) as \(\theta^\top x^{(i)} - y^{(i)}\)). Its last line is "Put together".</p>
+      </div>
+    </div>
+  </section>
+
+  </main>
+</div>
+
+<nav class="navbar">
+  <div class="in">
+    <button class="btn" id="back">&larr; Back</button>
+    <span class="pos" id="pos"></span>
+    <button class="btn primary" id="next">Next &rarr;</button>
+  </div>
+</nav>
+
+<script>
+(function () {
+  var KEY = "proto_a_step";
+  var steps = Array.prototype.slice.call(document.querySelectorAll(".step"));
+  var dots = document.getElementById("dots");
+  var i = 0;
+  try { var s = parseInt(localStorage.getItem(KEY), 10); if (s >= 0 && s < steps.length) i = s; } catch (e) {}
+
+  steps.forEach(function (st, k) {
+    var d = document.createElement("button");
+    d.className = "dot" + (st.classList.contains("is-check") ? " chk" : "");
+    d.title = (k + 1) + ". " + st.dataset.title;
+    d.setAttribute("aria-label", d.title);
+    d.addEventListener("click", function () { show(k); });
+    dots.appendChild(d);
+  });
+
+  function show(n) {
+    i = Math.max(0, Math.min(steps.length - 1, n));
+    steps.forEach(function (st, k) { st.classList.toggle("on", k === i); });
+    Array.prototype.forEach.call(dots.children, function (d, k) {
+      d.classList.toggle("cur", k === i);
+      d.classList.toggle("done", k < i);
+    });
+    document.getElementById("pos").textContent = (i + 1) + " / " + steps.length;
+    document.getElementById("back").disabled = i === 0;
+    var nx = document.getElementById("next");
+    nx.disabled = i === steps.length - 1;
+    try { localStorage.setItem(KEY, String(i)); } catch (e) {}
+    window.scrollTo(0, 0);
+  }
+  function revealHere() {
+    var b = steps[i].querySelector("[data-reveal]:not([hidden])");
+    if (b) window.protoReveal(b);
+  }
+
+  document.getElementById("back").addEventListener("click", function (e) { show(i - 1); if (e.detail) this.blur(); });
+  document.getElementById("next").addEventListener("click", function (e) { show(i + 1); if (e.detail) this.blur(); });
+  document.getElementById("restart").addEventListener("click", function () { show(0); });
+  document.addEventListener("keydown", function (e) {
+    if (e.altKey || e.ctrlKey || e.metaKey) return;
+    if (e.target && /^(INPUT|TEXTAREA|SELECT)$/.test(e.target.tagName)) return;
+    if (e.key === "ArrowRight") { show(i + 1); e.preventDefault(); }
+    else if (e.key === "ArrowLeft") { show(i - 1); e.preventDefault(); }
+    else if (e.key === " ") {
+      if (e.target && e.target.tagName === "SUMMARY") return;
+      revealHere(); e.preventDefault();
+    }
+    else if (e.key === "Enter") {
+      if (e.target && (e.target.tagName === "BUTTON" || e.target.tagName === "SUMMARY" || e.target.tagName === "A")) return;
+      revealHere(); e.preventDefault();
+    }
+  });
+  show(i);
+})();
+</script>
+</body>
+</html>

@@ -1,0 +1,169 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Core Plus Depth</title>
+<link rel="icon" href="data:,">
+<link rel="stylesheet" href="../vendor/katex.min.css">
+<link rel="stylesheet" href="../css/style.css">
+<link rel="stylesheet" href="proto.css">
+<script src="../vendor/katex.min.js"></script>
+<script src="../vendor/auto-render.min.js"></script>
+<script src="proto.js"></script>
+<style>
+  ol.core { list-style: none; padding: 0; margin: 0; counter-reset: c; }
+  ol.core > li { counter-increment: c; position: relative; padding: 12px 0 12px 40px; border-bottom: 1px solid var(--line); }
+  ol.core > li:last-child { border-bottom: 0; }
+  ol.core > li::before { content: counter(c); position: absolute; left: 0; top: 12px; width: 28px; height: 28px; border-radius: 50%;
+    background: var(--accent-soft); color: var(--accent); font-weight: 700; font-size: 14px; display: grid; place-items: center; }
+  ol.core.ex > li::before { background: var(--got-bg); color: var(--got-fg); }
+  .coreline { font-weight: 500; }
+  .theformula { border: 2px solid var(--accent); border-radius: 12px; padding: 2px 14px; margin: 16px 0; overflow-x: auto; background: var(--accent-soft); }
+  .theformula .katex-display { margin: .8em 0; font-size: 1.1em; }
+  .sec-h { display: flex; justify-content: space-between; align-items: baseline; gap: 10px; flex-wrap: wrap; }
+  @media (max-width: 520px) { ol.core > li { padding-left: 36px; } ol.core .depth { margin-left: -36px; padding: 4px 10px 6px; } }
+</style>
+</head>
+<body>
+<div class="wrap">
+  <div class="topbar">
+    <a href="index.html">&larr; Formats</a>
+    <span class="right"><button class="linkbtn" id="toggle">Open all</button><button class="linkbtn" id="theme">Light mode</button></span>
+  </div>
+
+  <span class="kicker">Short core &middot; depth on demand</span>
+  <h1>The gradient: which way is uphill?</h1>
+  <p class="small">Read the numbered lines first; together they are the whole idea. Open "explain more" only on a line that doesn't click.</p>
+
+  <div class="card">
+    <div class="sec-h"><h2>The core</h2><span class="small">2025-C, LASSO</span></div>
+    <ol class="core">
+      <li><div class="coreline">The loss scores a knob setting \(\theta\): \(J_\lambda(\theta) = \sum_i r_i^2 + \lambda\big(|\theta_0| + |\theta_1| + |\theta_2|\big)\), with residual \(r_i = \theta^\top x^{(i)} - y_i\) (prediction minus truth).</div>
+        <details class="more"><summary>explain more</summary><div class="depth">
+          <p><b>Knobs.</b> A linear model predicts \(\hat y = \theta_0 + \theta_1 x_1 + \theta_2 x_2\). The numbers \(\theta_0, \theta_1, \theta_2\) are its weights: think of them as three knobs. \(\theta_0\), the bias, is added no matter what the features are (note 0).</p>
+          <p><b>Residual.</b> For a sample from the table we know the true label, so \(r_i = \hat y_i - y_i\) measures how far off we are: 0 is perfect, positive is too high, negative is too low.</p>
+          <p><b>Why \(\theta^\top x^{(i)}\).</b> Write the bias as \(\theta_0\cdot 1\). Then the prediction is the dot product of \((1, x^{(i)}_1, x^{(i)}_2)\) with \((\theta_0, \theta_1, \theta_2)\). Stacking these rows gives the matrix \(X\) (first column all ones), so \(X\theta\) is all predictions and \(r = X\theta - y\) is all residuals (note 1).</p>
+          <p><b>Why squares.</b> Adding raw residuals fails: \(+3\) and \(-3\) would cancel to 0. Squares can't be negative, and they make big errors cost more (note 2).</p>
+          <p><b>The penalty.</b> LASSO adds \(\lambda\) times the absolute value of every weight, so large weights cost something. In 2025-C it <b>includes</b> \(\theta_0\): read the stem's formula (note 3).</p>
+        </div></details>
+      </li>
+      <li><div class="coreline">The gradient \(\nabla J\) is the vector of partial derivatives, one per knob. It points uphill, so \(-\nabla J\) points downhill.</div>
+        <details class="more"><summary>explain more</summary><div class="depth">
+          <p><b>The picture.</b> Imagine \(J\) as a landscape. Your position is the knob setting \(\theta\); the height at that position is the loss \(J(\theta)\). Training = finding the lowest point. You can't see the whole landscape, but where you stand you can feel which way the ground slopes. The gradient is that slope.</p>
+          <p><b>One knob.</b> \(\partial J/\partial\theta_1\) answers: "if I turn <i>only</i> knob \(\theta_1\) up a tiny bit and hold the others still, how fast does \(J\) change?" Compute it like an ordinary derivative, treating the other knobs as constants. Positive means turning \(\theta_1\) up makes the loss worse; negative means it makes it better.</p>
+          <p><b>All knobs.</b> Stack them:</p>
+          \[\nabla J = \left(\frac{\partial J}{\partial\theta_0},\ \frac{\partial J}{\partial\theta_1},\ \frac{\partial J}{\partial\theta_2}\right)\]
+        </div></details>
+      </li>
+      <li><div class="coreline">One residual: \(\dfrac{\partial r_i}{\partial\theta_j} = x^{(i)}_j\), where \(x^{(i)}_0 = 1\).</div>
+        <details class="more"><summary>explain more</summary><div class="depth">
+          <p>Recall \(r_i = \theta_0\cdot 1 + \theta_1 x^{(i)}_1 + \theta_2 x^{(i)}_2 - y_i\). Differentiate with respect to \(\theta_1\): only the term \(\theta_1 x^{(i)}_1\) contains \(\theta_1\); everything else is a constant with derivative 0. So \(\partial r_i/\partial\theta_1 = x^{(i)}_1\).</p>
+          <p>For \(\theta_0\) the number in front is the constant 1. Calling it "feature 0", \(x^{(i)}_0 = 1\), makes one rule cover every knob. It is the ones column of \(X\).</p>
+          <p class="small">The official solutions quote this as "we've seen in class that \(\frac{\partial}{\partial w_j} r_i = x^{(i)}_j\)". You may do the same.</p>
+        </div></details>
+      </li>
+      <li><div class="coreline">Chain rule, then add over samples: \(\dfrac{\partial}{\partial\theta_j}\sum_i r_i^2 = \sum_i 2r_i\,x^{(i)}_j\).</div>
+        <details class="more"><summary>explain more</summary><div class="depth">
+          <p><b>One sample.</b> Sample \(i\) contributes \(r_i^2\). Chain rule, (outer derivative) \(\times\) (inner derivative):</p>
+          \[\frac{\partial}{\partial\theta_j}\, r_i^2 = 2r_i\cdot\frac{\partial r_i}{\partial\theta_j} = 2r_i\,x^{(i)}_j\]
+          <p><b>All samples.</b> The derivative of a sum is the sum of the derivatives:</p>
+          \[\frac{\partial J}{\partial\theta_j} = \sum_{i=1}^{n} 2r_i\,x^{(i)}_j\]
+        </div></details>
+      </li>
+      <li><div class="coreline">That sum is (column \(j\) of \(X\)) \(\cdot\, r\), so all entries at once: \(2X^\top(X\theta - y)\).</div>
+        <details class="more"><summary>explain more</summary><div class="depth">
+          <p>Pull the 2 out: \(2\sum_i r_i x^{(i)}_j\). What's left is \(x^{(1)}_j r_1 + x^{(2)}_j r_2 + \dots + x^{(n)}_j r_n\). The numbers \(x^{(1)}_j, \dots, x^{(n)}_j\) are feature \(j\) of every sample: exactly <b>column \(j\) of \(X\)</b>. So the sum is a dot product: (column \(j\) of \(X\)) \(\cdot\, r\).</p>
+          <p>\(X^\top\) is \(X\) with its columns turned into rows, so \(X^\top r\) computes exactly these dot products, one per column. With \(r = X\theta - y\):</p>
+          \[\nabla\sum_i r_i^2 = 2X^\top(X\theta - y)\]
+          <div class="trapline"><b>Trap:</b> it is \(X^\top(X\theta - y)\), not \(X(X\theta - y)\): one entry per <b>knob</b> (3), not per sample (4). Size check: \(X^\top\) is \(3\times 4\), \(X\theta - y\) is \(4\times 1\), product \(3\times 1\).</div>
+        </div></details>
+      </li>
+      <li><div class="coreline">The LASSO penalty adds \(\lambda\,\mathrm{sign}(\theta_j)\) to entry \(j\) (the derivative of \(|a|\) is its sign).</div>
+        <details class="more"><summary>explain more</summary><div class="depth">
+          <p>The absolute value has two straight pieces: \(|a| = a\) when \(a > 0\) (slope \(+1\)) and \(|a| = -a\) when \(a \lt 0\) (slope \(-1\)). So:</p>
+          \[\begin{aligned}\frac{d}{da}|a| &= \mathrm{sign}(a)\\ &= \begin{cases}+1 & a > 0\\ -1 & a \lt 0\end{cases}\end{aligned}\]
+          <p>At \(a = 0\) there is a corner and no derivative. That is why 2025-C Q1.2 says "you may assume that all entries of \(\theta\) are non-zero".</p>
+          <p>Differentiating \(\lambda(|\theta_0| + |\theta_1| + |\theta_2|)\) with respect to \(\theta_j\): only \(|\theta_j|\) contains \(\theta_j\), so the result is \(\lambda\,\mathrm{sign}(\theta_j)\). No factor 2 here. Stacked, it is the vector \(\lambda\,\mathrm{sign}(\theta)\).</p>
+        </div></details>
+      </li>
+    </ol>
+
+    <h2 style="margin-top:18px">The one formula</h2>
+    <div class="theformula">\[\nabla J_\lambda(\theta) = 2X^\top(X\theta - y) + \lambda\,\mathrm{sign}(\theta)\]</div>
+    <details class="more"><summary>explain more</summary><div class="depth">
+      <p>The gradient of a sum is the sum of the gradients: line 5 (squared error) plus line 6 (penalty). This is the official answer to 2025-C Q1.2.</p>
+      <p><b>Link to the formula sheet.</b> The sheet gives \(\nabla_w\big[\tfrac12(y - w^\top x)^2\big] = (w^\top x - y)\,x\) for one sample. Its \(\tfrac12\) cancels the 2 from the chain rule. The exam losses have no \(\tfrac12\), so their gradient keeps the 2. Don't copy the sheet's version blindly.</p>
+    </div></details>
+  </div>
+
+  <div class="card">
+    <div class="sec-h"><h2>With numbers</h2><span class="small">2025-C: \(\theta = (1, -2, 3)\), \(\lambda = 1\), \(r = (0, 1, 3, 3)\)</span></div>
+    <ol class="core ex">
+      <li><div class="coreline">\(X^\top r = (7, 1, 12)\): each column of \(X\) dotted with \(r\).</div>
+        <details class="more"><summary>explain more</summary><div class="depth">
+          <p>The residuals come from note 1: \(X\theta = (6, 5, 8, 4)\), minus \(y = (6, 4, 5, 1)\), gives \(r = (0, 1, 3, 3)\). The rows of \(X^\top\) are the columns of \(X\):</p>
+          \[X^\top = \begin{bmatrix}1&1&1&1\\-1&-2&1&0\\1&0&3&1\end{bmatrix}\]
+          <ul>
+            <li>Entry 0: \((1, 1, 1, 1)\cdot(0, 1, 3, 3) = 1\cdot 0 + 1\cdot 1 + 1\cdot 3 + 1\cdot 3 = 0 + 1 + 3 + 3 = 7\)</li>
+            <li>Entry 1: \((-1, -2, 1, 0)\cdot(0, 1, 3, 3) = (-1)\cdot 0 + (-2)\cdot 1 + 1\cdot 3 + 0\cdot 3 = 0 - 2 + 3 + 0 = 1\)</li>
+            <li>Entry 2: \((1, 0, 3, 1)\cdot(0, 1, 3, 3) = 1\cdot 0 + 0\cdot 1 + 3\cdot 3 + 1\cdot 3 = 0 + 0 + 9 + 3 = 12\)</li>
+          </ul>
+        </div></details>
+      </li>
+      <li><div class="coreline">\(2X^\top r = (14, 2, 24)\).</div>
+        <details class="more"><summary>explain more</summary><div class="depth">
+          <p>\(2\cdot(7, 1, 12) = (2\cdot 7,\ 2\cdot 1,\ 2\cdot 12) = (14, 2, 24)\). All three entries are positive: turning any knob up would increase the squared error, most of all \(\theta_2\). That matches the residuals: every prediction was too high or exact.</p>
+          <p><b>Same result by rows.</b> \(z = 2r = (0, 2, 6, 6)\); multiply each row of \(X\) by its \(z_i\) and add:</p>
+          \[\begin{aligned}&\phantom{=}\ 0\cdot(1, -1, 1) + 2\cdot(1, -2, 0)\\ &\quad + 6\cdot(1, 1, 3) + 6\cdot(1, 0, 1)\\ &= (0, 0, 0) + (2, -4, 0)\\ &\quad + (6, 6, 18) + (6, 0, 6)\\ &= (14, 2, 24)\end{aligned}\]
+        </div></details>
+      </li>
+      <li><div class="coreline">\(+\,\lambda\,\mathrm{sign}(\theta) = (14, 2, 24) + (1, -1, 1) = (15, 1, 25)\).</div>
+        <details class="more"><summary>explain more</summary><div class="depth">
+          <p>The signs: \(\mathrm{sign}(1) = +1\), \(\mathrm{sign}(-2) = -1\), \(\mathrm{sign}(3) = +1\), so \(\lambda\,\mathrm{sign}(\theta) = 1\cdot(1, -1, 1) = (1, -1, 1)\).</p>
+          \[\begin{aligned}\nabla J_\lambda &= (14 + 1,\ 2 + (-1),\ 24 + 1)\\ &= (15, 1, 25)\end{aligned}\]
+          <p><b>Official-solution slip.</b> The official 2025-C Q1.3 solution prints the middle entry as 0. That is an arithmetic slip: \(2 + (-1) = 1\).</p>
+        </div></details>
+      </li>
+    </ol>
+  </div>
+
+  <div class="card">
+    <h2>Check yourself</h2>
+    <div class="check">
+      <span class="tagline">Real exam part &middot; 2025-C Q1.2 (5 pts)</span>
+      <div class="qimg"><img src="../images/2025C/q1.2-q.png" alt="2025-C Q1.2: express the gradient of J lambda of theta as a function of X, y, theta, lambda"></div>
+      <details class="more"><summary>the question's setup (stem)</summary>
+        <div class="qimg"><img src="../images/2025C/q1-stem.png" alt="2025-C Question 1 stem: the LASSO loss and the training table"></div>
+      </details>
+      <p>Cover the page above. On paper: the \(j\)-th partial derivative, then the whole gradient.</p>
+      <button class="btn soft" data-reveal="c-sol">Reveal official solution</button>
+      <div id="c-sol" hidden>
+        <div class="qimg"><img src="../images/2025C/q1.2-sol.png" alt="Official solution of 2025-C Q1.2"><div class="cap">Official solution</div></div>
+        <p class="small">Its first line is core lines 3&ndash;6 for one knob \(j\); its last line is "the one formula".</p>
+      </div>
+    </div>
+    <div class="check">
+      <span class="tagline">Sub-step of 2025-C Q1.3</span>
+      <p>With \(r = (0, 1, 3, 3)\) and column 1 of \(X\) equal to \((-1, -2, 1, 0)\): what is entry 1 of \(X^\top r\)?</p>
+      <button class="btn soft" data-reveal="c-sub">Reveal</button>
+      <div class="answer" id="c-sub" hidden>
+        \[\begin{aligned}&(-1)\cdot 0 + (-2)\cdot 1 + 1\cdot 3 + 0\cdot 3\\ &= 0 - 2 + 3 + 0 = 1\end{aligned}\]
+      </div>
+    </div>
+  </div>
+</div>
+
+<script>
+(function () {
+  var t = document.getElementById("toggle");
+  t.addEventListener("click", function () {
+    var all = document.querySelectorAll("details.more");
+    var open = t.textContent === "Open all";
+    all.forEach(function (d) { d.open = open; });
+    t.textContent = open ? "Close all" : "Open all";
+  });
+})();
+</script>
+</body>
+</html>

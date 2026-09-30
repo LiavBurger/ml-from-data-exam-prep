@@ -1,0 +1,40 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Format Prototypes</title>
+<link rel="icon" href="data:,">
+<link rel="stylesheet" href="../css/style.css">
+<link rel="stylesheet" href="proto.css">
+<script src="proto.js"></script>
+<style>
+  .opt { display: grid; grid-template-columns: 40px 1fr; gap: 14px; align-items: start; background: var(--panel); border: 1px solid var(--line);
+    border-radius: 12px; padding: 16px 18px; margin: 12px 0; color: var(--ink); text-decoration: none; box-shadow: var(--shadow); }
+  .opt:hover { border-color: var(--accent); }
+  .opt .l { width: 36px; height: 36px; border-radius: 50%; background: var(--accent-soft); color: var(--accent); font-weight: 700; font-size: 18px; display: grid; place-items: center; }
+  .opt b { display: block; font-size: 17px; margin-bottom: 2px; }
+  .opt span { color: var(--muted); font-size: 15px; }
+</style>
+</head>
+<body>
+<div class="wrap">
+  <div class="topbar">
+    <a href="../index.html">&larr; Study site</a>
+    <span class="right"><button class="linkbtn" id="theme">Light mode</button></span>
+  </div>
+  <span class="kicker">Prototypes</span>
+  <h1>Which format works for you?</h1>
+  <p>The same material three ways: the gradient (regression note 5, plus the recap it needs) and the real exam part it prepares for, 2025-C Q1.2. Try each for a few minutes, then pick the one you kept going with.</p>
+
+  <a class="opt" href="a-stepper.html"><span class="l">A</span><div><b>One idea per screen</b>
+    <span>Small cards you click through with Next/Back (or arrow keys), with a quick predict-then-reveal check every few cards, ending on the real exam part.</span></div></a>
+  <a class="opt" href="b-question-first.html"><span class="l">B</span><div><b>Question first, teach just in time</b>
+    <span>Starts with the exam question and solves it one line at a time; tap "why?" on a line only when you need the explanation.</span></div></a>
+  <a class="opt" href="c-core-plus-depth.html"><span class="l">C</span><div><b>Short core, depth on demand</b>
+    <span>Six lines, one formula and a three-line example on one page; each line opens the full explanation from the notes if you want it.</span></div></a>
+
+  <p class="small">These pages are separate from the study site; nothing in it has changed.</p>
+</div>
+</body>
+</html>
