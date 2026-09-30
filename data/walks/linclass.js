@@ -495,7 +495,17 @@
 <li>\(\Phi(t_i) \to \varphi(t_i)\) — observation (1), given in the question. For the second log the inside is \(1 - \Phi(t_i)\), so its derivative is \(-\varphi(t_i)\).</li>
 <li>\(t_i \to x^{(i)}_j\) — \(t_i\) is a plain sum, so its derivative by \(w_j\) is the number in front of \(w_j\), as in Regression (2025-C Q1.2, move 2).</li></ul>
 <p>\(y_i\) and \(1 - y_i\) are plain numbers in front: they ride along.</p>
-<p>Optional, extension sheet only: [sheet: Chain rule], [sheet: Derivative of loga (x)].</p>` },
+<p>Optional, extension sheet only: [sheet: Chain rule], [sheet: Derivative of loga (x)].</p>`,
+          extra: [{ label: "the extension sheet says (log_a x)' = 1/(x ln a) — is this the same rule?", html: R`<p>Yes. Two things make it look different:</p>
+<p><b>1. Which log?</b> In this course (and in ML generally), "log" with no base means the natural log, base \(e\). Put \(a = e\) into the sheet's rule: \(\ln e = 1\), so</p>
+\[\frac{d}{dx}\log_e x = \frac{1}{x\cdot\ln e} = \frac{1}{x\cdot 1} = \frac1x\]
+<p>(Even with another base, \(\frac{1}{\ln a}\) is just a constant: it would sit in front of everything, like the \(-\frac1n\), and \(z_i\) would get one more constant factor.)</p>
+<p><b>2. The inside isn't a plain \(x\).</b> The sheet's rule is for \(\log\) of a plain \(x\). Here it's \(\log\) of \(\Phi(t_i)\), and \(\Phi(t_i)\) moves when \(w_j\) moves. That's the chain rule: the outer derivative with the inside kept in place, times the derivative of the inside:</p>
+\[\frac{\partial}{\partial w_j}\log\Phi(t_i) = \frac{1}{\Phi(t_i)}\cdot\varphi(t_i)\cdot x^{(i)}_j\]
+<ul><li>\(\frac{1}{\Phi(t_i)}\): the sheet's \(\frac1x\), with \(\Phi(t_i)\) in the place of \(x\).</li>
+<li>\(\varphi(t_i)\): the derivative of \(\Phi\), observation (1) in the question.</li>
+<li>\(x^{(i)}_j\): the derivative of the inside \(t_i = w_0 + w_1x^{(i)}_1 + \dots\) by \(w_j\) (the number in front of \(w_j\)).</li></ul>
+<p>Same as \(\ln(x^2 + 3) \to \frac{1}{x^2 + 3}\cdot 2x\): the \(\frac1x\) rule with \(x^2 + 3\) in the place of \(x\), times the inside's derivative \(2x\).</p>` }] },
         { line: R`<b>Write it with matrices</b> — \(-\frac1n\) is a constant: out of the sum. The rest (entry × entry, added up) is a dot product; \(t_i\) = entry \(i\) of \(Xw\): <div class="formula">\[\begin{aligned}\frac{\partial L}{\partial w_j} &= \underbrace{\color{#e8912d}-\frac1n}_{\textstyle\color{#e8912d}\text{constant}}\sum_i x^{(i)}_j\cdot(\dots)\,\varphi(t_i)\\ &= -\frac1n\,X_j^\top\,(\text{list})\end{aligned}\]</div><div class="formula">\[\text{list} = \begin{bmatrix}\vdots\\ \Big[\frac{y_i}{\Phi(t_i)} - \frac{1 - y_i}{1 - \Phi(t_i)}\Big]\varphi(t_i)\\ \vdots\end{bmatrix}\leftarrow\text{entry } i\]</div>\(X_j\) = column \(j\) of \(X\).`,
           size: R`\[\underbrace{X_j^\top}_{\textstyle 1\times n}\,\underbrace{(\text{list})}_{\textstyle n\times 1} = \text{one number}\]<p>inner n = n ✓ · one number, like \(\frac{\partial L}{\partial w_j}\) ✓ · without the \(^\top\): (n×1)(n×1) — inner 1 ≠ n ✗</p>`,
           why: R`<p>\(X_j\) = (sample 1's \(x_j\), sample 2's \(x_j\), …) — reading down column \(j\) of \(X\) (one row per sample, with the column of 1s in front). The list = (sample 1's \((\dots)\varphi(t_1)\), sample 2's, …). The sum multiplies them entry by entry and adds up: that's exactly a dot product, \(X_j^\top\cdot\) the list. For \(w_0\), \(X_0\) is the column of 1s.</p>
