@@ -261,13 +261,23 @@
 <p><b>So:</b> (a) is the middle line, (b) is a distance, \(1/\|w\|\), and (c) keeps everything as it is.</p>`,
       start: R`<p><b>Key idea:</b> the + and − lie on two parallel lines, so the max-margin line runs exactly between them and every sample is on the margin (\(y\cdot\text{score} = 1\)); the margin is the distance \(1/\|w\|\), not 1. \((2, 0)\) has \(y\cdot\text{score} = 2 \ge 1\), outside the margin, so nothing changes.</p>
 <p><b>(a)</b> The line: \(\;\square = 0\;\) (\(w = (\square, \square)\), \(w_0 = \square\))</p>
-<p><b>(b)</b> Every sample: \(y_i(w^\top x^{(i)} + w_0) = \square\), so the margin is</p>
-\[\frac{1}{\|w\|} = \;\square\]
+<p><b>(b)</b> Margin = distance from the line to the closest sample (all samples are equally close):</p>
+<p>Line as "… = 0": \(\square = 0\)</p>
+<p>Weights: \(w_0 = \square,\ w_1 = \square,\ w_2 = \square\)</p>
+<p>A sample: \((\square, \square)\)</p>
+<p>Its score: \(w_0 + w_1x_1 + w_2x_2 = \square\)</p>
+<p>Length of \(w\): \(\sqrt{w_1^2 + w_2^2} = \square\)</p>
+<p>Margin \(= \dfrac{|\text{score}|}{\text{length}} = \square\)</p>
 <p><b>(c)</b> New sample: \(y(w^\top x + w_0) = \square \ge 1\), so \(\;\square\)</p>`,
       answer: R`<p><b>Key idea:</b> the + and − lie on two parallel lines, so the max-margin line runs exactly between them and every sample is on the margin (\(y\cdot\text{score} = 1\)); the margin is the distance \(1/\|w\|\), not 1. \((2, 0)\) has \(y\cdot\text{score} = 2 \ge 1\), outside the margin, so nothing changes.</p>
 <p><b>(a)</b> The line: \(x_1 - x_2 = 0\) (\(w = (1, -1)\), \(w_0 = 0\))</p>
-<p><b>(b)</b> Every sample: \(y_i(w^\top x^{(i)} + w_0) = 1\) (all samples are on the margin), so the margin is</p>
-\[\frac{1}{\|w\|} = \frac{1}{\sqrt{1^2 + (-1)^2}} = \frac{\sqrt2}{2} \approx 0.707\]
+<p><b>(b)</b> Margin = distance from the line to the closest sample (all samples are equally close):</p>
+<p>Line as "… = 0": \(x_1 - x_2 = 0\)</p>
+<p>Weights: \(w_0 = 0,\ w_1 = 1,\ w_2 = -1\)</p>
+<p>A sample: \((1, 0)\) (on the + row: \(1 - 0 = 1\))</p>
+<p>Its score: \(0 + 1\cdot 1 + (-1)\cdot 0 = 1\)</p>
+<p>Length of \(w\): \(\sqrt{1^2 + (-1)^2} = \sqrt2\)</p>
+<p>Margin \(= \dfrac{|1|}{\sqrt2} = \dfrac{\sqrt2}{2} \approx 0.707\)</p>
 <p><b>(c)</b> New sample: \(y(w^\top x + w_0) = (+1)(2 - 0) = 2 \ge 1\), so it is correctly classified and outside the margin. Adding a sample can never make the margin grow, so the max-margin classifier doesn't change.</p>`,
       moves: [
         { line: R`<b>(a) Midway between the two lines</b> — max-margin = as far as possible from the closest samples. The samples sit on two parallel lines, so go exactly halfway between \(x_1 - x_2 = 1\) and \(x_1 - x_2 = -1\): <div class="formula">\[x_1 - x_2 = 0 \qquad (w = (1, -1),\ w_0 = 0)\]</div>`,
@@ -278,7 +288,29 @@
           size: R`\[\underbrace{y_i}_{\textstyle 1\times 1}\big(\underbrace{w^\top}_{\textstyle 1\times 2}\,\underbrace{x^{(i)}}_{\textstyle 2\times 1} + w_0\big) = 1\]\[\|w\| = \sqrt{\underbrace{w^\top}_{\textstyle 1\times 2}\,\underbrace{w}_{\textstyle 2\times 1}} = \sqrt2\]<p>inner 2 = 2 ✓ · the bracket is one number, times the label (one number) ✓. All 10 samples at once: \(Xw + w_0\) = (10×2)(2×1) = one score per sample ✓</p>`,
           why: R`<p>The SVM constraint is \(y_i(w^\top x^{(i)} + w_0) \ge 1\) with \(\xi_i = 0\). Samples with exactly 1 are the closest ones. The constraint is on the sheet:</p><p>[sheet: Primal objective function (to minimize)]</p>
 <p>Their distance = |score| ÷ \(\|w\|\) = \(1/\sqrt2\). The 1 is a score, not a distance: answering "margin = 1" gets only partial credit (grader's note).</p>`,
-          extra: [{ label: "how to use the distance formula, step by step (with checks you can trust)", html: R`<p><b>The formula:</b> distance from a point to a line \(= \dfrac{|\text{score of the point}|}{\sqrt{w_1^2 + w_2^2}}\)</p>
+          extra: [{ label: "on paper: distance from a point to a line (the structure, then two filled in)", html: R`<p><b>The structure</b> — write these 6 lines every time:</p>
+<div class="paper"><p>Line as "… = 0": \(\square = 0\)</p>
+<p>Weights: \(w_0 = \square,\ w_1 = \square,\ w_2 = \square\)</p>
+<p>Point: \((\square, \square)\)</p>
+<p>Score: \(w_0 + w_1x_1 + w_2x_2 = \square\)</p>
+<p>Length: \(\sqrt{w_1^2 + w_2^2} = \square\)</p>
+<p>Distance \(= |\text{score}| \,/\, \text{length} = \square\)</p></div>
+<p><b>Filled in: this question</b> (line \(x_1 = x_2\), point \((1, 0)\)):</p>
+<div class="paper"><p>Line as "… = 0": \(x_1 - x_2 = 0\)</p>
+<p>Weights: \(w_0 = 0,\ w_1 = 1,\ w_2 = -1\)</p>
+<p>Point: \((1, 0)\)</p>
+<p>Score: \(0 + 1\cdot 1 + (-1)\cdot 0 = 1\)</p>
+<p>Length: \(\sqrt{1^2 + (-1)^2} = \sqrt2\)</p>
+<p>Distance \(= 1/\sqrt2 = \sqrt2/2\)</p></div>
+<p><b>Filled in: a line with a number on the right</b> (line \(3x_1 + 4x_2 = 10\), point \((0, 0)\)):</p>
+<div class="paper"><p>Line as "… = 0": \(3x_1 + 4x_2 - 10 = 0\)</p>
+<p>Weights: \(w_0 = -10,\ w_1 = 3,\ w_2 = 4\)</p>
+<p>Point: \((0, 0)\)</p>
+<p>Score: \(-10 + 3\cdot 0 + 4\cdot 0 = -10\)</p>
+<p>Length: \(\sqrt{3^2 + 4^2} = 5\)</p>
+<p>Distance \(= |-10|/5 = 2\)</p></div>
+<p>The sign of the score (here −) only says which side the point is on; the distance uses \(|\text{score}|\).</p>` },
+            { label: "how to use the distance formula, step by step (with checks you can trust)", html: R`<p><b>The formula:</b> distance from a point to a line \(= \dfrac{|\text{score of the point}|}{\sqrt{w_1^2 + w_2^2}}\)</p>
 <p><b>Step 1. Write the line as "something = 0".</b> \(x_1 = x_2\) becomes \(x_1 - x_2 = 0\).</p>
 <p style="margin-left:1.2em"><i>A line with another number on the right? Move it over: the + row \(x_1 - x_2 = 1\) becomes \(x_1 - x_2 - 1 = 0\), so \(w_0 = -1\). Or \(3x_1 + 4x_2 = 10\) becomes \(3x_1 + 4x_2 - 10 = 0\): from \((0, 0)\) that's \(\frac{|0 + 0 - 10|}{\sqrt{3^2 + 4^2}} = \frac{10}{5} = 2\).</i></p>
 <p><b>Step 2. Read off the weights.</b> The number in front of \(x_1\) is \(w_1\), in front of \(x_2\) is \(w_2\), the lone number is \(w_0\). Here \(1\cdot x_1 + (-1)\cdot x_2 + 0\): \(w_1 = 1\), \(w_2 = -1\), \(w_0 = 0\).</p>
