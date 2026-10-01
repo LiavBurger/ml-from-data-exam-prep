@@ -72,7 +72,13 @@
           remember: R`\[p(y \mid x) = \frac{\pi_y\,p(x \mid y)}{\sum_{y'}\pi_{y'}\,p(x \mid y')}\]\[p(x \mid y) = \prod_t p(x_t \mid y)\quad\text{(naive)}\]<p>Bayes' rule: posterior = joint (prior × likelihood) ÷ the sum of the joints. Naive = features independent inside a class, so multiply. MAP = the class with the biggest posterior. Not on the sheet in this form: [sheet: Class posterior probability] only names \(P(Y \mid X)\). Bayes' rule is on the extension sheet, if you get it: [sheet: Bayes' rule].</p>`,
           why: R`<p><b>Joint</b> = the fraction of flowers that are A <b>and</b> look like \(x\) = (fraction that is A) × (fraction of the A's that look like \(x\)) = \(\pi_\mathrm{A}\cdot p(x \mid y = \mathrm{A})\).</p>
 <p><b>Naive</b> = inside one class the features are treated as independent, so \(p(x \mid y = \mathrm{A}) = p(x_1 \mid \mathrm{A})\cdot p(x_2 \mid \mathrm{A})\): part 1's two numbers multiplied. [sheet: Class conditional probability (Likelihood)]</p>
-<p><b>Divide by the sum:</b> every flower that looks like \(x\) is A or B, so \(p(x)\) = joint A + joint B.</p>` },
+<p><b>Divide by the sum:</b> every flower that looks like \(x\) is A or B, so \(p(x)\) = joint A + joint B.</p>`,
+          extra: [{ label: "can I write P(A | p, 5) = P(A)·P(p | A)·P(5 | A)?", html: R`<p><b>Not with "=".</b> The right side is the <b>joint</b>, \(P(A,\ x_1 = \mathrm{p},\ x_2 = 5)\), not the posterior. For sample 21 it's 0.025, and 0.025 isn't the probability of A (the two classes' numbers, 0.025 and 0.1, don't add up to 1).</p>
+<p><b>Two correct ways to write it:</b></p>
+\[P(A \mid \mathrm{p}, 5) \;\propto\; P(A)\,P(\mathrm{p} \mid A)\,P(5 \mid A)\]
+<p>("∝" = proportional to: the same up to a number that's equal for both classes), or with the division:</p>
+\[\begin{aligned}&P(A \mid \mathrm{p}, 5)\\ &= \frac{P(A)P(\mathrm{p} \mid A)P(5 \mid A)}{P(A)P(\mathrm{p} \mid A)P(5 \mid A) + P(B)P(\mathrm{p} \mid B)P(5 \mid B)}\end{aligned}\]
+<p><b>When does the division matter?</b> For the MAP decision alone, comparing the joints is enough (the bottom is the same for A and B). But this question says "compute the posterior probability", so divide: \(0.025 / 0.125 = 0.2\).</p>` }] },
         { line: R`<b>Sample 21, \(x = (\mathrm{p}, 5)\)</b> — joint = prior × \(p(\mathrm{purple} \mid \text{class})\) × \(p(5 \mid \text{class})\); posterior = joint ÷ their sum \(p(x) = 0.025 + 0.1 = 0.125\): <div class="tw"><table><thead><tr><th>class</th><th>joint</th><th>posterior</th></tr></thead><tbody>
 <tr><td>A</td><td>\(0.4 \times 0.25 \times 0.25 = 0.025\)</td><td>\(\dfrac{0.025}{0.125} = 0.2\)</td></tr>
 <tr><td>B</td><td>\(0.6 \times \dfrac23 \times 0.25 = 0.1\)</td><td>\(\dfrac{0.1}{0.125} = 0.8\)</td></tr></tbody></table></div>MAP: <b>B</b>.` },
