@@ -280,6 +280,7 @@
 <p>Their distance = |score| ÷ \(\|w\|\) = \(1/\sqrt2\). The 1 is a score, not a distance: answering "margin = 1" gets only partial credit (grader's note).</p>`,
           extra: [{ label: "how to use the distance formula, step by step (with checks you can trust)", html: R`<p><b>The formula:</b> distance from a point to a line \(= \dfrac{|\text{score of the point}|}{\sqrt{w_1^2 + w_2^2}}\)</p>
 <p><b>Step 1. Write the line as "something = 0".</b> \(x_1 = x_2\) becomes \(x_1 - x_2 = 0\).</p>
+<p style="margin-left:1.2em"><i>A line with another number on the right? Move it over: the + row \(x_1 - x_2 = 1\) becomes \(x_1 - x_2 - 1 = 0\), so \(w_0 = -1\). Or \(3x_1 + 4x_2 = 10\) becomes \(3x_1 + 4x_2 - 10 = 0\): from \((0, 0)\) that's \(\frac{|0 + 0 - 10|}{\sqrt{3^2 + 4^2}} = \frac{10}{5} = 2\).</i></p>
 <p><b>Step 2. Read off the weights.</b> The number in front of \(x_1\) is \(w_1\), in front of \(x_2\) is \(w_2\), the lone number is \(w_0\). Here \(1\cdot x_1 + (-1)\cdot x_2 + 0\): \(w_1 = 1\), \(w_2 = -1\), \(w_0 = 0\).</p>
 <p><b>Step 3. Score the point:</b> plug it into the left side. \((1, 0)\): \(1 - 0 = 1\).</p>
 <p style="margin-left:1.2em"><i>What the score means: 0 only for points <b>on</b> the line (e.g. \((0.5, 0.5)\): \(0.5 - 0.5 = 0\)). Off the line it isn't 0, and that's the information: the <b>sign</b> says which side (\((1, 0)\) → 1, + side; \((0, 1)\) → −1, − side), the <b>size</b> says how far, in "score units". \((2, 0)\) scores 2: twice as far as \((1, 0)\). Step 4 turns score units into real distance.</i></p>
