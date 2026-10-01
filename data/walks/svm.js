@@ -261,23 +261,21 @@
 <p><b>So:</b> (a) is the middle line, (b) is a distance, \(1/\|w\|\), and (c) keeps everything as it is.</p>`,
       start: R`<p><b>Key idea:</b> the + and − lie on two parallel lines, so the max-margin line runs exactly between them and every sample is on the margin (\(y\cdot\text{score} = 1\)); the margin is the distance \(1/\|w\|\), not 1. \((2, 0)\) has \(y\cdot\text{score} = 2 \ge 1\), outside the margin, so nothing changes.</p>
 <p><b>(a)</b> The line: \(\;\square = 0\;\) (\(w = (\square, \square)\), \(w_0 = \square\))</p>
-<p><b>(b)</b> Margin = distance from the line to the closest sample (all samples are equally close):</p>
+<p><b>(b)</b> Margin = distance from the line to the closest sample:</p>
 <p>Line as "… = 0": \(\square = 0\)</p>
 <p>Weights: \(w_0 = \square,\ w_1 = \square,\ w_2 = \square\)</p>
-<p>A sample: \((\square, \square)\)</p>
-<p>Its score: \(w_0 + w_1x_1 + w_2x_2 = \square\)</p>
+<p>Scores: every + has \(x_1 - x_2 = \square\), every − has \(x_1 - x_2 = \square\) (given), so every \(|\text{score}| = \square\)</p>
 <p>Length of \(w\): \(\sqrt{w_1^2 + w_2^2} = \square\)</p>
-<p>Margin \(= \dfrac{|\text{score}|}{\text{length}} = \square\)</p>
+<p>Distance of every sample \(= \dfrac{|\text{score}|}{\text{length}} = \square\): all the same, so the margin is □</p>
 <p><b>(c)</b> New sample: \(y(w^\top x + w_0) = \square \ge 1\), so \(\;\square\)</p>`,
       answer: R`<p><b>Key idea:</b> the + and − lie on two parallel lines, so the max-margin line runs exactly between them and every sample is on the margin (\(y\cdot\text{score} = 1\)); the margin is the distance \(1/\|w\|\), not 1. \((2, 0)\) has \(y\cdot\text{score} = 2 \ge 1\), outside the margin, so nothing changes.</p>
 <p><b>(a)</b> The line: \(x_1 - x_2 = 0\) (\(w = (1, -1)\), \(w_0 = 0\))</p>
-<p><b>(b)</b> Margin = distance from the line to the closest sample (all samples are equally close):</p>
+<p><b>(b)</b> Margin = distance from the line to the closest sample:</p>
 <p>Line as "… = 0": \(x_1 - x_2 = 0\)</p>
 <p>Weights: \(w_0 = 0,\ w_1 = 1,\ w_2 = -1\)</p>
-<p>A sample: \((1, 0)\) (on the + row: \(1 - 0 = 1\))</p>
-<p>Its score: \(0 + 1\cdot 1 + (-1)\cdot 0 = 1\)</p>
+<p>Scores: every + has \(x_1 - x_2 = 1\), every − has \(x_1 - x_2 = -1\) (given), so every \(|\text{score}| = 1\)</p>
 <p>Length of \(w\): \(\sqrt{1^2 + (-1)^2} = \sqrt2\)</p>
-<p>Margin \(= \dfrac{|1|}{\sqrt2} = \dfrac{\sqrt2}{2} \approx 0.707\)</p>
+<p>Distance of every sample \(= \dfrac{1}{\sqrt2} = \dfrac{\sqrt2}{2}\): all the same, so the margin is \(\dfrac{\sqrt2}{2} \approx 0.707\)</p>
 <p><b>(c)</b> New sample: \(y(w^\top x + w_0) = (+1)(2 - 0) = 2 \ge 1\), so it is correctly classified and outside the margin. Adding a sample can never make the margin grow, so the max-margin classifier doesn't change.</p>`,
       moves: [
         { line: R`<b>(a) Midway between the two lines</b> — max-margin = as far as possible from the closest samples. The samples sit on two parallel lines, so go exactly halfway between \(x_1 - x_2 = 1\) and \(x_1 - x_2 = -1\): <div class="formula">\[x_1 - x_2 = 0 \qquad (w = (1, -1),\ w_0 = 0)\]</div>`,
