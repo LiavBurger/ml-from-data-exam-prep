@@ -379,7 +379,7 @@
 <p>· Classifying as B when it's actually A / B / C costs 1 / 0 / 2.</p>
 <p>· Classifying as C when it's actually A / B / C costs 1 / 1 / 0.</p>
 <p>(Check with the question's example: "a Catfish as a Blofish" = classifying as B when it's actually C = 2 ✓, twice "a Blofish as a Catfish" = as C, actually B = 1.)</p>
-<p><b>2. The chances</b> of each truth are part 2's full-Bayes posteriors: A 0.4, B 0.375, C 0.225.</p>
+<p><b>2. The chances</b> of each truth are part 2's full-Bayes posteriors: A 0.4, B 0.375, C 0.225. Posteriors, not priors: the bet is about <b>this</b> fish, and the posterior is the chance after looking at its fins. The prior (60/100, …) is the chance before looking; it's already inside the posterior (prior × likelihood ÷ \(p(x)\)).</p>
 <p><b>3. Each bet's expected cost</b> = for every truth, (chance) × (cost), added up. Being right costs 0, so that term vanishes.</p>
 <p><b>So:</b> three bets, three sums, predict the cheapest. (Row of the matrix · the posteriors is exactly that sum, which is why the official answer writes it as matrix × vector.)</p>`,
       start: R`<p><b>Key idea:</b> classifying = a bet. Its expected cost = for each possible truth, (chance it's actually that) × (cost of this bet then), added up. Predict the cheapest bet.</p>
