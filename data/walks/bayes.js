@@ -129,7 +129,7 @@
 <p><b>Sample 22 stays B while</b></p>
 \[\begin{aligned}\pi_\mathrm{A}\cdot\square &\lt (1 - \pi_\mathrm{A})\cdot\square\\ \iff \square\,\pi_\mathrm{A} &\lt \square - \square\,\pi_\mathrm{A}\\ \iff \pi_\mathrm{A} &\lt \square\end{aligned}\]
 <p><b>Both hold</b> (a smaller \(\pi_\mathrm{A}\) only helps B):</p>
-\[\begin{aligned}\pi_\mathrm{A} &\in [0, \square)\\ \pi_\mathrm{B} &\in (\square, 1]\end{aligned}\]`,
+\[\begin{aligned}0 \le\ &\pi_\mathrm{A} \lt \square\\ \square \lt\ &\pi_\mathrm{B} \le 1\end{aligned}\]`,
       answer: R`<p><b>Key idea:</b> only the prior changes. A sample stays B while \(\pi_\mathrm{A}\,p(x \mid \mathrm{A}) \lt (1 - \pi_\mathrm{A})\,p(x \mid \mathrm{B})\); a smaller \(\pi_\mathrm{A}\) only helps B, so the range is \(\pi_\mathrm{A}\) below the smaller of the two tie points.</p>
 <p><b>Likelihoods</b> (part 1's two fractions multiplied):</p>
 \[\begin{aligned}\text{21: }\ p(x \mid \mathrm{A}) &= 0.25 \cdot 0.25 = \tfrac{1}{16}\\ p(x \mid \mathrm{B}) &= \tfrac23 \cdot 0.25 = \tfrac16\\ \text{22: }\ p(x \mid \mathrm{A}) &= 0.75 \cdot 0.25 = \tfrac{3}{16}\\ p(x \mid \mathrm{B}) &= \tfrac13 \cdot 0.5 = \tfrac16\end{aligned}\]
@@ -138,7 +138,7 @@
 <p><b>Sample 22 stays B while</b></p>
 \[\begin{aligned}\pi_\mathrm{A}\cdot\tfrac{3}{16} &\lt (1 - \pi_\mathrm{A})\cdot\tfrac16\\ \iff 9\pi_\mathrm{A} &\lt 8 - 8\pi_\mathrm{A}\\ \iff \pi_\mathrm{A} &\lt \tfrac{8}{17} \approx 0.471\end{aligned}\]
 <p><b>Both hold</b> (a smaller \(\pi_\mathrm{A}\) only helps B):</p>
-\[\begin{aligned}\pi_\mathrm{A} &\in \big[0, \tfrac{8}{17}\big) \approx [0, 0.471)\\ \pi_\mathrm{B} &\in \big(\tfrac{9}{17}, 1\big] \approx (0.529, 1]\end{aligned}\]`,
+\[\begin{aligned}0 \le\ &\pi_\mathrm{A} \lt \tfrac{8}{17} \approx 0.471\\ \tfrac{9}{17} \approx 0.529 \lt\ &\pi_\mathrm{B} \le 1\end{aligned}\]`,
       moves: [
         { line: R`<b>What does the question really want?</b> All priors where both samples stay B. Only the prior moves. So per sample write "joint A \(\lt\) joint B" with \(\pi_\mathrm{A}\) a letter, \(\pi_\mathrm{B} = 1 - \pi_\mathrm{A}\), and solve.`,
           remember: R`\[\hat y_{\text{MAP}} = \arg\max_y\ \pi_y\,p(x \mid y)\]\[p(x \mid y) = \prod_t p(x_t \mid y)\quad\text{(naive)}\]<p>MAP = biggest posterior = biggest joint: the posterior is joint ÷ \(p(x)\) (Bayes' rule), and \(p(x)\) is the same for every class. Naive = features independent inside a class, so multiply. Not on the sheet in this form: [sheet: Class posterior probability] only names \(P(Y \mid X)\). Bayes' rule is on the extension sheet, if you get it: [sheet: Bayes' rule].</p>` },
@@ -149,7 +149,7 @@
         { line: R`<b>Sample 21 stays B while</b> joint A \(\lt\) joint B: <div class="formula">\[\begin{aligned}\pi_\mathrm{A}\cdot\dfrac{1}{16} &\lt (1 - \pi_\mathrm{A})\cdot\dfrac16 &&(\times 48)\\ 3\pi_\mathrm{A} &\lt 8 - 8\pi_\mathrm{A}\\ \pi_\mathrm{A} &\lt \dfrac{8}{11} \approx 0.727\end{aligned}\]</div>`,
           why: R`<p>× 48 because 48 = 3 · 16 = 8 · 6 clears both fractions. Then add \(8\pi_\mathrm{A}\) to both sides (\(11\pi_\mathrm{A} \lt 8\)) and divide by 11.</p>` },
         { line: R`<b>Sample 22 stays B while</b> — same steps: <div class="formula">\[\begin{aligned}\pi_\mathrm{A}\cdot\dfrac{3}{16} &\lt (1 - \pi_\mathrm{A})\cdot\dfrac16 &&(\times 48)\\ 9\pi_\mathrm{A} &\lt 8 - 8\pi_\mathrm{A}\\ \pi_\mathrm{A} &\lt \dfrac{8}{17} \approx 0.471\end{aligned}\]</div>` },
-        { line: R`<b>Both must hold</b> — keep the smaller bound; a smaller \(\pi_\mathrm{A}\) only helps B: <div class="formula">\[\begin{aligned}\pi_\mathrm{A} &\in \big[0, \dfrac{8}{17}\big) \approx [0, 0.471)\\ \pi_\mathrm{B} = 1 - \pi_\mathrm{A} &\in \big(\dfrac{9}{17}, 1\big] \approx (0.529, 1]\end{aligned}\]</div>Done.`,
+        { line: R`<b>Both must hold</b> — keep the smaller bound; a smaller \(\pi_\mathrm{A}\) only helps B: <div class="formula">\[\begin{aligned}0 \le\ &\pi_\mathrm{A} \lt \tfrac{8}{17} \approx 0.471\\ \tfrac{9}{17} \approx 0.529 \lt\ &\pi_\mathrm{B} = 1 - \pi_\mathrm{A} \le 1\end{aligned}\]</div>Done.`,
           why: R`<p>Sample 22 was the close one (0.571 : 0.429), so it flips first. At \(\pi_\mathrm{A} = \tfrac{8}{17}\) both joints are \(\tfrac{3}{34}\): a tie.</p>` },
       ],
       compare: R`Step 5 is the official answer. It gets \(\tfrac{8}{17}\) straight from sample 22 with the ratio \(\pi_\mathrm{A} : \pi_\mathrm{B} = \tfrac16 : \tfrac{3}{16} = 8 : 9\) — the tie point of step 4.`,
