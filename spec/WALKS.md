@@ -71,6 +71,13 @@ point of the question. That's what I need to understand, in every question!"*
 - **`start` ("Begin your answer like this") is REQUIRED for every part** (§0.4): calculations get their lines with □,
   argument / compare parts get the sentence openers of the learner's chain, code parts one line per blank.
 
+## 0.6 GIVENS AS SENTENCES (learner, 2026-10-02)
+*"The best way for me to do this question would be 'translate the given into a sentence', then use that same sentence
+structure for the relevant cases."* When a question gives definitions/costs/conditions in symbols (λ_BA, ŷ, …),
+translate each into one plain sentence in the learner's words ("Classifying as B when it's actually A costs 2"), and
+make the start/answer lines reuse exactly that sentence per case, with the numbers slotted in ("Classifying sample 21
+as A when it's actually B (chance 0.8) costs 1 → 0.8 × 1"). Model: 2025-A Q5.5.
+
 ## 1. The format (chosen by the learner)
 - **Question first.** The real exam part is on screen; under it, the solution is revealed one **move** at a time
   ("Show next move" / key N). Moves double as a hint ladder: the learner tries on paper and reveals only when stuck.
