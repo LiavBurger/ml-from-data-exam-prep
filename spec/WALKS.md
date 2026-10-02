@@ -75,8 +75,10 @@ point of the question. That's what I need to understand, in every question!"*
 *"The best way for me to do this question would be 'translate the given into a sentence', then use that same sentence
 structure for the relevant cases."* When a question gives definitions/costs/conditions in symbols (λ_BA, ŷ, …),
 translate each into one plain sentence in the learner's words ("Classifying as B when it's actually A costs 2"), and
-make the start/answer lines reuse exactly that sentence per case, with the numbers slotted in ("Classifying sample 21
-as A when it's actually B (chance 0.8) costs 1 → 0.8 × 1"). Model: 2025-A Q5.5.
+make the start/answer lines reuse exactly that sentence per case, with the numbers slotted in. Show EVERY outcome, even
+the ones that cost 0 — the learner's next confusion was "if we classified as A, we went for the chance of 0.2": so
+"Classifying as A: if it's actually A (chance 0.2) it costs 0; if it's actually B (chance 0.8) it costs 1 →
+0.2·0 + 0.8·1 = 0.8". Model: 2025-A Q5.5.
 
 ## 1. The format (chosen by the learner)
 - **Question first.** The real exam part is on screen; under it, the solution is revealed one **move** at a time

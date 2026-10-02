@@ -163,28 +163,28 @@
 <p>· Classifying as B when it's actually A costs \(\lambda_\mathrm{BA} = 2\).</p>
 <p>· Classifying as A when it's actually B costs \(\lambda_\mathrm{AB} = 1\).</p>
 <p>· Being right costs 0.</p>
-<p><b>The method: translate each given into a sentence, then reuse that exact sentence for every sample.</b> "Classifying as A when it's actually B costs 1" → for sample 21: "classifying as A when it's actually B (chance 0.8) costs 1". The probability always belongs to the word after <b>"actually"</b>.</p>
+<p><b>The method: classifying = a bet. For each bet, write both ways the truth can turn out.</b> Classifying sample 21 as A is a bet on A. That bet is right with chance 0.2 (costs 0) and wrong with chance 0.8 (it's actually B: costs 1). Expected cost \(= 0.2\cdot 0 + 0.8\cdot 1 = 0.8\). The 0.2 is there, it just multiplies a 0.</p>
 <p><b>2. What each answer costs: pay only when you're wrong.</b> Classify as A → you pay only if it's <b>actually B</b>. So multiply the cost by the chance it's actually B, \(p(\mathrm{B} \mid x)\) — the <i>other</i> class's posterior, not A's. Classify as B → pay \(\lambda_\mathrm{BA}\) times the chance it's actually A.</p>
 <p><b>The picture:</b> 10 flowers that look like sample 21; posteriors 0.2 / 0.8, so 2 are A and 8 are B. Call all 10 "A": wrong on the 8 B's, 1 each → 8, i.e. 0.8 per flower. Call all 10 "B": wrong on the 2 A's, 2 each → 4, i.e. 0.4 per flower.</p>
 <p><b>3. Why it can differ from MAP.</b> MAP says A only when A's posterior is above ½. Here A's posterior counts double (\(\lambda_\mathrm{BA} = 2\)): saying A is cheaper once 2 × A's posterior beats 1 × B's, i.e. once A's posterior is above ⅓. Sample 21 (A at 0.2) is below that; sample 22 (A at \(\tfrac37\)) is between ⅓ and ½, where the two rules disagree.</p>
 <p><b>So:</b> per sample, two numbers: cost × the <i>other</i> class's posterior (part 2's). Predict the cheaper one.</p>`,
       start: R`<p><b>Key idea:</b> you pay only when you're wrong: risk(classify as A) = (chance it's actually B) × \(\lambda_\mathrm{AB}\), risk(classify as B) = (chance it's actually A) × \(\lambda_\mathrm{BA}\). Predict the cheaper one; it can differ from MAP.</p>
 <p><b>Sample 21</b> (posteriors from part 2):</p>
-<p>Classifying as A when it's actually B (chance \(p(\mathrm{B} \mid x) = \square\)) costs \(\lambda_\mathrm{AB} = 1\) → \(\square \times 1 = \square\)</p>
-<p>Classifying as B when it's actually A (chance \(p(\mathrm{A} \mid x) = \square\)) costs \(\lambda_\mathrm{BA} = 2\) → \(\square \times 2 = \square\)</p>
+<p>Classifying as A: if it's actually A (chance \(\square\)) it costs 0; if it's actually B (chance \(\square\)) it costs \(\lambda_\mathrm{AB} = 1\) → \(\square\cdot 0 + \square\cdot 1 = \square\)</p>
+<p>Classifying as B: if it's actually A (chance \(\square\)) it costs \(\lambda_\mathrm{BA} = 2\); if it's actually B (chance \(\square\)) it costs 0 → \(\square\cdot 2 + \square\cdot 0 = \square\)</p>
 <p>Cheaper → \(\square\)</p>
 <p><b>Sample 22</b> (posteriors from part 2):</p>
-<p>Classifying as A when it's actually B (chance \(p(\mathrm{B} \mid x) = \square\)) costs \(\lambda_\mathrm{AB} = 1\) → \(\square \times 1 = \square\)</p>
-<p>Classifying as B when it's actually A (chance \(p(\mathrm{A} \mid x) = \square\)) costs \(\lambda_\mathrm{BA} = 2\) → \(\square \times 2 = \square\)</p>
+<p>Classifying as A: if it's actually A (chance \(\square\)) it costs 0; if it's actually B (chance \(\square\)) it costs \(\lambda_\mathrm{AB} = 1\) → \(\square\cdot 0 + \square\cdot 1 = \square\)</p>
+<p>Classifying as B: if it's actually A (chance \(\square\)) it costs \(\lambda_\mathrm{BA} = 2\); if it's actually B (chance \(\square\)) it costs 0 → \(\square\cdot 2 + \square\cdot 0 = \square\)</p>
 <p>Cheaper → \(\square\)</p>`,
       answer: R`<p><b>Key idea:</b> you pay only when you're wrong: risk(classify as A) = (chance it's actually B) × \(\lambda_\mathrm{AB}\), risk(classify as B) = (chance it's actually A) × \(\lambda_\mathrm{BA}\). Predict the cheaper one; it can differ from MAP.</p>
 <p><b>Sample 21</b> (posteriors from part 2):</p>
-<p>Classifying as A when it's actually B (chance \(p(\mathrm{B} \mid x) = 0.8\)) costs \(\lambda_\mathrm{AB} = 1\) → \(0.8 \times 1 = 0.8\)</p>
-<p>Classifying as B when it's actually A (chance \(p(\mathrm{A} \mid x) = 0.2\)) costs \(\lambda_\mathrm{BA} = 2\) → \(0.2 \times 2 = 0.4\)</p>
+<p>Classifying as A: if it's actually A (chance 0.2) it costs 0; if it's actually B (chance 0.8) it costs \(\lambda_\mathrm{AB} = 1\) → \(0.2\cdot 0 + 0.8\cdot 1 = 0.8\)</p>
+<p>Classifying as B: if it's actually A (chance 0.2) it costs \(\lambda_\mathrm{BA} = 2\); if it's actually B (chance 0.8) it costs 0 → \(0.2\cdot 2 + 0.8\cdot 0 = 0.4\)</p>
 <p>Cheaper → <b>B</b> (same as MAP)</p>
 <p><b>Sample 22</b> (posteriors from part 2):</p>
-<p>Classifying as A when it's actually B (chance \(p(\mathrm{B} \mid x) = \tfrac47\)) costs \(\lambda_\mathrm{AB} = 1\) → \(\tfrac47 \times 1 \approx 0.571\)</p>
-<p>Classifying as B when it's actually A (chance \(p(\mathrm{A} \mid x) = \tfrac37\)) costs \(\lambda_\mathrm{BA} = 2\) → \(\tfrac37 \times 2 = \tfrac67 \approx 0.857\)</p>
+<p>Classifying as A: if it's actually A (chance \(\tfrac37\)) it costs 0; if it's actually B (chance \(\tfrac47\)) it costs \(\lambda_\mathrm{AB} = 1\) → \(\tfrac37\cdot 0 + \tfrac47\cdot 1 = \tfrac47 \approx 0.571\)</p>
+<p>Classifying as B: if it's actually A (chance \(\tfrac37\)) it costs \(\lambda_\mathrm{BA} = 2\); if it's actually B (chance \(\tfrac47\)) it costs 0 → \(\tfrac37\cdot 2 + \tfrac47\cdot 0 = \tfrac67 \approx 0.857\)</p>
 <p>Cheaper → <b>A</b> (MAP said B)</p>`,
       moves: [
         { line: R`<b>What does the question really want?</b> For each sample, the prediction with the smaller expected cost. Saying A is only wrong when the truth is B, so it costs \(\lambda_\mathrm{AB}\cdot p(\mathrm{B} \mid x)\); saying B costs \(\lambda_\mathrm{BA}\cdot p(\mathrm{A} \mid x)\). Posteriors: part 2.`,
