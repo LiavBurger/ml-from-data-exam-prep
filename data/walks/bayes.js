@@ -124,21 +124,23 @@
       start: R`<p><b>Key idea:</b> only the prior changes. A sample stays B while \(\pi_\mathrm{A}\,p(x \mid \mathrm{A}) \lt (1 - \pi_\mathrm{A})\,p(x \mid \mathrm{B})\); a smaller \(\pi_\mathrm{A}\) only helps B, so the range is \(\pi_\mathrm{A}\) below the smaller of the two tie points.</p>
 <p><b>Likelihoods</b> (part 1's two fractions multiplied):</p>
 \[\begin{aligned}\text{21: }\ p(x \mid \mathrm{A}) &= \square\\ p(x \mid \mathrm{B}) &= \square\\ \text{22: }\ p(x \mid \mathrm{A}) &= \square\\ p(x \mid \mathrm{B}) &= \square\end{aligned}\]
+<p><b>Priors:</b> only two classes, so \(\pi_\mathrm{A} + \pi_\mathrm{B} = 1\), i.e. \(\pi_\mathrm{B} = 1 - \pi_\mathrm{A}\)</p>
 <p><b>Sample 21 stays B while</b></p>
 \[\begin{aligned}\pi_\mathrm{A}\cdot\square &\lt (1 - \pi_\mathrm{A})\cdot\square\\ \iff \square\,\pi_\mathrm{A} &\lt \square - \square\,\pi_\mathrm{A}\\ \iff \pi_\mathrm{A} &\lt \square\end{aligned}\]
 <p><b>Sample 22 stays B while</b></p>
 \[\begin{aligned}\pi_\mathrm{A}\cdot\square &\lt (1 - \pi_\mathrm{A})\cdot\square\\ \iff \square\,\pi_\mathrm{A} &\lt \square - \square\,\pi_\mathrm{A}\\ \iff \pi_\mathrm{A} &\lt \square\end{aligned}\]
 <p><b>Both hold</b> (a smaller \(\pi_\mathrm{A}\) only helps B):</p>
-\[\begin{aligned}0 \le\ &\pi_\mathrm{A} \lt \square\\ \square \lt\ &\pi_\mathrm{B} \le 1\end{aligned}\]`,
+\[\begin{aligned}0 \le\ &\pi_\mathrm{A} \lt \square\\ \square \lt\ &\pi_\mathrm{B} = 1 - \pi_\mathrm{A} \le 1\end{aligned}\]`,
       answer: R`<p><b>Key idea:</b> only the prior changes. A sample stays B while \(\pi_\mathrm{A}\,p(x \mid \mathrm{A}) \lt (1 - \pi_\mathrm{A})\,p(x \mid \mathrm{B})\); a smaller \(\pi_\mathrm{A}\) only helps B, so the range is \(\pi_\mathrm{A}\) below the smaller of the two tie points.</p>
 <p><b>Likelihoods</b> (part 1's two fractions multiplied):</p>
 \[\begin{aligned}\text{21: }\ p(x \mid \mathrm{A}) &= 0.25 \cdot 0.25 = \tfrac{1}{16}\\ p(x \mid \mathrm{B}) &= \tfrac23 \cdot 0.25 = \tfrac16\\ \text{22: }\ p(x \mid \mathrm{A}) &= 0.75 \cdot 0.25 = \tfrac{3}{16}\\ p(x \mid \mathrm{B}) &= \tfrac13 \cdot 0.5 = \tfrac16\end{aligned}\]
+<p><b>Priors:</b> only two classes, so \(\pi_\mathrm{A} + \pi_\mathrm{B} = 1\), i.e. \(\pi_\mathrm{B} = 1 - \pi_\mathrm{A}\)</p>
 <p><b>Sample 21 stays B while</b></p>
 \[\begin{aligned}\pi_\mathrm{A}\cdot\tfrac{1}{16} &\lt (1 - \pi_\mathrm{A})\cdot\tfrac16\\ \iff 3\pi_\mathrm{A} &\lt 8 - 8\pi_\mathrm{A}\\ \iff \pi_\mathrm{A} &\lt \tfrac{8}{11} \approx 0.727\end{aligned}\]
 <p><b>Sample 22 stays B while</b></p>
 \[\begin{aligned}\pi_\mathrm{A}\cdot\tfrac{3}{16} &\lt (1 - \pi_\mathrm{A})\cdot\tfrac16\\ \iff 9\pi_\mathrm{A} &\lt 8 - 8\pi_\mathrm{A}\\ \iff \pi_\mathrm{A} &\lt \tfrac{8}{17} \approx 0.471\end{aligned}\]
 <p><b>Both hold</b> (a smaller \(\pi_\mathrm{A}\) only helps B):</p>
-\[\begin{aligned}0 \le\ &\pi_\mathrm{A} \lt \tfrac{8}{17} \approx 0.471\\ \tfrac{9}{17} \approx 0.529 \lt\ &\pi_\mathrm{B} \le 1\end{aligned}\]`,
+\[\begin{aligned}0 \le\ &\pi_\mathrm{A} \lt \tfrac{8}{17} \approx 0.471\\ \tfrac{9}{17} \approx 0.529 \lt\ &\pi_\mathrm{B} = 1 - \pi_\mathrm{A} \le 1\end{aligned}\]`,
       moves: [
         { line: R`<b>What does the question really want?</b> All priors where both samples stay B. Only the prior moves. So per sample write "joint A \(\lt\) joint B" with \(\pi_\mathrm{A}\) a letter, \(\pi_\mathrm{B} = 1 - \pi_\mathrm{A}\), and solve.`,
           remember: R`\[\hat y_{\text{MAP}} = \arg\max_y\ \pi_y\,p(x \mid y)\]\[p(x \mid y) = \prod_t p(x_t \mid y)\quad\text{(naive)}\]<p>MAP = biggest posterior = biggest joint: the posterior is joint ÷ \(p(x)\) (Bayes' rule), and \(p(x)\) is the same for every class. Naive = features independent inside a class, so multiply. Not on the sheet in this form: [sheet: Class posterior probability] only names \(P(Y \mid X)\). Bayes' rule is on the extension sheet, if you get it: [sheet: Bayes' rule].</p>` },
