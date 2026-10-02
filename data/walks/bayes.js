@@ -159,32 +159,41 @@
 
     "2025A-q5.5": {
       point: R`<p>MAP treats every mistake the same. Here mistakes have prices, so <b>each posterior gets weighed by what it costs to be wrong about it.</b></p>
-<p><b>1. Reading the costs.</b> First letter = what you say, second = the truth. \(\lambda_\mathrm{BA} = 2\): an Afloris called Bifloris. \(\lambda_\mathrm{AB} = 1\): a Bifloris called Afloris.</p>
-<p><b>2. What each answer costs.</b> Say A: you're wrong exactly when the flower is really B. That happens with probability \(p(\mathrm{B} \mid x)\) and costs \(\lambda_\mathrm{AB}\) each time, so the expected cost of saying A = \(\lambda_\mathrm{AB}\cdot p(\mathrm{B} \mid x)\). Saying B: \(\lambda_\mathrm{BA}\cdot p(\mathrm{A} \mid x)\). Being right costs 0.</p>
+<p><b>1. Reading the costs.</b></p>
+<p>· Classifying as B when it's actually A costs \(\lambda_\mathrm{BA} = 2\).</p>
+<p>· Classifying as A when it's actually B costs \(\lambda_\mathrm{AB} = 1\).</p>
+<p>· Being right costs 0.</p>
+<p><b>2. What each answer costs: pay only when you're wrong.</b> Classify as A → you pay only if it's <b>actually B</b>. So multiply the cost by the chance it's actually B, \(p(\mathrm{B} \mid x)\) — the <i>other</i> class's posterior, not A's. Classify as B → pay \(\lambda_\mathrm{BA}\) times the chance it's actually A.</p>
+<p><b>The picture:</b> 10 flowers that look like sample 21; posteriors 0.2 / 0.8, so 2 are A and 8 are B. Call all 10 "A": wrong on the 8 B's, 1 each → 8, i.e. 0.8 per flower. Call all 10 "B": wrong on the 2 A's, 2 each → 4, i.e. 0.4 per flower.</p>
 <p><b>3. Why it can differ from MAP.</b> MAP says A only when A's posterior is above ½. Here A's posterior counts double (\(\lambda_\mathrm{BA} = 2\)): saying A is cheaper once 2 × A's posterior beats 1 × B's, i.e. once A's posterior is above ⅓. Sample 21 (A at 0.2) is below that; sample 22 (A at \(\tfrac37\)) is between ⅓ and ½, where the two rules disagree.</p>
 <p><b>So:</b> per sample, two numbers: cost × the <i>other</i> class's posterior (part 2's). Predict the cheaper one.</p>`,
-      start: R`<p><b>Key idea:</b> a prediction costs something only when the truth is the other class: risk(say A) = \(\lambda_\mathrm{AB}\,p(\mathrm{B} \mid x)\), risk(say B) = \(\lambda_\mathrm{BA}\,p(\mathrm{A} \mid x)\). Predict the cheaper one; it can differ from MAP.</p>
+      start: R`<p><b>Key idea:</b> you pay only when you're wrong: risk(classify as A) = (chance it's actually B) × \(\lambda_\mathrm{AB}\), risk(classify as B) = (chance it's actually A) × \(\lambda_\mathrm{BA}\). Predict the cheaper one; it can differ from MAP.</p>
 <p><b>Sample 21</b> (posteriors from part 2):</p>
-\[\begin{aligned}\text{say A:}\quad &\lambda_\mathrm{AB}\cdot p(\mathrm{B} \mid x) = \square\\ \text{say B:}\quad &\lambda_\mathrm{BA}\cdot p(\mathrm{A} \mid x) = \square\end{aligned}\]
+<p>Classify as A → wrong when it's actually B: \(p(\mathrm{B} \mid x)\cdot\lambda_\mathrm{AB} = \square \times 1 = \square\)</p>
+<p>Classify as B → wrong when it's actually A: \(p(\mathrm{A} \mid x)\cdot\lambda_\mathrm{BA} = \square \times 2 = \square\)</p>
 <p>Cheaper → \(\square\)</p>
 <p><b>Sample 22</b> (posteriors from part 2):</p>
-\[\begin{aligned}\text{say A:}\quad &\lambda_\mathrm{AB}\cdot p(\mathrm{B} \mid x) = \square\\ \text{say B:}\quad &\lambda_\mathrm{BA}\cdot p(\mathrm{A} \mid x) = \square\end{aligned}\]
+<p>Classify as A → wrong when it's actually B: \(p(\mathrm{B} \mid x)\cdot\lambda_\mathrm{AB} = \square \times 1 = \square\)</p>
+<p>Classify as B → wrong when it's actually A: \(p(\mathrm{A} \mid x)\cdot\lambda_\mathrm{BA} = \square \times 2 = \square\)</p>
 <p>Cheaper → \(\square\)</p>`,
-      answer: R`<p><b>Key idea:</b> a prediction costs something only when the truth is the other class: risk(say A) = \(\lambda_\mathrm{AB}\,p(\mathrm{B} \mid x)\), risk(say B) = \(\lambda_\mathrm{BA}\,p(\mathrm{A} \mid x)\). Predict the cheaper one; it can differ from MAP.</p>
+      answer: R`<p><b>Key idea:</b> you pay only when you're wrong: risk(classify as A) = (chance it's actually B) × \(\lambda_\mathrm{AB}\), risk(classify as B) = (chance it's actually A) × \(\lambda_\mathrm{BA}\). Predict the cheaper one; it can differ from MAP.</p>
 <p><b>Sample 21</b> (posteriors from part 2):</p>
-\[\begin{aligned}\text{say A:}\quad &\lambda_\mathrm{AB}\cdot p(\mathrm{B} \mid x) = 1 \times 0.8 = 0.8\\ \text{say B:}\quad &\lambda_\mathrm{BA}\cdot p(\mathrm{A} \mid x) = 2 \times 0.2 = 0.4\end{aligned}\]
+<p>Classify as A → wrong when it's actually B: \(p(\mathrm{B} \mid x)\cdot\lambda_\mathrm{AB} = 0.8 \times 1 = 0.8\)</p>
+<p>Classify as B → wrong when it's actually A: \(p(\mathrm{A} \mid x)\cdot\lambda_\mathrm{BA} = 0.2 \times 2 = 0.4\)</p>
 <p>Cheaper → <b>B</b> (same as MAP)</p>
 <p><b>Sample 22</b> (posteriors from part 2):</p>
-\[\begin{aligned}\text{say A:}\quad &\lambda_\mathrm{AB}\cdot p(\mathrm{B} \mid x) = 1 \times \tfrac47 \approx 0.571\\ \text{say B:}\quad &\lambda_\mathrm{BA}\cdot p(\mathrm{A} \mid x) = 2 \times \tfrac37 \approx 0.857\end{aligned}\]
+<p>Classify as A → wrong when it's actually B: \(p(\mathrm{B} \mid x)\cdot\lambda_\mathrm{AB} = \tfrac47 \times 1 \approx 0.571\)</p>
+<p>Classify as B → wrong when it's actually A: \(p(\mathrm{A} \mid x)\cdot\lambda_\mathrm{BA} = \tfrac37 \times 2 = \tfrac67 \approx 0.857\)</p>
 <p>Cheaper → <b>A</b> (MAP said B)</p>`,
       moves: [
         { line: R`<b>What does the question really want?</b> For each sample, the prediction with the smaller expected cost. Saying A is only wrong when the truth is B, so it costs \(\lambda_\mathrm{AB}\cdot p(\mathrm{B} \mid x)\); saying B costs \(\lambda_\mathrm{BA}\cdot p(\mathrm{A} \mid x)\). Posteriors: part 2.`,
           remember: R`\[\text{risk of saying } y = \sum_{y'}\lambda_{y,y'}\,p(y' \mid x)\ \to\ \text{predict the smallest}\]<p>[sheet: Expected risk of predicting class label y] has it with joints \(\pi_{y'}P(X = x \mid Y = y')\) instead of posteriors. Every one ÷ the same \(p(x)\), so the same winner.</p>`,
           why: R`<p>[sheet: Expected risk of predicting class label y] is \(\sum_{y'} \pi_{y'} P(X = x \mid Y = y')\,\lambda_{y,y'}\), one term per possible truth \(y'\). Being right costs 0, so only the other class's term is left.</p>
 <p>The sheet uses joints (\(\pi \cdot P(x \mid y')\)); posteriors are those joints ÷ \(p(x)\), the same number for both predictions. So the winner is the same.</p>` },
-        { line: R`<b>Read the costs</b> — first letter = what we say, second = the truth: \(\lambda_\mathrm{BA} = 2\) (an A flower called B), \(\lambda_\mathrm{AB} = 1\) (a B flower called A).` },
-        { line: R`<b>Sample 21</b> — posteriors 0.2 (A), 0.8 (B) from part 2: <div class="formula">\[\begin{aligned}\text{say A: }& 1 \times 0.8 = 0.8\\ \text{say B: }& 2 \times 0.2 = 0.4\end{aligned}\]</div>Cheaper: <b>B</b> (same as MAP).` },
-        { line: R`<b>Sample 22</b> — posteriors \(\tfrac37\) (A), \(\tfrac47\) (B): <div class="formula">\[\begin{aligned}\text{say A: }& 1 \times \dfrac47 \approx 0.571\\ \text{say B: }& 2 \times \dfrac37 = \dfrac67 \approx 0.857\end{aligned}\]</div>Cheaper: <b>A</b>, although MAP said B. Done.`,
+        { line: R`<b>Read the costs</b> — classifying as B when it's actually A costs \(\lambda_\mathrm{BA} = 2\); classifying as A when it's actually B costs \(\lambda_\mathrm{AB} = 1\). (First letter = what you say, second = the truth.)` },
+        { line: R`<b>Sample 21</b> — posteriors 0.2 (A), 0.8 (B) from part 2: <div class="formula">\[\begin{aligned}\text{as A (actually B): }& 0.8 \times 1 = 0.8\\ \text{as B (actually A): }& 0.2 \times 2 = 0.4\end{aligned}\]</div>Cheaper: <b>B</b> (same as MAP).`,
+          why: R`<p>Classifying as A when it's actually B: the chance it's actually B is <b>0.8</b>, not 0.2. The 0.2 is the chance it's A, and then classifying as A is <b>right</b> and costs 0.</p>` },
+        { line: R`<b>Sample 22</b> — posteriors \(\tfrac37\) (A), \(\tfrac47\) (B): <div class="formula">\[\begin{aligned}\text{as A (actually B): }& \dfrac47 \times 1 \approx 0.571\\ \text{as B (actually A): }& \dfrac37 \times 2 = \dfrac67 \approx 0.857\end{aligned}\]</div>Cheaper: <b>A</b>, although MAP said B. Done.`,
           why: R`<p>It's almost 50/50, and calling an A flower "B" costs double, so A is the safe answer.</p>`,
           extra: [{ label: "the official solution says 4/7 ≈ 0.429 — it's a slip", html: R`<p>\(\tfrac47 \approx 0.571\); 0.429 is \(\tfrac37\). The comparison still gives A: \(0.571 \lt 0.857\).</p>` }] },
       ],
