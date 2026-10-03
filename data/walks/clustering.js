@@ -45,7 +45,8 @@
         { line: R`<b>What does the question really want?</b> A number that says which solution is better. The natural one: the score K-means itself tries to make small — WCSS. So compute each solution's WCSS.`,
           remember: R`<p>K-means minimises WCSS, so for the same \(k\): smaller WCSS = better solution.</p><p>The sheet has the formula, [sheet: Within-cluster sum of squares (WCSS)], but not that it's what K-means minimises.</p>` },
         { line: R`<b>Centroids</b> — each cluster's mean (add its samples, divide by how many): <div class="formula">\[\mu_j = \frac{1}{|C_j|}\sum_{i \in C_j} x_i\]</div>[sheet: Within-cluster sum of squares (WCSS)]`,
-          why: R`<p>Averaging points = averaging each coordinate. Cluster \(\{8, 9, 10\}\):</p>
+          why: R`<p><b>Careful with the letters:</b> in this formula \(x_i\) is <b>sample \(i\)</b>, a whole point \((x_1, x_2)\), not feature \(x_1\). So \(\mu_j\) is a point too: (the average of the \(x_1\)'s, the average of the \(x_2\)'s) over the cluster's samples.</p>
+<p>Averaging points = averaging each coordinate. Cluster \(\{8, 9, 10\}\):</p>
 \[\mu = \left(\tfrac{9.5 + 10 + 11}{3},\ \tfrac{7.5 + 8 + 9}{3}\right) \approx (10.17,\ 8.17)\]
 <p>You don't need to know it by heart: \(\mu_j\) is on the formula sheet, right next to WCSS.</p>` },
         { line: R`<b>WCSS</b> — every sample's squared distance to its own centroid, all added: <div class="formula">\[\text{WCSS} = \sum_{j=1}^{k}\ \sum_{i \in C_j} \underbrace{\color{#e8912d}\|x_i - \mu_j\|^2}_{\textstyle\color{#e8912d}\begin{array}{c}\text{this part = sample } i\\ \text{to its centroid, squared}\end{array}}\]</div>`,
