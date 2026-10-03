@@ -501,25 +501,38 @@
 <p><b>3. The likelihood.</b> "How likely is this packet count, if the user is R?" = the Poisson formula with R's rate: \(\mathrm{Poiss}(x \mid 2) = \frac{2^x e^{-2}}{x!}\). For M, the rate 4. The question's table gives \(e^{-2} = 0.1353\) and \(e^{-4} = 0.0183\).</p>
 <p><b>So:</b> per user: two likelihoods (Poisson), two joints (× prior), their sum (the marginal), two posteriors (joint ÷ sum). The bigger posterior is the MAP class.</p>`,
       start: R`<p><b>Key idea:</b> MAP = the class with the bigger posterior. Per user: likelihood = the Poisson formula with the class's rate, joint = prior × likelihood, marginal = the sum of the joints, posterior = joint ÷ marginal.</p>
-<p><b>User with \(x = 2\):</b></p>
-<p>Likelihood R: \(\mathrm{Poiss}(2 \mid 2) = \square\)</p>
-<p>Likelihood M: \(\mathrm{Poiss}(2 \mid 4) = \square\)</p>
-<p>Joints: R: \(0.8 \times \square = \square\), M: \(0.2 \times \square = \square\)</p>
-<p>Marginal: \(\square + \square = \square\)</p>
-<p>Posteriors: R: \(\square / \square = \square\), M: \(\square / \square = \square\) → <b>□</b></p>
-<p><b>User with \(x = 4\):</b></p>
-<p>Likelihood R: \(\mathrm{Poiss}(4 \mid 2) = \square\)</p>
-<p>Likelihood M: \(\mathrm{Poiss}(4 \mid 4) = \square\)</p>
-<p>Joints: R: \(0.8 \times \square = \square\), M: \(0.2 \times \square = \square\)</p>
-<p>Marginal: \(\square + \square = \square\)</p>
-<p>Posteriors: R: \(\square / \square = \square\), M: \(\square / \square = \square\) → <b>□</b></p>
-<p><b>User with \(x = 7\):</b></p>
-<p>Likelihood R: \(\mathrm{Poiss}(7 \mid 2) = \square\)</p>
-<p>Likelihood M: \(\mathrm{Poiss}(7 \mid 4) = \square\)</p>
-<p>Joints: R: \(0.8 \times \square = \square\), M: \(0.2 \times \square = \square\)</p>
-<p>Marginal: \(\square + \square = \square\)</p>
-<p>Posteriors: R: \(\square / \square = \square\), M: \(\square / \square = \square\) → <b>□</b></p>
-<p>So \(\hat y(2) = \square,\ \hat y(4) = \square,\ \hat y(7) = \square\).</p>`,
+<p><b>Part 2's fitted model:</b> \(\hat\pi_\mathrm{R} = 0.8,\ \hat\lambda_\mathrm{R} = 2\) and \(\hat\pi_\mathrm{M} = 0.2,\ \hat\lambda_\mathrm{M} = 4\). From the question's table: \(e^{-2} = 0.1353,\ e^{-4} = 0.0183\).</p>
+<p style="margin-top:14px;border-top:1px solid #ccd;padding-top:8px"><b>User with \(x = 2\)</b></p>
+<p><b>Likelihoods (the Poisson formula):</b></p>
+\[\begin{aligned}P(X = 2 \mid Y = \mathrm{R}) &= \frac{\hat\lambda_\mathrm{R}^{\,2}\,e^{-\hat\lambda_\mathrm{R}}}{2!} = \square\\ P(X = 2 \mid Y = \mathrm{M}) &= \frac{\hat\lambda_\mathrm{M}^{\,2}\,e^{-\hat\lambda_\mathrm{M}}}{2!} = \square\end{aligned}\]
+<p><b>Joints (prior × likelihood):</b></p>
+\[\begin{aligned}P(Y = \mathrm{R}, X = 2) &= \hat\pi_\mathrm{R}\cdot P(X = 2 \mid Y = \mathrm{R})\\ &= \square\\ P(Y = \mathrm{M}, X = 2) &= \hat\pi_\mathrm{M}\cdot P(X = 2 \mid Y = \mathrm{M})\\ &= \square\end{aligned}\]
+<p><b>Marginal (the sum of the joints):</b></p>
+\[\begin{aligned}P(X = 2) &= P(Y = \mathrm{R}, X = 2) + P(Y = \mathrm{M}, X = 2)\\ &= \square\end{aligned}\]
+<p><b>Posteriors (joint ÷ marginal):</b></p>
+\[\begin{aligned}P(Y = \mathrm{R} \mid X = 2) &= \frac{P(Y = \mathrm{R}, X = 2)}{P(X = 2)} = \square\\ P(Y = \mathrm{M} \mid X = 2) &= \frac{P(Y = \mathrm{M}, X = 2)}{P(X = 2)} = \square\end{aligned}\]
+<p><b>MAP:</b> the bigger posterior → □</p>
+<p style="margin-top:14px;border-top:1px solid #ccd;padding-top:8px"><b>User with \(x = 4\)</b></p>
+<p><b>Likelihoods (the Poisson formula):</b></p>
+\[\begin{aligned}P(X = 4 \mid Y = \mathrm{R}) &= \frac{\hat\lambda_\mathrm{R}^{\,4}\,e^{-\hat\lambda_\mathrm{R}}}{4!} = \square\\ P(X = 4 \mid Y = \mathrm{M}) &= \frac{\hat\lambda_\mathrm{M}^{\,4}\,e^{-\hat\lambda_\mathrm{M}}}{4!} = \square\end{aligned}\]
+<p><b>Joints (prior × likelihood):</b></p>
+\[\begin{aligned}P(Y = \mathrm{R}, X = 4) &= \hat\pi_\mathrm{R}\cdot P(X = 4 \mid Y = \mathrm{R})\\ &= \square\\ P(Y = \mathrm{M}, X = 4) &= \hat\pi_\mathrm{M}\cdot P(X = 4 \mid Y = \mathrm{M})\\ &= \square\end{aligned}\]
+<p><b>Marginal (the sum of the joints):</b></p>
+\[\begin{aligned}P(X = 4) &= P(Y = \mathrm{R}, X = 4) + P(Y = \mathrm{M}, X = 4)\\ &= \square\end{aligned}\]
+<p><b>Posteriors (joint ÷ marginal):</b></p>
+\[\begin{aligned}P(Y = \mathrm{R} \mid X = 4) &= \frac{P(Y = \mathrm{R}, X = 4)}{P(X = 4)} = \square\\ P(Y = \mathrm{M} \mid X = 4) &= \frac{P(Y = \mathrm{M}, X = 4)}{P(X = 4)} = \square\end{aligned}\]
+<p><b>MAP:</b> the bigger posterior → □</p>
+<p style="margin-top:14px;border-top:1px solid #ccd;padding-top:8px"><b>User with \(x = 7\)</b></p>
+<p><b>Likelihoods (the Poisson formula):</b></p>
+\[\begin{aligned}P(X = 7 \mid Y = \mathrm{R}) &= \frac{\hat\lambda_\mathrm{R}^{\,7}\,e^{-\hat\lambda_\mathrm{R}}}{7!} = \square\\ P(X = 7 \mid Y = \mathrm{M}) &= \frac{\hat\lambda_\mathrm{M}^{\,7}\,e^{-\hat\lambda_\mathrm{M}}}{7!} = \square\end{aligned}\]
+<p><b>Joints (prior × likelihood):</b></p>
+\[\begin{aligned}P(Y = \mathrm{R}, X = 7) &= \hat\pi_\mathrm{R}\cdot P(X = 7 \mid Y = \mathrm{R})\\ &= \square\\ P(Y = \mathrm{M}, X = 7) &= \hat\pi_\mathrm{M}\cdot P(X = 7 \mid Y = \mathrm{M})\\ &= \square\end{aligned}\]
+<p><b>Marginal (the sum of the joints):</b></p>
+\[\begin{aligned}P(X = 7) &= P(Y = \mathrm{R}, X = 7) + P(Y = \mathrm{M}, X = 7)\\ &= \square\end{aligned}\]
+<p><b>Posteriors (joint ÷ marginal):</b></p>
+\[\begin{aligned}P(Y = \mathrm{R} \mid X = 7) &= \frac{P(Y = \mathrm{R}, X = 7)}{P(X = 7)} = \square\\ P(Y = \mathrm{M} \mid X = 7) &= \frac{P(Y = \mathrm{M}, X = 7)}{P(X = 7)} = \square\end{aligned}\]
+<p><b>MAP:</b> the bigger posterior → □</p>
+<p><b>So:</b> \(\hat y(2) = \square,\ \hat y(4) = \square,\ \hat y(7) = \square\)</p>`,
       answer: R`<p><b>Key idea:</b> MAP = the class with the bigger posterior. Per user: likelihood = the Poisson formula with the class's rate, joint = prior × likelihood, marginal = the sum of the joints, posterior = joint ÷ marginal.</p>
 <p><b>User with \(x = 2\):</b></p>
 <p>Likelihood R: \(\mathrm{Poiss}(2 \mid 2) = \frac{2^2 \cdot 0.1353}{2!} = 0.2706\)</p>
