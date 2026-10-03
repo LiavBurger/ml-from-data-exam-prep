@@ -432,14 +432,14 @@
 <p><b>1. One sample</b> (the Poisson formula with \(x_i\)):</p>\[p(x_i \mid \lambda) = \;\square\]
 <p><b>2. All samples</b> (independent → multiply):</p>\[L(\lambda) = \prod_{i=1}^{n}\;\square\]
 <p><b>3. The data log-likelihood</b> (log turns × into +):</p>\[\ell(\lambda; D) = \log L(\lambda) = \sum_{i=1}^{n}\;\square\]
-<p><b>4. Simplify</b> (log rules, then split the sum):</p>\[\ell(\lambda; D) = \;\square\; = \;\square\]
+<p><b>4. Simplify:</b> log rules inside the sum, split into three sums, then take out what has no \(i\):</p>\[\begin{aligned}\ell(\lambda; D) &= \sum_{i=1}^{n}\big(\square\big)\\ &= \sum_{i=1}^{n}\square \;-\; \sum_{i=1}^{n}\square \;-\; \sum_{i=1}^{n}\square\\ &= \square\end{aligned}\]
 <p><b>5. Derivative by \(\lambda\), set to 0, solve:</b></p>\[\ell'(\lambda; D) = \;\square\; = 0 \;\Rightarrow\; \hat\lambda = \;\square\]
 <p><b>6. It's a maximum:</b> \(\ell''(\lambda; D) = \square \lt 0\)</p>`,
       answer: R`<p><b>Key idea:</b> independent samples → multiply their Poisson probabilities; the log turns the product into a sum. Derivative by \(\lambda\), set to 0: \(\hat\lambda\) = the average count, and \(\ell'' \lt 0\), so it's a maximum.</p>
 <p><b>1. One sample</b> (the Poisson formula with \(x_i\)):</p>\[p(x_i \mid \lambda) = \frac{\lambda^{x_i}e^{-\lambda}}{x_i!}\]
 <p><b>2. All samples</b> (independent → multiply):</p>\[L(\lambda) = \prod_{i=1}^{n}\frac{\lambda^{x_i}e^{-\lambda}}{x_i!}\]
 <p><b>3. The data log-likelihood</b> (log turns × into +):</p>\[\ell(\lambda; D) = \log L(\lambda) = \sum_{i=1}^{n}\log\frac{\lambda^{x_i}e^{-\lambda}}{x_i!}\]
-<p><b>4. Simplify</b> (log rules, then split the sum):</p>\[\begin{aligned}\ell(\lambda; D) &= \sum_{i=1}^{n}\big(x_i\log\lambda - \lambda - \log(x_i!)\big)\\ &= \Big(\sum_{i=1}^{n} x_i\Big)\log\lambda - n\lambda - \sum_{i=1}^{n}\log(x_i!)\end{aligned}\]
+<p><b>4. Simplify:</b> log rules inside the sum, split into three sums, then take out what has no \(i\):</p>\[\begin{aligned}\ell(\lambda; D) &= \sum_{i=1}^{n}\big(x_i\log\lambda - \lambda - \log(x_i!)\big)\\ &= \sum_{i=1}^{n}x_i\log\lambda \;-\; \sum_{i=1}^{n}\lambda \;-\; \sum_{i=1}^{n}\log(x_i!)\\ &= \Big(\sum_{i=1}^{n} x_i\Big)\log\lambda - n\lambda - \sum_{i=1}^{n}\log(x_i!)\end{aligned}\]
 <p><b>5. Derivative by \(\lambda\), set to 0, solve:</b></p>\[\begin{aligned}\ell'(\lambda; D) &= \Big(\sum_{i=1}^{n} x_i\Big)\frac1\lambda - n = 0\\ \Rightarrow\; \hat\lambda &= \frac1n\sum_{i=1}^{n} x_i\end{aligned}\]
 <p><b>6. It's a maximum:</b> \(\ell''(\lambda; D) = -\Big(\sum_{i=1}^{n} x_i\Big)\dfrac{1}{\lambda^2} \lt 0\)</p>`,
       moves: [
@@ -450,12 +450,16 @@
           why: R`<p>Each sample's probability is [sheet: Poisson probability mass function with]: \(\lambda^k e^{-\lambda}/k!\) with \(k = x_i\). The samples are independent, so all of them together = the product. The log turns the product into a sum (log of a product = sum of the logs).</p>
 <p>The \(\sum_i\) only means one log per sample. With 3 samples it literally is:</p>
 \[\begin{aligned}\ell = \;&\log\frac{\lambda^{x_1}e^{-\lambda}}{x_1!} &&\leftarrow \text{sample 1}\\ +\;&\log\frac{\lambda^{x_2}e^{-\lambda}}{x_2!} &&\leftarrow \text{sample 2}\\ +\;&\log\frac{\lambda^{x_3}e^{-\lambda}}{x_3!} &&\leftarrow \text{sample 3}\end{aligned}\]` },
-        { line: R`<b>Rewrite</b> — a log of a fraction is hard to differentiate, so split each log into three simple parts, then add over \(i\): <div class="formula">\[\begin{aligned}\ell(\lambda; D) &= \sum_{i=1}^{n}\big(x_i\log\lambda - \lambda - \log(x_i!)\big)\\ &= \Big(\sum_{i=1}^{n} x_i\Big)\log\lambda - n\lambda - \sum_{i=1}^{n}\log(x_i!)\end{aligned}\]</div>`,
+        { line: R`<b>Simplify</b> — log rules inside the sum, then split into three sums, then take out of each sum what has no \(i\): <div class="formula">\[\begin{aligned}\ell(\lambda; D) &= \sum_{i=1}^{n}\big(x_i\log\lambda - \lambda - \log(x_i!)\big)\\ &= \sum_{i=1}^{n}x_i\log\lambda \;-\; \sum_{i=1}^{n}\lambda \;-\; \sum_{i=1}^{n}\log(x_i!)\\ &= \Big(\sum_{i=1}^{n} x_i\Big)\log\lambda - n\lambda - \sum_{i=1}^{n}\log(x_i!)\end{aligned}\]</div>`,
           remember: R`\[\log(ab) = \log a + \log b\]\[\log\frac{a}{b} = \log a - \log b\]\[\log a^k = k\log a\]<p>The log rules (log = natural log, so \(\log e^c = c\)). Not on the sheet; extension sheet, if you get it: [sheet: Log of product], [sheet: Log of quotient], [sheet: Log of power].</p>`,
-          why: R`<p><b>One log</b>, with the three log rules: top ÷ bottom → minus; \(\lambda^{x_i}\cdot e^{-\lambda}\) → plus; the power comes down in front (\(\log\lambda^{x_i} = x_i\log\lambda\)):</p>
+          why: R`<p><b>Line 1, one log</b> with the three log rules: top ÷ bottom → minus; \(\lambda^{x_i}\cdot e^{-\lambda}\) → plus; the power comes down in front:</p>
 \[\log\frac{\lambda^{x_i}e^{-\lambda}}{x_i!} = x_i\log\lambda + \underbrace{\log e^{-\lambda}}_{\textstyle = -\lambda} - \log(x_i!)\]
-<p>(\(\log\) is the natural log, so \(\log e^{-\lambda} = -\lambda\).)</p>
-<p><b>Add over \(i\):</b> \(\log\lambda\) is in every first part, so it comes out: \((x_1 + \dots + x_n)\log\lambda\). \(-\lambda\) appears \(n\) times: \(-n\lambda\). The last parts have no \(\lambda\), so leave them as a sum.</p>` },
+<p><b>Line 2, split:</b> a sum of (a − b − c) = the sum of the a's − the sum of the b's − the sum of the c's.</p>
+<p><b>Line 3, each sum on its own:</b></p>
+<p>· \(\sum_i x_i\log\lambda\): \(\log\lambda\) has no \(i\), the same in every term → out: \(\big(\sum_i x_i\big)\log\lambda\).</p>
+<p>· \(\sum_i \lambda\): no \(i\) at all, the same \(\lambda\) added once per user: \(\lambda + \lambda + \dots + \lambda = n\lambda\).</p>
+<p>· \(\sum_i \log(x_i!)\): everything depends on \(i\), nothing comes out. It has no \(\lambda\), so it vanishes in the derivative.</p>
+<p><b>With \(n = 3\), written out:</b> \((x_1\log\lambda - \lambda - \log x_1!) + (x_2\log\lambda - \lambda - \log x_2!) + (x_3\log\lambda - \lambda - \log x_3!)\) = \((x_1 + x_2 + x_3)\log\lambda - 3\lambda - (\log x_1! + \log x_2! + \log x_3!)\).</p>` },
         { line: R`<b>Derivative by \(\lambda\)</b> — \(\sum_i x_i\) is just a number, \((\log\lambda)' = \tfrac1\lambda\), \((n\lambda)' = n\), the last sum has no \(\lambda\): <div class="formula">\[\ell'(\lambda; D) = \Big(\sum_{i=1}^{n} x_i\Big)\frac1\lambda - n\]</div>`,
           remember: R`\[(\log x)' = \frac1x\]<p>Natural log. Not on the sheet; extension sheet, if you get it: [sheet: Derivative of loga (x)] gives \(\frac{1}{x\ln a}\), and with \(a = e\), \(\ln e = 1\).</p>`,
           why: R`<p>Same as \(f(\lambda) = 16\log\lambda - 8\lambda - c\) → \(f'(\lambda) = \tfrac{16}{\lambda} - 8\). (That's part 2's 8 R users: their counts add to 16.)</p>` },
