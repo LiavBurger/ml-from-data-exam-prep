@@ -182,14 +182,14 @@
 <p><b>3. Why the mean.</b> The sum of squared distances to a point \(m\) is smallest when \(m\) is the mean. One coordinate: \(\sum_i (x_i - m)^2\) has derivative \(-2\sum_i (x_i - m)\), which is 0 when \(m\) = the average. So the update can only shrink WCSS.</p>
 <p><b>So:</b> distance table → pick the winners → add them (before) → take the means → add the new squared distances (after). "After" must come out smaller.</p>`,
       start: R`<p><b>Key idea:</b> one iteration = assign each sample to its nearest centroid, then move each centroid to its cluster's mean. WCSS before = the new clusters measured to the old centroids; WCSS after = measured to the new centroids.</p>
-<p><b>Assign</b> — squared distances, the smaller wins:</p>
+<p><b>Assign</b> — squared Euclidean distances, the smaller wins (the root only goes up, so the same winner as the real distances):</p>
 \[\begin{array}{c|ccc}\text{sample} & 1 & \cdots & 6\\ \hline \text{to }\mu_1 & \square & \cdots & \square\\ \text{to }\mu_2 & \square & \cdots & \square\end{array}\]
 <p>So \(C_1 = \square\), \(C_2 = \square\).</p>
 \[\text{WCSS}_{\text{before}} = \square\]
 \[\mu_1 = \square,\qquad \mu_2 = \square\]
 \[\text{WCSS}_{\text{after}} = \square\]`,
       answer: R`<p><b>Key idea:</b> one iteration = assign each sample to its nearest centroid, then move each centroid to its cluster's mean. WCSS before = the new clusters measured to the old centroids; WCSS after = measured to the new centroids.</p>
-<p><b>Assign</b> — squared distances, the smaller wins:</p>
+<p><b>Assign</b> — squared Euclidean distances, the smaller wins (the root only goes up, so the same winner as the real distances):</p>
 \[\begin{array}{c|cccccc}\text{sample} & 1 & 2 & 3 & 4 & 5 & 6\\ \hline \text{to }(1,1) & \mathbf{0} & \mathbf{1} & \mathbf{1} & 50 & 66.25 & 66.25\\ \text{to }(6,6) & 50 & 41 & 41 & \mathbf{0} & \mathbf{1.25} & \mathbf{1.25}\end{array}\]
 <p>So \(C_1 = \{1,2,3\}\), \(C_2 = \{4,5,6\}\).</p>
 \[\text{WCSS}_{\text{before}} = 0 + 1 + 1 + 0 + 1.25 + 1.25 = 4.5\]
@@ -197,7 +197,10 @@
 \[\begin{aligned}\text{WCSS}_{\text{after}} &= \tfrac29 + \tfrac59 + \tfrac59 + \tfrac12 + \tfrac14 + \tfrac14\\ &= \tfrac73 = 2\tfrac13\end{aligned}\]`,
       moves: [
         { line: R`<b>Assign</b> — squared distance of each sample to \((1,1)\) and to \((6,6)\); the smaller wins: <div class="formula">\[\begin{array}{c|cccccc}\text{sample} & 1 & 2 & 3 & 4 & 5 & 6\\ \hline \text{to }(1,1) & \mathbf{0} & \mathbf{1} & \mathbf{1} & 50 & 66.25 & 66.25\\ \text{to }(6,6) & 50 & 41 & 41 & \mathbf{0} & \mathbf{1.25} & \mathbf{1.25}\end{array}\]</div>So \(C_1 = \{1,2,3\}\), \(C_2 = \{4,5,6\}\).`,
-          why: R`<p>Squared distance = \((\Delta x_1)^2 + (\Delta x_2)^2\) — the [sheet: L2 norm] without the root. The nearest centroid is the same with or without the root.</p>
+          why: R`<p><b>The question says Euclidean distance</b> = \(\sqrt{(\Delta x_1)^2 + (\Delta x_2)^2}\), the [sheet: L2 norm]. The table leaves out the root on purpose, for two reasons:</p>
+<p>· <b>Assigning:</b> you only compare which centroid is nearer, and the root only goes up, so the smaller squared distance is also the smaller real distance. Sample 2: \(\sqrt1 = 1\) vs \(\sqrt{41} \approx 6.40\), and 1 vs 41: same winner.</p>
+<p>· <b>WCSS:</b> the question's formula uses \(\|x^{(i)} - \mu_j\|^2\), the Euclidean distance <b>squared</b>. The square cancels the root: \(\big(\sqrt{(\Delta x_1)^2 + (\Delta x_2)^2}\big)^2 = (\Delta x_1)^2 + (\Delta x_2)^2\). So these squared numbers are exactly the WCSS terms.</p>
+<p>In the exam, add one line: "comparing squared distances gives the same nearest centroid, since the root only goes up".</p>
 <div class="tw"><table><thead><tr><th>sample</th><th>to (1, 1)</th><th>to (6, 6)</th></tr></thead><tbody>
 <tr><td>1 (1, 1)</td><td>0² + 0² = 0</td><td>5² + 5² = 50</td></tr>
 <tr><td>2 (1, 2)</td><td>0² + 1² = 1</td><td>5² + 4² = 41</td></tr>
