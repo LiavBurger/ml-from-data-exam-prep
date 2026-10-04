@@ -80,6 +80,12 @@ the ones that cost 0 — the learner's next confusion was "if we classified as A
 "Classifying as A: if it's actually A (chance 0.2) it costs 0; if it's actually B (chance 0.8) it costs 1 →
 0.2·0 + 0.8·1 = 0.8". Model: 2025-A Q5.5.
 
+## 0.7 NO SHORTCUTS (learner, 2026-10-04)
+*"Yeah i rather no shortcuts.."* (after 2025-C Q5.1 compared squared distances instead of the Euclidean distances the
+question asked for). The template and full answer do exactly what the question says, literally: real distances when it
+says "Euclidean distance", posteriors when it says MAP/posterior, every step written. A shortcut (compare squared
+distances, compare joints, a cut-off formula) may appear only as an optional extra ("the shortcut, if you want it").
+
 ## 1. The format (chosen by the learner)
 - **Question first.** The real exam part is on screen; under it, the solution is revealed one **move** at a time
   ("Show next move" / key N). Moves double as a hint ladder: the learner tries on paper and reveals only when stuck.
