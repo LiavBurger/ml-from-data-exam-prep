@@ -86,6 +86,38 @@ question asked for). The template and full answer do exactly what the question s
 says "Euclidean distance", posteriors when it says MAP/posterior, every step written. A shortcut (compare squared
 distances, compare joints, a cut-off formula) may appear only as an optional extra ("the shortcut, if you want it").
 
+## 0.8 STRUCTURED TEMPLATES FOR PROBABILITY PARTS (learner, 2026-10-02 → 10-05 — binding)
+The learner: *"Can you add the formulas before plugging in the numbers? And make sure to have neat formatting, even at
+the cost of length. Structured approaches work best for my ADHD brain. I want to see the 'P(X|Y)=..', etc."* and
+*"I don't understand where this function 'comes from'.. I need to clearly write the probability of a single, etc etc..
+structured from the ground up"*. Two templates, used in `start` (formulas visible, □ only for numbers) and `answer`
+(identical, filled), and the steps follow the same lines:
+
+**A. MLE / log-likelihood parts** — the 6 lines, one `<p><b>N. …</b></p>` + display formula each (models:
+2026-B Q4.1 Poisson, 2025-B Q5.2 coins):
+1. One sample (the distribution's formula with xᵢ, or built from "and"s: prior × one factor per toss)
+2. All samples (independent → multiply, collect powers): L = ∏ …
+3. The data log-likelihood (log → sum, powers come down): ℓ = log L = Σ …
+4. Simplify / split (log rules; split a sum into separate sums, then take out what has no i; or: each parameter in
+   its own pair). Probabilities that must add to 1 are written p and 1 − p.
+5. Derivative by each parameter, set to 0, solve (one row "∂ℓ/∂θ = … = 0", next row "⇒ θ* = …")
+6. It's a maximum: second derivative < 0
+Even when the official answer just writes "count / total", derive it (no shortcuts, §0.7).
+
+**B. Posterior / MAP / responsibility / risk parts** — one block per sample/experiment, separated by
+`<p style="margin-top:14px;border-top:1px solid #ccd;padding-top:8px"><b>User/Sample/Experiment …</b> (…)</p>`, each
+with four sections, every line FORMULA FIRST then numbers (models: 2026-B Q4.3, 2025-B Q5.3):
+- **Likelihoods (…):** P(X = x | Y = R) = (formula) = (numbers) = value — one row per class
+- **Joints (prior × likelihood):** P(Y = R, X = x) = π̂_R · P(X = x | Y = R) / next row = numbers
+- **Marginal (the sum of the joints):** P(X = x) = P(Y = R, X = x) + … / next row = numbers
+- **Posteriors (joint ÷ marginal):** P(Y = R | X = x) = P(Y = R, X = x) / P(X = x) = numbers
+- then "**MAP:** the bigger posterior → R (0.881 > 0.119)" (or the responsibilities, or the risk sums — for costs
+  use the bet sentences of §0.6, model 2025-A Q5.5 / 2025-C Q4.6).
+A shortcut (compare joints/likelihoods only, a cut-off formula) goes in an optional extra, never the main route.
+Use the question's own notation (P(X = x | Y = y), π̂, r(i, Q), …). Break every display formula so it fits a phone-width
+column: two-row aligned (formula row, then "&= numbers" row); check with `node tools/hl/render_check.js <file>`
+(server: `python3 -m http.server 8767` in StudySite), which now also flags formulas that overflow inside their box.
+
 ## 1. The format (chosen by the learner)
 - **Question first.** The real exam part is on screen; under it, the solution is revealed one **move** at a time
   ("Show next move" / key N). Moves double as a hint ladder: the learner tries on paper and reveals only when stuck.
