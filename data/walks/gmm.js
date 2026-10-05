@@ -203,26 +203,28 @@
 <p>with</p>
 \[\begin{aligned}\textstyle\sum_i r(i,Q) &= \square\\ \textstyle\sum_i r(i,N) &= \square\end{aligned}\]
 <p><b>\(p_{QH}\):</b></p>
-\[\begin{aligned}p_{QH} &= \frac{\text{expected quarter heads}}{\text{expected quarter tosses}}\\ &= \frac{\sum_i r(i,Q)\,h_i}{\sum_i r(i,Q)\,h_i + \sum_i r(i,Q)\,t_i}\\ &= \square\end{aligned}\]
-<p>with (\(h_i, t_i\) = experiment \(i\)'s heads and tails)</p>
-\[\begin{aligned}\textstyle\sum_i r(i,Q)\,h_i &= \square\\ \textstyle\sum_i r(i,Q)\,t_i &= \square\end{aligned}\]`,
+\[\begin{aligned}p_{QH} &= \frac{\text{expected quarter heads}}{\text{expected quarter tosses}}\\ &= \frac{\sum_i r(i,Q)\,h_i}{5\sum_i r(i,Q)}\\ &= \square\end{aligned}\]
+<p>(every experiment has 5 tosses, so the quarter's tosses = 5 × its experiments). With \(h_i, t_i\) = experiment \(i\)'s heads and tails, the question's other two expected values:</p>
+\[\begin{aligned}\textstyle\sum_i r(i,Q)\,h_i &= \square\\ \textstyle\sum_i r(i,Q)\,t_i &= \square\end{aligned}\]
+<p>Check: heads + tails \(= 5 \cdot \sum_i r(i,Q)\) ✓</p>`,
       answer: R`<p><b>Key idea:</b> the M-step is part 2's count ÷ total, with soft counts: experiment \(i\) counts as \(r(i,Q)\) of a quarter experiment (from part 3), and its heads and tails count \(r(i,Q)\) times toward the quarter.</p>
 <p><b>\(\pi_Q\):</b></p>
 \[\begin{aligned}\pi_Q &= \frac{\text{expected quarter experiments}}{\text{total experiments}}\\ &= \frac{\sum_i r(i,Q)}{\sum_i r(i,Q) + \sum_i r(i,N)}\\ &= \frac{3.057}{3.057 + 0.943} = 0.764\end{aligned}\]
 <p>with</p>
 \[\begin{aligned}\textstyle\sum_i r(i,Q) &= 0.604 + 0.990 + 0.859 + 0.604 = 3.057\\ \textstyle\sum_i r(i,N) &= 0.396 + 0.010 + 0.141 + 0.396 = 0.943\end{aligned}\]
 <p><b>\(p_{QH}\):</b></p>
-\[\begin{aligned}p_{QH} &= \frac{\text{expected quarter heads}}{\text{expected quarter tosses}}\\ &= \frac{\sum_i r(i,Q)\,h_i}{\sum_i r(i,Q)\,h_i + \sum_i r(i,Q)\,t_i}\\ &= \frac{5.342}{5.342 + 9.943} = 0.349\end{aligned}\]
-<p>with (\(h_i, t_i\) = experiment \(i\)'s heads and tails)</p>
-\[\begin{aligned}\textstyle\sum_i r(i,Q)\,h_i &= 0.604\cdot 3 + 0.990\cdot 0\\ &\quad + 0.859\cdot 2 + 0.604\cdot 3\\ &= 5.342\\ \textstyle\sum_i r(i,Q)\,t_i &= 0.604\cdot 2 + 0.990\cdot 5\\ &\quad + 0.859\cdot 3 + 0.604\cdot 2\\ &= 9.943\end{aligned}\]`,
+\[\begin{aligned}p_{QH} &= \frac{\text{expected quarter heads}}{\text{expected quarter tosses}}\\ &= \frac{\sum_i r(i,Q)\,h_i}{5\sum_i r(i,Q)}\\ &= \frac{5.342}{5 \cdot 3.057} = \frac{5.342}{15.285} = 0.349\end{aligned}\]
+<p>(every experiment has 5 tosses, so the quarter's tosses = 5 × its experiments). With \(h_i, t_i\) = experiment \(i\)'s heads and tails, the question's other two expected values:</p>
+\[\begin{aligned}\textstyle\sum_i r(i,Q)\,h_i &= 0.604\cdot 3 + 0.990\cdot 0\\ &\quad + 0.859\cdot 2 + 0.604\cdot 3\\ &= 5.342\\ \textstyle\sum_i r(i,Q)\,t_i &= 0.604\cdot 2 + 0.990\cdot 5\\ &\quad + 0.859\cdot 3 + 0.604\cdot 2\\ &= 9.943\end{aligned}\]
+<p>Check: \(5.342 + 9.943 = 15.285 = 5 \cdot 3.057\) ✓</p>`,
       moves: [
         { line: R`<b>What does the question really want?</b> "Update" = the M-step: part 2's count ÷ total. But the coins are unknown, so each experiment is split between the coins by part 3's responsibilities: experiment 1 goes 0.604 to the quarter's pile.`,
           remember: R`\[p_j \leftarrow \frac{\sum_i r(i,j)\,h_i}{\sum_i r(i,j)\,(h_i + t_i)}\]<p>M-step for a coin = count ÷ total (the MLE), with experiment \(i\) counted \(r(i,j)\) times. Not on the sheet for coins: [sheet: Maximization updates] has the Gaussian \(\mu_j = \frac{1}{n_j}\sum_i r(i,j)\,x^{(i)}\) — the same thing with \(x^{(i)} = h_i/5\), experiment \(i\)'s share of heads.</p>`,
           why: R`<p>Part 2 is the same with every responsibility 1 or 0: experiment 1 went fully (1) to the quarter, experiments 2–4 not at all (0). Now each experiment goes partly: 0.604, 0.990, 0.859, 0.604. These partial amounts are the "expected values" the question lists.</p>` },
         { line: R`<b>\(\pi_Q\)</b> — expected quarter experiments ÷ total experiments: <div class="formula">\[\begin{aligned}\pi_Q &= \frac{\sum_i r(i,Q)}{\sum_i r(i,Q) + \sum_i r(i,N)}\\ &= \frac{3.057}{3.057 + 0.943} = 0.764\end{aligned}\]</div>`,
           why: R`<p>\(\sum_i r(i,Q) = 0.604 + 0.990 + 0.859 + 0.604 = 3.057\) "quarter experiments"; \(\sum_i r(i,N) = 0.396 + 0.010 + 0.141 + 0.396 = 0.943\). Together 4 = all experiments ✓.</p>` },
-        { line: R`<b>\(p_{QH}\)</b> — expected quarter heads ÷ expected quarter tosses: <div class="formula">\[\begin{aligned}p_{QH} &= \frac{\sum_i r(i,Q)\,h_i}{\sum_i r(i,Q)\,h_i + \sum_i r(i,Q)\,t_i}\\ &= \frac{5.342}{5.342 + 9.943} = 0.349\end{aligned}\]</div>Done.`,
-          why: R`<p>Each experiment's heads and tails go to the quarter's pile \(r(i,Q)\) times:</p>\[\begin{array}{c|c|c|c|c|c} \text{exp.} & r(i,Q) & h & r\cdot h & t & r\cdot t\\ \hline 1 & 0.604 & 3 & 1.812 & 2 & 1.208\\ 2 & 0.990 & 0 & 0 & 5 & 4.950\\ 3 & 0.859 & 2 & 1.718 & 3 & 2.577\\ 4 & 0.604 & 3 & 1.812 & 2 & 1.208\\ \hline \text{add} & & & 5.342 & & 9.943\end{array}\]<p>Check: \(5.342 + 9.943 = 15.285 = 5 \cdot 3.057\): every experiment has 5 tosses. (Unrounded responsibilities give 0.3495; 0.349 or 0.350 are both fine.)</p>`,
+        { line: R`<b>\(p_{QH}\)</b> — expected quarter heads ÷ expected quarter tosses (5 per experiment): <div class="formula">\[\begin{aligned}p_{QH} &= \frac{\sum_i r(i,Q)\,h_i}{5\sum_i r(i,Q)}\\ &= \frac{5.342}{5 \cdot 3.057} = \frac{5.342}{15.285} = 0.349\end{aligned}\]</div>Done.`,
+          why: R`<p>Each experiment's heads and tails go to the quarter's pile \(r(i,Q)\) times:</p>\[\begin{array}{c|c|c|c|c|c} \text{exp.} & r(i,Q) & h & r\cdot h & t & r\cdot t\\ \hline 1 & 0.604 & 3 & 1.812 & 2 & 1.208\\ 2 & 0.990 & 0 & 0 & 5 & 4.950\\ 3 & 0.859 & 2 & 1.718 & 3 & 2.577\\ 4 & 0.604 & 3 & 1.812 & 2 & 1.208\\ \hline \text{add} & & & 5.342 & & 9.943\end{array}\]<p>The question also lists the expected quarter tails, 9.943: write it, and use it as a check: \(5.342 + 9.943 = 15.285 = 5 \cdot 3.057\) ✓. (Unrounded responsibilities give 0.3495; 0.349 or 0.350 are both fine.)</p>`,
           extra: [{ label: "official slip in E[n_N]", html: R`<p>It writes \(\mathbb E[n_N] = \sum_{i=1}^{5} r(i,Q)\). It means \(\sum_{i=1}^{4} r(i,N)\) — the numbers it adds (0.396 + 0.010 + 0.141 + 0.396) are the right ones.</p>` }] },
       ],
       compare: R`Same as the official solution: its four expected values are the four sums (steps 2–3), then \(\pi_Q \leftarrow 0.764\), \(p_{QH} \leftarrow 0.349\). Its label "\(\sum_{i=1}^{5} r(i,Q)\)" for \(\mathbb E[n_N]\) should be \(\sum_{i=1}^{4} r(i,N)\).`,
