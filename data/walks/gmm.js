@@ -103,26 +103,91 @@
 <p><b>2. The picture.</b> Two ways to get these tosses: picked the quarter and tossed it, or picked the nickel and tossed it. Each way's probability is its <b>joint</b>. Stack the two into one bar = the probability of the tosses. \(r(i,Q)\) = the quarter's share of the bar.</p><div class="fig"><svg viewBox="0 0 520 165" width="520" role="img" aria-label="One bar split in two: joint Q and joint N; the responsibility is the quarter's share"><path d="M40,40 L40,32 L480,32 L480,40" fill="none" style="stroke:var(--muted)"/><text x="260.0" y="24.0" text-anchor="middle" font-size="12" fill="currentColor">whole bar = P(these 5 tosses) = joint Q + joint N</text><rect x="40" y="48" width="244.2" height="48" rx="4" style="fill:var(--accent-soft);stroke:var(--accent)" stroke-width="2"/><rect x="284.2" y="48" width="195.8" height="48" rx="4" style="fill:var(--panel);stroke:var(--shaky)" stroke-width="2"/><text x="162.1" y="67.0" text-anchor="middle" font-size="12" font-weight="700" style="fill:var(--accent-ink)">joint Q</text><text x="162.1" y="84.0" text-anchor="middle" font-size="12" style="fill:var(--accent-ink)">picked quarter AND these tosses</text><text x="382.1" y="67.0" text-anchor="middle" font-size="12" font-weight="700" fill="currentColor">joint N</text><text x="382.1" y="84.0" text-anchor="middle" font-size="12" fill="currentColor">picked nickel AND these tosses</text><path d="M40,104 L40,112 L284.2,112 L284.2,104" fill="none" style="stroke:var(--accent)"/><text x="162.1" y="130.0" text-anchor="middle" font-size="12" font-weight="700" style="fill:var(--accent-ink)">r(i,Q) = this share of the bar</text><path d="M284.2,104 L284.2,112 L480,112 L480,104" fill="none" style="stroke:var(--shaky)"/><text x="382.1" y="130.0" text-anchor="middle" font-size="12" fill="currentColor">r(i,N) = the rest</text><text x="20.0" y="158.0" text-anchor="start" font-size="11" style="fill:var(--muted)">(the split is just a sketch, not this question's numbers)</text></svg></div>
 <p><b>3. Why joint = prior × \(p^h(1-p)^t\).</b> "Picked the quarter <b>and</b> got these tosses", and the question says the tosses are independent, so everything multiplies: \(\pi_Q\), then \(p_{QH}\) for each head, \(1 - p_{QH}\) for each tail. Order doesn't change a product, so only the numbers of heads and tails matter.</p>
 <p><b>So:</b> per experiment: joint Q, joint N, then \(r(i,Q)\) = joint Q / (joint Q + joint N), \(r(i,N)\) = the rest. \(p_{QH} = 0.5\), so the quarter's joint is the same in every experiment.</p>`,
-      start: R`<p><b>Key idea:</b> \(r(i,Q)\) = P(quarter | experiment \(i\)'s tosses) = joint Q / (joint Q + joint N), where joint = prior × \(p^h(1-p)^t\) (the tosses are independent, so they multiply); \(r(i,N) = 1 - r(i,Q)\).</p>
-<p><b>For each experiment (h heads, t tails):</b></p>
-\[\begin{aligned}\text{joint Q} &= \pi_Q\,p_{QH}^{h}(1-p_{QH})^{t}\\ \text{joint N} &= (1-\pi_Q)\,p_{NH}^{h}(1-p_{NH})^{t}\\ r(i,Q) &= \frac{\text{joint Q}}{\text{joint Q} + \text{joint N}},\quad r(i,N) = 1 - r(i,Q)\end{aligned}\]
-<p><b>The numbers:</b></p>
-\[\begin{array}{c|c|c|c|c|c} \text{exp.} & h,\,t & \text{joint Q} & \text{joint N} & r(i,Q) & r(i,N)\\ \hline 1 & \square & \square & \square & \square & \square\\ 2 & \square & \square & \square & \square & \square\\ 3 & \square & \square & \square & \square & \square\\ 4 & \square & \square & \square & \square & \square\end{array}\]`,
-      answer: R`<p><b>Key idea:</b> \(r(i,Q)\) = P(quarter | experiment \(i\)'s tosses) = joint Q / (joint Q + joint N), where joint = prior × \(p^h(1-p)^t\) (the tosses are independent, so they multiply); \(r(i,N) = 1 - r(i,Q)\).</p>
-<p><b>For each experiment (h heads, t tails):</b></p>
-\[\begin{aligned}\text{joint Q} &= \pi_Q\,p_{QH}^{h}(1-p_{QH})^{t} = 0.5\cdot 0.5^{h}\cdot 0.5^{t} = 0.5^6\\ \text{joint N} &= (1-\pi_Q)\,p_{NH}^{h}(1-p_{NH})^{t} = 0.5\cdot 0.8^{h}\cdot 0.2^{t}\\ r(i,Q) &= \frac{\text{joint Q}}{\text{joint Q} + \text{joint N}},\quad r(i,N) = 1 - r(i,Q)\end{aligned}\]
-<p><b>The numbers:</b></p>
-\[\begin{array}{c|c|c|c|c|c} \text{exp.} & h,\,t & \text{joint Q} & \text{joint N} & r(i,Q) & r(i,N)\\ \hline 1 & 3,\,2 & 0.015625 & 0.01024 & 0.604 & 0.396\\ 2 & 0,\,5 & 0.015625 & 0.00016 & 0.990 & 0.010\\ 3 & 2,\,3 & 0.015625 & 0.00256 & 0.859 & 0.141\\ 4 & 3,\,2 & 0.015625 & 0.01024 & 0.604 & 0.396\end{array}\]`,
+      start: R`<p><b>Key idea:</b> a responsibility is a posterior, \(r(i, Q) = P(Q \mid \text{experiment } i\text{'s tosses})\). So per experiment, the four Bayes lines: likelihood (\(p\) per head, \(1 - p\) per tail), joint = prior × likelihood, marginal = the sum of the joints, posterior = joint ÷ marginal.</p>
+<p><b>The current parameters:</b> \(\pi_Q = 0.5\) (so \(1 - \pi_Q = 0.5\)), \(p_{QH} = 0.5\), \(p_{NH} = 0.8\).</p>
+<p style="margin-top:14px;border-top:1px solid #ccd;padding-top:8px"><b>Experiment 1</b> (H T T H H: 3 heads, 2 tails)</p>
+<p><b>Likelihoods (one factor per toss):</b></p>
+\[\begin{aligned}P(\text{exp }1 \mid Q) &= p_{QH}^{3}(1-p_{QH})^{2}\\ &= \square\\ P(\text{exp }1 \mid N) &= p_{NH}^{3}(1-p_{NH})^{2}\\ &= \square\end{aligned}\]
+<p><b>Joints (prior × likelihood):</b></p>
+\[\begin{aligned}P(Q, \text{exp }1) &= \pi_Q\cdot P(\text{exp }1 \mid Q)\\ &= \square\\ P(N, \text{exp }1) &= (1-\pi_Q)\cdot P(\text{exp }1 \mid N)\\ &= \square\end{aligned}\]
+<p><b>Marginal (the sum of the joints):</b></p>
+\[\begin{aligned}P(\text{exp }1) &= P(Q, \text{exp }1) + P(N, \text{exp }1)\\ &= \square\end{aligned}\]
+<p><b>Posteriors = responsibilities (joint ÷ marginal):</b></p>
+\[\begin{aligned}r(1, Q) &= \frac{P(Q, \text{exp }1)}{P(\text{exp }1)} = \square\\ r(1, N) &= \frac{P(N, \text{exp }1)}{P(\text{exp }1)} = \square\end{aligned}\]
+<p style="margin-top:14px;border-top:1px solid #ccd;padding-top:8px"><b>Experiment 2</b> (T T T T T: 0 heads, 5 tails)</p>
+<p><b>Likelihoods (one factor per toss):</b></p>
+\[\begin{aligned}P(\text{exp }2 \mid Q) &= p_{QH}^{0}(1-p_{QH})^{5}\\ &= \square\\ P(\text{exp }2 \mid N) &= p_{NH}^{0}(1-p_{NH})^{5}\\ &= \square\end{aligned}\]
+<p><b>Joints (prior × likelihood):</b></p>
+\[\begin{aligned}P(Q, \text{exp }2) &= \pi_Q\cdot P(\text{exp }2 \mid Q)\\ &= \square\\ P(N, \text{exp }2) &= (1-\pi_Q)\cdot P(\text{exp }2 \mid N)\\ &= \square\end{aligned}\]
+<p><b>Marginal (the sum of the joints):</b></p>
+\[\begin{aligned}P(\text{exp }2) &= P(Q, \text{exp }2) + P(N, \text{exp }2)\\ &= \square\end{aligned}\]
+<p><b>Posteriors = responsibilities (joint ÷ marginal):</b></p>
+\[\begin{aligned}r(2, Q) &= \frac{P(Q, \text{exp }2)}{P(\text{exp }2)} = \square\\ r(2, N) &= \frac{P(N, \text{exp }2)}{P(\text{exp }2)} = \square\end{aligned}\]
+<p style="margin-top:14px;border-top:1px solid #ccd;padding-top:8px"><b>Experiment 3</b> (H T T H T: 2 heads, 3 tails)</p>
+<p><b>Likelihoods (one factor per toss):</b></p>
+\[\begin{aligned}P(\text{exp }3 \mid Q) &= p_{QH}^{2}(1-p_{QH})^{3}\\ &= \square\\ P(\text{exp }3 \mid N) &= p_{NH}^{2}(1-p_{NH})^{3}\\ &= \square\end{aligned}\]
+<p><b>Joints (prior × likelihood):</b></p>
+\[\begin{aligned}P(Q, \text{exp }3) &= \pi_Q\cdot P(\text{exp }3 \mid Q)\\ &= \square\\ P(N, \text{exp }3) &= (1-\pi_Q)\cdot P(\text{exp }3 \mid N)\\ &= \square\end{aligned}\]
+<p><b>Marginal (the sum of the joints):</b></p>
+\[\begin{aligned}P(\text{exp }3) &= P(Q, \text{exp }3) + P(N, \text{exp }3)\\ &= \square\end{aligned}\]
+<p><b>Posteriors = responsibilities (joint ÷ marginal):</b></p>
+\[\begin{aligned}r(3, Q) &= \frac{P(Q, \text{exp }3)}{P(\text{exp }3)} = \square\\ r(3, N) &= \frac{P(N, \text{exp }3)}{P(\text{exp }3)} = \square\end{aligned}\]
+<p style="margin-top:14px;border-top:1px solid #ccd;padding-top:8px"><b>Experiment 4</b> (H H T T H: 3 heads, 2 tails)</p>
+<p><b>Likelihoods (one factor per toss):</b></p>
+\[\begin{aligned}P(\text{exp }4 \mid Q) &= p_{QH}^{3}(1-p_{QH})^{2}\\ &= \square\\ P(\text{exp }4 \mid N) &= p_{NH}^{3}(1-p_{NH})^{2}\\ &= \square\end{aligned}\]
+<p><b>Joints (prior × likelihood):</b></p>
+\[\begin{aligned}P(Q, \text{exp }4) &= \pi_Q\cdot P(\text{exp }4 \mid Q)\\ &= \square\\ P(N, \text{exp }4) &= (1-\pi_Q)\cdot P(\text{exp }4 \mid N)\\ &= \square\end{aligned}\]
+<p><b>Marginal (the sum of the joints):</b></p>
+\[\begin{aligned}P(\text{exp }4) &= P(Q, \text{exp }4) + P(N, \text{exp }4)\\ &= \square\end{aligned}\]
+<p><b>Posteriors = responsibilities (joint ÷ marginal):</b></p>
+\[\begin{aligned}r(4, Q) &= \frac{P(Q, \text{exp }4)}{P(\text{exp }4)} = \square\\ r(4, N) &= \frac{P(N, \text{exp }4)}{P(\text{exp }4)} = \square\end{aligned}\]`,
+      answer: R`<p><b>Key idea:</b> a responsibility is a posterior, \(r(i, Q) = P(Q \mid \text{experiment } i\text{'s tosses})\). So per experiment, the four Bayes lines: likelihood (\(p\) per head, \(1 - p\) per tail), joint = prior × likelihood, marginal = the sum of the joints, posterior = joint ÷ marginal.</p>
+<p><b>The current parameters:</b> \(\pi_Q = 0.5\) (so \(1 - \pi_Q = 0.5\)), \(p_{QH} = 0.5\), \(p_{NH} = 0.8\).</p>
+<p style="margin-top:14px;border-top:1px solid #ccd;padding-top:8px"><b>Experiment 1</b> (H T T H H: 3 heads, 2 tails)</p>
+<p><b>Likelihoods (one factor per toss):</b></p>
+\[\begin{aligned}P(\text{exp }1 \mid Q) &= p_{QH}^{3}(1-p_{QH})^{2}\\ &= 0.5^{3}\cdot 0.5^{2} = 0.03125\\ P(\text{exp }1 \mid N) &= p_{NH}^{3}(1-p_{NH})^{2}\\ &= 0.8^3\cdot 0.2^2 = 0.02048\end{aligned}\]
+<p><b>Joints (prior × likelihood):</b></p>
+\[\begin{aligned}P(Q, \text{exp }1) &= \pi_Q\cdot P(\text{exp }1 \mid Q)\\ &= 0.5\cdot 0.03125 = 0.015625\\ P(N, \text{exp }1) &= (1-\pi_Q)\cdot P(\text{exp }1 \mid N)\\ &= 0.5\cdot 0.02048 = 0.01024\end{aligned}\]
+<p><b>Marginal (the sum of the joints):</b></p>
+\[\begin{aligned}P(\text{exp }1) &= P(Q, \text{exp }1) + P(N, \text{exp }1)\\ &= 0.015625 + 0.01024 = 0.025865\end{aligned}\]
+<p><b>Posteriors = responsibilities (joint ÷ marginal):</b></p>
+\[\begin{aligned}r(1, Q) &= \frac{P(Q, \text{exp }1)}{P(\text{exp }1)} = \frac{0.015625}{0.025865} \approx 0.604\\ r(1, N) &= \frac{P(N, \text{exp }1)}{P(\text{exp }1)} = \frac{0.01024}{0.025865} \approx 0.396\end{aligned}\]
+<p style="margin-top:14px;border-top:1px solid #ccd;padding-top:8px"><b>Experiment 2</b> (T T T T T: 0 heads, 5 tails)</p>
+<p><b>Likelihoods (one factor per toss):</b></p>
+\[\begin{aligned}P(\text{exp }2 \mid Q) &= p_{QH}^{0}(1-p_{QH})^{5}\\ &= 0.5^{0}\cdot 0.5^{5} = 0.03125\\ P(\text{exp }2 \mid N) &= p_{NH}^{0}(1-p_{NH})^{5}\\ &= 0.8^0\cdot 0.2^5 = 0.00032\end{aligned}\]
+<p><b>Joints (prior × likelihood):</b></p>
+\[\begin{aligned}P(Q, \text{exp }2) &= \pi_Q\cdot P(\text{exp }2 \mid Q)\\ &= 0.5\cdot 0.03125 = 0.015625\\ P(N, \text{exp }2) &= (1-\pi_Q)\cdot P(\text{exp }2 \mid N)\\ &= 0.5\cdot 0.00032 = 0.00016\end{aligned}\]
+<p><b>Marginal (the sum of the joints):</b></p>
+\[\begin{aligned}P(\text{exp }2) &= P(Q, \text{exp }2) + P(N, \text{exp }2)\\ &= 0.015625 + 0.00016 = 0.015785\end{aligned}\]
+<p><b>Posteriors = responsibilities (joint ÷ marginal):</b></p>
+\[\begin{aligned}r(2, Q) &= \frac{P(Q, \text{exp }2)}{P(\text{exp }2)} = \frac{0.015625}{0.015785} \approx 0.990\\ r(2, N) &= \frac{P(N, \text{exp }2)}{P(\text{exp }2)} = \frac{0.00016}{0.015785} \approx 0.010\end{aligned}\]
+<p style="margin-top:14px;border-top:1px solid #ccd;padding-top:8px"><b>Experiment 3</b> (H T T H T: 2 heads, 3 tails)</p>
+<p><b>Likelihoods (one factor per toss):</b></p>
+\[\begin{aligned}P(\text{exp }3 \mid Q) &= p_{QH}^{2}(1-p_{QH})^{3}\\ &= 0.5^{2}\cdot 0.5^{3} = 0.03125\\ P(\text{exp }3 \mid N) &= p_{NH}^{2}(1-p_{NH})^{3}\\ &= 0.8^2\cdot 0.2^3 = 0.00512\end{aligned}\]
+<p><b>Joints (prior × likelihood):</b></p>
+\[\begin{aligned}P(Q, \text{exp }3) &= \pi_Q\cdot P(\text{exp }3 \mid Q)\\ &= 0.5\cdot 0.03125 = 0.015625\\ P(N, \text{exp }3) &= (1-\pi_Q)\cdot P(\text{exp }3 \mid N)\\ &= 0.5\cdot 0.00512 = 0.00256\end{aligned}\]
+<p><b>Marginal (the sum of the joints):</b></p>
+\[\begin{aligned}P(\text{exp }3) &= P(Q, \text{exp }3) + P(N, \text{exp }3)\\ &= 0.015625 + 0.00256 = 0.018185\end{aligned}\]
+<p><b>Posteriors = responsibilities (joint ÷ marginal):</b></p>
+\[\begin{aligned}r(3, Q) &= \frac{P(Q, \text{exp }3)}{P(\text{exp }3)} = \frac{0.015625}{0.018185} \approx 0.859\\ r(3, N) &= \frac{P(N, \text{exp }3)}{P(\text{exp }3)} = \frac{0.00256}{0.018185} \approx 0.141\end{aligned}\]
+<p style="margin-top:14px;border-top:1px solid #ccd;padding-top:8px"><b>Experiment 4</b> (H H T T H: 3 heads, 2 tails)</p>
+<p><b>Likelihoods (one factor per toss):</b></p>
+\[\begin{aligned}P(\text{exp }4 \mid Q) &= p_{QH}^{3}(1-p_{QH})^{2}\\ &= 0.5^{3}\cdot 0.5^{2} = 0.03125\\ P(\text{exp }4 \mid N) &= p_{NH}^{3}(1-p_{NH})^{2}\\ &= 0.8^3\cdot 0.2^2 = 0.02048\end{aligned}\]
+<p><b>Joints (prior × likelihood):</b></p>
+\[\begin{aligned}P(Q, \text{exp }4) &= \pi_Q\cdot P(\text{exp }4 \mid Q)\\ &= 0.5\cdot 0.03125 = 0.015625\\ P(N, \text{exp }4) &= (1-\pi_Q)\cdot P(\text{exp }4 \mid N)\\ &= 0.5\cdot 0.02048 = 0.01024\end{aligned}\]
+<p><b>Marginal (the sum of the joints):</b></p>
+\[\begin{aligned}P(\text{exp }4) &= P(Q, \text{exp }4) + P(N, \text{exp }4)\\ &= 0.015625 + 0.01024 = 0.025865\end{aligned}\]
+<p><b>Posteriors = responsibilities (joint ÷ marginal):</b></p>
+\[\begin{aligned}r(4, Q) &= \frac{P(Q, \text{exp }4)}{P(\text{exp }4)} = \frac{0.015625}{0.025865} \approx 0.604\\ r(4, N) &= \frac{P(N, \text{exp }4)}{P(\text{exp }4)} = \frac{0.01024}{0.025865} \approx 0.396\end{aligned}\]`,
       moves: [
-        { line: R`<b>What does the question really want?</b> \(r(i,Q)\) = P(quarter | these tosses) — a posterior. Posterior = Bayes: the quarter's joint, divided by both joints added: <div class="formula">\[r(i,Q) = \frac{\underbrace{\color{#e8912d}\pi_Q\,p_{QH}^{h}(1-p_{QH})^{t}}_{\textstyle\color{#e8912d}\text{this part = joint Q}}}{{\color{#e8912d}\text{joint Q}} + \underbrace{\color{#4c8dff}(1-\pi_Q)\,p_{NH}^{h}(1-p_{NH})^{t}}_{\textstyle\color{#4c8dff}\text{this part = joint N}}}\]</div>`,
-          remember: R`\[r(i,j) = \frac{\pi_j\,p_j^{h}(1-p_j)^{t}}{\sum_{j'}\pi_{j'}\,p_{j'}^{h}(1-p_{j'})^{t}}\]<p>Responsibility = posterior; a coin's likelihood is \(p^h(1-p)^t\) (independent tosses → multiply). The sheet has it only with Gaussians: [sheet: Responsibilities update] — put \(p_j^h(1-p_j)^t\) where \(\phi(x^{(i)};\mu_j,\Sigma_j)\) is. ([sheet: Binomial probability mass function with] adds a \(\binom{5}{h}\) — the same for both coins, so it cancels.)</p>`,
-          why: R`<p>Joint = picked this coin <b>and</b> got these tosses, so prior × tosses. The bottom is the probability of the sequence: the coin was one of the two.</p>
-<p>It's [sheet: Responsibilities update], with the coin's \(p^h(1-p)^t\) in place of \(\phi\). Only the counts \(h, t\) matter: the tosses are multiplied, and order doesn't change a product.</p>` },
-        { line: R`<b>The joints</b> — \(p_{QH} = 0.5\), so every quarter joint is \(0.5\cdot 0.5^5 = 0.5^6\). The nickel: prior 0.5, heads 0.8, tails 0.2: <div class="formula">\[\begin{array}{c|c|c|l} \text{exp.} & h,\,t & \text{joint Q} & \text{joint N} = 0.5\cdot 0.8^{h}\cdot 0.2^{t}\\ \hline 1 & 3,\,2 & 0.015625 & 0.5\cdot 0.512\cdot 0.04 = 0.01024\\ 2 & 0,\,5 & 0.015625 & 0.5\cdot 1\cdot 0.00032 = 0.00016\\ 3 & 2,\,3 & 0.015625 & 0.5\cdot 0.64\cdot 0.008 = 0.00256\\ 4 & 3,\,2 & 0.015625 & 0.01024\ \text{(same as 1)}\end{array}\]</div>` },
-        { line: R`<b>Divide</b> — joint Q / (joint Q + joint N); \(r(i,N)\) is the rest: <div class="formula">\[\begin{array}{c|c|c|c} \text{exp.} & \text{joint Q + joint N} & r(i,Q) & r(i,N)\\ \hline 1 & 0.025865 & 0.604 & 0.396\\ 2 & 0.015785 & 0.990 & 0.010\\ 3 & 0.018185 & 0.859 & 0.141\\ 4 & 0.025865 & 0.604 & 0.396\end{array}\]</div>Done.`,
-          why: R`<p>Experiment 1: \(0.015625 / 0.025865 = 0.604\). Experiment 2 is all tails, and the nickel hates tails (0.2), so it's almost surely the quarter: 0.990.</p>` },
+        { line: R`<b>What does the question really want?</b> \(r(i, a)\) = the posterior that coin \(a\) was used in experiment \(i\). Posterior = Bayes: likelihood, joint, marginal, posterior, once per experiment.`,
+          remember: R`\[r(i,j) = \frac{\pi_j\,p_j^{h}(1-p_j)^{t}}{\sum_{j'}\pi_{j'}\,p_{j'}^{h}(1-p_{j'})^{t}}\]<p>Responsibility = posterior; a coin's likelihood is \(p^h(1-p)^t\) (independent tosses → multiply). The sheet has it only with Gaussians: [sheet: Responsibilities update] — put \(p_j^h(1-p_j)^t\) where \(\phi(x^{(i)};\mu_j,\Sigma_j)\) is. ([sheet: Binomial probability mass function with] adds a \(\binom{5}{h}\) — the same for both coins, so it cancels.)</p>` },
+        { line: R`<b>Likelihoods</b> — \(P(\text{tosses} \mid \text{coin})\) = one factor per toss (independent → multiply): \(p\) per head, \(1 - p\) per tail: <div class="formula">\[\begin{array}{c|c|c|l} \text{exp.} & h,\,t & P(\cdot \mid Q) & P(\cdot \mid N) = 0.8^{h}\,0.2^{t}\\ \hline 1 & 3,\,2 & 0.03125 & 0.512\cdot 0.04 = 0.02048\\ 2 & 0,\,5 & 0.03125 & 1\cdot 0.00032 = 0.00032\\ 3 & 2,\,3 & 0.03125 & 0.64\cdot 0.008 = 0.00512\\ 4 & 3,\,2 & 0.03125 & 0.02048\end{array}\]</div>`,
+          why: R`<p>Experiment 1 with the quarter: H T T H H = \(0.5 \cdot 0.5 \cdot 0.5 \cdot 0.5 \cdot 0.5 = 0.5^5 = 0.03125\). The quarter is fair (\(p_{QH} = 0.5\)), so every sequence of 5 has the same likelihood. Order doesn't change a product, so only the numbers of heads and tails matter.</p>` },
+        { line: R`<b>Joints, marginal, posteriors</b> — prior (0.5 each) × likelihood; their sum; each ÷ the sum: <div class="formula">\[\begin{array}{c|c|c|c|c|c} \text{exp.} & \text{joint Q} & \text{joint N} & \text{marginal} & r(i,Q) & r(i,N)\\ \hline 1 & 0.015625 & 0.01024 & 0.025865 & 0.604 & 0.396\\ 2 & 0.015625 & 0.00016 & 0.015785 & 0.990 & 0.010\\ 3 & 0.015625 & 0.00256 & 0.018185 & 0.859 & 0.141\\ 4 & 0.015625 & 0.01024 & 0.025865 & 0.604 & 0.396\end{array}\]</div>Done.`,
+          why: R`<p>Experiment 1: joint Q \(= 0.5 \cdot 0.03125 = 0.015625\), joint N \(= 0.5 \cdot 0.02048 = 0.01024\), marginal \(= 0.025865\), so \(r(1,Q) = 0.015625/0.025865 \approx 0.604\).</p><p>Experiment 2 is all tails, and the nickel rarely lands tails (0.2), so it was almost surely the quarter: 0.990.</p>` },
       ],
-      compare: R`Same numbers as the official solution: \(r(\cdot,Q) = (0.604, 0.990, 0.859, 0.604)\). It writes the joints (move 2) and the divisions (move 3) out experiment by experiment.`,
+      compare: R`Same numbers as the official solution: \(r(\cdot,Q) = (0.604, 0.990, 0.859, 0.604)\). The official solution writes each joint directly as prior × \(p^h(1-p)^t\) (steps 2–3 in one line).`,
       slip: R`\(\pi_N\) is never defined in the question: it's just \(1 - \pi_Q = 0.5\). And "same head and tail counts as toss 1" means experiment 1 (3 heads, 2 tails).`,
     },
 
