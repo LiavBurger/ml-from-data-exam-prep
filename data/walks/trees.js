@@ -156,25 +156,27 @@ rows 1,4,6,7</code></pre>Done.`,
 <p><b>2.</b> Both children have \(p\), so the parent, which is just the two poured together, has \(p\) too. <b>This is the step to prove.</b></p>
 <p><b>3.</b> So parent and children all have impurity \(\varphi(p)\), and the children's weights add up to 1: before = after, reduction 0.</p>`,
       start: R`<p><b>Key idea:</b> impurity only depends on the proportion of \(+\); if both children have proportion \(p\), so does the parent, so all three impurities are \(\varphi(p)\) and the reduction is 0.</p>
-<p><b>1. The children:</b> child \(v\) has \(n^{(v)}\) samples, a proportion \(p\) of them positive: \(\;n_+^{(v)} = \square\)</p>
-<p><b>2. The parent has proportion \(p\) too:</b></p>
-\[\frac{n_+}{n} = \square\]
-<p><b>3. So</b> \(\varphi(S) = \varphi(S_1) = \varphi(S_2) = \square\) (impurity only sees the proportion)</p>
-<p><b>4. The reduction:</b></p>
-\[\Delta\varphi = \square\]`,
+<p><b>Words:</b> size 1, size 2 = the number of samples in each child; share 1 = size 1 ÷ samples in the parent (same for share 2).</p>
+<p><b>1. Each child:</b> positives in the child = □ (both children have the same proportion \(p\))</p>
+<p><b>2. The parent's proportion:</b></p>
+\[\begin{aligned}\text{positives in parent} &= \square\\ \text{samples in parent} &= \square\\ \text{parent's proportion} &= \frac{\text{positives in parent}}{\text{samples in parent}}\\ &= \square\end{aligned}\]
+<p><b>3. So</b> \(\varphi(\text{parent}) = \varphi(\text{child 1}) = \varphi(\text{child 2}) = \square\): impurity only sees the proportion.</p>
+<p><b>4. The reduction</b> (each child's impurity weighted by its share):</p>
+\[\begin{aligned}\text{reduction} &= \varphi(\text{parent}) - \text{share 1}\cdot\varphi(\text{child 1})\\ &\quad - \text{share 2}\cdot\varphi(\text{child 2})\\ &= \square\end{aligned}\]`,
       answer: R`<p><b>Key idea:</b> impurity only depends on the proportion of \(+\); if both children have proportion \(p\), so does the parent, so all three impurities are \(\varphi(p)\) and the reduction is 0.</p>
-<p><b>1. The children:</b> child \(v\) has \(n^{(v)}\) samples, a proportion \(p\) of them positive: \(\;n_+^{(v)} = p\,n^{(v)}\)</p>
-<p><b>2. The parent has proportion \(p\) too:</b></p>
-\[\frac{n_+}{n} = \frac{p\,n^{(1)} + p\,n^{(2)}}{n^{(1)} + n^{(2)}} = p\]
-<p><b>3. So</b> \(\varphi(S) = \varphi(S_1) = \varphi(S_2) = \varphi(p)\) (impurity only sees the proportion)</p>
-<p><b>4. The reduction:</b></p>
-\[\Delta\varphi = \varphi(p) - \frac{n^{(1)}}{n}\varphi(p) - \frac{n^{(2)}}{n}\varphi(p) = \varphi(p)\,(1 - 1) = 0\]`,
+<p><b>Words:</b> size 1, size 2 = the number of samples in each child; share 1 = size 1 ÷ samples in the parent (same for share 2).</p>
+<p><b>1. Each child:</b> positives in the child = \(p\) × its size (both children have the same proportion \(p\))</p>
+<p><b>2. The parent's proportion:</b></p>
+\[\begin{aligned}\text{positives in parent} &= p\cdot\text{size 1} + p\cdot\text{size 2}\\ &= p\cdot(\text{size 1} + \text{size 2})\\ \text{samples in parent} &= \text{size 1} + \text{size 2}\\ \text{parent's proportion} &= \frac{\text{positives in parent}}{\text{samples in parent}}\\ &= \frac{p\cdot(\text{size 1} + \text{size 2})}{\text{size 1} + \text{size 2}} = p\end{aligned}\]
+<p><b>3. So</b> \(\varphi(\text{parent}) = \varphi(\text{child 1}) = \varphi(\text{child 2}) = \varphi(p)\): impurity only sees the proportion.</p>
+<p><b>4. The reduction</b> (each child's impurity weighted by its share):</p>
+\[\begin{aligned}\text{reduction} &= \varphi(\text{parent}) - \text{share 1}\cdot\varphi(\text{child 1})\\ &\quad - \text{share 2}\cdot\varphi(\text{child 2})\\ &= \varphi(p) - \text{share 1}\cdot\varphi(p) - \text{share 2}\cdot\varphi(p)\\ &= \varphi(p)\cdot\big(1 - \underbrace{(\text{share 1} + \text{share 2})}_{\textstyle = 1}\big) = 0\end{aligned}\]`,
       moves: [
         { line: R`<b>What does the question really want?</b> \(\Delta\varphi = 0\) for <b>any</b> impurity, so you can't use Gini's or entropy's formula. Use what they share: they only see the proportion \(p\) of \(+\).`,
           why: R`<p>Gini \(1 - p^2 - (1-p)^2\) and entropy \(-p\log p - (1-p)\log(1-p)\) are both functions of \(p\) alone ([sheet: Gini impurity], [sheet: Entropy]).</p>` },
-        { line: R`<b>The parent has proportion \(p\)</b> — each child's positives = \(p\) × its size; the parent holds both children: <div class="formula">\[\frac{n_+}{n} = \frac{p\,n^{(1)} + p\,n^{(2)}}{n^{(1)} + n^{(2)}} = p\]</div>`,
-          why: R`<p>\(n = n^{(1)} + n^{(2)}\) and \(n_+ = n_+^{(1)} + n_+^{(2)}\). Take \(p\) out of the top and the rest cancels. The \((1)\) is a label (which child), not a power. This step is the proof: just assuming the parent has \(p\) costs 2 points.</p>` },
-        { line: R`<b>Plug in</b> — all three impurities are \(\varphi(p)\), and the weights add to 1: <div class="formula">\[\Delta\varphi = \varphi(p) - \frac{n^{(1)}}{n}\varphi(p) - \frac{n^{(2)}}{n}\varphi(p) = \varphi(p)\,(1 - 1) = 0\]</div>Done.`,
+        { line: R`<b>The parent has proportion \(p\)</b> — its positives are both children's positives, its size is both sizes: <div class="formula">\[\begin{aligned}\text{parent's proportion} &= \frac{p\cdot\text{size 1} + p\cdot\text{size 2}}{\text{size 1} + \text{size 2}}\\ &= \frac{p\cdot(\text{size 1} + \text{size 2})}{\text{size 1} + \text{size 2}} = p\end{aligned}\]</div>`,
+          why: R`<p>Take \(p\) out of the top: what's left on top is exactly the bottom, so they cancel. This step is the proof: just assuming the parent has \(p\) costs 2 points. (The official solution writes the sizes as \(n^{(1)}, n^{(2)}\) and the positives as \(n_+^{(1)}, n_+^{(2)}\).)</p>` },
+        { line: R`<b>Plug in</b> — all three impurities are \(\varphi(p)\), and the two shares add up to 1 (together the children are the whole parent): <div class="formula">\[\begin{aligned}\text{reduction} &= \varphi(p) - \text{share 1}\cdot\varphi(p) - \text{share 2}\cdot\varphi(p)\\ &= \varphi(p)\cdot(1 - 1) = 0\end{aligned}\]</div>Done.`,
           remember: R`\[\Delta\varphi(S, A) = \varphi(S) - \sum_{v} \frac{|S_v|}{|S|}\,\varphi(S_v)\]<p>Not on the sheet: it only has the impurities themselves, [sheet: Gini impurity] and [sheet: Entropy]. Here the two children are \(S_1, S_2\) with sizes \(n^{(1)}, n^{(2)}\), and \(|S| = n\).</p>` },
       ],
       compare: R`Same steps as the official solution (it names the children's counts \(n_+^{(v)}, n_-^{(v)}\) and writes \(n^{(v)}\) as their sum). Its second denominator has a typo: children (0), (1) instead of (1), (2).`,
