@@ -238,8 +238,11 @@ rows 1,4,6,7</code></pre>Done.`,
 \[\begin{aligned}\mathrm{IG}(\text{Genre}) &= H(S) - \sum_{v} \frac{|S_v|}{|S|}\,H(S_v)\\ &= 1 - \left(\tfrac26\cdot 1 + \tfrac26\cdot 0 + \tfrac26\cdot 0\right)\\ &= 1 - \tfrac13 = \tfrac23\end{aligned}\]`,
       moves: [
         { line: R`<b>Entropies</b> — [sheet: Entropy]. The parent (3 likes, 3 dislikes) and Action \(\{1-, 2+\}\) are half and half; Comedy \(\{3-, 4-\}\) and Drama \(\{5+, 6+\}\) are pure: <div class="formula">\[\begin{aligned}H(\tfrac12) &= -\tfrac12\log_2\tfrac12 - \tfrac12\log_2\tfrac12 = 1\\ H(0) &= H(1) = 0\end{aligned}\]</div>`,
-          why: R`<p>\(\log_2\tfrac12 = -1\), because \(2^{-1} = \tfrac12\). A pure node: \(-1\cdot\log_2 1 - 0 = 0\) (\(0\cdot\log 0\) counts as 0).</p>`,
-          remember: R`\[\mathrm{IG}(S, A) = H(S) - \sum_{v} \frac{|S_v|}{|S|}\,H(S_v)\]<p>Not on the sheet: it only has [sheet: Entropy]. Same shape as part 2's Gini reduction, with \(H\) instead of \(\varphi\). Here \(v\) = Action, Comedy, Drama.</p>` },
+          why: R`<p>\(\log_2\tfrac12 = -1\), because \(2^{-1} = \tfrac12\).</p>
+<p><b>A pure node, e.g. Comedy (0 likes, 2 dislikes):</b></p>
+\[H = -\underbrace{0\cdot\log_2 0}_{\textstyle = 0} - 1\cdot\underbrace{\log_2 1}_{\textstyle = 0} = 0\]
+<p><b>Why \(0\cdot\log_2 0\) counts as 0:</b> \(\log_2 0\) alone is undefined (minus infinity), but here it's multiplied by the proportion 0: a class that isn't in the node adds no uncertainty, so its term is dropped. (Mathematically: \(p\log_2 p \to 0\) as \(p \to 0\), e.g. \(0.01\cdot\log_2 0.01 \approx -0.07\), \(0.001\cdot\log_2 0.001 \approx -0.01\).)</p>`,
+          remember: R`\[\mathrm{IG}(S, A) = H(S) - \sum_{v} \frac{|S_v|}{|S|}\,H(S_v)\]<p>Not on the sheet: it only has [sheet: Entropy]. Same shape as part 2's Gini reduction, with \(H\) instead of \(\varphi\). Here \(v\) = Action, Comedy, Drama.</p><p><b>A pure node has entropy 0</b> (and Gini 0): use \(0\cdot\log_2 0 = 0\).</p>` },
         { line: R`<b>Plug in</b>: <div class="formula">\[\begin{aligned}\mathrm{IG}(\text{Genre}) &= 1 - \left(\tfrac26\cdot 1 + \tfrac26\cdot 0 + \tfrac26\cdot 0\right)\\ &= 1 - \tfrac13 = \tfrac23\end{aligned}\]</div>Done.` },
       ],
       compare: R`Same as the official solution.`,
