@@ -114,6 +114,13 @@ with four sections, every line FORMULA FIRST then numbers (models: 2026-B Q4.3, 
 - then "**MAP:** the bigger posterior → R (0.881 > 0.119)" (or the responsibilities, or the risk sums — for costs
   use the bet sentences of §0.6, model 2025-A Q5.5 / 2025-C Q4.6).
 A shortcut (compare joints/likelihoods only, a cut-off formula) goes in an optional extra, never the main route.
+**C. M-step / EM update parts** (learner, 2026-10-06: *"I want all questions of this sort to be solved this way"*) — per
+parameter, in words first, then the formula, then the numbers, with the soft sums written out under "with"
+(models: 2025-B Q5.4, 2026-B Q5.3, 2026-A Q5.4):
+  π_j = (expected component-j samples / experiments) ÷ (all samples / total experiments) = Σᵢ r(i,j) / n = … = value
+  μ_j = (sum of component-j samples) ÷ (number of component-j samples) = Σᵢ r(i,j) xᵢ / Σᵢ r(i,j) = … = value
+  p_j = (expected heads of coin j) ÷ (expected tosses of coin j) = Σᵢ r(i,j) hᵢ / (5 Σᵢ r(i,j)) = … = value
+  (when the question lists the expected tails too, write it and use heads + tails = 5 × experiments as the check)
 Use the question's own notation (P(X = x | Y = y), π̂, r(i, Q), …). Break every display formula so it fits a phone-width
 column: two-row aligned (formula row, then "&= numbers" row); check with `node tools/hl/render_check.js <file>`
 (server: `python3 -m http.server 8767` in StudySite), which now also flags formulas that overflow inside their box.

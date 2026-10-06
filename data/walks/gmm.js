@@ -241,16 +241,18 @@
 <p><b>Responsibilities:</b> □, so every \(r(i,Q) = r(i,N) = \square\)</p>
 <p>e.g. experiment 1:</p>
 \[\begin{aligned}\text{joint Q} &= \square,\quad \text{joint N} = \square\\ r(1,Q) &= \square\end{aligned}\]
-<p><b>\(\pi_Q\):</b> \(\mathbb E[n_Q] = \square\), so \(\pi_Q \leftarrow \square\)</p>
+<p><b>\(\pi_Q\):</b></p>
+\[\begin{aligned}\pi_Q &= \frac{\text{expected quarter experiments}}{\text{total experiments}}\\ &= \frac{\textstyle\sum_i r(i,Q)}{4}\\ &= \square\end{aligned}\]
 <p><b>\(p_{QH}\):</b></p>
-\[\begin{aligned}\mathbb E[n_{QH}] &= \square\\ \mathbb E[n_{QT}] &= \square\\ p_{QH} &\leftarrow \square\end{aligned}\]`,
+\[\begin{aligned}p_{QH} &= \frac{\text{expected quarter heads}}{\text{expected quarter tosses}}\\ &= \frac{\textstyle\sum_i r(i,Q)\,h_i}{5\textstyle\sum_i r(i,Q)}\\ &= \square\end{aligned}\]`,
       answer: R`<p><b>Key idea:</b> \(\pi_Q = 0.5\) and \(p_{QH} = p_{NH}\), so the two coins are identical: joint Q = joint N in every experiment, so every \(r = 0.5\). So \(\pi_Q \leftarrow 0.5\) and \(p_{QH} \leftarrow\) all heads / all tosses.</p>
 <p><b>Responsibilities:</b> \(\pi_Q = 1 - \pi_Q = 0.5\) and \(p_{QH} = p_{NH} = 0.8\), so joint Q = joint N in every experiment, so every \(r(i,Q) = r(i,N) = 0.5\)</p>
 <p>e.g. experiment 1:</p>
-\[\begin{aligned}\text{joint Q} &= 0.5\cdot 0.8^3\cdot 0.2^2 = 0.01024,\quad \text{joint N} = 0.01024\\ r(1,Q) &= \frac{0.01024}{0.01024 + 0.01024} = 0.5\end{aligned}\]
-<p><b>\(\pi_Q\):</b> \(\mathbb E[n_Q] = 4\cdot 0.5 = 2\), so \(\pi_Q \leftarrow 2/4 = 0.5\)</p>
+\[\begin{aligned}\text{joint Q} &= 0.5\cdot 0.8^3\cdot 0.2^2 = 0.01024\\ \text{joint N} &= 0.01024\\ r(1,Q) &= \frac{0.01024}{0.01024 + 0.01024} = 0.5\end{aligned}\]
+<p><b>\(\pi_Q\):</b></p>
+\[\begin{aligned}\pi_Q &= \frac{\text{expected quarter experiments}}{\text{total experiments}}\\ &= \frac{\textstyle\sum_i r(i,Q)}{4}\\ &= \frac{0.5 + 0.5 + 0.5 + 0.5}{4} = \frac{2}{4} = 0.5\end{aligned}\]
 <p><b>\(p_{QH}\):</b></p>
-\[\begin{aligned}\mathbb E[n_{QH}] &= 0.5\cdot(3 + 0 + 2 + 3) = 4\\ \mathbb E[n_{QT}] &= 0.5\cdot(2 + 5 + 3 + 2) = 6\\ p_{QH} &\leftarrow \frac{4}{4 + 6} = 0.4\end{aligned}\]`,
+\[\begin{aligned}p_{QH} &= \frac{\text{expected quarter heads}}{\text{expected quarter tosses}}\\ &= \frac{\textstyle\sum_i r(i,Q)\,h_i}{5\textstyle\sum_i r(i,Q)}\\ &= \frac{0.5\cdot(3 + 0 + 2 + 3)}{5 \cdot 2} = \frac{4}{10} = 0.4\end{aligned}\]`,
       moves: [
         { line: R`<b>What does the question really want?</b> "Few calculations" is a hint that something makes it easy. Look at the start values: \(p_{QH} = p_{NH} = 0.8\) and \(\pi_Q = 0.5\) — the two coins are <b>identical</b>. So what does that do to the responsibilities?` },
         { line: R`<b>Two identical coins</b> — joint Q = joint N in every experiment, so every \(r(i,Q) = 0.5\). Experiment 1 (3 heads, 2 tails): <div class="formula">\[\begin{aligned}\text{joint Q} = \text{joint N} &= 0.5\cdot 0.8^3\cdot 0.2^2 = 0.01024\\ r(1,Q) &= \frac{0.01024}{0.01024 + 0.01024} = 0.5\end{aligned}\]</div>`,
@@ -364,18 +366,34 @@
 <p><b>2. The picture.</b> Part 3 split every experiment between the coins: experiment 3 is 0.9412 silver, 0.0588 gold. So silver's pile gets 0.9412 of that experiment: 0.9412 of an experiment and 0.9412 of each of its heads and tails. Do all 4, add up the pile.</p><div class="fig"><svg viewBox="0 0 520 216" width="520" role="img" aria-label="Four bars, each experiment split between the silver and gold piles by its responsibility"><text x="20.0" y="20.0" text-anchor="start" font-size="13" fill="currentColor">Each experiment = 1 whole bar, split by its responsibilities</text><text x="20.0" y="56.0" text-anchor="start" font-size="12" fill="currentColor">exp. 1</text><rect x="90" y="38" width="190.0" height="24" style="fill:var(--accent-soft);stroke:var(--accent)" stroke-width="1.5"/><rect x="280.0" y="38" width="190.0" height="24" style="fill:var(--panel);stroke:var(--shaky)" stroke-width="1.5"/><text x="96.0" y="55.0" text-anchor="start" font-size="12" font-weight="700" style="fill:var(--accent-ink)">0.5</text><text x="464.0" y="55.0" text-anchor="end" font-size="12" fill="currentColor">0.5</text><text x="20.0" y="90.0" text-anchor="start" font-size="12" fill="currentColor">exp. 2</text><rect x="90" y="72" width="1.5" height="24" style="fill:var(--accent-soft);stroke:var(--accent)" stroke-width="1.5"/><rect x="91.5" y="72" width="378.5" height="24" style="fill:var(--panel);stroke:var(--shaky)" stroke-width="1.5"/><text x="95.5" y="89.0" text-anchor="start" font-size="12" font-weight="700" style="fill:var(--accent-ink)">0.0039</text><text x="464.0" y="89.0" text-anchor="end" font-size="12" fill="currentColor">0.9961</text><text x="20.0" y="124.0" text-anchor="start" font-size="12" fill="currentColor">exp. 3</text><rect x="90" y="106" width="357.7" height="24" style="fill:var(--accent-soft);stroke:var(--accent)" stroke-width="1.5"/><rect x="447.7" y="106" width="22.3" height="24" style="fill:var(--panel);stroke:var(--shaky)" stroke-width="1.5"/><text x="96.0" y="123.0" text-anchor="start" font-size="12" font-weight="700" style="fill:var(--accent-ink)">0.9412</text><text x="20.0" y="158.0" text-anchor="start" font-size="12" fill="currentColor">exp. 4</text><rect x="90" y="140" width="22.3" height="24" style="fill:var(--accent-soft);stroke:var(--accent)" stroke-width="1.5"/><rect x="112.3" y="140" width="357.7" height="24" style="fill:var(--panel);stroke:var(--shaky)" stroke-width="1.5"/><text x="116.3" y="157.0" text-anchor="start" font-size="12" font-weight="700" style="fill:var(--accent-ink)">0.0588</text><text x="464.0" y="157.0" text-anchor="end" font-size="12" fill="currentColor">0.9412</text><text x="90.0" y="190.0" text-anchor="start" font-size="12" font-weight="700" style="fill:var(--accent)">■ to the silver pile</text><text x="470.0" y="190.0" text-anchor="end" font-size="12" font-weight="700" style="fill:var(--shaky)">to the gold pile ■</text></svg></div>
 <p><b>3. Why that's the right update.</b> Known coins → part 2's count / total. Unknown coins → each experiment counts as much as it probably is silver: its responsibility. Part 2 is just the case where every \(r\) is 1 or 0.</p>
 <p><b>So:</b> \(\pi_G\) ← soft gold experiments / 4, and \(p_S\) ← soft silver heads / (soft silver heads + soft silver tails).</p>`,
-      start: R`<p><b>Key idea:</b> The M-step is part 2's count / total with soft counts: experiment \(i\) counts as \(r(i,G)\) of a gold and \(r(i,S)\) of a silver experiment, and for \(p_S\) its heads and tails count \(r(i,S)\) times.</p>
-\[\begin{aligned}\mathbb E[n_G] &= \textstyle\sum_i r(i,G) = \square\\ \mathbb E[n_S] &= \textstyle\sum_i r(i,S) = \square\\ \mathbb E[n_{SH}] &= \textstyle\sum_i r(i,S)\,h_i = \square\\ \mathbb E[n_{ST}] &= \textstyle\sum_i r(i,S)\,t_i = \square\\ \pi_G &\leftarrow \square\\ p_S &\leftarrow \square\end{aligned}\]`,
-      answer: R`<p><b>Key idea:</b> The M-step is part 2's count / total with soft counts: experiment \(i\) counts as \(r(i,G)\) of a gold and \(r(i,S)\) of a silver experiment, and for \(p_S\) its heads and tails count \(r(i,S)\) times.</p>
-\[\begin{aligned}\mathbb E[n_G] &= \textstyle\sum_i r(i,G) = 0.5 + 0.9961 + 0.0588 + 0.9412 = 2.4961\\ \mathbb E[n_S] &= \textstyle\sum_i r(i,S) = 0.5 + 0.0039 + 0.9412 + 0.0588 = 1.5039\\ \mathbb E[n_{SH}] &= \textstyle\sum_i r(i,S)\,h_i\\ &= 0.5\cdot 3 + 0.0039\cdot 1 + 0.9412\cdot 4 + 0.0588\cdot 2 = 5.3863\\ \mathbb E[n_{ST}] &= \textstyle\sum_i r(i,S)\,t_i\\ &= 0.5\cdot 2 + 0.0039\cdot 4 + 0.9412\cdot 1 + 0.0588\cdot 3 = 2.1332\\ \pi_G &\leftarrow \frac{2.4961}{2.4961 + 1.5039} = 0.624\\ p_S &\leftarrow \frac{5.3863}{5.3863 + 2.1332} = 0.716\end{aligned}\]`,
+      start: R`<p><b>Key idea:</b> the M-step is part 2's count ÷ total with soft counts: experiment \(i\) counts as \(r(i,G)\) of a gold and \(r(i,S)\) of a silver experiment, and its heads and tails count \(r(i,S)\) times toward the silver coin.</p>
+<p><b>\(\pi_G\):</b></p>
+\[\begin{aligned}\pi_G &= \frac{\text{expected gold experiments}}{\text{total experiments}}\\ &= \frac{\textstyle\sum_i r(i,G)}{\textstyle\sum_i r(i,G) + \textstyle\sum_i r(i,S)}\\ &= \square\end{aligned}\]
+<p>with</p>
+\[\begin{aligned}\textstyle\sum_i r(i,G) &= \square\\ \textstyle\sum_i r(i,S) &= \square\end{aligned}\]
+<p><b>\(p_S\):</b></p>
+\[\begin{aligned}p_S &= \frac{\text{expected silver heads}}{\text{expected silver tosses}}\\ &= \frac{\textstyle\sum_i r(i,S)\,h_i}{5\textstyle\sum_i r(i,S)}\\ &= \square\end{aligned}\]
+<p>with</p>
+\[\begin{aligned}\textstyle\sum_i r(i,S)\,h_i &= \square\\ \textstyle\sum_i r(i,S)\,t_i &= \square\end{aligned}\]
+<p>Check: □</p>`,
+      answer: R`<p><b>Key idea:</b> the M-step is part 2's count ÷ total with soft counts: experiment \(i\) counts as \(r(i,G)\) of a gold and \(r(i,S)\) of a silver experiment, and its heads and tails count \(r(i,S)\) times toward the silver coin.</p>
+<p><b>\(\pi_G\):</b></p>
+\[\begin{aligned}\pi_G &= \frac{\text{expected gold experiments}}{\text{total experiments}}\\ &= \frac{\textstyle\sum_i r(i,G)}{\textstyle\sum_i r(i,G) + \textstyle\sum_i r(i,S)}\\ &= \frac{2.4961}{2.4961 + 1.5039} = \frac{2.4961}{4} = 0.624\end{aligned}\]
+<p>with</p>
+\[\begin{aligned}\textstyle\sum_i r(i,G) &= 0.5 + 0.9961\\ &\quad + 0.0588 + 0.9412 = 2.4961\\ \textstyle\sum_i r(i,S) &= 0.5 + 0.0039\\ &\quad + 0.9412 + 0.0588 = 1.5039\end{aligned}\]
+<p><b>\(p_S\):</b></p>
+\[\begin{aligned}p_S &= \frac{\text{expected silver heads}}{\text{expected silver tosses}}\\ &= \frac{\textstyle\sum_i r(i,S)\,h_i}{5\textstyle\sum_i r(i,S)}\\ &= \frac{5.3863}{5 \cdot 1.5039} = \frac{5.3863}{7.5195} = 0.716\end{aligned}\]
+<p>with</p>
+\[\begin{aligned}\textstyle\sum_i r(i,S)\,h_i &= 0.5\cdot 3 + 0.0039\cdot 1\\ &\quad + 0.9412\cdot 4 + 0.0588\cdot 2\\ &= 5.3863\\ \textstyle\sum_i r(i,S)\,t_i &= 0.5\cdot 2 + 0.0039\cdot 4\\ &\quad + 0.9412\cdot 1 + 0.0588\cdot 3\\ &= 2.1332\end{aligned}\]
+<p>(every experiment has 5 tosses, so the silver tosses = 5 × its experiments). Check with the hint's fourth value: \(5.3863 + 2.1332 = 7.5195 = 5 \cdot 1.5039\) ✓</p>`,
       moves: [
-        { line: R`<b>What does the question really want?</b> "Update" = the M-step: part 2's count / total, but now we don't know the coin. So experiment \(i\) counts as \(r(i,G)\) gold, \(r(i,S)\) silver. The hint lists the four counts.`,
+        { line: R`<b>What does the question really want?</b> "Update" = the M-step: part 2's count ÷ total, but the coins are unknown, so each experiment is split by the responsibilities: \(r(i,G)\) gold, \(r(i,S)\) silver. The hint lists the four soft counts.`,
           remember: R`\[p_j \leftarrow \frac{\sum_i r(i,j)\,h_i}{\sum_i r(i,j)\,(h_i + t_i)}\]<p>M-step for a coin = count ÷ total (the MLE), with experiment \(i\) counted \(r(i,j)\) times. Not on the sheet for coins: [sheet: Maximization updates] has the Gaussian \(\mu_j = \frac{1}{n_j}\sum_i r(i,j)\,x^{(i)}\) — the same thing with \(x^{(i)} = h_i/5\), experiment \(i\)'s share of heads.</p>` },
-        { line: R`<b>Soft count of experiments</b> — experiment \(i\) counts as \(r(i,G)\) of a gold coin: <div class="formula">\[\begin{aligned}\mathbb E[n_G] &= 0.5 + 0.9961 + 0.0588 + 0.9412 = 2.4961\\ \mathbb E[n_S] &= 0.5 + 0.0039 + 0.9412 + 0.0588 = 1.5039\end{aligned}\]</div>`,
+        { line: R`<b>Soft count of experiments</b> — experiment \(i\) counts as \(r(i,G)\) of a gold coin: <div class="formula">\[\begin{aligned}\mathbb E[n_G] &= 0.5 + 0.9961 + 0.0588 + 0.9412 = 2.4961\\ \mathbb E[n_S] &= 0.5 + 0.0039\\ &\quad + 0.9412 + 0.0588 = 1.5039\end{aligned}\]</div>`,
           why: R`<p>Check: \(2.4961 + 1.5039 = 4\) experiments. This is \(n_j = \sum_i r(i,j)\) in [sheet: Maximization updates].</p>` },
         { line: R`<b>Silver heads and tails</b> — the part asks \(p_S\), so use the <b>silver</b> responsibilities: <div class="formula">\[\begin{array}{c|c|c|c|c|c} \text{exp.} & r(i,S) & h & r\cdot h & t & r\cdot t\\ \hline 1 & 0.5 & 3 & 1.5 & 2 & 1\\ 2 & 0.0039 & 1 & 0.0039 & 4 & 0.0156\\ 3 & 0.9412 & 4 & 3.7648 & 1 & 0.9412\\ 4 & 0.0588 & 2 & 0.1176 & 3 & 0.1764\\ \hline \text{add} & & & 5.3863 & & 2.1332\end{array}\]</div>So \(\mathbb E[n_{SH}] = 5.3863\), \(\mathbb E[n_{ST}] = 2.1332\).`,
           why: R`<p>Check: \(5.3863 + 2.1332 = 7.5195 = 5\cdot 1.5039\) — every experiment has 5 tosses. With \(r(i,G)\) you would be computing \(p_G\) instead.</p>` },
-        { line: R`<b>The fractions</b> — count / total, with the soft counts: <div class="formula">\[\begin{aligned}\pi_G &\leftarrow \frac{2.4961}{2.4961 + 1.5039} = \frac{2.4961}{4} = 0.624\\ p_S &\leftarrow \frac{5.3863}{5.3863 + 2.1332} = \frac{5.3863}{7.5195} = 0.716\end{aligned}\]</div>Done.` },
+        { line: R`<b>The fractions</b> — expected gold experiments ÷ total experiments, and expected silver heads ÷ expected silver tosses (5 per experiment): <div class="formula">\[\begin{aligned}\pi_G &= \frac{\sum_i r(i,G)}{\sum_i r(i,G) + \sum_i r(i,S)} = \frac{2.4961}{4} = 0.624\\ p_S &= \frac{\sum_i r(i,S)\,h_i}{5\sum_i r(i,S)} = \frac{5.3863}{5 \cdot 1.5039} = 0.716\end{aligned}\]</div>Done.` },
       ],
       compare: R`Same as the official solution: the four expected counts (moves 2–3), then \(\pi_G \leftarrow 0.624\), \(p_S \leftarrow 0.716\) (move 4). (It writes "\(\pi_G \leftarrow \pi_G \leftarrow\)" and "update \(\pi_S\)" — typos for \(\pi_G\).)`,
       slip: R`Just typos: it means "update \(\pi_G\) and \(p_S\)" (not \(\pi_S\)), and the doubled "\(\pi_G \leftarrow \pi_G \leftarrow\)" is one arrow. The numbers 0.624 and 0.716 are right.`,
@@ -391,13 +409,21 @@
 <p><b>Start values:</b> \(\pi_G = \square,\ p_G = \square,\ p_S = \square\)</p>
 <p><b>E-step:</b> □, so every \(r(i,G) = r(i,S) = \square\)</p>
 <p><b>M-step:</b></p>
-\[\begin{aligned}\pi_G &\leftarrow \square\\ p_G,\ p_S &\leftarrow \square\end{aligned}\]
+<p><b>\(\pi_G\):</b></p>
+\[\begin{aligned}\pi_G &= \frac{\text{expected gold experiments}}{\text{total experiments}}\\ &= \frac{\textstyle\sum_i r(i,G)}{4}\\ &= \square\end{aligned}\]
+<p><b>\(p_G\):</b></p>
+\[\begin{aligned}p_G &= \frac{\text{expected gold heads}}{\text{expected gold tosses}}\\ &= \frac{\textstyle\sum_i r(i,G)\,h_i}{5\textstyle\sum_i r(i,G)}\\ &= \square\end{aligned}\]
+<p>and the same for \(p_S\) (every \(r(i,S) = 0.5\) too): □</p>
 <p><b>So:</b> □</p>`,
       answer: R`<p><b>Key idea:</b> Make gold and silver identical (\(\pi_G = 0.5\), \(p_G = p_S\)): then every \(r = 0.5\), so \(\pi_G \leftarrow 0.5\) and both \(p\)'s ← all heads / all tosses = 10/20 = 0.5. So start at \(\pi_G = p_G = p_S = 0.5\) and nothing changes.</p>
 <p><b>Start values:</b> \(\pi_G = 0.5,\ p_G = 0.5,\ p_S = 0.5\)</p>
 <p><b>E-step:</b> the two coins are identical (same prior, same \(p\)), so joint G = joint S \(= 0.5\cdot 0.5^h\cdot 0.5^t = 0.5^6\) in every experiment, so every \(r(i,G) = r(i,S) = 0.5\)</p>
 <p><b>M-step:</b></p>
-\[\begin{aligned}\pi_G &\leftarrow \frac{4\cdot 0.5}{4} = 0.5\\ p_G,\ p_S &\leftarrow \frac{0.5\cdot(3 + 1 + 4 + 2)}{0.5\cdot 20} = \frac{5}{10} = 0.5\end{aligned}\]
+<p><b>\(\pi_G\):</b></p>
+\[\begin{aligned}\pi_G &= \frac{\text{expected gold experiments}}{\text{total experiments}}\\ &= \frac{\textstyle\sum_i r(i,G)}{4}\\ &= \frac{0.5 + 0.5 + 0.5 + 0.5}{4} = \frac{2}{4} = 0.5\end{aligned}\]
+<p><b>\(p_G\):</b></p>
+\[\begin{aligned}p_G &= \frac{\text{expected gold heads}}{\text{expected gold tosses}}\\ &= \frac{\textstyle\sum_i r(i,G)\,h_i}{5\textstyle\sum_i r(i,G)}\\ &= \frac{0.5\cdot(3 + 1 + 4 + 2)}{5 \cdot 2} = \frac{5}{10} = 0.5\end{aligned}\]
+<p>and the same for \(p_S\) (every \(r(i,S) = 0.5\) too): \(p_S = 0.5\)</p>
 <p><b>So:</b> one iteration gives back exactly the start values, so they stay unchanged.</p>`,
       moves: [
         { line: R`<b>What does the question really want?</b> "Unchanged" = the M-step gives back the start values. The M-step only uses the responsibilities; they're simplest when all are 0.5, i.e. when the coins are <b>identical</b>. So try identical coins.` },
@@ -520,12 +546,42 @@
 <p><b>2. The picture.</b> Put the samples −2, 0, 2 on a line and give each a weight = its responsibility for component 1. \(\mu_1\) = where the line balances. −2 belongs almost fully to component 1, 0 half, 2 almost not at all, so the balance point is pulled toward −2.</p><div class="fig"><svg viewBox="0 0 520 150" width="520" role="img" aria-label="The samples -2, 0, 2 on a line with weights r(i,1); mu 1 is the balance point"><line x1="69.3" y1="90" x2="450.7" y2="90" style="stroke:var(--muted)" stroke-width="3"/><circle cx="113.3" cy="64.2" r="25.8" style="fill:var(--accent-soft);stroke:var(--accent)" stroke-width="2"/><text x="113.3" y="112.0" text-anchor="middle" font-size="12" fill="currentColor">x = −2</text><text x="113.3" y="128.0" text-anchor="middle" font-size="12" style="fill:var(--accent-ink)">weight 0.984</text><circle cx="260.0" cy="70.4" r="19.6" style="fill:var(--accent-soft);stroke:var(--accent)" stroke-width="2"/><text x="260.0" y="112.0" text-anchor="middle" font-size="12" fill="currentColor">x = 0</text><text x="260.0" y="128.0" text-anchor="middle" font-size="12" style="fill:var(--accent-ink)">weight 0.5</text><circle cx="406.7" cy="83.2" r="6.8" style="fill:var(--accent-soft);stroke:var(--accent)" stroke-width="2"/><text x="406.7" y="112.0" text-anchor="middle" font-size="12" fill="currentColor">x = 2</text><text x="406.7" y="128.0" text-anchor="middle" font-size="12" style="fill:var(--accent-ink)">weight 0.016</text><path d="M165.4,92 L156.4,106 L174.4,106 Z" style="fill:var(--shaky)"/><text x="169.4" y="32.0" text-anchor="middle" font-size="12" font-weight="700" style="fill:var(--shaky)">μ₁ = where it balances</text><line x1="165.4" y1="38" x2="165.4" y2="90" style="stroke:var(--shaky)" stroke-dasharray="4 3"/><text x="20.0" y="16.0" text-anchor="start" font-size="12" fill="currentColor">weights = r(i,1) from part 2 (bigger ball = heavier)</text></svg></div>
 <p><b>3. Why divide by \(n_j\), not by 3.</b> A plain average of 3 numbers is \(\frac{1\cdot x_1 + 1\cdot x_2 + 1\cdot x_3}{1 + 1 + 1}\): the bottom is the total weight. Here the weights are the \(r\)'s, so the bottom is their total, \(n_j\). And \(n_j\) = how many samples component \(j\) owns, counting fractions, so \(\pi_j = n_j/3\) is its share of the data.</p>
 <p><b>So:</b> add each component's responsibilities → \(n_j\) → \(\pi_j\); then \(\mu_j\) = (each \(x\) × its \(r\), added) / \(n_j\).</p>`,
-      start: R`<p><b>Key idea:</b> \(n_j = \sum_i r(i,j)\), \(\pi_j = n_j/n\), and \(\mu_j\) = the average of the \(x\)'s weighted by \(r(i,j)\), so divide by the total weight \(n_j\), not by \(n = 3\).</p>
-\[\begin{aligned}n_1 &= \square\\ n_2 &= \square\\ \pi_1 &= \frac{n_1}{n} = \square,\qquad \pi_2 = \square\\ \mu_1 &= \frac{1}{n_1}\big(\square\cdot(-2) + \square\cdot 0 + \square\cdot 2\big)\\ &= \square\\ \mu_2 &= \frac{1}{n_2}\big(\square\cdot(-2) + \square\cdot 0 + \square\cdot 2\big)\\ &= \square\end{aligned}\]`,
-      answer: R`<p><b>Key idea:</b> \(n_j = \sum_i r(i,j)\), \(\pi_j = n_j/n\), and \(\mu_j\) = the average of the \(x\)'s weighted by \(r(i,j)\), so divide by the total weight \(n_j\), not by \(n = 3\).</p>
-\[\begin{aligned}n_1 &= 0.984 + 0.5 + 0.016 = 1.5\\ n_2 &= 0.016 + 0.5 + 0.984 = 1.5\\ \pi_1 &= \frac{n_1}{n} = \frac{1.5}{3} = 0.5,\qquad \pi_2 = \frac{1.5}{3} = 0.5\\ \mu_1 &= \frac{1}{n_1}\big(0.984\cdot(-2) + 0.5\cdot 0 + 0.016\cdot 2\big)\\ &= \frac{-1.936}{1.5} = -1.291\\ \mu_2 &= \frac{1}{n_2}\big(0.016\cdot(-2) + 0.5\cdot 0 + 0.984\cdot 2\big)\\ &= \frac{1.936}{1.5} = 1.291\end{aligned}\]`,
+      start: R`<p><b>Key idea:</b> the M-step splits every sample between the components by its responsibilities. Then \(\pi_j\) = expected component-\(j\) samples ÷ all samples, and \(\mu_j\) = sum of component-\(j\) samples ÷ number of component-\(j\) samples, both counted with the weights \(r(i,j)\): a weighted average.</p>
+<p><b>\(\pi_1\):</b></p>
+\[\begin{aligned}\pi_1 &= \frac{\text{expected component-1 samples}}{\text{all samples}}\\ &= \frac{\textstyle\sum_i r(i,1)}{n}\\ &= \square\end{aligned}\]
+<p>with</p>
+\[\begin{aligned}\textstyle\sum_i r(i,1) &= \square\end{aligned}\]
+<p><b>\(\pi_2\):</b></p>
+\[\begin{aligned}\pi_2 &= \frac{\text{expected component-2 samples}}{\text{all samples}}\\ &= \frac{\textstyle\sum_i r(i,2)}{n}\\ &= \square\end{aligned}\]
+<p>with</p>
+\[\begin{aligned}\textstyle\sum_i r(i,2) &= \square\end{aligned}\]
+<p><b>\(\mu_1\):</b></p>
+\[\begin{aligned}\mu_1 &= \frac{\text{sum of component-1 samples}}{\text{number of component-1 samples}}\\ &= \frac{\textstyle\sum_i r(i,1)\,x_i}{\textstyle\sum_i r(i,1)}\\ &= \square\end{aligned}\]
+<p>with</p>
+\[\begin{aligned}\textstyle\sum_i r(i,1)\,x_i &= \square\end{aligned}\]
+<p><b>\(\mu_2\):</b></p>
+\[\begin{aligned}\mu_2 &= \frac{\text{sum of component-2 samples}}{\text{number of component-2 samples}}\\ &= \frac{\textstyle\sum_i r(i,2)\,x_i}{\textstyle\sum_i r(i,2)}\\ &= \square\end{aligned}\]
+<p>with</p>
+\[\begin{aligned}\textstyle\sum_i r(i,2)\,x_i &= \square\end{aligned}\]`,
+      answer: R`<p><b>Key idea:</b> the M-step splits every sample between the components by its responsibilities. Then \(\pi_j\) = expected component-\(j\) samples ÷ all samples, and \(\mu_j\) = sum of component-\(j\) samples ÷ number of component-\(j\) samples, both counted with the weights \(r(i,j)\): a weighted average.</p>
+<p><b>\(\pi_1\):</b></p>
+\[\begin{aligned}\pi_1 &= \frac{\text{expected component-1 samples}}{\text{all samples}}\\ &= \frac{\textstyle\sum_i r(i,1)}{n}\\ &= \frac{1.5}{3} = 0.5\end{aligned}\]
+<p>with</p>
+\[\begin{aligned}\textstyle\sum_i r(i,1) &= 0.984 + 0.5 + 0.016 = 1.5\end{aligned}\]
+<p><b>\(\pi_2\):</b></p>
+\[\begin{aligned}\pi_2 &= \frac{\text{expected component-2 samples}}{\text{all samples}}\\ &= \frac{\textstyle\sum_i r(i,2)}{n}\\ &= \frac{1.5}{3} = 0.5\end{aligned}\]
+<p>with</p>
+\[\begin{aligned}\textstyle\sum_i r(i,2) &= 0.016 + 0.5 + 0.984 = 1.5\end{aligned}\]
+<p><b>\(\mu_1\):</b></p>
+\[\begin{aligned}\mu_1 &= \frac{\text{sum of component-1 samples}}{\text{number of component-1 samples}}\\ &= \frac{\textstyle\sum_i r(i,1)\,x_i}{\textstyle\sum_i r(i,1)}\\ &= \frac{-1.936}{1.5} = -1.291\end{aligned}\]
+<p>with</p>
+\[\begin{aligned}\textstyle\sum_i r(i,1)\,x_i &= 0.984\cdot(-2) + 0.5\cdot 0 + 0.016\cdot 2\\ &= -1.968 + 0 + 0.032 = -1.936\end{aligned}\]
+<p><b>\(\mu_2\):</b></p>
+\[\begin{aligned}\mu_2 &= \frac{\text{sum of component-2 samples}}{\text{number of component-2 samples}}\\ &= \frac{\textstyle\sum_i r(i,2)\,x_i}{\textstyle\sum_i r(i,2)}\\ &= \frac{1.936}{1.5} = 1.291\end{aligned}\]
+<p>with</p>
+\[\begin{aligned}\textstyle\sum_i r(i,2)\,x_i &= 0.016\cdot(-2) + 0.5\cdot 0 + 0.984\cdot 2\\ &= -0.032 + 0 + 1.968 = 1.936\end{aligned}\]`,
       moves: [
-        { line: R`<b>What does the question really want?</b> "M-step for \(\pi\) and \(\mu\)" → [sheet: Maximization updates]: \(n_j = \sum_i r(i,j)\), \(\pi_j = n_j/n\), \(\mu_j = \frac{1}{n_j}\sum_i r(i,j)\,x_i\). Plug in part 2's responsibilities.`,
+        { line: R`<b>What does the question really want?</b> The M-step: split each sample between the components by part 2's responsibilities, then \(\pi_j\) = expected component-\(j\) samples ÷ all samples, \(\mu_j\) = their (weighted) sum ÷ their number. That's [sheet: Maximization updates].`,
           why: R`<p>You don't need to know this by heart: it's on the sheet in exactly this form (with \(x^{(i)}\) for \(x_i\)). \(n_j\) = how many samples component \(j\) owns, counting fractions.</p>` },
         { line: R`<b>\(n_j\) and \(\pi_j\)</b> — add each component's responsibilities, then divide by \(n = 3\): <div class="formula">\[\begin{aligned}n_1 &= 0.984 + 0.5 + 0.016 = 1.5\\ n_2 &= 0.016 + 0.5 + 0.984 = 1.5\\ \pi_1 &= \pi_2 = 1.5/3 = 0.5\end{aligned}\]</div>`,
           why: R`<p>Check: \(1.5 + 1.5 = 3 = n\).</p>` },
