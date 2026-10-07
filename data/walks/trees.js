@@ -830,7 +830,14 @@ rows 1,4,6,7</code></pre>Done.`,
 <p><b>Why zero error:</b> \(x_2^2 - 9x_2\) is \(-18\) for every red (\(x_2 = 3, 6\)) and \(-8, -14, -8\) for the blues (\(x_2 = 1, 2, 8\)), so \(-16\) separates them.</p>`,
       moves: [
         { line: R`<b>What does the question really want?</b> One split = one threshold. Reds are a middle band of \(x_2\), so I need a feature small inside it, large outside. The form's \(b_2x_2^2 + b_1x_2\) is a U: bottom at the band's center.`,
-          extra: [{ label: "your Moed B answer (1/5)", html: R`<p>You plugged single points into \(\varphi\) with the unknown \(a\)'s and \(b\)'s: 8 expressions and no direction. Write the interval first; the coefficients fall out of it.</p>` }] },
+          extra: [{ label: "how to find this direction yourself", html: R`<p>Ask yourself these, in order:</p>
+<p><b>1. What can one cut do?</b> One cut = "is this number \(\lt t\)?": it splits a number line into left | right. So I need <b>one number</b> with all reds on one side, all blues on the other.</p>
+<p><b>2. Can a feature I already have do it?</b> Write the colours along each line.<br>\(x_1\): samples 2 (R) and 3 (B) both sit at 3 → hopeless.<br>\(x_2\) (1, 2, 2, 3, 3, 6, 6, 8): B B B R R R R B → the reds are a <b>middle chunk</b>. A middle chunk needs two cuts.</p>
+<p><b>3. What turns "middle vs ends" into "small vs big"?</b> Distance from the middle: middle points are close (small), both ends are far (big). The two ends become one group.</p>
+<p><b>4. Does the given form hint at it?</b> \(b_2x_2^2 + b_1x_2\) is a parabola, a U: low in the middle, high at both ends. The \(x^2\) is the hint.</p>
+<p><b>5. Mechanical from here:</b> center of the red chunk (4.5) → \((x_2 - 4.5)^2\) → expand → match \(b_2, b_1\) → table → cut.</p>
+<p><b>Rule to keep:</b> reds in a middle band (or inside a circle) + a mapping with squares → squared distance from the center. Same idea as the circle in 2025C Q3.5, there in 2D.</p>` },
+          { label: "your Moed B answer (1/5)", html: R`<p>You plugged single points into \(\varphi\) with the unknown \(a\)'s and \(b\)'s: 8 expressions and no direction. Write the interval first; the coefficients fall out of it.</p>` }] },
         { line: R`<b>The pattern</b> — reds have \(x_2 \in \{3, 6\}\), blues \(x_2 \in \{1, 2, 8\}\). So red \(\iff x_2 \in (2.5,\ 6.5)\).`,
           why: R`<p>Any upper end between 6 and 8 works (part 2 used the midpoint 7); 6.5 puts the center at a round 4.5.</p>` },
         { line: R`<b>Close to the center, then expand</b> — center 4.5, half-width 2; the form has no constant, so 20.25 moves right: <div class="formula">\[\begin{aligned}x_2 \in (2.5,\ 6.5) &\iff (x_2 - 4.5)^2 \lt 4\\ &\iff x_2^2 - 9x_2 + 20.25 \lt 4\\ &\iff x_2^2 - 9x_2 \lt -16.25\end{aligned}\]</div>`,
