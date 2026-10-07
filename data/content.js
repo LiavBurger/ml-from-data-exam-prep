@@ -169,7 +169,7 @@ window.TOPICS = [
 {
   id: "resit", num: 8, title: "Timed re-sit", noQuestions: true,
   blurb: "One real past exam, 3 hours, closed book, then review.",
-  intro: R`<p>At the end: sit one whole real past exam in 3 hours with only the formula sheet and a calculator. Pick the exam you practised least.</p>`,
+  intro: R`<p>At the end: sit one whole real past exam in 3 hours with only the formula sheet and a calculator. Pick the exam you practised least.</p><p>For the last day, the <a href="#/day">Last day plan</a> has a past exam as a paper (questions only), a 3-hour timer and ⭐ marks for the parts you get stuck on.</p>`,
   moves: [], questions: [],
 },
 ];

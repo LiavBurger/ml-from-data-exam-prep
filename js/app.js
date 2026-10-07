@@ -53,6 +53,7 @@
   function renderSide(activeTopic) {
     $("#side").innerHTML = `
       <a class="brand" href="#/">ML from Data<span>Exam C prep</span></a>
+      <a class="nav-t nav-day ${activeTopic === "day" ? "on" : ""}" href="#/day"><span class="num">📅</span><span class="nt">Last day plan</span></a>
       <nav>${TOPICS.map(t => {
         const p = topicProgress(t), pct = p.total ? Math.round(100 * p.done / p.total) : 0;
         return `<a class="nav-t ${t.id === activeTopic ? "on" : ""}" href="#/t/${t.id}">
@@ -89,6 +90,7 @@
     const retest = Object.entries(state.marks).filter(([, v]) => v.m !== "got").sort((a, b) => b[1].t - a[1].t);
     const total = TOPICS.reduce((s, t) => s + t.questions.length, 0);
     $("#main").innerHTML = `
+      <a class="card daylink" href="#/day"><b>📅 Today: your last-day plan →</b><span class="muted">One timed exam, fix the ⭐ parts, the 8 templates from memory, a first-move check, sleep.</span></a>
       <header class="page-h"><h1>Pass Exam C</h1>
         <p class="lede">Answer 4 of 5 questions, 25 points each; 60 passes. In Moed B you weren't short on time — you got stuck. This site has all ${total} real questions from the 5 past exams, each one whole, grouped by the kind of question it is.</p></header>
 
@@ -432,10 +434,132 @@
     });
   }
 
+  // ── last day: the plan (#/day) and a past exam as a paper (#/paper/<exam>) ─────────
+  const DAY = window.LASTDAY || { templates: [] };
+  const examParts = ex => Object.keys(M).filter(k => k.startsWith(ex + "-q") && k.includes("."))
+    .sort((a, b) => { const [qa, pa] = a.split("-q")[1].split(".").map(Number), [qb, pb] = b.split("-q")[1].split(".").map(Number); return qa - qb || pa - pb; });
+  const stars = ex => examParts(ex).filter(pid => (state.stars || {})[pid]);
+  const fmt = ms => { const s = Math.max(0, Math.round(ms / 1000)); return `${Math.floor(s / 3600)}:${String(Math.floor(s / 60) % 60).padStart(2, "0")}:${String(s % 60).padStart(2, "0")}`; };
+  let tick = null;
+  function beep() {
+    try { const a = new (window.AudioContext || window.webkitAudioContext)(), o = a.createOscillator(), g = a.createGain();
+      o.connect(g); g.connect(a.destination); o.frequency.value = 660; g.gain.value = 0.2; o.start(); o.stop(a.currentTime + 0.8); } catch (e) {}
+  }
+  // one countdown at a time, kept in state so a refresh doesn't lose it
+  function timerHtml(choices) {
+    return `<div class="timer card"><div class="t-left"><span class="t-label muted"></span><span class="t-clock">—</span></div>
+      <div class="t-btns">${choices.map(([lab, min]) => `<button class="mk" data-min="${min}" data-lab="${esc(lab)}">${lab}</button>`).join("")}<button class="mk t-stop">Stop</button></div></div>`;
+  }
+  function timerWire() {
+    const box = $("#main .timer"); if (!box) return;
+    const show = () => {
+      const t = state.timer, clock = $(".t-clock", box), lab = $(".t-label", box);
+      if (!t) { clock.textContent = "—"; lab.textContent = "No timer running"; document.title = "ML Exam C — Study Site"; return; }
+      const left = t.end - Date.now();
+      lab.textContent = t.label;
+      if (left <= 0) {
+        clock.textContent = "Time's up"; document.title = "⏰ Time's up";
+        if (!t.rang) { t.rang = true; save(); beep(); }
+      } else { clock.textContent = fmt(left); document.title = `${fmt(left)} · ${t.label}`; }
+    };
+    box.querySelectorAll("[data-min]").forEach(b => b.onclick = () => {
+      state.timer = { label: b.dataset.lab, end: Date.now() + 60000 * +b.dataset.min }; save(); show();
+    });
+    $(".t-stop", box).onclick = () => { delete state.timer; save(); show(); };
+    clearInterval(tick); tick = setInterval(() => { if (!document.body.contains(box)) { clearInterval(tick); document.title = "ML Exam C — Study Site"; return; } show(); }, 1000);
+    show();
+  }
+  function tickBox(key, label) {
+    const on = (state.day || {})[key];
+    return `<label class="tick ${on ? "on" : ""}"><input type="checkbox" data-day="${key}" ${on ? "checked" : ""}><span>${label}</span></label>`;
+  }
+  function starList(ex, empty) {
+    const s = stars(ex);
+    return s.length ? `<ul class="retest">${s.map(pid => `<li>⭐ <a href="#/q/${pid.split(".")[0]}/${pid.split(".")[1]}">${esc(pLabel(pid))}</a> <span class="muted">— ${esc((findQ(pid.split(".")[0]) || { t: { title: "" } }).t.title)}</span></li>`).join("")}</ul>`
+      : `<p class="muted">${empty}</p>`;
+  }
+  function renderDay() {
+    const mock = DAY.mock, check = DAY.check, d = state.day || {};
+    const done = DAY.templates.filter((_, i) => d["tpl" + i]).length;
+    $("#main").innerHTML = `
+      <header class="page-h"><div class="kicker">Thursday 8 October · exam Friday 9 October</div><h1>Last day</h1>
+        <p class="lede">The exam: answer 4 of 5 questions, 3 hours, 60 passes. Today is for <b>doing</b>, not rereading. Tick each block when it's done.</p></header>
+
+      ${timerHtml([["45 min focus", 45], ["10 min break", 10], ["3h exam", 180]])}
+      <p class="muted">Rhythm: 45 minutes on, 10 off, phone in another room. The timer keeps running if you switch pages or refresh, and beeps at the end.</p>
+
+      <section class="card day"><h2>Block 1 · morning, 3h: one whole exam, timed</h2>
+        <p><b>${mock}</b>, on paper, formula sheet and calculator only. It's the second hardest past exam; 2026B is your own Moed B, so you'd half-remember it.</p>
+        <ol><li>Press <b>3h exam</b> above, then open the paper.</li>
+          <li>Pick 4 of the 5 questions, like in the real exam.</li>
+          <li>Stuck on a part? Press <b>⭐</b> on it and move on. Don't open any solution.</li></ol>
+        <p><a class="go" href="#/paper/${mock}">Open the ${mock} paper →</a></p>
+        ${tickBox("b1", "Block 1 done")}</section>
+
+      <section class="card day"><h2>Block 2 · ~1.5h: fix only the ⭐ parts</h2>
+        <p>For each one: open it, redo it from scratch on paper, use <b>Show next move</b> only when stuck. Skip everything you got right.</p>
+        ${starList(mock, "Your ⭐ parts from the " + mock + " paper show up here.")}
+        ${tickBox("b2", "Block 2 done")}</section>
+
+      <p class="muted center">🍽 Lunch. Away from the screen.</p>
+
+      <section class="card day"><h2>Block 3 · ~1.5h: the 8 templates from memory <span class="muted">(${done}/8)</span></h2>
+        <p>For each: write it on a blank page <b>without looking</b>, then open it and check. Tick the ones you wrote fully. The ones you can't tick are your last review tonight.</p>
+        ${DAY.templates.map((t, i) => `<details class="move tpl"><summary>${i + 1}. ${t.title}</summary>
+          <p><span class="tag cue">You'll see</span> ${t.cue}</p>${t.html}
+          ${tickBox("tpl" + i, "I wrote it fully from memory")}</details>`).join("")}
+        ${tickBox("b3", "Block 3 done")}</section>
+
+      <section class="card day"><h2>Block 4 · ~1h: first-move check on ${check}</h2>
+        <p>Open the paper and go through the parts fast. For each, ask: <b>do I know the first move?</b> If not, press ⭐. Then solve only the ⭐ ones with their walks.</p>
+        <p><a class="go" href="#/paper/${check}">Open the ${check} paper →</a></p>
+        ${starList(check, "Your ⭐ parts from the " + check + " paper show up here.")}
+        ${tickBox("b4", "Block 4 done")}</section>
+
+      <section class="card day"><h2>Evening · stop by 20:00</h2>
+        <ul class="ticks">
+          <li>${tickBox("e1", "Flip through the <b>Learn it first</b> cards of each topic (light, nothing new)")}</li>
+          <li>${tickBox("e2", "Templates you couldn't tick in Block 3: read them once more")}</li>
+          <li>${tickBox("e3", "Calculator: \\(\\ln\\), \\(e^x\\), \\(\\log_2 x = \\ln x \\div \\ln 2\\)")}</li>
+          <li>${tickBox("e4", "Check whether the <b>extension formula sheet</b> is allowed in the exam")}</li>
+          <li>${tickBox("e5", "Bag ready: ID, calculator, pens, water")}</li>
+          <li>${tickBox("e6", "<b>Sleep.</b> It gains you more points than another exam")}</li></ul></section>`;
+    math($("#main"));
+    timerWire();
+    $("#main").querySelectorAll("[data-day]").forEach(c => c.onchange = () => {
+      state.day = state.day || {}; state.day[c.dataset.day] = c.checked; save();
+      c.closest(".tick").classList.toggle("on", c.checked);
+    });
+  }
+  function renderPaper(ex) {
+    const qs = [...new Set(examParts(ex).map(pid => pid.split(".")[0]))];
+    $("#main").innerHTML = `
+      <header class="page-h"><div class="kicker"><a href="#/day">← Last day</a></div><h1>${ex.slice(0, 4)} Moed ${ex[4]} · exam paper</h1>
+        <p class="lede">Questions only, no solutions. Answer 4 of the 5. Press ⭐ on any part you get stuck on (or don't know the first move for) and move on.</p></header>
+      ${timerHtml([["3h exam", 180], ["45 min focus", 45], ["10 min break", 10]])}
+      ${qs.map(qid => `<section class="paper-q"><h2>${esc((M[qid] || {}).title || qid)}</h2>
+        ${M[qid] && M[qid].stem ? `<div class="img">${img(M[qid].stem, "question setup")}</div>` : ""}
+        ${examParts(ex).filter(pid => pid.startsWith(qid + ".")).map(pid => {
+          const m = M[pid], on = (state.stars || {})[pid];
+          return `<article class="item"><div class="item-h"><div><span class="src">Part ${pid.split(".")[1]}</span> <span class="pts">${m.pts} pts${m.bonus ? " bonus" : ""}</span></div>
+            <button class="mk star ${on ? "on" : ""}" data-pid="${pid}">${on ? "⭐ stuck" : "☆ stuck?"}</button></div>
+            <div class="img q">${img(m.q, "part " + pid.split(".")[1])}</div></article>`;
+        }).join("")}</section>`).join("")}
+      <p><a class="go" href="#/day">Done → back to the plan, your ⭐ parts are listed there</a></p>`;
+    timerWire();
+    $("#main").querySelectorAll(".star").forEach(b => b.onclick = () => {
+      state.stars = state.stars || {}; const on = !state.stars[b.dataset.pid];
+      if (on) state.stars[b.dataset.pid] = true; else delete state.stars[b.dataset.pid]; save();
+      b.classList.toggle("on", on); b.textContent = on ? "⭐ stuck" : "☆ stuck?";
+    });
+  }
+
   // ── routing ──────────────────────────────────────────────────────────────
   function route() {
     const parts = location.hash.replace(/^#\/?/, "").split("/");
-    if (parts[0] === "t" && TOPICS.find(x => x.id === parts[1])) {
+    if (parts[0] === "day") { renderSide("day"); renderDay(); }
+    else if (parts[0] === "paper" && /^\d{4}[ABC]$/.test(parts[1] || "") && examParts(parts[1]).length) { renderSide("day"); renderPaper(parts[1]); }
+    else if (parts[0] === "t" && TOPICS.find(x => x.id === parts[1])) {
       const i = parts[2] === "note" ? noteIndex(parts[1], +parts[3]) : -1;
       renderSide(parts[1]); renderTopic(TOPICS.find(x => x.id === parts[1]), i >= 0 ? i : undefined);
     } else if (parts[0] === "q" && findQ(parts[1])) {
