@@ -702,7 +702,7 @@ rows 1,4,6,7</code></pre>Done.`,
 <p><b>Parent:</b> \(H(S) = \square\). <b>Candidates:</b> \(\square\)</p>
 <div class="tw"><table><thead><tr><th>\(t\)</th><th>left \(X_1 \lt t\)</th><th>\(H\)</th><th>right</th><th>\(H\)</th><th>IG</th></tr></thead><tbody>
 <tr><td>\(\square\)</td><td>\(\square\)</td><td>\(\square\)</td><td>\(\square\)</td><td>\(\square\)</td><td>\(\square\)</td></tr></tbody></table></div>
-<p><b>Best:</b> \(X_1 = \square\) with IG \(= \square\)</p>`,
+<p><b>Best:</b> threshold \(\square\), i.e. \(X_1 \lt \square\) vs \(X_1 \gt \square\), with IG \(= \square\)</p>`,
       answer: R`<p><b>Key idea:</b> A split on \(X_1\) is a threshold at a midpoint between consecutive distinct values (2.5, 3.5, 4.5, 5.5, 7). Compute the IG of each and keep the largest.</p>
 <p><b>Parent:</b> 4 B, 4 R, so \(H(S) = -\tfrac12\log_2\tfrac12 - \tfrac12\log_2\tfrac12 = 1\). <b>Candidates:</b> distinct values 2, 3, 4, 5, 6, 8 → \(t\) = 2.5, 3.5, 4.5, 5.5, 7</p>
 <div class="tw"><table><thead><tr><th>\(t\)</th><th>left \(X_1 \lt t\)</th><th>\(H\)</th><th>right</th><th>\(H\)</th><th>IG</th></tr></thead><tbody>
@@ -711,7 +711,7 @@ rows 1,4,6,7</code></pre>Done.`,
 <tr><td>4.5</td><td>3B 1R</td><td>0.8113</td><td>1B 3R</td><td>0.8113</td><td>\(1 - \tfrac48\cdot 0.8113 - \tfrac48\cdot 0.8113 = 0.189\)</td></tr>
 <tr><td>5.5</td><td>3B 2R</td><td>0.971</td><td>1B 2R</td><td>0.9183</td><td>\(1 - \tfrac58\cdot 0.971 - \tfrac38\cdot 0.9183 = 0.049\)</td></tr>
 <tr><td>7</td><td>4B 3R</td><td>0.985</td><td>0B 1R</td><td>0</td><td>\(1 - \tfrac78\cdot 0.985 - \tfrac18\cdot 0 = 0.138\)</td></tr></tbody></table></div>
-<p><b>Best:</b> \(X_1 = 4.5\) with IG \(= 0.189\)</p>`,
+<p><b>Best:</b> threshold 4.5, i.e. \(X_1 \lt 4.5\) vs \(X_1 \gt 4.5\), with IG \(= 0.189\)</p>`,
       moves: [
         { line: R`<b>Parent and candidates</b> — a split on \(X_1\) = a threshold \(t\) at a midpoint. 4 B, 4 R, so \(H(S) = 1\) ([sheet: Entropy]). Distinct \(X_1\) values 2, 3, 4, 5, 6, 8 → midpoints 2.5, 3.5, 4.5, 5.5, 7.`,
           why: R`<p>\(H(\tfrac12) = -\tfrac12\log_2\tfrac12 - \tfrac12\log_2\tfrac12 = 1\). Any \(t\) between 4 and 5 sends the same samples left, so one candidate per gap is enough. 3 and 6 appear twice but count once.</p>`,
@@ -731,7 +731,7 @@ rows 1,4,6,7</code></pre>Done.`,
 <tr><td>3.5</td><td>\(1 - \tfrac38\cdot 0.9183 - \tfrac58\cdot 0.971 = 0.049\)</td></tr>
 <tr><td>4.5</td><td>\(1 - \tfrac48\cdot 0.8113 - \tfrac48\cdot 0.8113 = 0.189\)</td></tr>
 <tr><td>5.5</td><td>\(1 - \tfrac58\cdot 0.971 - \tfrac38\cdot 0.9183 = 0.049\)</td></tr>
-<tr><td>7</td><td>\(1 - \tfrac78\cdot 0.985 - \tfrac18\cdot 0 = 0.138\)</td></tr></tbody></table></div>Best: \(X_1 = 4.5\), IG \(= 0.189\). Done.` },
+<tr><td>7</td><td>\(1 - \tfrac78\cdot 0.985 - \tfrac18\cdot 0 = 0.138\)</td></tr></tbody></table></div>Best: threshold 4.5, i.e. \(X_1 \lt 4.5\) vs \(X_1 \gt 4.5\), IG \(= 0.189\). Done.`, why: R`<p>The official solution writes "\(X_1 = 4.5\)": that is shorthand for "the threshold is 4.5", not the condition \(X_1 = 4.5\). Its own lines use \(S_{X_1 \lt 4.5}\) and \(S_{X_1 \gt 4.5}\). No sample has \(X_1 = 4.5\) (thresholds are midpoints), so \(\lt\) vs \(\le\) doesn't matter.</p>` },
       ],
       compare: R`Same numbers as the official solution; its last line is step 3's answer.`,
     },
