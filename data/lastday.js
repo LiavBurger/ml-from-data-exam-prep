@@ -10,6 +10,14 @@
     hw: {
       fill: [
         { key: "hw_gd", title: "Gradient descent with a stop rule", hw: "hw1 · gradient_descent_stop_condition", exams: ["2025B-q1.5", "2026A-q1.4", "2026B-q1.4"],
+          api: [
+            [R`X`, R`\(n \times (p+1)\) data matrix, ones column included`],
+            [R`y`, R`\((n,)\) targets`],
+            [R`w`, R`\((p+1,)\) starting weights; returned as the learned weights`],
+            [R`eta`, R`learning rate (a number)`],
+            [R`compute_mean_squared_error(X, y, w)`, R`returns one number: \(J(w) = \frac1n\|Xw - y\|^2\)`],
+            [R`np.linalg.norm(v)`, R`returns one number: the length \(\sqrt{v_1^2 + v_2^2 + \cdots}\) of the vector <code>v</code>`],
+          ],
           prompt: R`Fill in the blanks so the function runs gradient descent on \(J(w) = \frac1n\|Xw - y\|^2\) and stops once the gradient's norm is below <code>epsilon</code>.`,
           code: `def gradient_descent_stop_condition(X, y, w, eta, max_iter, epsilon=1e-5):
     J_history = []
@@ -28,6 +36,16 @@
             { label: "(4)", accept: ["np.linalg.norm(slope)<epsilon", "np.linalg.norm(slope)<=epsilon"] },
           ] },
         { key: "hw_cv", title: "n-fold cross-validation", hw: "hw4 · cross_validation", exams: ["2025C-q1.5", "2025A-q1.4", "2025B-q4.3", "2026A-q3.5"],
+          api: [
+            [R`X`, R`\((n, p)\) samples; <code>y</code>: \((n,)\) labels`],
+            [R`np.array_split(A, k)`, R`returns a list of \(k\) arrays: the rows of <code>A</code> cut into \(k\) consecutive blocks (the folds)`],
+            [R`np.vstack(list)`, R`stacks 2-D arrays' rows into one array; <code>np.concatenate(list)</code> joins 1-D arrays`],
+            [R`classifier`, R`an untrained model object; <code>copy.deepcopy(classifier)</code> returns a fresh untrained copy`],
+            [R`model.fit(X, y)`, R`trains the model on samples <code>X</code> \((m, p)\) with labels <code>y</code> \((m,)\); returns nothing`],
+            [R`model.predict(X)`, R`returns \((m,)\): the predicted label of each row of <code>X</code>`],
+            [R`np.mean(a == b)`, R`the fraction of positions where <code>a</code> and <code>b</code> are equal (True counts 1)`],
+            [R`returns`, R`<code>accuracy</code>: the average of the folds' accuracies (one number)`],
+          ],
           prompt: R`Fill in the blanks so the function returns the average accuracy over the folds: train on all folds but one, test on the one left out.`,
           code: `X_folds = np.array_split(X, n_folds)
 y_folds = np.array_split(y, n_folds)
@@ -35,7 +53,7 @@ fold_accuracies = []
 for i in range(n_folds):
     X_val, y_val = ___(1)___
     X_tr = np.vstack([X_folds[j] for j in range(n_folds) if ___(2)___])
-    y_tr = np.vstack([y_folds[j] for j in range(n_folds) if j != i])
+    y_tr = np.concatenate([y_folds[j] for j in range(n_folds) if j != i])
     model = copy.deepcopy(classifier)
     model.fit(___(3)___)
     fold_accuracies.append(___(4)___)
@@ -48,6 +66,16 @@ accuracy = ___(5)___`,
             { label: "(5)  accuracy =", accept: ["np.mean(fold_accuracies)", "float(np.mean(fold_accuracies))", "sum(fold_accuracies)/n_folds", "sum(fold_accuracies)/len(fold_accuracies)"] },
           ] },
         { key: "hw_lr", title: "Logistic regression, gradient descent", hw: "hw3 · LogisticRegressionGD.fit", exams: ["2025A-q4.5", "2026B-q3.4"],
+          api: [
+            [R`X`, R`\((n, p+1)\) samples, ones column included; <code>y_01</code>: \((n,)\) labels as 0/1`],
+            [R`self.w_`, R`\((p+1,)\) weights, already initialized`],
+            [R`self.learning_rate`, R`the step size η`],
+            [R`self.eps`, R`stop when the loss changes by less than this`],
+            [R`self.predict_proba(X)`, R`returns \((n,)\): \(\sigma(w^\top x^{(i)})\) for every row, with the current <code>self.w_</code>`],
+            [R`self.BCE_loss(X, y)`, R`returns one number: the mean BCE loss with the current <code>self.w_</code>`],
+            [R`self.loss_history_`, R`a Python list of the losses so far; <code>[-1]</code> = last, <code>[-2]</code> = the one before`],
+            [R`np.exp(a)`, R`\(e^{a}\), entry by entry`],
+          ],
           prompt: R`<code>X</code> already has the ones column, <code>y_01</code> holds the labels as 0/1. Fill in the blanks: one gradient step of the BCE loss per iteration, stopping when the loss changes by less than <code>self.eps</code>.`,
           code: `n = X.shape[0]
 for _ in range(self.max_iter):
@@ -64,6 +92,15 @@ for _ in range(self.max_iter):
             { label: "(4)", accept: ["abs(self.loss_history_[-2]-self.loss_history_[-1])<self.eps", "np.abs(self.loss_history_[-2]-self.loss_history_[-1])<self.eps", "abs(self.loss_history_[-1]-self.loss_history_[-2])<self.eps", "np.abs(self.loss_history_[-1]-self.loss_history_[-2])<self.eps"] },
           ] },
         { key: "hw_roc", title: "BCE loss and TPR / FPR per threshold", hw: "hw3 · BCE_loss, fpr_tpr_per_threshold", exams: ["2025A-q4.4", "2026B-q3.4"],
+          api: [
+            [R`p`, R`\((n,)\) predicted probabilities of class 1; <code>y_01</code>: \((n,)\) true labels as 0/1`],
+            [R`np.log(a)`, R`natural log, entry by entry; <code>np.mean(a)</code>: the average of the entries`],
+            [R`probabilities_on_positives`, R`the predicted probabilities of the samples whose <b>true</b> label is positive`],
+            [R`probabilities_on_negatives`, R`the same for the samples whose true label is negative`],
+            [R`num_positives, num_negatives`, R`how many true positives / true negatives there are`],
+            [R`np.sum(a >= t)`, R`how many entries of <code>a</code> are \(\ge t\)`],
+            [R`tpr, fpr`, R`Python lists, one value appended per threshold`],
+          ],
           prompt: R`<code>p</code> = predicted probabilities, <code>y_01</code> = 0/1 labels. A sample is predicted positive under threshold <code>t</code> if its probability is <code>&gt;= t</code>. Fill in the blanks.`,
           code: `loss = -np.mean(___(1)___)
 
@@ -79,6 +116,15 @@ for t in prob_thresholds:
             { label: "(4)", accept: ["fp/num_negatives", "fp/len(probabilities_on_negatives)"] },
           ] },
         { key: "hw_km", title: "K-means", hw: "hw6 · kmeans", exams: ["2025C-q5.5", "2026A-q4.5"],
+          api: [
+            [R`X`, R`\((n, d)\) samples; <code>centroids</code>, <code>new_centroids</code>: \((k, d)\)`],
+            [R`dist_from_centroids(X, centroids)`, R`returns \((k, n)\): entry \([j, i]\) = Euclidean distance from sample \(i\) to centroid \(j\)`],
+            [R`np.argmin(A, axis=…)`, R`the <b>index</b> of the smallest entry along that axis (<code>axis=0</code>: down each column, <code>axis=1</code>: along each row)`],
+            [R`np.min(A, axis=…)`, R`the smallest <b>value</b> along that axis`],
+            [R`np.mean(A, axis=0)`, R`the average of the rows: one mean per column`],
+            [R`X[mask]`, R`the rows of <code>X</code> where the True/False array <code>mask</code> is True`],
+            [R`rng.choice(n)`, R`a random index in \(0, \ldots, n-1\)`],
+          ],
           prompt: R`<code>distances</code> has shape \((k, n)\): row \(j\) = every sample's Euclidean distance to centroid \(j\). Fill in the blanks.`,
           code: `for iteration in range(max_iter):
     distances = dist_from_centroids(X, centroids)     # shape (k, n)
@@ -98,6 +144,15 @@ WCSS = ___(4)___`,
             { label: "(4)  WCSS =", accept: ["np.sum(np.min(distances,axis=0)**2)", "np.sum(distances.min(axis=0)**2)", "(np.min(distances,axis=0)**2).sum()"] },
           ] },
         { key: "hw_em", title: "GMM: E-step and M-step", hw: "hw6 · GMM.expectation, maximization", exams: ["2025B-q5.4", "2026A-q5.4", "2026B-q5.3"],
+          api: [
+            [R`X`, R`\((n, 1)\) samples`],
+            [R`self.weights, self.mus, self.sigmas`, R`\((k,)\) each: \(\pi_j, \mu_j, \sigma_j\)`],
+            [R`norm_pdf(X, mus, sigmas)`, R`returns \((n, k)\): entry \([i, j] = \phi(x_i; \mu_j, \sigma_j)\)`],
+            [R`self.responsibilities`, R`\((n, k)\): entry \([i, j] = r(i, j)\)`],
+            [R`np.sum(A, axis=1, keepdims=True)`, R`the sum of each row, kept as an \((n, 1)\) column (so it divides row by row)`],
+            [R`np.sum(A, axis=0)`, R`the sum of each column: \((k,)\)`],
+            [R`A * B`, R`entry by entry; an \((n, 1)\) times an \((n, k)\) repeats the column across the \(k\) columns`],
+          ],
           prompt: R`1-D data, <code>X</code> of shape \((n, 1)\); <code>norm_pdf(X, mus, sigmas)</code> returns the \((n, k)\) table of \(\phi(x_i; \mu_j, \sigma_j)\). Fill in the blanks.`,
           code: `def expectation(self, X):
     weighted = ___(1)___                         # (n, k): pi_j * phi(x_i)
@@ -116,6 +171,13 @@ def maximization(self, X):
       ],
       bugs: [
         { title: "Choosing λ for ridge by cross-validation", hw: "hw1 GD + CV", exams: ["2025C-q1.5", "2025A-q1.4"],
+          api: [
+            [R`X_folds, y_folds`, R`lists of the folds: <code>X_folds[i]</code> is \((m_i, p)\), <code>y_folds[i]</code> is \((m_i,)\)`],
+            [R`lambdas`, R`the \(\lambda\) values to try; <code>eta</code>, <code>iters</code>: step size and number of GD steps`],
+            [R`training loss`, R`\(\|X_{tr}w - y_{tr}\|^2 + \lambda\|w\|^2\), minimized by gradient descent from \(w = 0\)`],
+            [R`np.concatenate(list)`, R`joins 1-D arrays into one; <code>np.vstack</code> stacks rows`],
+            [R`returns`, R`the \(\lambda\) with the smallest average validation error (plain mean squared error)`],
+          ],
           prompt: R`The data is centred, so <code>X</code> has no ones column. The function should return the \(\lambda\) with the smallest average validation error. Click every line with a bug.`,
           lines: [
             "def choose_best_lambda(X_folds, y_folds, lambdas, eta, iters):",
@@ -139,6 +201,13 @@ def maximization(self, X):
                   12: R`The validation score must be the plain error, without <code>+ lam * np.sum(w ** 2)</code>: the penalty is for training only.`,
                   14: R`Smallest error wins: <code>&lt;</code>, not <code>&gt;</code>. With <code>best_err = np.inf</code>, nothing is ever chosen.` } },
         { title: "K-means with an (n, k) distance table", hw: "hw6 kmeans", exams: ["2025C-q5.5", "2026A-q4.5"],
+          api: [
+            [R`X`, R`\((n, d)\) samples; returns <code>centroids</code> \((k, d)\), <code>assign</code> \((n,)\), <code>wcss</code> (one number)`],
+            [R`np.linalg.norm(A, axis=2)`, R`Euclidean length along the last axis: here <code>d[i, j]</code> = distance from sample \(i\) to centroid \(j\), shape \((n, k)\)`],
+            [R`np.argmin / np.min(A, axis=…)`, R`index / value of the smallest entry along that axis (<code>axis=0</code>: down each column, <code>axis=1</code>: along each row)`],
+            [R`A.mean(axis=…)`, R`average along that axis`],
+            [R`np.allclose(A, B)`, R`True if all entries are (almost) equal`],
+          ],
           prompt: R`Here <code>d</code> has shape \((n, k)\) (one row per sample), the opposite of your HW. Assume no cluster ever becomes empty and that it converges (breaks) before <code>max_iter</code>. Click every line with a bug.`,
           lines: [
             "def kmeans(X, k, max_iter):",
@@ -157,6 +226,12 @@ def maximization(self, X):
                   6: R`The mean of the members runs down the rows (one mean per coordinate): <code>axis=0</code>.`,
                   10: R`WCSS adds <b>squared</b> distances: <code>np.sum(np.min(d, axis=1) ** 2)</code>.` } },
         { title: "Logistic regression fit", hw: "hw3 LogisticRegressionGD", exams: ["2025A-q4.5", "2026B-q3.4"],
+          api: [
+            [R`X`, R`\((n, p+1)\) samples with the ones column; <code>y</code>: \((n,)\) labels 0/1`],
+            [R`eta, max_iter, eps`, R`step size, maximum iterations, stop threshold on the loss change`],
+            [R`returns`, R`<code>w</code>: \((p+1,)\) learned weights`],
+            [R`np.exp, np.log`, R`entry by entry; <code>np.mean</code>: average`],
+          ],
           prompt: R`<code>X</code> has the ones column, <code>y</code> is 0/1. The function should minimize the BCE loss by gradient descent and stop when the loss changes by less than <code>eps</code>. Click every line with a bug.`,
           lines: [
             "def fit(X, y, eta, max_iter, eps):",
@@ -235,7 +310,9 @@ def maximization(self, X):
         html: R`
 <p><b>E-step:</b> \(r(i,j)\) = the posterior of component \(j\) for sample \(i\): the Bayes block (likelihood → joint → marginal → posterior), with \(\pi_j\) as the prior.</p>
 <p><b>M-step:</b> every sample counts as \(r(i,j)\) of a component-\(j\) sample.</p>
-\[\begin{aligned}\pi_j &= \frac{\text{expected component-}j\text{ samples}}{\text{all samples}} = \frac{\textstyle\sum_i r(i,j)}{n}\\[4pt] \mu_j &= \frac{\text{sum of component-}j\text{ samples}}{\text{number of component-}j\text{ samples}} = \frac{\textstyle\sum_i r(i,j)\,x_i}{\textstyle\sum_i r(i,j)}\\[4pt] p_j &= \frac{\text{expected heads}}{\text{expected tosses}} = \frac{\textstyle\sum_i r(i,j)\,h_i}{(\text{tosses per experiment})\cdot\textstyle\sum_i r(i,j)}\end{aligned}\]
+\[\begin{aligned}\pi_j &= \frac{\text{expected component-}j\text{ samples}}{\text{all samples}}\\ &= \frac{\textstyle\sum_i r(i,j)}{n}\end{aligned}\]
+\[\begin{aligned}\mu_j &= \frac{\text{sum of component-}j\text{ samples}}{\text{number of component-}j\text{ samples}}\\ &= \frac{\textstyle\sum_i r(i,j)\,x_i}{\textstyle\sum_i r(i,j)}\end{aligned}\]
+\[\begin{aligned}p_j &= \frac{\text{expected heads}}{\text{expected tosses}}\\ &= \frac{\textstyle\sum_i r(i,j)\,h_i}{(\text{tosses per experiment})\cdot\textstyle\sum_i r(i,j)}\end{aligned}\]
 <p>Then the <b>"with"</b> lines below: each sum written out with its numbers.</p>` },
 
       { title: "Information gain of a split",
@@ -243,7 +320,7 @@ def maximization(self, X):
         html: R`
 <p><b>Candidates:</b> midpoints between consecutive distinct values (one per gap).</p>
 <p><b>Per candidate:</b> count each side (e.g. 3B 1R), then</p>
-\[\text{IG} = H(\text{parent}) - \text{share}_1\cdot H(\text{child}_1) - \text{share}_2\cdot H(\text{child}_2)\]
+\[\begin{aligned}\text{IG} = H(\text{parent}) &- \text{share}_1\cdot H(\text{child}_1)\\ &- \text{share}_2\cdot H(\text{child}_2)\end{aligned}\]
 <p>share = samples in the child ÷ samples in the parent.</p>
 \[H = -p\log_2 p - (1-p)\log_2(1-p)\]
 <p class="muted">Pure node → \(H = 0\) (\(0\cdot\log 0 = 0\)). \(\log_2 x = \ln x \div \ln 2\). Same with Gini instead of \(H\). The best split is written as two sides: "\(X_1 \lt 4.5\) vs \(X_1 \gt 4.5\)".</p>` },

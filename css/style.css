@@ -337,3 +337,11 @@ a.go { display: inline-block; font-weight: 600; padding: 6px 16px; border-radius
 .gap.shown .gap-q { display: none; }
 .gap.shown .gap-a { display: inline; }
 .gapall { margin: 4px 0 6px; }
+.api { margin: 8px 0 10px; border: 1px solid var(--line); border-radius: 8px; padding: 6px 12px; background: var(--panel2); }
+.api-h { font-weight: 700; font-size: 14px; margin-bottom: 2px; }
+.api table { width: 100%; font-size: 14px; }
+.api td { vertical-align: top; }
+.api td:first-child { white-space: nowrap; width: 1%; }
+@media (max-width: 640px) { .api td:first-child { white-space: normal; } }
+.tpl .katex-display { overflow-x: auto; overflow-y: hidden; padding-bottom: 2px; }
+.day .katex { position: relative; }

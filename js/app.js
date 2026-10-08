@@ -522,6 +522,7 @@
         ${HW.fill.map((f, i) => `<details class="move tpl ${d["hwf" + i] ? "done" : ""}"><summary>${f.title} <span class="muted">· ${esc(f.hw)}</span></summary>
           <p><span class="tag cue">In the exams</span> ${examLinks(f.exams)}</p>
           <p>${f.prompt}</p>
+          ${f.api ? `<div class="api"><div class="api-h">What you're given</div><div class="tw"><table><tbody>${f.api.map(([n, t]) => `<tr><td><code>${esc(n)}</code></td><td>${t}</td></tr>`).join("")}</tbody></table></div></div>` : ""}
           <pre class="hwcode"><code>${esc(f.code).replace(/___\((\d)\)___/g, '<span class="hole">($1)</span>')}</code></pre>
           ${codeTrainer(f.key)}
           ${tickBox("hwf" + i, "All blanks right")}</details>`).join("")}
@@ -529,6 +530,7 @@
         ${HW.bugs.map((g, i) => `<details class="move tpl ${d["hwb" + i] ? "done" : ""}"><summary>${g.title} <span class="muted">· ${esc(g.hw)}</span></summary>
           <p><span class="tag cue">In the exams</span> ${examLinks(g.exams)}</p>
           <p>${g.prompt}</p>
+          ${g.api ? `<div class="api"><div class="api-h">What you're given</div><div class="tw"><table><tbody>${g.api.map(([n, t]) => `<tr><td><code>${esc(n)}</code></td><td>${t}</td></tr>`).join("")}</tbody></table></div></div>` : ""}
           <div class="bugbox" data-i="${i}"><ol class="buglines">${g.lines.map((l, k) => `<li><button type="button" class="bl" data-n="${k + 1}"><code>${esc(l)}</code></button></li>`).join("")}</ol>
             <button class="check bugcheck">Check</button><div class="bugres"></div></div>
           ${tickBox("hwb" + i, "Found all the bugs")}</details>`).join("")}
