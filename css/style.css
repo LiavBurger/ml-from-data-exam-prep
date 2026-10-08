@@ -312,5 +312,3 @@ a.go { display: inline-block; font-weight: 600; padding: 6px 16px; border-radius
   .memo td { border: 0 !important; padding: 2px 0 !important; }
   .memo .m-f { overflow-x: auto; }
 }
-.tpl-in { margin: 8px 0; padding: 6px 12px; border: 1px solid var(--line); border-radius: 8px; background: var(--panel2); }
-.tpl-in > summary { font-weight: 600; cursor: pointer; }
