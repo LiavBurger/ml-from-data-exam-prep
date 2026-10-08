@@ -318,3 +318,22 @@ a.go { display: inline-block; font-weight: 600; padding: 6px 16px; border-radius
 .day h3 { margin: 18px 0 6px; font-size: 17px; }
 .tpl.done { border-color: var(--got); box-shadow: 0 0 0 2px var(--got), var(--shadow); }
 .tpl.done > summary::after { content: " ✓"; color: var(--got-fg); font-weight: 700; }
+.hwcode { font-size: 13px; overflow-x: auto; }
+.hole { background: var(--accent-soft); color: var(--accent-ink); border-radius: 4px; padding: 0 6px; font-weight: 700; }
+.buglines { list-style: none; counter-reset: ln; padding-left: 0 !important; margin: 8px 0; font-size: 13px; overflow-x: auto; }
+.buglines li { counter-increment: ln; display: flex; margin: 0 !important; }
+.buglines li::before { content: counter(ln); width: 2.2em; flex: none; text-align: right; padding-right: 8px; color: var(--muted); font: 12px/1.9 monospace; }
+.bl { flex: 1; text-align: left; background: none; border: 1px solid transparent; border-radius: 4px; padding: 1px 6px; cursor: pointer; color: var(--ink); white-space: pre; }
+.bl code { background: none; white-space: pre; }
+.bl:hover { border-color: var(--line); }
+.bl.picked { background: var(--shaky-bg); border-color: var(--shaky); }
+.checked .bl.hit { background: var(--got-bg); border-color: var(--got); }
+.checked .bl.miss { border-color: var(--fail); border-style: dashed; }
+.checked .bl.wrong { background: var(--fail-bg); border-color: var(--fail); }
+.bugres ul { margin-top: 4px; }
+.gap { font: inherit; color: inherit; background: var(--accent-soft); border: 1px dashed var(--accent); border-radius: 6px; padding: 0 8px; cursor: pointer; margin: 1px 0; }
+.gap .gap-a { display: none; }
+.gap.shown { border-style: solid; background: var(--got-bg); border-color: var(--got); }
+.gap.shown .gap-q { display: none; }
+.gap.shown .gap-a { display: inline; }
+.gapall { margin: 4px 0 6px; }

@@ -376,7 +376,7 @@
   function codeTrainer(key) {
     const c = CODE[key], saved = state.code[key] || {};
     return `<div class="code" data-key="${key}">
-      <div class="code-h">Type your answers <span class="muted">— checked against the official answer; if yours differs, you judge it</span></div>
+      <div class="code-h">Type your answers <span class="muted">— checked against ${c.ref ? "the answer from " + c.ref : "the official answer"}; if yours differs, you judge it</span></div>
       ${c.blanks.map((b, i) => `
         <div class="blank" data-i="${i}">
           <label><code>${esc(b.label)}</code></label>
@@ -394,7 +394,7 @@
       if (!v) { res.className = "res"; res.innerHTML = ""; return; }
       const ok = b.accept.map(norm).includes(stripLhs(norm(v), b.label));
       res.className = "res " + (ok ? "ok" : "diff");
-      res.innerHTML = ok ? "✓ matches" : `differs — official: <code>${esc(b.accept[0])}</code>`;
+      res.innerHTML = ok ? "✓ matches" : `differs — ${c.ref || "official"}: <code>${esc(b.accept[0])}</code>`;
     });
     state.code[box.dataset.key] = answers; save();
   }
@@ -482,8 +482,11 @@
   function renderDay() {
     const mock = DAY.mock, check = DAY.check, d = state.day || {};
     const done = DAY.templates.filter((_, i) => d["tpl" + i]).length;
-    const HW = DAY.hw || { code: [], theory: [] };
-    const hwDone = HW.code.filter((_, i) => d["hwc" + i]).length + HW.theory.filter((_, i) => d["hwt" + i]).length;
+    const HW = Object.assign({ fill: [], bugs: [], theory: [] }, DAY.hw);
+    HW.fill.forEach(f => { CODE[f.key] = Object.assign({ ref: "your HW" }, f); });
+    const hwTotal = HW.fill.length + HW.bugs.length + HW.theory.length;
+    const hwDone = ["hwf", "hwb", "hwt"].reduce((n, k, j) => n + [HW.fill, HW.bugs, HW.theory][j].filter((_, i) => d[k + i]).length, 0);
+    const examLinks = ids => ids.map(pid => `<a href="#/q/${pid.split(".")[0]}/${pid.split(".")[1]}">${esc(pLabel(pid))}</a>`).join(", ");
     $("#main").innerHTML = `
       <header class="page-h"><div class="kicker">Thursday 8 October · exam Friday 9 October</div><h1>Last day</h1>
         <p class="lede">The exam: answer 4 of 5 questions, 3 hours, 60 passes. Today is for <b>doing</b>, not rereading. Tick each block when it's done.</p></header>
@@ -513,20 +516,28 @@
           ${tickBox("tpl" + i, "I wrote it fully from memory")}</details>`).join("")}
         ${tickBox("b3", "Block 3 done")}</section>
 
-      <section class="card day"><h2>Block 4 · ~1h: the homework <span class="muted">(${hwDone}/${HW.code.length + HW.theory.length})</span></h2>
-        <p>The exams' code questions are your HW functions with blanks, and some theory questions are HW questions again.</p>
-        <h3>4a · 30 min: code <span class="muted">— cover and write the key lines</span></h3>
-        <p>For each: say what the function does, write its key lines on paper <b>without looking</b>, then open and compare.</p>
-        ${HW.code.map((c, i) => `<details class="move tpl ${d["hwc" + i] ? "done" : ""}"><summary>${c.title} <span class="muted">· ${esc(c.hw)}</span></summary>
-          <p><span class="tag cue">In the exams</span> ${c.exams.map(pid => `<a href="#/q/${pid.split(".")[0]}/${pid.split(".")[1]}">${esc(pLabel(pid))}</a>`).join(", ")}</p>
-          <details class="tpl-in"><summary>Your HW's key lines</summary><pre><code>${c.lines}</code></pre><p>${c.note}</p></details>
-          ${tickBox("hwc" + i, "I wrote the key lines")}</details>`).join("")}
-        <h3>4b · 30 min: theory <span class="muted">— not asked in an exam yet</span></h3>
-        <p>For each: <b>do I know the first move?</b> Say it out loud, then open. Don't re-derive everything; the full answers are in your <code>hw*_solutions.md</code>.</p>
+      <section class="card day"><h2>Block 4 · ~1h: the homework, exam-style <span class="muted">(${hwDone}/${hwTotal})</span></h2>
+        <p>Practice built from <b>your own HW</b> (code and theory answers), shaped like the exams' questions. <b>Not real exam questions.</b> The "In the exams" links show the real parts each one mirrors.</p>
+        <h3>4a · 25 min: fill in the blanks</h3>
+        ${HW.fill.map((f, i) => `<details class="move tpl ${d["hwf" + i] ? "done" : ""}"><summary>${f.title} <span class="muted">· ${esc(f.hw)}</span></summary>
+          <p><span class="tag cue">In the exams</span> ${examLinks(f.exams)}</p>
+          <p>${f.prompt}</p>
+          <pre class="hwcode"><code>${esc(f.code).replace(/___\((\d)\)___/g, '<span class="hole">($1)</span>')}</code></pre>
+          ${codeTrainer(f.key)}
+          ${tickBox("hwf" + i, "All blanks right")}</details>`).join("")}
+        <h3>4b · 15 min: find the bugs</h3>
+        ${HW.bugs.map((g, i) => `<details class="move tpl ${d["hwb" + i] ? "done" : ""}"><summary>${g.title} <span class="muted">· ${esc(g.hw)}</span></summary>
+          <p><span class="tag cue">In the exams</span> ${examLinks(g.exams)}</p>
+          <p>${g.prompt}</p>
+          <div class="bugbox" data-i="${i}"><ol class="buglines">${g.lines.map((l, k) => `<li><button type="button" class="bl" data-n="${k + 1}"><code>${esc(l)}</code></button></li>`).join("")}</ol>
+            <button class="check bugcheck">Check</button><div class="bugres"></div></div>
+          ${tickBox("hwb" + i, "Found all the bugs")}</details>`).join("")}
+        <h3>4c · 20 min: theory <span class="muted">— not asked in an exam yet</span></h3>
+        <p>Write the answer on paper first. Then click each □ to check that step, or <b>Show all</b>.</p>
         ${HW.theory.map((t, i) => `<details class="move tpl ${d["hwt" + i] ? "done" : ""}"><summary>${t.q} <span class="muted">· ${esc(t.src)}</span></summary>
-          <details class="tpl-in"><summary>First move</summary><p>${t.first}</p></details>
-          <details class="tpl-in"><summary>The answer</summary><p>${t.ans}</p></details>
-          ${tickBox("hwt" + i, "I knew the first move")}</details>`).join("")}
+          <div class="gapans">${t.a.replace(/⟦([\s\S]*?)⟧/g, '<button type="button" class="gap"><span class="gap-q">□</span><span class="gap-a">$1</span></button>')}</div>
+          <button class="mk gapall">Show all</button>
+          ${tickBox("hwt" + i, "I had every step")}</details>`).join("")}
         ${tickBox("b4", "Block 4 done")}</section>
 
       <section class="card day"><h2>Evening · stop by 20:00</h2>
@@ -540,6 +551,26 @@
           <li>${tickBox("e6", "<b>Sleep.</b> It gains you more points than another exam")}</li></ul></section>`;
     math($("#main"));
     timerWire();
+    $("#main").querySelectorAll(".code").forEach(box => {
+      $(".check", box).onclick = () => checkCode(box);
+      box.querySelectorAll("input").forEach(inp => inp.addEventListener("keydown", e => { if (e.key === "Enter") checkCode(box); }));
+    });
+    $("#main").querySelectorAll(".bugbox").forEach(box => {
+      const g = HW.bugs[+box.dataset.i];
+      box.querySelectorAll(".bl").forEach(b => b.onclick = () => { b.classList.toggle("picked"); box.classList.remove("checked"); });
+      $(".bugcheck", box).onclick = () => {
+        box.classList.add("checked");
+        const picked = [...box.querySelectorAll(".bl.picked")].map(b => +b.dataset.n), real = Object.keys(g.bugs).map(Number);
+        box.querySelectorAll(".bl").forEach(b => { const n = +b.dataset.n, isBug = real.includes(n), was = picked.includes(n);
+          b.classList.toggle("hit", isBug && was); b.classList.toggle("miss", isBug && !was); b.classList.toggle("wrong", !isBug && was); });
+        const found = real.filter(n => picked.includes(n)).length, extra = picked.filter(n => !real.includes(n)).length;
+        $(".bugres", box).innerHTML = `<p><b>${found} of ${real.length} bugs found</b>${extra ? ` · ${extra} line${extra > 1 ? "s" : ""} marked that ${extra > 1 ? "are" : "is"} fine` : ""}</p>
+          <ul>${real.map(n => `<li><b>Line ${n}:</b> ${g.bugs[n]}</li>`).join("")}</ul>`;
+        math($(".bugres", box));
+      };
+    });
+    $("#main").querySelectorAll(".gap").forEach(b => b.onclick = () => b.classList.toggle("shown"));
+    $("#main").querySelectorAll(".gapall").forEach(b => b.onclick = () => b.parentElement.querySelectorAll(".gap").forEach(g => g.classList.add("shown")));
     $("#main").querySelectorAll("[data-day]").forEach(c => c.onchange = () => {
       state.day = state.day || {}; state.day[c.dataset.day] = c.checked; save();
       c.closest(".tick").classList.toggle("on", c.checked);
