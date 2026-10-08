@@ -508,7 +508,7 @@
 
       <section class="card day"><h2>Block 3 · ~1.5h: the 8 templates from memory <span class="muted">(${done}/8)</span></h2>
         <p>For each: write it on a blank page <b>without looking</b>, then open it and check. Tick the ones you wrote fully. The ones you can't tick are your last review tonight.</p>
-        ${DAY.templates.map((t, i) => `<details class="move tpl"><summary>${i + 1}. ${t.title}</summary>
+        ${DAY.templates.map((t, i) => `<details class="move tpl ${d["tpl" + i] ? "done" : ""}"><summary>${i + 1}. ${t.title}</summary>
           <p><span class="tag cue">You'll see</span> ${t.cue}</p>${t.html}
           ${tickBox("tpl" + i, "I wrote it fully from memory")}</details>`).join("")}
         ${tickBox("b3", "Block 3 done")}</section>
@@ -517,13 +517,13 @@
         <p>The exams' code questions are your HW functions with blanks, and some theory questions are HW questions again.</p>
         <h3>4a · 30 min: code <span class="muted">— cover and write the key lines</span></h3>
         <p>For each: say what the function does, write its key lines on paper <b>without looking</b>, then open and compare.</p>
-        ${HW.code.map((c, i) => `<details class="move tpl"><summary>${c.title} <span class="muted">· ${esc(c.hw)}</span></summary>
+        ${HW.code.map((c, i) => `<details class="move tpl ${d["hwc" + i] ? "done" : ""}"><summary>${c.title} <span class="muted">· ${esc(c.hw)}</span></summary>
           <p><span class="tag cue">In the exams</span> ${c.exams.map(pid => `<a href="#/q/${pid.split(".")[0]}/${pid.split(".")[1]}">${esc(pLabel(pid))}</a>`).join(", ")}</p>
           <details class="tpl-in"><summary>Your HW's key lines</summary><pre><code>${c.lines}</code></pre><p>${c.note}</p></details>
           ${tickBox("hwc" + i, "I wrote the key lines")}</details>`).join("")}
         <h3>4b · 30 min: theory <span class="muted">— not asked in an exam yet</span></h3>
         <p>For each: <b>do I know the first move?</b> Say it out loud, then open. Don't re-derive everything; the full answers are in your <code>hw*_solutions.md</code>.</p>
-        ${HW.theory.map((t, i) => `<details class="move tpl"><summary>${t.q} <span class="muted">· ${esc(t.src)}</span></summary>
+        ${HW.theory.map((t, i) => `<details class="move tpl ${d["hwt" + i] ? "done" : ""}"><summary>${t.q} <span class="muted">· ${esc(t.src)}</span></summary>
           <details class="tpl-in"><summary>First move</summary><p>${t.first}</p></details>
           <details class="tpl-in"><summary>The answer</summary><p>${t.ans}</p></details>
           ${tickBox("hwt" + i, "I knew the first move")}</details>`).join("")}
@@ -543,6 +543,7 @@
     $("#main").querySelectorAll("[data-day]").forEach(c => c.onchange = () => {
       state.day = state.day || {}; state.day[c.dataset.day] = c.checked; save();
       c.closest(".tick").classList.toggle("on", c.checked);
+      const box = c.closest("details.tpl"); if (box) box.classList.toggle("done", c.checked);
     });
   }
   function renderPaper(ex) {

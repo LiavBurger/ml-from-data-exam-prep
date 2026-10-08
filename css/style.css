@@ -316,3 +316,5 @@ a.go { display: inline-block; font-weight: 600; padding: 6px 16px; border-radius
 .tpl-in > summary { font-weight: 600; cursor: pointer; }
 .tpl-in pre { margin: 8px 0; overflow-x: auto; font-size: 13px; }
 .day h3 { margin: 18px 0 6px; font-size: 17px; }
+.tpl.done { border-color: var(--got); box-shadow: 0 0 0 2px var(--got), var(--shadow); }
+.tpl.done > summary::after { content: " ✓"; color: var(--got-fg); font-weight: 700; }
