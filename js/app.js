@@ -504,11 +504,20 @@
 
       <p class="muted center">🍽 Lunch. Away from the screen.</p>
 
-      <section class="card day"><h2>Block 3 · ~1.5h: the 8 templates from memory <span class="muted">(${done}/8)</span></h2>
-        <p>For each: write it on a blank page <b>without looking</b>, then open it and check. Tick the ones you wrote fully. The ones you can't tick are your last review tonight.</p>
-        ${DAY.templates.map((t, i) => `<details class="move tpl"><summary>${i + 1}. ${t.title}</summary>
-          <p><span class="tag cue">You'll see</span> ${t.cue}</p>${t.html}
-          ${tickBox("tpl" + i, "I wrote it fully from memory")}</details>`).join("")}
+      <section class="card day"><h2>Block 3 · ~1.5h: the 8 answer templates <span class="muted">(${done}/8)</span></h2>
+        <p>A template = the fixed lines your answer is built from, for one kind of question. Each one comes with a real past-exam part to practise it on (~10 minutes each):</p>
+        <ol><li><b>Open the question</b> (the link), read it, close it.</li>
+          <li><b>On paper, write the answer</b> using the template's lines: open <b>The lines to fill</b> and fill every □.</li>
+          <li><b>Check</b> against <b>Full exam answer</b> on the question's page. Tick it if your lines matched.</li></ol>
+        ${DAY.templates.map((t, i) => {
+          const w = WALKS[t.practice], lines = w ? w.start.replace(/^<p><b>Key idea:<\/b>[\s\S]*?<\/p>/, "<p><b>Key idea:</b> □</p>") : "";
+          return `<details class="move tpl"><summary>${i + 1}. ${t.title}</summary>
+          <p><span class="tag cue">You'll see</span> ${t.cue}</p>
+          <p><b>Practise on:</b> <a href="#/q/${t.practice.split(".")[0]}/${t.practice.split(".")[1]}">${esc(pLabel(t.practice))} →</a> <span class="muted">(${t.only})</span></p>
+          <details class="tpl-in"><summary>The lines to fill</summary>${lines}</details>
+          <details class="tpl-in"><summary>The general template (any question like this)</summary>${t.html}</details>
+          ${tickBox("tpl" + i, "Done: my lines matched the full answer")}</details>`;
+        }).join("")}
         ${tickBox("b3", "Block 3 done")}</section>
 
       <section class="card day"><h2>Block 4 · ~1h: first-move check on ${check}</h2>
