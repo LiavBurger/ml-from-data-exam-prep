@@ -91,7 +91,7 @@
     const retest = Object.entries(state.marks).filter(([, v]) => v.m !== "got").sort((a, b) => b[1].t - a[1].t);
     const total = TOPICS.reduce((s, t) => s + t.questions.length, 0);
     $("#main").innerHTML = `
-      <a class="card daylink" href="#/day"><b>📅 Today: your last-day plan →</b><span class="muted">One timed exam, fix the ⭐ parts, the 8 templates from memory, a first-move check, sleep.</span></a>
+      <a class="card daylink" href="#/day"><b>📅 Today: your last-day plan →</b><span class="muted">One timed exam, fix the ⭐ parts, the 8 templates from memory, the homework, sleep.</span></a>
       <header class="page-h"><h1>Pass Exam C</h1>
         <p class="lede">Answer 4 of 5 questions, 25 points each; 60 passes. In Moed B you weren't short on time — you got stuck. This site has all ${total} real questions from the 5 past exams, each one whole, grouped by the kind of question it is.</p></header>
 
@@ -482,6 +482,8 @@
   function renderDay() {
     const mock = DAY.mock, check = DAY.check, d = state.day || {};
     const done = DAY.templates.filter((_, i) => d["tpl" + i]).length;
+    const HW = DAY.hw || { code: [], theory: [] };
+    const hwDone = HW.code.filter((_, i) => d["hwc" + i]).length + HW.theory.filter((_, i) => d["hwt" + i]).length;
     $("#main").innerHTML = `
       <header class="page-h"><div class="kicker">Thursday 8 October · exam Friday 9 October</div><h1>Last day</h1>
         <p class="lede">The exam: answer 4 of 5 questions, 3 hours, 60 passes. Today is for <b>doing</b>, not rereading. Tick each block when it's done.</p></header>
@@ -511,10 +513,20 @@
           ${tickBox("tpl" + i, "I wrote it fully from memory")}</details>`).join("")}
         ${tickBox("b3", "Block 3 done")}</section>
 
-      <section class="card day"><h2>Block 4 · ~1h: first-move check on ${check}</h2>
-        <p>Open the paper and go through the parts fast. For each, ask: <b>do I know the first move?</b> If not, press ⭐. Then solve only the ⭐ ones with their walks.</p>
-        <p><a class="go" href="#/paper/${check}">Open the ${check} paper →</a></p>
-        ${starList(check, "Your ⭐ parts from the " + check + " paper show up here.")}
+      <section class="card day"><h2>Block 4 · ~1h: the homework <span class="muted">(${hwDone}/${HW.code.length + HW.theory.length})</span></h2>
+        <p>The exams' code questions are your HW functions with blanks, and some theory questions are HW questions again.</p>
+        <h3>4a · 30 min: code <span class="muted">— cover and write the key lines</span></h3>
+        <p>For each: say what the function does, write its key lines on paper <b>without looking</b>, then open and compare.</p>
+        ${HW.code.map((c, i) => `<details class="move tpl"><summary>${c.title} <span class="muted">· ${esc(c.hw)}</span></summary>
+          <p><span class="tag cue">In the exams</span> ${c.exams.map(pid => `<a href="#/q/${pid.split(".")[0]}/${pid.split(".")[1]}">${esc(pLabel(pid))}</a>`).join(", ")}</p>
+          <details class="tpl-in"><summary>Your HW's key lines</summary><pre><code>${c.lines}</code></pre><p>${c.note}</p></details>
+          ${tickBox("hwc" + i, "I wrote the key lines")}</details>`).join("")}
+        <h3>4b · 30 min: theory <span class="muted">— not asked in an exam yet</span></h3>
+        <p>For each: <b>do I know the first move?</b> Say it out loud, then open. Don't re-derive everything; the full answers are in your <code>hw*_solutions.md</code>.</p>
+        ${HW.theory.map((t, i) => `<details class="move tpl"><summary>${t.q} <span class="muted">· ${esc(t.src)}</span></summary>
+          <details class="tpl-in"><summary>First move</summary><p>${t.first}</p></details>
+          <details class="tpl-in"><summary>The answer</summary><p>${t.ans}</p></details>
+          ${tickBox("hwt" + i, "I knew the first move")}</details>`).join("")}
         ${tickBox("b4", "Block 4 done")}</section>
 
       <section class="card day"><h2>Evening · stop by 20:00</h2>
