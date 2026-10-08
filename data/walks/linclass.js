@@ -320,7 +320,14 @@
 <p>\(\varphi(x_1, x_2) = (1,\ x_1^2 + x_2^2), \qquad w = (-0.4,\ 1)\)</p>`,
       moves: [
         { line: R`<b>The boundary is a circle</b> — negatives reach about 0.5 from the origin, the closest positive is the lone one at about \((0, 0.8)\). Take \(r^2 = 0.4\) (\(r \approx 0.63\), in between): <div class="formula">\[\text{positive} \iff -0.4 + (x_1^2 + x_2^2) > 0\]</div>`,
-          why: R`<p>A circle around the origin is \(x_1^2 + x_2^2 = r^2\); outside it, \(x_1^2 + x_2^2 > r^2\). Move \(r^2\) to the left side. Any \(r\) between 0.5 and 0.8 works.</p>` },
+          why: R`<p>A circle around the origin is \(x_1^2 + x_2^2 = r^2\); outside it, \(x_1^2 + x_2^2 > r^2\). Move \(r^2\) to the left side. Any \(r\) between 0.5 and 0.8 works.</p>`,
+          extra: [{ label: "why r², not just r?", html: R`<p><b>1. \(x_1^2 + x_2^2\) is the distance squared.</b> Pythagoras: the point is \(x_1\) across and \(x_2\) up from (0, 0), so</p>\[\text{distance} = \sqrt{x_1^2 + x_2^2}\]
+<p><b>2. Outside the circle = distance \(\gt r\):</b></p>\[\begin{aligned}\sqrt{x_1^2 + x_2^2} &\gt r\\ x_1^2 + x_2^2 &\gt r^2\end{aligned}\]
+<p>Both sides are \(\ge 0\), so squaring keeps the order. The left side got squared, so the right side does too.</p>
+<p><b>3. With "\(\gt r\)" you compare a squared distance with a plain one.</b> Take \(r = 0.5\) and the point (0.6, 0), outside the circle:</p>
+<div class="tw"><table><tbody><tr><td>\(x_1^2 + x_2^2\)</td><td>0.36</td></tr><tr><td>\(0.36 \gt r^2 = 0.25\)</td><td>outside ✓</td></tr><tr><td>\(0.36 \gt r = 0.5\)</td><td>says inside ✗</td></tr></tbody></table></div>
+<p>"\(\gt r\)" is really a circle of radius \(\sqrt r \approx 0.71\).</p>
+<p><b>4. Here:</b> the cut is read off the picture, so any number in the gap works. But if you call it \(r\) (the radius), it must be \(r^2\).</p>` }] },
         { line: R`<b>Select the pieces</b> — numbers = \(w\), the things they multiply = \(\varphi\): <div class="formula">\[\underbrace{\color{#e8912d}-0.4}_{\textstyle\color{#e8912d}w_0}\cdot\underbrace{\color{#4c8dff}1}_{\textstyle\color{#4c8dff}\varphi_0} + \underbrace{\color{#e8912d}1}_{\textstyle\color{#e8912d}w_1}\cdot\underbrace{\color{#4c8dff}(x_1^2 + x_2^2)}_{\textstyle\color{#4c8dff}\varphi_1} > 0\]</div>So \(\varphi(x_1, x_2) = (1,\ x_1^2 + x_2^2)\), \(w = (-0.4,\ 1)\). Done.`,
           size: R`\[\underbrace{w^\top}_{\textstyle 1\times 2}\,\underbrace{\varphi(x)}_{\textstyle 2\times 1} = -0.4\cdot 1 + 1\cdot(x_1^2 + x_2^2)\]<p>\(w = (-0.4, 1)\), \(\varphi(x) = (1, x_1^2 + x_2^2)\): 2 entries each · inner 2 = 2 ✓ · one number per sample, compared with 0 ✓</p>`,
           why: R`<p>"number · thing + number · thing \(> 0\)" is exactly a linear classifier \(w^\top\varphi(x) > 0\). The grader needs the explicit \(\varphi\). The full quadratic mapping \((1, x_1, x_2, x_1^2, x_2^2, x_1x_2)\) also works (the official answer mentions it).</p>`,
@@ -342,7 +349,7 @@
 <tr><td>6</td><td>0</td><td>\(x_1x_2\)</td><td>0</td></tr>
 <tr><td colspan="3"><b>add them up</b></td><td>\(x_1^2 + x_2^2 - 0.25\)</td></tr></tbody></table></div>
 <p>So the classifier "predict positive iff \(w^\top\varphi(x) > 0\)" is exactly</p>
-\[x_1^2 + x_2^2 - 0.25 > 0 \iff x_1^2 + x_2^2 > 0.25 \iff \text{distance from } (0,0) > 0.5\]
+\[\begin{aligned}&x_1^2 + x_2^2 - 0.25 > 0\\ \iff\; &x_1^2 + x_2^2 > 0.25\\ \iff\; &\text{distance from } (0,0) > 0.5\end{aligned}\]
 <p>= outside the circle → positive; inside → negative. That's the circle from step 1.</p>
 <p><b>5. Check with two points from the figure:</b> the centre (0, 0): \(0 + 0 - 0.25 = -0.25 < 0\) → negative ✓. The closest positive, about (0, 0.8): \(0 + 0.64 - 0.25 = 0.39 > 0\) → positive ✓.</p>
 <p><b>Conclusion to write:</b> "A single \(w\) on the features \(\varphi(x)\) separates the data, so the data is linearly separable in the transformed feature space."</p>
