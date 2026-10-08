@@ -291,3 +291,24 @@ a.go { display: inline-block; font-weight: 600; padding: 6px 16px; border-radius
 .center { text-align: center; }
 .mk.star.on { background: var(--shaky); color: #1a1408; border-color: var(--shaky); }
 .paper-q h2 { margin-top: 32px; }
+
+/* memory sheet (#/memo) */
+.memo h2 { margin-top: 0; }
+.memo table { width: 100%; }
+.memo td { vertical-align: top; }
+.m-name { font-weight: 600; width: 26%; }
+.m-when { font-size: 14px; width: 26%; }
+@media print {
+  .side, .kicker, .main > p.muted { display: none !important; }
+  .app { display: block; } .main { padding: 0; max-width: none; }
+  body { background: #fff; color: #000; }
+  .card { background: #fff !important; color: #000; box-shadow: none; border: 1px solid #ccc; break-inside: avoid; padding: 8px 12px; margin: 8px 0; }
+  td, th { color: #000; border-color: #ccc !important; background: #fff !important; }
+  .muted { color: #444 !important; }
+}
+@media (max-width: 640px) {
+  .memo table, .memo tbody, .memo tr, .memo td { display: block; width: auto !important; }
+  .memo tr { border-bottom: 1px solid var(--line); padding: 6px 0; }
+  .memo td { border: 0 !important; padding: 2px 0 !important; }
+  .memo .m-f { overflow-x: auto; }
+}

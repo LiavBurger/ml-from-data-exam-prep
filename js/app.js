@@ -54,6 +54,7 @@
     $("#side").innerHTML = `
       <a class="brand" href="#/">ML from Data<span>Exam C prep</span></a>
       <a class="nav-t nav-day ${activeTopic === "day" ? "on" : ""}" href="#/day"><span class="num">📅</span><span class="nt">Last day plan</span></a>
+      <a class="nav-t nav-day ${activeTopic === "memo" ? "on" : ""}" href="#/memo"><span class="num">🧠</span><span class="nt">Memory sheet</span></a>
       <nav>${TOPICS.map(t => {
         const p = topicProgress(t), pct = p.total ? Math.round(100 * p.done / p.total) : 0;
         return `<a class="nav-t ${t.id === activeTopic ? "on" : ""}" href="#/t/${t.id}">
@@ -520,6 +521,7 @@
         <ul class="ticks">
           <li>${tickBox("e1", "Flip through the <b>Learn it first</b> cards of each topic (light, nothing new)")}</li>
           <li>${tickBox("e2", "Templates you couldn't tick in Block 3: read them once more")}</li>
+          <li>${tickBox("e7", "Read the <a href=\"#/memo\">Memory sheet</a> once, top to bottom")}</li>
           <li>${tickBox("e3", "Calculator: \\(\\ln\\), \\(e^x\\), \\(\\log_2 x = \\ln x \\div \\ln 2\\)")}</li>
           <li>${tickBox("e4", "Check whether the <b>extension formula sheet</b> is allowed in the exam")}</li>
           <li>${tickBox("e5", "Bag ready: ID, calculator, pens, water")}</li>
@@ -554,10 +556,24 @@
     });
   }
 
+  // ── memory sheet (#/memo): short formulas that are NOT on the official formula sheet ──
+  function renderMemo() {
+    const MEMO = window.MEMO || { sections: [] };
+    $("#main").innerHTML = `
+      <header class="page-h"><div class="kicker"><a href="#/day">← Last day</a></div><h1>Memory sheet</h1>
+        <p class="lede">Short formulas the exams use that are <b>not</b> on the official formula sheet. ★ = used in many past exams.</p>
+        ${MEMO.intro || ""}</header>
+      ${MEMO.sections.map(sec => `<section class="card memo"><h2>${esc(sec.title)}</h2>
+        <div class="tw"><table><tbody>${sec.items.map(it => `<tr><td class="m-name">${it.star ? "★ " : ""}${it.name}</td><td class="m-f">${it.f}</td><td class="m-when muted">${it.when || ""}</td></tr>`).join("")}</tbody></table></div></section>`).join("")}
+      <p class="muted">Printable: Ctrl+P prints only this sheet.</p>`;
+    math($("#main"));
+  }
+
   // ── routing ──────────────────────────────────────────────────────────────
   function route() {
     const parts = location.hash.replace(/^#\/?/, "").split("/");
     if (parts[0] === "day") { renderSide("day"); renderDay(); }
+    else if (parts[0] === "memo") { renderSide("memo"); renderMemo(); }
     else if (parts[0] === "paper" && /^\d{4}[ABC]$/.test(parts[1] || "") && examParts(parts[1]).length) { renderSide("day"); renderPaper(parts[1]); }
     else if (parts[0] === "t" && TOPICS.find(x => x.id === parts[1])) {
       const i = parts[2] === "note" ? noteIndex(parts[1], +parts[3]) : -1;
